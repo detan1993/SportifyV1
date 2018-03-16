@@ -1,19 +1,22 @@
-# Build and Release Folders
-bin/
-bin-debug/
-bin-release/
-[Oo]bj/ # FlashDevelop obj
-[Bb]in/ # FlashDevelop bin
+#Ignore Build , dist and nbProject/private folder
+/build/
+/dist/
+/nbproject/private/
 
-# Other files and folders
-.settings/
+/Sportify-ejb/build/
+/Sportify-ejb/dist/
+/Sportify-ejb/nbproject/private/
 
-# Executables
-*.swf
-*.air
-*.ipa
-*.apk
+/SportifyLibrary/build/
+/SportifyLibrary/dist/
+/SportifyLibrary/nbproject/private/
 
-# Project files, i.e. `.project`, `.actionScriptProperties` and `.flexProperties`
-# should NOT be excluded as they contain compiler settings and other important
-# information for Eclipse / Flash Builder.
+
+/Sportify-war/build/
+/Sportify-war/dist/
+/Sportify-war/nbproject/private/
+
+
+/SportifyClient/build/
+/SportifyClient/dist/
+/SportifyClient/nbproject/private/
