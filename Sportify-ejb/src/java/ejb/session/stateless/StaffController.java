@@ -16,8 +16,8 @@ import javax.persistence.PersistenceContext;
  *
  * @author shanw
  */
-@Local(CustomerControllerLocal.class)
-@Remote(CustomerControllerRemote.class)
+@Local(StaffControllerLocal.class)
+@Remote(StaffControllerRemote.class)
 @Stateless
 public class StaffController implements StaffControllerRemote, StaffControllerLocal {
     @PersistenceContext(unitName = "Sportify-ejbPU")
