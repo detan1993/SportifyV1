@@ -31,14 +31,15 @@ public class Product implements Serializable {
     private String productCode;
     private String productName;
     private String description;
-    private int quantity;
     private double price;
     private String team;
     private String gender;
     private String country;
-    private String size;
     @Temporal(TemporalType.TIMESTAMP)
     private Date dateCreated;
+    
+    @OneToMany
+    private List<ProductSize> sizes;
     
     @OneToMany
     private List<Images> images;
@@ -46,18 +47,17 @@ public class Product implements Serializable {
     public Product() {
     }
 
-    public Product(String productCode, String productName, String description, int quantity, double price, String team, String gender, String country, String size, Date dateCreated, List<Images> images) {
+    public Product(String productCode, String productName, String description, double price, String team, String gender, String country,Date dateCreated, List<Images> images , List<ProductSize> sizes) {
         this.productCode = productCode;
         this.productName = productName;
         this.description = description;
-        this.quantity = quantity;
         this.price = price;
         this.team = team;
         this.gender = gender;
         this.country = country;
-        this.size = size;
         this.dateCreated = dateCreated;
         this.images = images;
+        this.sizes = sizes;
     }
 
     public Long getId() {
@@ -92,14 +92,6 @@ public class Product implements Serializable {
         this.description = description;
     }
 
-    public int getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
-    }
-
     public double getPrice() {
         return price;
     }
@@ -130,14 +122,6 @@ public class Product implements Serializable {
 
     public void setCountry(String country) {
         this.country = country;
-    }
-
-    public String getSize() {
-        return size;
-    }
-
-    public void setSize(String size) {
-        this.size = size;
     }
 
     public Date getDateCreated() {
@@ -181,6 +165,20 @@ public class Product implements Serializable {
     @Override
     public String toString() {
         return "entity.Product[ id=" + id + " ]";
+    }
+
+    /**
+     * @return the sizes
+     */
+    public List<ProductSize> getSizes() {
+        return sizes;
+    }
+
+    /**
+     * @param sizes the sizes to set
+     */
+    public void setSizes(List<ProductSize> sizes) {
+        this.sizes = sizes;
     }
     
 }

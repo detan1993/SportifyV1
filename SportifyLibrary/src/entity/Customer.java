@@ -41,6 +41,19 @@ public class Customer implements Serializable {
     public Customer() {
     }
 
+    public Customer(String firstName, String lastName, String address, String dateOfBirth, String email, String password, int loyaltyPoints) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.address = address;
+        this.dateOfBirth = dateOfBirth;
+        this.email = email;
+        this.password = password;
+        this.loyaltyPoints = loyaltyPoints;
+    }
+    
+    
+    
+
     public Customer(String firstName, String lastName, String address, String dateOfBirth, String email, String password, int loyaltyPoints, List<CustomerOrder> customerOrders, List<CustomerVoucher> customerVouchers) {
         this.firstName = firstName;
         this.lastName = lastName;
