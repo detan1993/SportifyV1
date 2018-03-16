@@ -114,7 +114,7 @@ public class DataInitialization {
          arsenalHomeSize.add(productSizeControllerLocal.createSizeForProduct(new ProductSize("M" , 10 )));
         
          
-         Product ArsenalHomeProduct = new Product("ARS0001", "Arsenal Home 2017/18" , "Description" , 99.90, "Arsenal" , "Male" , "England" , new Date(),arsenalHome, arsenalHomeSize);
+         Product ArsenalHomeProduct = new Product("ARS0001", "Arsenal Home 2017/18" , "Description" , 99.90, "Arsenal" , "Male" , "England" , new Date(),null,arsenalHome, arsenalHomeSize);
          productControllerLocal.CreateNewProduct(ArsenalHomeProduct);
          
       
@@ -134,7 +134,7 @@ public class DataInitialization {
          arsenalAwaySize.add(productSizeControllerLocal.createSizeForProduct(new ProductSize("L" , 15 )));
          arsenalAwaySize.add(productSizeControllerLocal.createSizeForProduct(new ProductSize("M" , 5 )));
          
-         Product ArsenalAwayProduct = new Product("ARS0002", "Arsenal Away 2017/18" , "Description" , 99.90, "Arsenal" , "Male" , "England"  , new Date(),arsenalAway, arsenalAwaySize);
+         Product ArsenalAwayProduct = new Product("ARS0002", "Arsenal Away 2017/18" , "Description" , 99.90, "Arsenal" , "Male" , "England"  , new Date(),null,arsenalAway, arsenalAwaySize);
          productControllerLocal.CreateNewProduct(ArsenalAwayProduct);
        
          
