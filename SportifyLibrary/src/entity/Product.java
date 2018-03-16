@@ -41,13 +41,16 @@ public class Product implements Serializable {
     @OneToMany
     private List<ProductSize> sizes;
     
+    @OneToMany(mappedBy="product")
+    private List<ProductReview> productReviews;
+    
     @OneToMany
     private List<Images> images;
 
     public Product() {
     }
 
-    public Product(String productCode, String productName, String description, double price, String team, String gender, String country,Date dateCreated, List<Images> images , List<ProductSize> sizes) {
+    public Product(String productCode, String productName, String description, double price, String team, String gender, String country, Date dateCreated, List<ProductSize> sizes, List<ProductReview> productReviews, List<Images> images) {
         this.productCode = productCode;
         this.productName = productName;
         this.description = description;
@@ -56,9 +59,12 @@ public class Product implements Serializable {
         this.gender = gender;
         this.country = country;
         this.dateCreated = dateCreated;
-        this.images = images;
         this.sizes = sizes;
+        this.productReviews = productReviews;
+        this.images = images;
     }
+
+   
 
     public Long getId() {
         return id;
@@ -138,6 +144,14 @@ public class Product implements Serializable {
 
     public void setImages(List<Images> images) {
         this.images = images;
+    }
+
+    public List<ProductReview> getProductReviews() {
+        return productReviews;
+    }
+
+    public void setProductReviews(List<ProductReview> productReviews) {
+        this.productReviews = productReviews;
     }
 
     

@@ -6,6 +6,8 @@
 package ejb.session.stateless;
 
 import entity.Product;
+import entity.ProductSize;
+import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.Local;
 import javax.ejb.Remote;
@@ -49,10 +51,50 @@ public class ProductController implements ProductControllerRemote, ProductContro
         
     }
     
+    @Override
+    public Product retrieveSingleProduct(int productId){
+      Query query = em.createQuery("SELECT p FROM Product p WHERE p.id=:productId");
+      query.setParameter("productId", productId);
+      return (Product)query.getResultList().get(0);
+    }
+    
     //udpate product here
     
-    
     //delete product here
+    
+    
+    /*
+     * 
+     * Gets a list of products with sizes quantity <=10 , does not return sizes with >10
+     */
+    @Override
+    public List<Product> retrieveProductsRunningLow(){
+        List<Product> allProductList = retrieveProduct();
+        List<Product> lowQuantityList = new ArrayList<Product>();
+        
+        //Create a new product to store sizes with <=10
+        Product newProduct;
+        for(Product p : allProductList){
+            
+            //Get the product information
+            newProduct = p;
+            
+            //Destroy all Sizes first
+            newProduct.setSizes(new ArrayList<ProductSize>());
+            for(ProductSize s : p.getSizes()){
+                if(s.getQty()<=10){
+                    //Add size to new Product so that this new product contains only sizes<=10 and still retains product information
+                    newProduct.getSizes().add(s);
+                }
+            }
+            if(newProduct.getSizes().size() >0){
+                lowQuantityList.add(newProduct);
+                newProduct = null;
+            }
+        }
+        
+        return lowQuantityList;
+    }
     
     
     

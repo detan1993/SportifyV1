@@ -32,19 +32,29 @@ public class ProductReview implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date reviewDate;
     
+    private String staffResponse;
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date staffResponseDate;
+    
+    @ManyToOne
+    private Product product;
     @ManyToOne
     private CustomerOrder customerOrder;
 
     public ProductReview() {
     }
 
-    public ProductReview(double rating, String review, Date reviewDate, CustomerOrder customerOrder) {
+    public ProductReview(double rating, String review, Date reviewDate, String staffResponse, Date staffResponseDate, Product product, CustomerOrder customerOrder) {
         this.rating = rating;
         this.review = review;
         this.reviewDate = reviewDate;
+        this.staffResponse = staffResponse;
+        this.staffResponseDate = staffResponseDate;
+        this.product = product;
         this.customerOrder = customerOrder;
     }
-    
+
+   
     public Long getId() {
         return id;
     }
@@ -77,6 +87,22 @@ public class ProductReview implements Serializable {
         this.reviewDate = reviewDate;
     }
 
+    public String getStaffResponse() {
+        return staffResponse;
+    }
+
+    public void setStaffResponse(String staffResponse) {
+        this.staffResponse = staffResponse;
+    }
+
+    public Date getStaffResponseDate() {
+        return staffResponseDate;
+    }
+
+    public void setStaffResponseDate(Date staffResponseDate) {
+        this.staffResponseDate = staffResponseDate;
+    }
+    
     public CustomerOrder getCustomerOrder() {
         return customerOrder;
     }
@@ -85,8 +111,14 @@ public class ProductReview implements Serializable {
         this.customerOrder = customerOrder;
     }
 
-    
-    
+    public Product getProduct() {
+        return product;
+    }
+
+    public void setProduct(Product product) {
+        this.product = product;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;

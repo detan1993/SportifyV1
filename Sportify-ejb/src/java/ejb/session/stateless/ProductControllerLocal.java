@@ -11,6 +11,7 @@ import java.util.List;
 public interface ProductControllerLocal {
     
     public Product CreateNewProduct(Product newProduct);
-    
-     public List<Product> retrieveProduct();
+    public List<Product> retrieveProduct();
+    public Product retrieveSingleProduct(int productId);
+    public List<Product> retrieveProductsRunningLow();
 }
