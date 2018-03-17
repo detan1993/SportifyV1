@@ -11,6 +11,8 @@ import java.util.List;
 public interface ProductControllerRemote {
     public Product CreateNewProduct(Product newProduct);
     public List<Product> retrieveProduct();
-    public Product retrieveSingleProduct(int productId);
+    public Product retrieveSingleProduct(long productId);
     public List<Product> retrieveProductsRunningLow();
+
+    public void updateProduct(Product newProductInfo);
 }

@@ -27,15 +27,17 @@ public class Staff implements Serializable {
     private String lastName;
     private String email;
     private String password;
+    private String staffRole;
 
     public Staff() {
     }
 
-    public Staff(String firstName, String lastName, String email, String password) {
+    public Staff(String firstName, String lastName, String email, String password, String staffRole) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.password = password;
+        this.staffRole =  staffRole;
     }
 
 
@@ -106,5 +108,19 @@ public class Staff implements Serializable {
     public String toString() {
         return "entity.Staff[ id=" + id + " ]";
     }
-    
+
+    /**
+     * @return the staffRole
+     */
+    public String getStaffRole() {
+        return staffRole;
+    }
+
+    /**
+     * @param staffRole the staffRole to set
+     */
+    public void setStaffRole(String staffRole) {
+        this.staffRole = staffRole;
+    }
+
 }

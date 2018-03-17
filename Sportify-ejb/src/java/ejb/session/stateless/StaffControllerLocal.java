@@ -9,4 +9,5 @@ import entity.Staff;
 
 public interface StaffControllerLocal {
     public Staff login(String email, String password);
+        public Staff createStaff(Staff newStaff);
 }

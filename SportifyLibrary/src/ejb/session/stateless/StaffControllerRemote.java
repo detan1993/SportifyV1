@@ -9,4 +9,6 @@ import entity.Staff;
 
 public interface StaffControllerRemote {
      public Staff login(String email, String password);
+
+    public Staff createStaff(Staff newStaff);
 }

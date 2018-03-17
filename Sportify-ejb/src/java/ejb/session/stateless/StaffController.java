@@ -39,4 +39,14 @@ public class StaffController implements StaffControllerRemote, StaffControllerLo
         
         return null;
     }
+    
+    @Override
+    public Staff createStaff(Staff newStaff)
+    {
+        em.persist(newStaff);
+        em.flush();
+        em.refresh(newStaff);
+        return newStaff;
+        
+    }
 }

@@ -52,7 +52,7 @@ public class ProductController implements ProductControllerRemote, ProductContro
     }
     
     @Override
-    public Product retrieveSingleProduct(int productId){
+    public Product retrieveSingleProduct(long productId){
       Query query = em.createQuery("SELECT p FROM Product p WHERE p.id=:productId");
       query.setParameter("productId", productId);
       return (Product)query.getResultList().get(0);
@@ -96,6 +96,24 @@ public class ProductController implements ProductControllerRemote, ProductContro
         return lowQuantityList;
     }
     
+    @Override
+    public void updateProduct(Product newProductInfo)
+    {
+        //getting product ID
+        Product productToUpdate = retrieveSingleProduct(newProductInfo.getId());
+        productToUpdate.setCountry(newProductInfo.getCountry());
+        productToUpdate.setDescription(newProductInfo.getDescription());
+        productToUpdate.setGender(newProductInfo.getGender());
+        productToUpdate.setImages(newProductInfo.getImages());
+        productToUpdate.setPrice(newProductInfo.getPrice());
+        productToUpdate.setProductCode(newProductInfo.getProductCode());
+        productToUpdate.setProductName(newProductInfo.getProductName());
+        productToUpdate.setSizes(newProductInfo.getSizes());
+        productToUpdate.setTeam(newProductInfo.getTeam());
+        
+        em.flush();
+        
+    }
     
     
 }

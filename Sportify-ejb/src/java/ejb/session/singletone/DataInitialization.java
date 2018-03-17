@@ -9,10 +9,12 @@ import ejb.session.stateless.CustomerControllerLocal;
 import ejb.session.stateless.ImageControllerLocal;
 import ejb.session.stateless.ProductControllerLocal;
 import ejb.session.stateless.ProductSizeControllerLocal;
+import ejb.session.stateless.StaffControllerLocal;
 import entity.Customer;
 import entity.Images;
 import entity.Product;
 import entity.ProductSize;
+import entity.Staff;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -33,6 +35,9 @@ import javax.persistence.PersistenceContext;
 @LocalBean
 public class DataInitialization {
 
+    @EJB(name = "StaffControllerLocal")
+    private StaffControllerLocal staffControllerLocal;
+
     @EJB(name = "ProductSizeControllerLocal")
     private ProductSizeControllerLocal productSizeControllerLocal;
 
@@ -45,6 +50,8 @@ public class DataInitialization {
     @EJB(name = "ImageControllerLocal")
     private ImageControllerLocal imageControllerLocal;
    
+    
+    
     
     
     
@@ -87,6 +94,10 @@ public class DataInitialization {
          //Create new Customer . Date of birth format is DD-MM-YYYY
          Customer newCustomer = new Customer("Jon" , "Tan" , "Address 1 Avenue 3" , "30-01-2017" , "Daviddetan93@gmail.com" , "12345678" , 0 );
          customerControllerLocal.createNewCustomer(newCustomer);
+         
+         //create new Staff 
+         Staff newStaff = new Staff("David", "Tan" , "E0002311@u.nus.edu" , "12345678" , "Manager"); 
+         staffControllerLocal.createStaff(newStaff);
                  
          /*
          Each Jersey have 4 pictures 
