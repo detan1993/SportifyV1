@@ -7,29 +7,53 @@
 
     <h:head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-        <h:outputStylesheet library="css" name="default.css"/>
-        <h:outputStylesheet library="css" name="cssLayout.css"/>
         <title>SPORTIFY | Bringing the game closer</title>
+
+        <style>
+           
+
+            .ui-widget-content {
+                border:none;
+            }
+
+            .ui-widget{
+                font-family: "Trajan Pro";
+            }
+
+            .ui-layout-north {
+                z-index:2 !important; 
+                overflow:visible !important;
+            }
+
+            .ui-layout-north .ui-layout-unit-content {
+                overflow:visible !important;
+            }
+
+            .ui-menubar{
+                width:fit-content
+            }
+        </style>
     </h:head>
 
     <h:body>
-
+        <h:outputStylesheet library="css" name="default.css"/>
+        <h:outputStylesheet library="css" name="cssLayout.css"/>
         <p:layout fullPage="true">
-            
+
             <p:layoutUnit position="north">
-                <div class="logoSection"><img id="logo" src="images/logo.png"/></div>  
-                
+                <div class="logoSection"><img class="logoImage" src="images/logo.png"/></div>  
+
                 <div class="menuSection">
-                    <p:megaMenu orientation="#{megaMenuView.orientation}" style="margin-top:20px">
-                        
+                    <p:megaMenu model="#{menuManagedBean.menuModel}">
+
                     </p:megaMenu>
                 </div>
             </p:layoutUnit>
-            
-            <p:layoutUnit position="center" >
+
+            <p:layoutUnit position="center">
                 <ui:insert name="center">center</ui:insert>
             </p:layoutUnit>
-            
+
             <p:layoutUnit position="south" >
                 <p:panelGrid style="width: 100%; border-style: none;">
                     <p:row style="border-style: none;">
@@ -38,7 +62,7 @@
                     </p:row>
                 </p:panelGrid>
             </p:layoutUnit>
-        
+
         </p:layout>
 
     </h:body>

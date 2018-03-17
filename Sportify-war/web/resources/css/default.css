@@ -1,14 +1,13 @@
 body {
     background-color: #ffffff;
     font-size: 12px;
-    font-family: Verdana, "Verdana CE",  Arial, "Arial CE", "Lucida Grande CE", lucida, "Helvetica CE", sans-serif;
+    font-family: "Trajan Pro";
     color: #000000;  
     margin: 10px;
 }
 
 h1 {
-    font-family: Arial, "Arial CE", "Lucida Grande CE", lucida, "Helvetica CE", sans-serif;
-    border-bottom: 1px solid #AFAFAF; 
+   font-family: "Trajan Pro";
     font-size:  16px;
     font-weight: bold;
     margin: 0px;
@@ -28,7 +27,14 @@ a:link:hover, a:visited:hover  {
   text-decoration : underline;
 }
 
-#logo{
-    width:50x;
-    height:50px
+.logoImage{
+    width:200px;
+    padding-left:20px;
 }
+
+.menuSection{
+    margin-left: 250px;
+    margin-top: -50px;
+}
+
+
