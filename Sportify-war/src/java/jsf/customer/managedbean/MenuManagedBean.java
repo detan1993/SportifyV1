@@ -1,5 +1,6 @@
 package jsf.customer.managedbean;
 
+import java.io.Serializable;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import org.primefaces.model.menu.DefaultMenuItem;
@@ -11,7 +12,7 @@ import javax.annotation.PostConstruct;
 
 @ManagedBean
 @ViewScoped
-public class MenuManagedBean {
+public class MenuManagedBean implements Serializable {
     
     private MenuModel model;
     private DefaultSubMenu rootMenu;

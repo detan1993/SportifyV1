@@ -5,6 +5,7 @@
  */
 package jsf.staff.managedbean;
 
+import java.io.Serializable;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 
@@ -14,7 +15,7 @@ import javax.faces.view.ViewScoped;
  */
 @Named(value = "dashboardManagedBean")
 @ViewScoped
-public class DashboardManagedBean {
+public class DashboardManagedBean implements Serializable {
 
     /**
      * Creates a new instance of DashboardManagedBean

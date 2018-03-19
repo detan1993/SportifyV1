@@ -8,6 +8,7 @@ package jsf.staff.managedbean;
 import ejb.session.stateless.ProductControllerLocal;
 import entity.Product;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
@@ -24,7 +25,7 @@ import javax.faces.view.ViewScoped;
  */
 @Named(value = "productManagementManagedBean")
 @ViewScoped
-public class ProductManagementManagedBean {
+public class ProductManagementManagedBean implements Serializable{
 
     @EJB(name = "ProductControllerLocal")
     private ProductControllerLocal productControllerLocal;
