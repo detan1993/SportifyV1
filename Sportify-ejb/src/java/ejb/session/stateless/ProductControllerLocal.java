@@ -9,10 +9,10 @@ import entity.Product;
 import java.util.List;
 
 public interface ProductControllerLocal {
-    
     public Product CreateNewProduct(Product newProduct);
     public List<Product> retrieveProduct();
     public Product retrieveSingleProduct(long productId);
     public List<Product> retrieveProductsRunningLow();
-      public void updateProduct(Product newProductInfo);
+    public List<List<String>> retrieveCountriesAndTeams();
+    public void updateProduct(Product newProductInfo);
 }

@@ -13,6 +13,6 @@ public interface ProductControllerRemote {
     public List<Product> retrieveProduct();
     public Product retrieveSingleProduct(long productId);
     public List<Product> retrieveProductsRunningLow();
-
+    public List<List<String>> retrieveCountriesAndTeams();
     public void updateProduct(Product newProductInfo);
 }

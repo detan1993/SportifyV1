@@ -58,6 +58,40 @@ public class ProductController implements ProductControllerRemote, ProductContro
       return (Product)query.getResultList().get(0);
     }
     
+    @Override
+    public List<List<String>> retrieveCountriesAndTeams(){
+        List<List<String>> countryAndTeamList = new ArrayList<List<String>>();
+        
+        Query query = em.createQuery("SELECT p.country,p.team FROM Product p ORDER BY p.country");
+        List<Object[]> results = query.getResultList();
+        
+        for(Object[] o : results){
+            boolean isCountryIn = false;
+            boolean isTeamIn = true;
+            String country = (String)o[0];
+            String team = (String)o[1];
+            
+            for(int i=0;i<countryAndTeamList.size();i++){
+                if(countryAndTeamList.get(i).indexOf(country) ==0){
+                    isCountryIn = true;
+                    if(countryAndTeamList.get(i).indexOf(team) <0){
+                        isTeamIn = false;
+                        countryAndTeamList.get(i).add(team);
+                    }
+                }
+            }
+            
+            if(isCountryIn ==false){
+                List<String> newEntry = new ArrayList<String>();
+                newEntry.add(country);
+                newEntry.add(team);
+                countryAndTeamList.add(newEntry);
+            }
+        }
+        
+        return countryAndTeamList;
+    }
+    
     //udpate product here
     
     //delete product here
