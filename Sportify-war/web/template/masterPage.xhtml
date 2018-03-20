@@ -3,15 +3,14 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ez="http://xmlns.jcp.org/jsf/composite/ezcomp">
 
     <h:head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <title>SPORTIFY | Bringing the game closer</title>
 
         <style>
-           
-
             .ui-widget-content {
                 border:none;
             }
@@ -48,6 +47,9 @@
 
                     </p:megaMenu>
                 </div>
+               
+                <ez:LoginComponent />
+                    
             </p:layoutUnit>
 
             <p:layoutUnit position="center">

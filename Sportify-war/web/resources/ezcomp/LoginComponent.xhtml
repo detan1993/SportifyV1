@@ -1,0 +1,33 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:cc="http://xmlns.jcp.org/jsf/composite"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+    <!-- INTERFACE -->
+    <cc:interface>
+    </cc:interface>
+
+    <!-- IMPLEMENTATION -->
+    <cc:implementation>
+        <!-- If user has not login -->
+        <div style="margin-left: 1200px;margin-top: -30px;">
+            
+             <h:panelGroup rendered="#{sessionScope['isLogin']}">
+                 <h:form>
+                <h:outputText value="Hi #{sessionScope['currentCustomer'].firstName}!" />&nbsp;
+                <p:commandButton id="logOutButton" value="LOGOUT" actionListener="#{customerLoginManagedBean.logout}" icon="ui-icon-unlocked"/>
+                </h:form>
+            </h:panelGroup>
+            
+            <h:panelGroup rendered="#{!sessionScope['isLogin']}">
+                <p:commandButton id="signUpButton" value="SIGN UP"/>&nbsp;
+                <p:commandButton id="loginButton" value="LOGIN" onclick="PF('loginDialog').show()"/>
+                <ui:include src="/customerLogin.xhtml"/>
+            </h:panelGroup> 
+        </div>
+    </cc:implementation>
+</html>
