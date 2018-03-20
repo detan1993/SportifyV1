@@ -13,6 +13,8 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import util.exception.CustomerNotFoundException;
+import util.exception.InvalidLoginCredentialException;
 
 /**
  *
@@ -48,27 +50,42 @@ public class CustomerController implements CustomerControllerRemote, CustomerCon
     
     
     @Override
-    public Customer retrieveCustomer(String email){
+    public Customer retrieveCustomer(String email) throws CustomerNotFoundException {
         Query query = em.createQuery("Select e FROM Customer e WHERE e.email =:email");
         query.setParameter("email", email);
         Customer c = new Customer();
         if(query.getResultList().size() >0){
             return (Customer)query.getSingleResult();
         }
+        else
+            throw new CustomerNotFoundException("Wrong customer credential");
         
-        return null;
     }
     
     @Override
-    public Customer login(String email, String password)
+    public Customer login(String email, String password) throws InvalidLoginCredentialException
     {
-        Customer customer = em.find(Customer.class, email);
-        if(customer != null)
-        {
-            if(customer.getPassword().equals(password))
-                return customer;
-        }
+         
+        System.out.println("Custoemr login email: " + email + " password: " + password);
         
-        return null;
+        try{
+              Customer customer = retrieveCustomer(email);
+              if(customer != null)
+              {
+                  if(customer.getPassword().equals(password))
+                      return customer;
+                  else
+                      throw new InvalidLoginCredentialException("Wrong user password");
+              }
+              else{
+                  throw new InvalidLoginCredentialException("Username does not exist or invalid password!");
+              }
+            
+        }catch(CustomerNotFoundException ex)
+        {
+            throw new InvalidLoginCredentialException("Username does not exist or invalid password!");
+        }
+
+      
     }
 }

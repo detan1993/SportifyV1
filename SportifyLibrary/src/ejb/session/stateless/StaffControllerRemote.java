@@ -6,9 +6,15 @@
 package ejb.session.stateless;
 
 import entity.Staff;
+import util.exception.InvalidLoginCredentialException;
+import util.exception.StaffNotFoundException;
 
 public interface StaffControllerRemote {
-     public Staff login(String email, String password);
 
     public Staff createStaff(Staff newStaff);
+
+
+    public Staff login(String email, String password) throws InvalidLoginCredentialException;
+
+    public Staff retrieveStaffByEmail(String email) throws StaffNotFoundException;
 }

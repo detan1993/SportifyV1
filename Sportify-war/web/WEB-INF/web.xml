@@ -12,6 +12,7 @@
     <servlet-mapping>
         <servlet-name>Faces Servlet</servlet-name>
         <url-pattern>*.xhtml</url-pattern>
+        <!-- <url-pattern>/staff/*</url-pattern>  add new URL pattern !-->
     </servlet-mapping>
     <session-config>
         <session-timeout>
@@ -21,4 +22,8 @@
     <welcome-file-list>
         <welcome-file>home.xhtml</welcome-file>
     </welcome-file-list>
+     <error-page>
+        <error-code>404</error-code>
+        <location>/error.xhtml</location>
+    </error-page>
 </web-app>

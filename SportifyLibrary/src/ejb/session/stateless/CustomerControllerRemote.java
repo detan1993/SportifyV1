@@ -7,10 +7,14 @@ package ejb.session.stateless;
 
 import entity.Customer;
 import java.util.List;
+import util.exception.CustomerNotFoundException;
+import util.exception.InvalidLoginCredentialException;
 
 public interface CustomerControllerRemote {
     public Customer createNewCustomer(Customer newCustomer);
     public List<Customer> retrieveCustomer();
-    public Customer retrieveCustomer(String email);
-    public Customer login(String email, String password);
+
+    public Customer login(String email, String password) throws InvalidLoginCredentialException;
+
+    public Customer retrieveCustomer(String email) throws CustomerNotFoundException;
 }
