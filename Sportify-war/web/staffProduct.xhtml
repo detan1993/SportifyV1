@@ -1,0 +1,102 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="./template/staffMasterPage.xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+    
+    <ui:define name="content">
+        
+        <p:tabView>
+            <p:tab title="Create Product">
+                <h:panelGrid columns="2" cellpadding="10">
+                </h:panelGrid>
+            </p:tab>
+            <p:tab title="View Products">
+                <h:panelGrid columns="2" cellpadding="10">
+                    <h:form id="formAllProducts">
+                    <p:dataTable id="dataTableAllProducts" widgetVar="dataTableAllProducts" value="#{staffProductManagedBean.products}" var="product" rowKey="#{product.id}" rowIndexVar="row"
+                             filteredValue="#{staffProductManagedBean.filteredProducts}"
+                             rows="20" paginator="true" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="10,20,50">
+
+                    <f:facet name="header">
+                        <p:outputPanel style="text-align: right;">
+                            <h:outputText value="Search all fields:" />
+                            <p:inputText id="globalFilter" onkeyup="PF('dataTableAllProducts').filter()" style="width:300px" placeholder="Enter keyword"/>
+                        </p:outputPanel>
+                    </f:facet>
+
+                    <p:column headerText="Product ID" sortBy="#{product.id}" filterBy="#{product.id}" filterMatchMode="contains">
+                        <h:outputText value="#{product.id}" />
+                    </p:column>
+
+                    <p:column headerText="Product Code" sortBy="#{product.productCode}" filterBy="#{product.productCode}" filterMatchMode="contains">
+                        <h:outputText value="#{product.productCode}" />
+                    </p:column>
+
+                    <p:column headerText="Name" sortBy="#{product.productName}" filterBy="#{product.productName}" filterMatchMode="contains">
+                        <h:outputText value="#{product.productName}" />
+                    </p:column>
+
+                    <p:column headerText="Unit Price" sortBy="#{product.price}" filterBy="#{product.price}" filterMatchMode="contains">
+                        <h:outputText value="#{product.price}">
+                            <f:convertNumber type="currency" currencySymbol="$" maxIntegerDigits="5" maxFractionDigits="2"/>
+                        </h:outputText>
+                    </p:column>
+
+                    <p:column headerText="Country" sortBy="#{product.country}" filterBy="#{product.country}" filterMatchMode="contains">
+                        <h:outputText value="#{product.country}" />
+                    </p:column>
+
+
+                    <p:column headerText="Team" sortBy="#{product.team}" filterBy="#{product.team}" filterMatchMode="contains">
+                        <h:outputText value="#{product.team}" />
+                    </p:column>
+
+                    <p:column headerText="Action" >
+                        <p:commandButton oncomplete="PF('dialogViewProduct').show()" icon="ui-icon-document" title="View">
+                            <f:setPropertyActionListener value="#{product}" target="#{staffProductManagedBean.selectedProductEntityToView}" />
+                        </p:commandButton>
+                        <p:commandButton icon="ui-icon-trash" actionListener="#{staffProductManagedBean.deleteProduct}" update="dataTableAllProducts">
+                            <f:attribute name="productEntityToDelete" value="#{product}" />
+                            <p:confirm header="Confirmation" message="Are you sure you want to delete #{product.productName} (SKU Code: #{product.productCode})?" icon="ui-icon-alert" />
+                        </p:commandButton>
+                    </p:column>
+
+                </p:dataTable>
+                </h:form>
+                </h:panelGrid>
+            </p:tab>
+            <p:tab title="Summary of Products running low">
+                <h:panelGrid columns="2" cellpadding="10">
+                    <p:dataTable var="lowProduct" value="#{staffProductManagedBean.lowStockProducts}">
+                        <p:column headerText="Product ID">
+                            <h:outputText value="#{lowProduct.id}" />
+                        </p:column>
+
+                        <p:column headerText="Product Code">
+                            <h:outputText value="#{lowProduct.productCode}" />
+                        </p:column>
+
+                        <p:column headerText="Country">
+                            <h:outputText value="#{lowProduct.country}" />
+                        </p:column>
+
+                        <p:column headerText="Team">
+                            <h:outputText value="#{lowProduct.team}" />
+                        </p:column>
+                        
+                        <p:column headerText="Details">
+                            <p:repeat value="#{lowProduct.sizes}" var="size">
+                                <h:outputText value="#{size.size} - #{size.qty}" />
+                                <br/>
+                            </p:repeat>
+                        </p:column>
+                    </p:dataTable>
+                </h:panelGrid>
+            </p:tab>
+        </p:tabView>
+        
+    </ui:define>
+</ui:composition>

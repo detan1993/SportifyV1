@@ -1,0 +1,61 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 21 Mar, 2018, 4:45:20 PM
+    Author     : shanw
+*/
+
+body {
+    background-color: #ffffff;
+    font-size: 12px;
+    font-family: "Trajan Pro";
+    color: #000000;  
+    margin: 10px;
+}
+
+#top {
+    position: relative;
+    color: white;
+    padding: 5px;
+    margin: 0px 0px 10px 0px;
+}
+
+#bottom {
+    position: relative;
+    padding: 5px;
+    margin: 10px 0px 0px 0px;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
+
+#left {
+    float: left;
+    padding: 10px;
+    width: 250px;
+}
+
+#right {
+    float: right;
+    padding: 5px;
+    width: 150px;
+}
+
+#content {
+    padding: 5px;
+    margin-left: 270px;
+    margin-right:50px;
+}
+
+.logoImage{
+    width:200px;
+    padding-left:20px;
+}
+
+.staffNav_menuItem{
+    padding:15px;
+    margin-left:55px;
+}

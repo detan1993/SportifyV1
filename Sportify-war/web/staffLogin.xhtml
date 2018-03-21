@@ -6,29 +6,47 @@
       xmlns:p="http://primefaces.org/ui">
     <h:head>
         <title>Staff Login</title>
+        <style>
+            #div_StaffLogin
+            {
+                margin-left: 37%;
+                margin-top:8%;   
+            }
+         .logoImage{
+            width:300px;
+        }
+        </style>
     </h:head>
-    <h:body>
+    <h:body style="width:100%;">
          <h:panelGroup rendered="#{!sessionScope['staffIsLogin']}">
-                                
-                <h:form id="contentLoginForm">
-                    
+            <div id="div_StaffLogin">
+                <div class="logoSection"><img class="logoImage" src="images/logo.png"/></div>  
+            <h:form id="contentLoginForm">
+                    <h:panelGrid columns="4" cellpadding="5">
                     <p:growl autoUpdate="true" />
+                    
+                    
                     
                     <p:outputLabel for="username" value="Username"/>&nbsp;
                     <p:inputText id="username" value="#{staffIndexManagedBean.username}" required="true" requiredMessage="Username is required">
                         <f:validateLength minimum="4" />
                     </p:inputText>
-                    &nbsp;
+                    
+                    <br/>
+                    
                     <p:outputLabel for="password" value="Password"/>&nbsp;
                     <p:password id="password" value="#{staffIndexManagedBean.password}" required="true" requiredMessage="Password is required">
                         <f:validateLength minimum="4" />
                     </p:password>
-                    &nbsp;
+                    
+                    <br/>
+                    
                     <p:commandButton type="reset" value="Clear" />&nbsp;
-                    <p:commandButton value="Login" update="@form" actionListener="#{staffIndexManagedBean.login}" icon="ui-icon-key" />          
-                </h:form>
-
-            </h:panelGroup>
+                    <p:commandButton value="Login" update="@form" actionListener="#{staffIndexManagedBean.login}" icon="ui-icon-key" />      
+                    </h:panelGrid>
+            </h:form>
+             </div>
+        </h:panelGroup>
     </h:body>
 </html>
 
