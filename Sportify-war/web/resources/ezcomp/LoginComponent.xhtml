@@ -24,9 +24,10 @@
             </h:panelGroup>
             
             <h:panelGroup rendered="#{!sessionScope['isLogin']}">
-                <p:commandButton id="signUpButton" value="SIGN UP"/>&nbsp;
-                <p:commandButton id="loginButton" value="LOGIN" onclick="PF('loginDialog').show()"/>
+                <p:commandButton id="signUpButton" value="SIGN UP" onclick="PF('signUpDialog').show(); PF('loginDialog').hide()"/>&nbsp;
+                <p:commandButton id="loginButton" value="LOGIN" onclick="PF('loginDialog').show();PF('signUpDialog').hide()"/>
                 <ui:include src="/customerLogin.xhtml"/>
+                <ui:include src="/customerSignUp.xhtml"/>
             </h:panelGroup> 
         </div>
     </cc:implementation>

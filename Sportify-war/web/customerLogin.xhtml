@@ -5,11 +5,11 @@
       xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://xmlns.jcp.org/jsf/core">
     
-    <h:form id="contentLoginForm">
+    <h:form id="loginForm">
         
         <p:growl id="loginErrorMessage" />
 
-        <p:dialog header="Login" widgetVar="loginDialog" resizable="false" visible="#{facesContext.validationFailed}">
+        <p:dialog header="Login" widgetVar="loginDialog" resizable="false" visible="#{facesContext.validationFailed}" draggable="false">
             <h:panelGrid columns="2" cellpadding="5">
                 <h:outputLabel for="email" value="Email" />
                 <p:inputText id="email" value="#{customerLoginManagedBean.email}" required="true" label="email" />
@@ -18,7 +18,7 @@
                 <p:password id="password" value="#{customerLoginManagedBean.password}" required="true" label="password" />
 
                 <f:facet name="footer">
-                    <div style="align-content: center">
+                    <div>
                     <p:commandButton value="Login" update="@form" actionListener="#{customerLoginManagedBean.login}" icon="ui-icon-key" /> 
                     </div>
                 </f:facet>  

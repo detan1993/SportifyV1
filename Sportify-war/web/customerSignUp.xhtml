@@ -7,7 +7,7 @@
 
     <h:form id="signUpForm">
         <p:growl id="signUpErrorMessage"/>
-        <p:dialog header="SIGN UP" widgetVar="signUpDialog" resizable="false">
+        <p:dialog header="SIGN UP" widgetVar="signUpDialog" resizable="false" draggable="false" visible="#{facesContext.validationFailed}">
             <p:panelGrid id="signUpPanel" columns="2">
 
                 <f:facet name="header">
@@ -15,25 +15,25 @@
                 </f:facet>
 
                 <h:outputLabel for="firstName" value="First Name:" />
-                <p:inputText  value="#{signUpManagedBean.customerEntity.firstName}"/>
+                <p:inputText  value="#{signUpManagedBean.customerEntity.firstName}" label="First Name" required="true"/>
                 
                 <h:outputLabel for="lastName" value="Last Name:" />
-                <p:inputText  value="#{signUpManagedBean.customerEntity.lastName}"/>
+                <p:inputText  value="#{signUpManagedBean.customerEntity.lastName}" label="Last Name" required="true"/>
                 
                 <h:outputLabel for="address" value="Address:" />
-                <p:inputText  value="#{signUpManagedBean.customerEntity.address}"/>
+                <p:inputText  value="#{signUpManagedBean.customerEntity.address}" label="Address" required="true"/>
                 
                 <h:outputLabel for="dob" value="Date of Birth:" />
-                <p:calendar value="#{signUpManagedBean.customerEntity.dateOfBirth}" />
+                <p:calendar value="#{signUpManagedBean.customerEntity.dateOfBirth}" label="Date of Birth" required="true" navigator="true" pattern="dd-MM-yyyy" />
                 
                 <h:outputLabel for="email" value="Email (This will be your username):" />
-                <p:inputText  value="#{signUpManagedBean.customerEntity.email}"/>
+                <p:inputText  value="#{signUpManagedBean.customerEntity.email}" label="Email" required="true"/>
                 
                 <h:outputLabel for="password" value="Password:" />
-                <p:password id="pwd1" value="#{signUpManagedBean.customerEntity.password}" match="password2" required="true" />
+                <p:password id="password" value="#{signUpManagedBean.customerEntity.password}" match="password2" required="true" label="Password" />
 
                 <h:outputLabel for="password2" value="Re-Enter password:" />
-                <p:password id="pwd2" value="#{signUpManagedBean.customerEntity.password}" required="true" />
+                <p:password id="password2" value="#{signUpManagedBean.customerEntity.password}" required="true" label="Re-Enter Password" />
 
 
                 <!-- Register new User -->
@@ -41,7 +41,7 @@
                     <p:commandButton value="SIGN UP" action="#{signUpManagedBean.createNewCustomer}" update="@form"/>
                 </f:facet>
             </p:panelGrid>
-        </p:dialog>
+        </p:dialog>        
     </h:form>
 
 </html>
