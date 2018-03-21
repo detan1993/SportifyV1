@@ -47,6 +47,8 @@ public class CustomerLoginManagedBean {
     {
         ((HttpSession)FacesContext.getCurrentInstance().getExternalContext().getSession(true)).invalidate();
         FacesContext.getCurrentInstance().getExternalContext().redirect("home.xhtml");
+//        String currentPage = FacesContext.getCurrentInstance().getViewRoot().getViewId() + "?faces-redirect=true";
+//        FacesContext.getExternalContext().redirect(currentPage);
     }
 
     public String getPassword() {
