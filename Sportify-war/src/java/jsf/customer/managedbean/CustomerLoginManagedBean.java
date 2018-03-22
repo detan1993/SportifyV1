@@ -39,7 +39,7 @@ public class CustomerLoginManagedBean {
         catch(InvalidLoginCredentialException ex)
         {
             RequestContext.getCurrentInstance().execute("PF('loginDialog').show()");
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Invalid login credential: " + ex.getMessage(), null));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Invalid email or password", null));
         }
     }
     

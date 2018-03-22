@@ -5,23 +5,34 @@
       xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://xmlns.jcp.org/jsf/core">
 
+    <h:head>
+        <style>
+            .loginDialog{
+                margin-left:560px;
+                margin-top:-220px;
+            }
+        </style>
+    </h:head>
+
     <h:form id="loginForm">
 
-        <p:growl id="loginErrorMessage" />
+        <p:dialog styleClass="loginDialog" showEffect="bounce" header="Login" widgetVar="loginDialog" resizable="false" visible="#{facesContext.validationFailed}" draggable="false">
+            <p:messages id="login_error_messages" closable="true"></p:messages>
+            <h:panelGrid columns="2" cellpadding="5">
+               
+                <h:outputLabel for="email" value="Email" style="color:white" />
+                <p:inputText id="email" value="#{customerLoginManagedBean.email}" required="true" label="email" requiredMessage="Please enter email." />
+            
+                <h:outputLabel for="passwordLogin" value="Password:" style="color:white" />
+                <p:password id="passwordLogin" value="#{customerLoginManagedBean.password}" required="true" label="password" requiredMessage="Please enter password." />
 
-            <p:dialog header="Login" widgetVar="loginDialog" resizable="false" visible="#{facesContext.validationFailed}" draggable="false">
-                <h:panelGrid columns="2" cellpadding="5">
-                    <h:outputLabel for="email" value="Email" style="color:white" />
-                    <p:inputText id="email" value="#{customerLoginManagedBean.email}" required="true" label="email" />
-
-                    <h:outputLabel for="password" value="Password:" style="color:white" />
-                    <p:password id="password" value="#{customerLoginManagedBean.password}" required="true" label="password" />
-
-                    <f:facet name="footer">
-                        <p:commandButton value="Login" update="@form" actionListener="#{customerLoginManagedBean.login}" icon="ui-icon-key" /> 
-                    </f:facet>  
-                </h:panelGrid>
-            </p:dialog>
+                <f:facet name="footer">
+                    <p:commandButton value="Login" update="@form" actionListener="#{customerLoginManagedBean.login}" icon="fa fa-key" /> 
+                </f:facet>  
+            </h:panelGrid>
+        </p:dialog>
+        
+        
     </h:form>
 </html>
 
