@@ -20,6 +20,7 @@ public class MegaMenuManagedBean implements Serializable {
 
     private MenuModel model;
     private DefaultSubMenu rootMenu;
+   // private DefaultSubMenu productsPageLink;
     
     @EJB
     private ProductControllerLocal productControllerLocal;
@@ -29,7 +30,10 @@ public class MegaMenuManagedBean implements Serializable {
     public void postConstruct() {
         model = new DefaultMenuModel();
         rootMenu = new DefaultSubMenu("FOOTBALL JERSEYS");
+        //productsPageLink = new DefaultSubMenu("SHOP NOW!");
+       // productsPageLink.setStyleClass("productPageLink");
         model.addElement(rootMenu);
+        //model.addElement(productsPageLink);
 
         menuItems = productControllerLocal.retrieveCountriesAndTeams();
         List<String> teams;

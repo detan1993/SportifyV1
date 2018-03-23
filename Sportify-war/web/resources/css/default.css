@@ -2,7 +2,7 @@ body {
     background-color: #ffffff;
     font-size: 12px;
     font-family: "Trajan Pro";
-/*    color: #000000;  */
+    /*    color: #000000;  */
     margin: 10px;
 }
 
@@ -16,24 +16,29 @@ h1 {
 }
 
 a:link, a:visited {
-/*    //color: #045491;*/
+    /*    //color: #045491;*/
     font-weight : bold;
     text-decoration: none;
 }
 
 a:link:hover, a:visited:hover  {
-/*    color: #045491;*/
+    /*    color: #045491;*/
+    color: orange;
     font-weight : bold;
     text-decoration : underline;
 }
 
 .logoImage{
-    width:200px;
+    width:230px;
     padding-left:20px;
 }
 
 .menuSection{
-    margin-left: 250px;
+    margin-left: 280px;
     margin-top: -50px;
+}
+.home_links{
+    margin-left:470px;
+    margin-top:-33px;
 }
 

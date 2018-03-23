@@ -31,7 +31,22 @@
             .ui-menubar{
                 width:fit-content
             }
+            
+            .ui-layout-unit {
+                border: 0 !important;
+                border-radius: 0px !important;
+            }
         </style>
+
+<!--        <script>
+            $(function () {
+                $(".productPageLink a").attr('href', "#{request.contextPath}/products.xhtml");
+            });
+
+            $(".productPageLink").click(function () {
+                window.location.href = "#{request.contextPath}/products.xhtm1";
+            }).css('cursor', 'pointer');
+        </script>-->
     </h:head>
 
     <h:body>
@@ -39,24 +54,38 @@
         <h:outputStylesheet library="css" name="cssLayout.css"/>
         <p:layout fullPage="true">
 
-            <p:layoutUnit position="north">
-                <div class="logoSection"><img class="logoImage" src="images/logo.png"/></div>  
+            <p:layoutUnit position="north" size="100" gutter="0">
+                <div class="logoSection"><img class="logoImage" src="images/Sportify.png"/></div>  
 
                 <div class="menuSection">
                     <p:megaMenu model="#{megaMenuManagedBean.menuModel}">
 
                     </p:megaMenu>
+                                  
                 </div>
-               
+                
+                <div class="home_links">
+                    <table style="border:none !important;">
+                        <tr>
+                            <td style="padding-right:20px">
+                                <p:link style="font-weight: normal; text-decoration: none" value="REVIEWS" />
+                            </td>
+                            <td>
+                                 <p:link style="font-weight: normal; text-decoration: none" outcome="products" value="SHOP NOW!" />     
+                            </td>
+                        </tr>
+                    </table>               
+                </div>
+
                 <ez:LoginComponent />
-                    
+
             </p:layoutUnit>
 
-            <p:layoutUnit position="center">
+            <p:layoutUnit position="center" gutter="0">
                 <ui:insert name="center">center</ui:insert>
             </p:layoutUnit>
 
-            <p:layoutUnit position="south" >
+            <p:layoutUnit position="south"  gutter="0">
                 <p:panelGrid style="width: 100%; border-style: none;">
                     <p:row style="border-style: none;">
                         <p:column style="text-align: left; border-style: none;"><h6>&copy; 2018 Sportify, All Rights Reserved. No portion of this site may be reproduced or duplicated without the express permission of Sportify.</h6></p:column>
