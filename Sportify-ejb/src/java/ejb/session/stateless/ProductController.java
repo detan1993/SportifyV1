@@ -59,6 +59,20 @@ public class ProductController implements ProductControllerRemote, ProductContro
     }
     
     @Override
+    public List<Product> retrieveProductsByTeam(String team){
+        Query query = em.createQuery("SELECT p FROM Product p WHERE p.team=:team");
+        query.setParameter("team", team);
+        return query.getResultList();
+    }
+    
+    @Override
+     public List<Product> retrieveProductsByCountry(String country){
+        Query query = em.createQuery("SELECT p FROM Product p WHERE p.country=:country");
+        query.setParameter("country", country);
+        return query.getResultList();
+    }
+    
+    @Override
     public List<List<String>> retrieveCountriesAndTeams(){
         List<List<String>> countryAndTeamList = new ArrayList<List<String>>();
         
