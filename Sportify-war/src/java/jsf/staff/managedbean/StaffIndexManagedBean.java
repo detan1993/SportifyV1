@@ -60,7 +60,7 @@ public class StaffIndexManagedBean {
     public void logout(ActionEvent event) throws IOException
     {
         ((HttpSession)FacesContext.getCurrentInstance().getExternalContext().getSession(true)).invalidate();
-        FacesContext.getCurrentInstance().getExternalContext().redirect("index.xhtml");
+        FacesContext.getCurrentInstance().getExternalContext().redirect("staffLogin.xhtml");
     }
 
     /**

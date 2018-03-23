@@ -4,16 +4,22 @@
                 template="./template/masterPage.xhtml"
                 xmlns:h="http://xmlns.jcp.org/jsf/html"
                 xmlns:p="http://primefaces.org/ui">
-
+    
     <h:head>
-        <h:outputStylesheet library="css" name="page_style.css"/>
+        <style>
+            .navArrowsLeft{
+                height:2000px;
+                width:2000px;
+                margin-top: 100px;
+            }
+        </style>
     </h:head>
 
-    <ui:define name="center">
+      <ui:define name="center">
         <p:commandButton type="button" onclick="PF('switcher').previous();"
-                         icon="ui-icon-circle-triangle-w" id="prev"/>
+                         icon="fa fa-chevron-left" id="prev" styleClass="navArrowsLeft"/>
         <p:commandButton type="button" onclick="PF('switcher').next();"
-                         icon="ui-icon-circle-triangle-e" id="next"/>
+                         icon="fa fa-chevron-right" id="next" styleClass="navArrowsRight"/>
 
         <p:imageSwitch effect="fade" widgetVar="switcher" id="manuelSwitcher"
                        slideshowAuto="true">

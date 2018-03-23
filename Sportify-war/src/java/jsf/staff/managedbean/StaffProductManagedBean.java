@@ -7,35 +7,26 @@ package jsf.staff.managedbean;
 
 import ejb.session.stateless.ProductControllerLocal;
 import entity.Product;
-import java.io.IOException;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.inject.Named;
+import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
-import javax.inject.Named;
-import javax.faces.view.ViewScoped;
 
 /**
  *
- * @author David
+ * @author shanw
  */
-@Named(value = "productManagementManagedBean")
-@ViewScoped
-public class ProductManagementManagedBean implements Serializable{
+@Named(value = "staffProductManagedBean")
+@RequestScoped
+public class StaffProductManagedBean {
 
     @EJB(name = "ProductControllerLocal")
     private ProductControllerLocal productControllerLocal;
-
-    /**
-     * Creates a new instance of ProductManagementManagedBean
-     */
-    
-    
-    
     
     private List<Product> products;
     private List<Product> lowStockProducts;
@@ -44,10 +35,8 @@ public class ProductManagementManagedBean implements Serializable{
     private Product selectedProductsToUpdate;
     private List<Product> filteredProducts;
     private List<Product> filteredLowStockProducts; //this might not be needed. 
-
     
-    public ProductManagementManagedBean() {
-    
+    public StaffProductManagedBean() {
         products = new ArrayList<>();
         lowStockProducts = new ArrayList<>();
         newProduct = new Product();
@@ -90,9 +79,7 @@ public class ProductManagementManagedBean implements Serializable{
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred while creating the new product: " + ex.getMessage(), null));
         }
     }
-    
-    
-    
+   
     public void updateProduct(ActionEvent event)
     {
         
@@ -108,7 +95,6 @@ public class ProductManagementManagedBean implements Serializable{
     
     }
     
-
     /**
      * @return the products
      */

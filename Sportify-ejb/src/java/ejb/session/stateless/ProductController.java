@@ -97,37 +97,30 @@ public class ProductController implements ProductControllerRemote, ProductContro
     //delete product here
     
     
+    
     /*
      * 
      * Gets a list of products with sizes quantity <=10 , does not return sizes with >10
      */
     @Override
-    public List<Product> retrieveProductsRunningLow(){
+     public List<Product> retrieveProductsRunningLow(){
         List<Product> allProductList = retrieveProduct();
-        List<Product> lowQuantityList = new ArrayList<Product>();
         
-        //Create a new product to store sizes with <=10
-        Product newProduct;
         for(Product p : allProductList){
             
-            //Get the product information
-            newProduct = p;
+            System.out.println("*********************Product: " + p.getProductName());
             
-            //Destroy all Sizes first
-            newProduct.setSizes(new ArrayList<ProductSize>());
             for(ProductSize s : p.getSizes()){
-                if(s.getQty()<=10){
-                    //Add size to new Product so that this new product contains only sizes<=10 and still retains product information
-                    newProduct.getSizes().add(s);
+                
+                System.out.println("*********************Product size: " + s.getSize() + " quantity: " + s.getQty());
+                
+                if(s.getQty()>10){
+                    p.getSizes().remove(s);
                 }
-            }
-            if(newProduct.getSizes().size() >0){
-                lowQuantityList.add(newProduct);
-                newProduct = null;
             }
         }
         
-        return lowQuantityList;
+        return allProductList;
     }
     
     @Override

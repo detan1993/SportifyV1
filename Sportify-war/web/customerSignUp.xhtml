@@ -5,41 +5,48 @@
       xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://xmlns.jcp.org/jsf/core">
 
+    <h:head>
+        <style>
+            .ui-panelgrid td, .ui-panelgrid tr
+            {
+                border-style: none !important
+            }
+
+            .ui-datepicker table {
+                color: white !important;
+            }
+        </style>
+        <title></title>
+    </h:head>
+
     <h:form id="signUpForm">
-        <p:growl id="signUpErrorMessage"/>
         <p:dialog header="SIGN UP" widgetVar="signUpDialog" resizable="false" draggable="false" visible="#{facesContext.validationFailed}">
+            <p:messages id="signUp_error_messages" closable="true"></p:messages>
             <p:panelGrid id="signUpPanel" columns="2">
 
-                <f:facet name="header">
-                    SIGN UP FORM
-                </f:facet>
-
                 <h:outputLabel for="firstName" value="First Name:" />
-                <p:inputText  value="#{signUpManagedBean.customerEntity.firstName}" label="First Name" required="true"/>
-                
+                <p:inputText  value="#{signUpManagedBean.customerEntity.firstName}" label="First Name" required="true" requiredMessage="Please enter your First Name."/>
+
                 <h:outputLabel for="lastName" value="Last Name:" />
-                <p:inputText  value="#{signUpManagedBean.customerEntity.lastName}" label="Last Name" required="true"/>
-                
+                <p:inputText  value="#{signUpManagedBean.customerEntity.lastName}" label="Last Name" required="true" requiredMessage="Please enter your Last Name."/>
+
                 <h:outputLabel for="address" value="Address:" />
-                <p:inputText  value="#{signUpManagedBean.customerEntity.address}" label="Address" required="true"/>
-                
+                <p:inputText  value="#{signUpManagedBean.customerEntity.address}" label="Address" required="true" requiredMessage="Please enter your Address."/>
+
                 <h:outputLabel for="dob" value="Date of Birth:" />
-                <p:calendar value="#{signUpManagedBean.customerEntity.dateOfBirth}" label="Date of Birth" required="true" navigator="true" pattern="dd-MM-yyyy" />
-                
+                <p:calendar styleClass="calendarDOB" value="#{signUpManagedBean.customerEntity.dateOfBirth}" label="Date of Birth" required="true" navigator="true" pattern="dd-MM-yyyy" yearRange="c-70:c+10" requiredMessage="Please enter your Date of Birth." />
+
                 <h:outputLabel for="email" value="Email (This will be your username):" />
-                <p:inputText  value="#{signUpManagedBean.customerEntity.email}" label="Email" required="true"/>
-                
+                <p:inputText  value="#{signUpManagedBean.customerEntity.email}" label="Email" required="true" requiredMessage="Please enter your Email."/>
+
                 <h:outputLabel for="password" value="Password:" />
-                <p:password id="password" value="#{signUpManagedBean.customerEntity.password}" match="password2" required="true" label="Password" />
+                <p:password id="password" value="#{signUpManagedBean.customerEntity.password}" match="password2" required="true" label="Password" requiredMessage="Please enter a Password." validatorMessage="Passwords do not match!" />
 
                 <h:outputLabel for="password2" value="Re-Enter password:" />
-                <p:password id="password2" value="#{signUpManagedBean.customerEntity.password}" required="true" label="Re-Enter Password" />
+                <p:password id="password2" value="#{signUpManagedBean.customerEntity.password}" required="true" label="Re-Enter Password" requiredMessage="Please re-enter Password"  />
 
+                <p:commandButton value="SIGN UP" action="#{signUpManagedBean.createNewCustomer}" update="@form" icon="fa fa-arrow-circle-up" oncomplete="PF('signUpDialog').show()" />
 
-                <!-- Register new User -->
-                <f:facet name="footer">
-                    <p:commandButton value="SIGN UP" action="#{signUpManagedBean.createNewCustomer}" update="@form"/>
-                </f:facet>
             </p:panelGrid>
         </p:dialog>        
     </h:form>

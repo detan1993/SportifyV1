@@ -91,7 +91,9 @@ public class DataInitialization {
         //create new Staff 
         Staff newStaff = new Staff("David", "Tan", "E0002311@u.nus.edu", "12345678", "Manager");
         staffControllerLocal.createStaff(newStaff);
-
+        Staff newSalesStaff = new Staff("Jiong Yi", "Lee", "jy@Sportify.com", "12345678", "Sales");
+        staffControllerLocal.createStaff(newSalesStaff);
+        
         /*
          Each Jersey have 4 pictures 
          example Chealse_Main.PNG   , Chealsea_Sub1.PNG , Chealsea_Sub2.PNG , Chealsea_Sub3.png

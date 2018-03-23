@@ -76,8 +76,9 @@ public class SecurityFilter implements Filter {
         if(userType.equals("staff"))
         {
             //check staff exclude login 
+            System.out.println("********** DO FILTER - CHECK STAFF : staffIsLogin" + staffIsLogin);
+            System.out.println("********** DO FILTER - CHECK STAFF : requestServletPath" + requestServletPath);
             
-  
             //special case
               if(requestServletPath.equals("/staffLogin.xhtml") && staffIsLogin)
                   httpServletResponse.sendRedirect(CONTEXT_ROOT + "/staffHome.xhtml");
@@ -94,7 +95,7 @@ public class SecurityFilter implements Filter {
                       }
                       else
                       {
-                          httpServletResponse.sendRedirect(CONTEXT_ROOT + "/error.xhtml");
+                          httpServletResponse.sendRedirect(CONTEXT_ROOT + "/staffError.xhtml");
                       }
                   }
                   else
@@ -153,7 +154,7 @@ public class SecurityFilter implements Filter {
 
     private Boolean excludeLoginCheckStaff(String path)
     {
-        if(path.equals("/staffLogin.xhtml"))
+        if(path.equals("/staffLogin.xhtml") || path.equals("/staffError.xhtml"))
         {
             return true;
         }
@@ -199,8 +200,7 @@ public class SecurityFilter implements Filter {
         if(accessRight.equals("Manager"))
         {
             if(path.equals("/staffHome.xhtml") ||
-                path.equals("/voidRefund.xhtml") ||
-                path.equals("/quickProductEnquiry.xhtml"))
+                    path.equals("/staffDashboard.xhtml"))
             {
                 return true;
             }
@@ -211,12 +211,9 @@ public class SecurityFilter implements Filter {
         }
         else if(accessRight.equals("Sales"))
         {
-            if(path.equals("/checkout.xhtml") ||
-                    path.equals("/voidRefund.xhtml") ||
-                    path.equals("/staffManagement.xhtml") ||
-                    path.equals("/productManagement.xhtml") ||
-                    path.equals("/quickProductEnquiry.xhtml") ||
-                    path.equals("/TestingChart.xhtml"))
+            if(path.equals("/staffHome.xhtml") ||
+                    path.equals("/staffProduct.xhtml") ||
+                    path.equals("/staffVoucher.xhtml"))
             {
                 return true;
             }
