@@ -51,11 +51,14 @@ body {
 }
 
 .logoImage{
-    width:200px;
+    margin-top:5px;
+    width:280px;
     padding-left:20px;
 }
 
 .staffNav_menuItem{
-    padding:15px;
-    margin-left:55px;
+
+    padding: 0px 0px 25px 20px !important;
+    font-size: 1.3em !important;
+
 }

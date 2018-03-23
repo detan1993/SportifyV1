@@ -106,6 +106,7 @@ public class SecurityFilter implements Filter {
               }
               else
               {
+                  System.out.println("********** DO FILTER : Exclude filter ");
                   chain.doFilter(request, response);
               }
             
@@ -154,7 +155,7 @@ public class SecurityFilter implements Filter {
 
     private Boolean excludeLoginCheckStaff(String path)
     {
-        if(path.equals("/staffLogin.xhtml") || path.equals("/staffError.xhtml"))
+        if(path.equals("/staffLogin.xhtml") || path.equals("/staffError.xhtml") || path.equals("/staffProduct.xhtml") || path.equals("/staffTest.xhtml"))
         {
             return true;
         }
@@ -200,7 +201,8 @@ public class SecurityFilter implements Filter {
         if(accessRight.equals("Manager"))
         {
             if(path.equals("/staffHome.xhtml") ||
-                    path.equals("/staffDashboard.xhtml"))
+                    path.equals("/staffDashboard.xhtml") ||  path.equals("/staffProduct.xhtml") ||
+                    path.equals("/staffVoucher.xhtml"))
             {
                 return true;
             }
