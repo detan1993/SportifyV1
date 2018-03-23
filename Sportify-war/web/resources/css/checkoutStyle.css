@@ -1,0 +1,101 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 21 Mar, 2018, 4:27:07 PM
+    Author     : JiongYi
+*/
+
+.summaryDiv{
+    background-color: #191919;
+    width: 260px;
+    letter-spacing: .025em;
+}
+
+.table {
+    font-family: 'TradeGothicW02-BoldCn20 675505',Arial,sans-serif;
+    font-size: 12px;
+    background-color: #191919;
+    border-collapse: collapse;
+    letter-spacing: .025em;
+    color: #efefef;
+    border-spacing: 0.5em;
+}
+
+.rowSpace {
+    padding:1em 16px;
+    border-bottom: 1px inset #2d2d2d;
+}
+
+.rowSpaceTotal {
+    padding:1em 16px;
+    border-bottom: 1px inset #2d2d2d;
+}
+
+.rowSpaceLast {
+    padding:1em 16px;
+      border-bottom: 1px inset #2d2d2d ;
+}
+
+.rowSpaceFirst {
+  padding:1em 16px;
+  border-bottom: 1px inset #2d2d2d;
+}
+
+.checkoutBtn{
+    border: none ;
+    color: white ;
+    width: 200px; 
+    background-color: #fa5400;
+    height: 30px;
+    font-family: 'TradeGothicW02-BoldCn20 675505',Arial,sans-serif;
+    font-size: 15px;
+    font-weight: bold
+}
+
+.applyBtn{
+    border: none ;
+    color: black ;
+    font-family: 'TradeGothicW02-BoldCn20 675505',Arial,sans-serif;
+    font-size: 12px;
+    font-weight: bold;
+    float: left;
+    background-color: #F7F7F7;
+    margin-left: 5px;
+    height: 25px;
+}
+
+.needHelp{
+    font-family: 'TradeGothicW02-BoldCn20 675505',Arial,sans-serif;
+    font-size: 12px;
+    float:right; 
+    clear: right; 
+    width: 350px; 
+    margin-right: 150px; 
+    float:right;
+    border: 1px; 
+    margin-top: 15px;
+    border: 1px solid #f3f3f3;
+}
+
+.ui-accordion .ui-accordion-content {
+     font-family: 'TradeGothicW02-BoldCn20 675505',Arial,sans-serif !important;
+    padding: 0 0 !important;
+    top: 3px !important;
+    bottom: 0px !important;
+    background-color: #191919;
+    overflow: hidden !important
+}
+
+.ui-accordion .ui-accordion-header{
+    color: #F7F7F7 !important;
+    font-family: 'TradeGothicW02-BoldCn20 675505',Arial,sans-serif !important;
+    background-color: #191919;
+}
+
+.ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default{
+    border: 1px !important;
+    background:none !important;
+}
