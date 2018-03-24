@@ -2,24 +2,73 @@
 <!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
                 template="./template/masterPage.xhtml"
-                xmlns:p="http://primefaces.org/ui">
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:h="http://xmlns.jcp.org/jsf/html">
+
+    <head>
+        <style>
+
+        </style>
+    </head>
+
+    <ui:define name="west">
+        <p:panel style="margin-top:-4px">
+            <f:facet name="header">
+                FILTER
+            </f:facet>
+
+            <h3>Country:</h3>
+            <h:form id="countryForm">
+                <p:selectOneMenu id="country" value="#{viewAllProductsManagedBean.countrySelected}" style="width:150px">
+                    <f:ajax listener="#{viewAllProductsManagedBean.filterByCountry}" render="@all" />
+                    <f:selectItem itemLabel="Select Country" itemValue="" noSelectionOption="true" />
+                    <f:selectItems value="#{viewAllProductsManagedBean.countries}" />
+                </p:selectOneMenu>
+            </h:form>
+
+            <h3>Team:</h3>
+            <h:form id="teamForm">
+                <p:selectOneMenu id="teamDropDown" value="#{viewAllProductsManagedBean.teamSelected}" style="width:150px">
+                    <f:ajax listener="#{viewAllProductsManagedBean.filterByTeam}" render="@all" />
+                    <f:selectItem itemLabel="Select Team" itemValue="" noSelectionOption="true" />
+                    <f:selectItems value="#{viewAllProductsManagedBean.teams}" />
+                </p:selectOneMenu>
+            </h:form>
+
+        </p:panel>
+    </ui:define>
 
     <ui:define name="center">
-        <!--        dynamic contentFlow-->
-        <!--        <p:contentFlow value="#{imagesView.images}" var="image">
-                    <p:graphicImage name="demo/images/nature/#{image}" styleClass="content" />
-                    <div class="caption">#{image}</div>
-                </p:contentFlow>
-            -->
+        <h:outputStylesheet library="css" name="page_style.css"/>
 
-        <!--hardcode contentFlow-->
+        <h:form id="form">
+            <p:dataGrid styleClass="productsGrid" var="product" value="#{viewAllProductsManagedBean.products}" columns="4" layout="grid"
+                        rows="12" paginator="true" id="productGrid"
+                        paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                        rowsPerPageTemplate="6,12,16">
 
-<!--        <p:contentFlow var="image" value="images">
-            <p:graphicImage name="images/image_ss_1.jpg" styleClass="content" />
-            <p:graphicImage name="images/image_ss_2.jpg" styleClass="content" />
-            <p:graphicImage name="images/image_ss_3.jpg" styleClass="content" />
-        </p:contentFlow>-->
+                <!--                <f:facet name="header">
+                                    Sportify Jerseys
+                                </f:facet>-->
 
-WHY??
-</ui:define>
+                <p:panel header="#{product.productName}" style="text-align:center;">
+                    <h:panelGrid columns="1" style="width:100%">
+
+                        <p:panel style=" background-color: white;">
+                            <p:graphicImage name="#{product.images[0].imagePath}" styleClass="content" />
+                            <br/>
+                            <h:outputText value="SGD#{product.price}" style="color:black; text-align: center" />
+                            <br />
+                            <h:outputText value="#{product.description}" style="color:black; text-align: center" />
+                        </p:panel>
+                        <f:facet name="footer">
+                            <p:commandButton value="Add to Cart" update="@form" icon="fa fa-plus-circle" /> 
+                        </f:facet>  
+                    </h:panelGrid>
+                </p:panel>
+
+            </p:dataGrid>
+        </h:form>
+    </ui:define>
 </ui:composition>
