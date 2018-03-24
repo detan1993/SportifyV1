@@ -56,7 +56,10 @@
                     <h:panelGrid columns="1" style="width:100%">
 
                         <p:panel style=" background-color: white;">
-                            <p:graphicImage name="#{product.images[0].imagePath}" styleClass="content" />
+                            <h:link outcome="detailedProduct">
+                                <p:graphicImage name="#{product.images[0].imagePath}" styleClass="content" />
+                                <f:param name="productCode" value="#{product.productCode}" />
+                            </h:link>
                             <br/>
                             <h:outputText value="SGD#{product.price}" style="color:black; text-align: center" />
                             <br />
