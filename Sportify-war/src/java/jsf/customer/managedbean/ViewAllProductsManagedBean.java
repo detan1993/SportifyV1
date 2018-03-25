@@ -2,7 +2,7 @@ package jsf.customer.managedbean;
 
 import ejb.session.stateless.ProductControllerLocal;
 import entity.Product;
-import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -10,12 +10,12 @@ import java.util.List;
 import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.view.ViewScoped;
 import javax.inject.Named;
-import javax.enterprise.context.RequestScoped;
 
 @Named(value = "viewAllProductsManagedBean")
-@RequestScoped
-public class ViewAllProductsManagedBean {
+@ViewScoped
+public class ViewAllProductsManagedBean implements Serializable {
 
     @EJB
     private ProductControllerLocal productController;
@@ -71,7 +71,7 @@ public class ViewAllProductsManagedBean {
     }
 
     public void filterByTeam() {
-         System.out.println(teamSelected);
+        System.out.println(teamSelected);
         if (teamSelected != null && !teamSelected.equals("")) {
             products = productController.retrieveProductsByTeam(teamSelected);
         } else {
@@ -79,7 +79,7 @@ public class ViewAllProductsManagedBean {
                 products = productController.retrieveProductsByCountry(countrySelected);
             }
         }
-       
+
     }
 
     public List<Product> getProducts() {

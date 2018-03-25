@@ -5,16 +5,54 @@
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:f="http://xmlns.jcp.org/jsf/core"
                 xmlns:h="http://xmlns.jcp.org/jsf/html">
+    
+    <head>
+        <style>
+            .divWest{
+                width:500px !important;
+            }
+        </style>
+    </head>
 
-    <ui:define name="west">
+    <ui:define name="west" class="divWest">
+        <p:panel style="text-align: center">
+            <f:facet name="header">
+                PRODUCT DETAILS 
+            </f:facet>
+             <h:outputText style="font-size: 60px" value="$#{viewDetailedManagedBean.product.price} "></h:outputText>
+        </p:panel>
+        <p:panel>
+           
+            <h5>Size / Stock(s) Available:</h5>
+            <p:dataList var="productDetails" value="#{viewDetailedManagedBean.sizesAvailable}" id="productSizesGridList" type="definition" style="margin-top:-25x">
+                <h:outputText value="#{productDetails.size} / #{productDetails.qty} "></h:outputText>
+            </p:dataList>
 
+            <f:facet name="footer">
+                <p:commandButton value="Add to Cart" icon="fa fa-plus-circle" /> 
+            </f:facet>  
+        </p:panel>
     </ui:define>
+    <!--    <ui:define name="center">
+        <p:contentFlow id="productImages" var="image">   
+            <p:graphicImage name="images/image_ss_1.jpg" value="images/image_ss_1.jpg" styleClass="content" />   
+        </p:contentFlow>
+    </ui:define>
+    -->
 
     <ui:define name="center">
-        <p:contentFlow value="#{imagesView.images}" var="image">
-            <p:graphicImage name="demo/images/nature/#{image}" styleClass="content" />
-            <div class="caption">#{image}</div>
-        </p:contentFlow>
+        <h:form id="form">
+            <p:panel>
+                <p:galleria value="#{viewDetailedManagedBean.images}" var="image" panelHeight="480" style="margin:auto">
+                    <f:facet name="header">
+                        #{viewDetailedManagedBean.product.productName}
+                    </f:facet>
+                    <p:graphicImage name="#{image}"/>
+
+                </p:galleria>
+            </p:panel>
+
+        </h:form>
     </ui:define>
 
 </ui:composition>
