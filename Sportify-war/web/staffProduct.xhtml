@@ -14,7 +14,7 @@
                 </h:panelGrid>
             </p:tab>
             <p:tab title="View Products">
-                <h:panelGrid columns="2" cellpadding="10">
+                <h:panelGrid id="pg_viewAllProducts" columns="2" cellpadding="10">
                     <h:form id="formAllProducts">
                         <p:dataTable id="dataTableAllProducts" widgetVar="dataTableAllProducts" value="#{staffProductManagedBean.products}" var="product" rowKey="#{product.id}" rowIndexVar="row"
                                  filteredValue="#{staffProductManagedBean.filteredProducts}"
@@ -53,7 +53,7 @@
                                 <h:outputText value="#{product.team}" />
                             </p:column>
 
-                           <p:column headerText="Status" sortBy="#{product.status}" filterBy="#{product.status}" filterMatchMode="contains">
+                            <p:column headerText="Status" sortBy="#{product.status}" filterBy="#{product.status}" filterMatchMode="contains">
                                 <h:outputText value="#{product.status}" />
                             </p:column>
                             
@@ -67,11 +67,6 @@
                                 <h:outputText value="---" rendered="#{!product.status.equalsIgnoreCase('A')}" />
                             </p:column>
                         </p:dataTable>
-                        
-                        
-                        
-                        
-                      
                     </h:form>
                 </h:panelGrid>
             </p:tab>
@@ -111,46 +106,72 @@
                         <p:commandButton value="Update button"></p:commandButton>
                 </f:facet>
                 <p:growl id="growl_viewProduct" showDetail="true" />
-                <p:panelGrid id="pg_viewProductDetails" columns="6">
-                    <h:outputLabel for="productCode" value="Product Code:" />
-                    <p:inputText  value="#{staffProductManagedBean.selectedProductsToView.productCode}" required="true"/>
+                <p:tabView>
+                    <p:tab title="Product Details"> 
+                        <p:panelGrid id="pg_productDetails" columns="4">
+                            <h:outputLabel for="productName" value="Product Name:" />
+                            <p:inputText  value="#{staffProductManagedBean.selectedProductsToView.productName}" required="true"/>
+                            <h:outputLabel for="productCode" value="Product Code:" />
+                            <p:inputText  value="#{staffProductManagedBean.selectedProductsToView.productCode}" required="true"/>
 
-                    <h:outputLabel for="productName" value="Product Name:" />
-                    <p:inputText  value="#{staffProductManagedBean.selectedProductsToView.productName}" required="true"/>
+                            
 
-                    <h:outputLabel for="description" value="Description:" />
-                    <p:inputText value="#{staffProductManagedBean.selectedProductsToView.description}" required="true"/>
+                         
+                            <h:outputLabel for="price" value="Price: $" />
+                            <p:inputText  value="#{staffProductManagedBean.selectedProductsToView.price}"  required="true"/>
 
-                    <h:outputLabel for="price" value="Price: $" />
-                    <p:inputText  value="#{staffProductManagedBean.selectedProductsToView.price}"  required="true"/>
+                            <h:outputLabel for="country" value="Country: " />
+                            <p:inputText value="#{staffProductManagedBean.selectedProductsToView.country}" required="true"/>
 
-                    <h:outputLabel for="country" value="Country: " />
-                    <p:inputText value="#{staffProductManagedBean.selectedProductsToView.country}" required="true"/>
+                            <h:outputLabel for="team" value="Team: " />
+                            <p:inputText value="#{staffProductManagedBean.selectedProductsToView.team}" required="true"/>
+                        </p:panelGrid>
+                        <p:panelGrid columns="4">
+                            <h:outputLabel for="description" value="Description:" style="vertical-align: top;"/>&nbsp;
+                            <h:inputTextarea cols="60" rows="3" value="#{staffProductManagedBean.selectedProductsToView.description}" required="true"/>
+                        </p:panelGrid>
+                           
 
-                    <h:outputLabel for="team" value="Team: " />
-                    <p:inputText value="#{staffProductManagedBean.selectedProductsToView.team}" required="true"/>
-
-                </p:panelGrid>
-                <p:panelGrid id="pg_viewProductImageReview" columns="2" style="vertical-align: top;">
-                    <p:panel id="p_viewProductImage">
-                        <p:galleria value="#{staffProductManagedBean.selectedProductsToView.images}" var="image" panelWidth="350" panelHeight="200" autoPlay="false">
-                            <p:graphicImage name="#{image.imagePath}"/>
-                        </p:galleria>
-                        <br/>
+                    </p:tab>
+                    <p:tab title="Product Images">
+                        <p:panelGrid id="pg_productImages">
+                            <p:galleria value="#{staffProductManagedBean.selectedProductsToView.images}" var="image" panelWidth="350" panelHeight="200" autoPlay="false">
+                                <p:graphicImage name="#{image.imagePath}"/>
+                            </p:galleria>
+                            <br/>
                             <p:fileUpload fileUploadListener="#{staffProductManagedBean.handleFileUpload}" mode="advanced" dragDropSupport="false"
-                                          multiple="true" update="viewProductDialog" sizeLimit="100000" fileLimit="99" allowTypes="/(\.|\/)(gif|jpe?g|png)$/" />
-                    </p:panel>
-                    <p:panel id="p_viewProductReview" style="background-color:green">
-                        <p:repeat value="#{staffProductManagedBean.selectedProductsToView.productReviews}" var="review">
+                                          multiple="true" update="@form" sizeLimit="100000" fileLimit="99" allowTypes="/(\.|\/)(gif|jpe?g|png)$/" />
+                        </p:panelGrid>
+                    </p:tab>
+                    <p:tab title="Product Size and Quantity">
+                        <p:commandButton value="Add a new Size" actionListener="#{staffProductManagedBean.addProductSize}" update="pg_productSizes"/>
+                         <h:panelGroup id="pg_productSizes">
+                             <br />
+                             <p:repeat value="#{staffProductManagedBean.selectedProductsToView.sizes}" var="size">
+                                 <h:outputLabel value="Size: " />
+                                 <p:inputText value="#{size.size}" />&nbsp;&nbsp;&nbsp;
+                                 <h:outputLabel value="Quantity: " />
+                                 <p:inputText value="#{size.qty}" />
+                                 <br/>
+                             </p:repeat>
+                        </h:panelGroup>
+                    </p:tab>
+                    <p:tab title="Product Reviews">
+                         <p:panelGrid id="pg_productReviews">
+                            <p:repeat value="#{staffProductManagedBean.selectedProductsToView.productReviews}" var="review">
                                 <h:outputLabel value="#{review.reviewDate} ">
-                                <f:convertDateTime pattern="dd.MM.yyyy HH:mm" />
+                                <f:convertDateTime pattern="dd-MM-yyyy" />
+                                </h:outputLabel>
+                                <h:outputLabel value="#{review.reviewDate} ">
+                                <f:convertDateTime pattern="HH:mm" />
                                 </h:outputLabel>
                                 <br/>
                                 <h:outputLabel value="#{review.review}"/>
                                 <br />
-                        </p:repeat>
-                    </p:panel>
-                 </p:panelGrid>
+                            </p:repeat>
+                        </p:panelGrid>
+                    </p:tab>
+                </p:tabView>
             </p:dialog>    
         </h:form>
         <h:form id="form_deleteProduct">

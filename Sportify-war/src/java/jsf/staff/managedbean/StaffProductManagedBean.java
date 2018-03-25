@@ -7,6 +7,7 @@ package jsf.staff.managedbean;
 
 import ejb.session.stateless.ProductControllerLocal;
 import entity.Product;
+import entity.ProductSize;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -189,6 +190,11 @@ public class StaffProductManagedBean  implements Serializable{
         }
     }
     
+    
+    public void addProductSize(ActionEvent event){
+        System.out.println("Total Sizes: " + selectedProductsToView.getSizes().size());
+        selectedProductsToView.getSizes().add(new ProductSize());
+    }
     
     /**
      * @return the products
