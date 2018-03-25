@@ -4,11 +4,11 @@
                 template="./template/staffMasterPage.xhtml"
                 xmlns:h="http://xmlns.jcp.org/jsf/html"
                 xmlns:f="http://xmlns.jcp.org/jsf/core"
-                xmlns:p="http://primefaces.org/ui">
-    
-    <ui:define name="center">
-        
-        <p:tabView>
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+  
+        <ui:define name="center">
+        <p:tabView >
             <p:tab title="Create Product">
                 <h:panelGrid columns="2" cellpadding="10">
                 </h:panelGrid>
@@ -16,56 +16,63 @@
             <p:tab title="View Products">
                 <h:panelGrid columns="2" cellpadding="10">
                     <h:form id="formAllProducts">
-                    <p:dataTable id="dataTableAllProducts" widgetVar="dataTableAllProducts" value="#{staffProductManagedBean.products}" var="product" rowKey="#{product.id}" rowIndexVar="row"
-                             filteredValue="#{staffProductManagedBean.filteredProducts}"
-                             rows="20" paginator="true" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="10,20,50">
+                        <p:dataTable id="dataTableAllProducts" widgetVar="dataTableAllProducts" value="#{staffProductManagedBean.products}" var="product" rowKey="#{product.id}" rowIndexVar="row"
+                                 filteredValue="#{staffProductManagedBean.filteredProducts}"
+                                 rows="20" paginator="true" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="10,20,50">
 
-                    <f:facet name="header">
-                        <p:outputPanel style="text-align: right;">
-                            <h:outputText value="Search all fields:" />
-                            <p:inputText id="globalFilter" onkeyup="PF('dataTableAllProducts').filter()" style="width:300px" placeholder="Enter keyword"/>
-                        </p:outputPanel>
-                    </f:facet>
+                            <f:facet name="header">
+                                <p:outputPanel style="text-align: right;">
+                                    <h:outputText value="Search all fields:" />
+                                    <p:inputText id="globalFilter" onkeyup="PF('dataTableAllProducts').filter()" style="width:300px" placeholder="Enter keyword"/>
+                                </p:outputPanel>
+                            </f:facet>
 
-                    <p:column headerText="Product ID" sortBy="#{product.id}" filterBy="#{product.id}" filterMatchMode="contains">
-                        <h:outputText value="#{product.id}" />
-                    </p:column>
+                            <p:column headerText="Product ID" sortBy="#{product.id}" filterBy="#{product.id}" filterMatchMode="contains">
+                                <h:outputText value="#{product.id}" />
+                            </p:column>
 
-                    <p:column headerText="Product Code" sortBy="#{product.productCode}" filterBy="#{product.productCode}" filterMatchMode="contains">
-                        <h:outputText value="#{product.productCode}" />
-                    </p:column>
+                            <p:column headerText="Product Code" sortBy="#{product.productCode}" filterBy="#{product.productCode}" filterMatchMode="contains">
+                                <h:outputText value="#{product.productCode}" />
+                            </p:column>
 
-                    <p:column headerText="Name" sortBy="#{product.productName}" filterBy="#{product.productName}" filterMatchMode="contains">
-                        <h:outputText value="#{product.productName}" />
-                    </p:column>
+                            <p:column headerText="Name" sortBy="#{product.productName}" filterBy="#{product.productName}" filterMatchMode="contains">
+                                <h:outputText value="#{product.productName}" />
+                            </p:column>
 
-                    <p:column headerText="Unit Price" sortBy="#{product.price}" filterBy="#{product.price}" filterMatchMode="contains">
-                        <h:outputText value="#{product.price}">
-                            <f:convertNumber type="currency" currencySymbol="$" maxIntegerDigits="5" maxFractionDigits="2"/>
-                        </h:outputText>
-                    </p:column>
+                            <p:column headerText="Unit Price" sortBy="#{product.price}" filterBy="#{product.price}" filterMatchMode="contains">
+                                <h:outputText value="#{product.price}">
+                                    <f:convertNumber type="currency" currencySymbol="$" maxIntegerDigits="5" maxFractionDigits="2"/>
+                                </h:outputText>
+                            </p:column>
 
-                    <p:column headerText="Country" sortBy="#{product.country}" filterBy="#{product.country}" filterMatchMode="contains">
-                        <h:outputText value="#{product.country}" />
-                    </p:column>
+                            <p:column headerText="Country" sortBy="#{product.country}" filterBy="#{product.country}" filterMatchMode="contains">
+                                <h:outputText value="#{product.country}" />
+                            </p:column>
 
+                            <p:column headerText="Team" sortBy="#{product.team}" filterBy="#{product.team}" filterMatchMode="contains">
+                                <h:outputText value="#{product.team}" />
+                            </p:column>
 
-                    <p:column headerText="Team" sortBy="#{product.team}" filterBy="#{product.team}" filterMatchMode="contains">
-                        <h:outputText value="#{product.team}" />
-                    </p:column>
-
-                    <p:column headerText="Action" >
-                        <p:commandButton oncomplete="PF('dialogViewProduct').show()" icon="ui-icon-document" title="View">
-                            <f:setPropertyActionListener value="#{product}" target="#{staffProductManagedBean.selectedProductEntityToView}" />
-                        </p:commandButton>
-                        <p:commandButton icon="ui-icon-trash" actionListener="#{staffProductManagedBean.deleteProduct}" update="dataTableAllProducts">
-                            <f:attribute name="productEntityToDelete" value="#{product}" />
-                            <p:confirm header="Confirmation" message="Are you sure you want to delete #{product.productName} (SKU Code: #{product.productCode})?" icon="ui-icon-alert" />
-                        </p:commandButton>
-                    </p:column>
-
-                </p:dataTable>
-                </h:form>
+                           <p:column headerText="Status" sortBy="#{product.status}" filterBy="#{product.status}" filterMatchMode="contains">
+                                <h:outputText value="#{product.status}" />
+                            </p:column>
+                            
+                            <p:column headerText="Action" >
+                                <p:commandButton oncomplete="PF('viewProductDialog').show()" icon="ui-icon-document" title="View" update=":form_viewProduct:viewProductDialog" rendered="#{product.status.equalsIgnoreCase('A')}">
+                                    <f:setPropertyActionListener value="#{product}" target="#{staffProductManagedBean.selectedProductsToView}" />
+                                </p:commandButton>
+                                <p:commandButton icon="ui-icon-trash" oncomplete="PF('deleteProductDialog').show()" title="Delete" update=":form_deleteProduct:deleteProductDialog" rendered="#{product.status.equalsIgnoreCase('A')}">
+                                    <f:setPropertyActionListener value="#{product}" target="#{staffProductManagedBean.selectedProductToDelete}" />
+                                </p:commandButton>
+                                <h:outputText value="---" rendered="#{!product.status.equalsIgnoreCase('A')}" />
+                            </p:column>
+                        </p:dataTable>
+                        
+                        
+                        
+                        
+                      
+                    </h:form>
                 </h:panelGrid>
             </p:tab>
             <p:tab title="Summary of Products running low">
@@ -98,5 +105,66 @@
             </p:tab>
         </p:tabView>
         
+        <h:form id="form_viewProduct">
+            <p:dialog id="viewProductDialog" header="View Product Id:#{staffProductManagedBean.selectedProductsToView.id}" showEffect="slide" widgetVar="viewProductDialog" resizable="false" draggable="true">
+                <f:facet name="header" class="dialog_header">
+                        <p:commandButton value="Update button"></p:commandButton>
+                </f:facet>
+                <p:growl id="growl_viewProduct" showDetail="true" />
+                <p:panelGrid id="pg_viewProductDetails" columns="6">
+                    <h:outputLabel for="productCode" value="Product Code:" />
+                    <p:inputText  value="#{staffProductManagedBean.selectedProductsToView.productCode}" required="true"/>
+
+                    <h:outputLabel for="productName" value="Product Name:" />
+                    <p:inputText  value="#{staffProductManagedBean.selectedProductsToView.productName}" required="true"/>
+
+                    <h:outputLabel for="description" value="Description:" />
+                    <p:inputText value="#{staffProductManagedBean.selectedProductsToView.description}" required="true"/>
+
+                    <h:outputLabel for="price" value="Price: $" />
+                    <p:inputText  value="#{staffProductManagedBean.selectedProductsToView.price}"  required="true"/>
+
+                    <h:outputLabel for="country" value="Country: " />
+                    <p:inputText value="#{staffProductManagedBean.selectedProductsToView.country}" required="true"/>
+
+                    <h:outputLabel for="team" value="Team: " />
+                    <p:inputText value="#{staffProductManagedBean.selectedProductsToView.team}" required="true"/>
+
+                </p:panelGrid>
+                <p:panelGrid id="pg_viewProductImageReview" columns="2" style="vertical-align: top;">
+                    <p:panel id="p_viewProductImage">
+                        <p:galleria value="#{staffProductManagedBean.selectedProductsToView.images}" var="image" panelWidth="350" panelHeight="200" autoPlay="false">
+                            <p:graphicImage name="#{image.imagePath}"/>
+                        </p:galleria>
+                        <br/>
+                            <p:fileUpload fileUploadListener="#{staffProductManagedBean.handleFileUpload}" mode="advanced" dragDropSupport="false"
+                                          multiple="true" update="viewProductDialog" sizeLimit="100000" fileLimit="99" allowTypes="/(\.|\/)(gif|jpe?g|png)$/" />
+                    </p:panel>
+                    <p:panel id="p_viewProductReview" style="background-color:green">
+                        <p:repeat value="#{staffProductManagedBean.selectedProductsToView.productReviews}" var="review">
+                                <h:outputLabel value="#{review.reviewDate} ">
+                                <f:convertDateTime pattern="dd.MM.yyyy HH:mm" />
+                                </h:outputLabel>
+                                <br/>
+                                <h:outputLabel value="#{review.review}"/>
+                                <br />
+                        </p:repeat>
+                    </p:panel>
+                 </p:panelGrid>
+            </p:dialog>    
+        </h:form>
+        <h:form id="form_deleteProduct">
+            <p:dialog id="deleteProductDialog" showEffect="slide" widgetVar="deleteProductDialog" resizable="false" draggable="false">
+              <h:outputLabel value="Are you sure you want to delete the selected product?" />
+              <br/><br/>
+              <h:outputLabel value="Product Name : #{staffProductManagedBean.selectedProductToDelete.productName}" />
+              <br/>
+              <h:outputLabel value="Product Code: #{staffProductManagedBean.selectedProductToDelete.productCode}" />
+              <br /><br/>
+              <p:commandButton value="No" oncomplete="PF('deleteProductDialog').hide()" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              <p:commandButton value="Yes" action="#{staffProductManagedBean.deleteProduct}" oncomplete="PF('deleteProductDialog').hide()" />
+<!--TODO: UPDATE DATA TABLE update=":formAllProducts:dataTableAllProducts"-->
+          </p:dialog>
+        </h:form>
     </ui:define>
 </ui:composition>

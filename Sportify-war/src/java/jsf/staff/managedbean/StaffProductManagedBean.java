@@ -7,23 +7,25 @@ package jsf.staff.managedbean;
 
 import ejb.session.stateless.ProductControllerLocal;
 import entity.Product;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.inject.Named;
-import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
+import javax.faces.view.ViewScoped;
+import org.primefaces.event.FileUploadEvent;
 
 /**
  *
  * @author shanw
  */
 @Named(value = "staffProductManagedBean")
-@RequestScoped
-public class StaffProductManagedBean {
+@ViewScoped
+public class StaffProductManagedBean  implements Serializable{
 
     @EJB(name = "ProductControllerLocal")
     private ProductControllerLocal productControllerLocal;
@@ -33,6 +35,7 @@ public class StaffProductManagedBean {
     private Product newProduct;
     private Product selectedProductsToView;
     private Product selectedProductsToUpdate;
+    private Product selectedProductToDelete;
     private List<Product> filteredProducts;
     private List<Product> filteredLowStockProducts; //this might not be needed. 
     
@@ -49,7 +52,7 @@ public class StaffProductManagedBean {
     public void postConstruct(){
         
         //retrieve list of products
-        products = productControllerLocal.retrieveProduct();
+        products = productControllerLocal.retrieveProductIncludingInactive();
         
         //put the products into the filter list . This is for the facelet view 
         filteredProducts = products;
@@ -89,11 +92,103 @@ public class StaffProductManagedBean {
              FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New product created successfully (Product ID: " + selectedProductsToUpdate.getId() + ")", null));
             
         }catch(Exception ex){
-              FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred while creating the new product: " + ex.getMessage(), null));
+              FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred while updating the product: " + ex.getMessage(), null));
         }
         
     
     }
+    
+    public void handleFileUpload(FileUploadEvent event) {
+        
+        /*
+        PROF METHOD
+        
+        try
+        {
+            String newFilePath = FacesContext.getCurrentInstance().getExternalContext().getInitParameter("alternatedocroot_1") + System.getProperty("file.separator") + event.getFile().getFileName();
+
+            System.err.println("********** Demo03ManagedBean.handleFileUpload(): File name: " + event.getFile().getFileName());
+            System.err.println("********** Demo03ManagedBean.handleFileUpload(): newFilePath: " + newFilePath);
+
+            File file = new File(newFilePath);
+            FileOutputStream fileOutputStream = new FileOutputStream(file);
+
+            int a;
+            int BUFFER_SIZE = 8192;
+            byte[] buffer = new byte[BUFFER_SIZE];
+
+            InputStream inputStream = event.getFile().getInputstream();
+
+            while (true)
+            {
+                a = inputStream.read(buffer);
+
+                if (a < 0)
+                {
+                    break;
+                }
+
+                fileOutputStream.write(buffer, 0, a);
+                fileOutputStream.flush();
+            }
+
+            fileOutputStream.close();
+            inputStream.close();
+            
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,  "File uploaded successfully", ""));
+        }
+        catch(IOException ex)
+        {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,  "File upload error: " + ex.getMessage(), ""));
+        }
+        
+        */
+        
+        /*
+        Original method
+        
+        try{
+            SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
+            String name = fmt.format(new Date())+ event.getFile().getFileName().substring(event.getFile().getFileName().lastIndexOf('.'));
+            
+            
+            String relativePath="/resources/images/";
+          String absolutePath=   FacesContext.getCurrentInstance().getExternalContext().getRealPath(relativePath);
+            System.out.println(absolutePath);
+            File file = new File(absolutePath + name);
+            
+            
+            
+            InputStream is = event.getFile().getInputstream();
+            OutputStream out = new FileOutputStream(file);
+            byte buf[] = new byte[1024];
+            int len;
+            while ((len = is.read(buf)) > 0)
+                out.write(buf, 0, len);
+            is.close();
+            out.close();
+            
+            FacesMessage message = new FacesMessage("Succesful", event.getFile().getFileName() + " is uploaded.");
+            FacesContext.getCurrentInstance().addMessage(null, message);
+        
+        }catch(Exception ex){
+            ex.printStackTrace();
+            FacesMessage message = new FacesMessage("Error", event.getFile().getFileName() + " has some problems.");
+            FacesContext.getCurrentInstance().addMessage(null, message);
+        }*/
+    }
+    
+    
+    public void deleteProduct(){
+        System.out.println("Product id: " + selectedProductToDelete.getId());
+        try{
+            productControllerLocal.deleteProduct(selectedProductToDelete);
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Product deleted successfully", null));
+        }catch(Exception ex){
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred while deleting the product: " + ex.getMessage(), null));
+        }
+    }
+    
     
     /**
      * @return the products
@@ -151,6 +246,22 @@ public class StaffProductManagedBean {
         this.selectedProductsToUpdate = selectedProductsToUpdate;
     }
 
+     /**
+     * @return the selectedProductToDelete
+     */
+    public Product getSelectedProductToDelete() {
+        return selectedProductToDelete;
+    }
+
+    
+    /**
+     * @param selectedProductToDelete the selectedProductToDelete to set
+     */
+    public void setSelectedProductToDelete(Product selectedProductToDelete) {
+        this.selectedProductToDelete = selectedProductToDelete;
+    }
+
+    
     /**
      * @return the filteredProducts
      */

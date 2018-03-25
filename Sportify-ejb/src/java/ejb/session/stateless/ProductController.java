@@ -46,9 +46,14 @@ public class ProductController implements ProductControllerRemote, ProductContro
     
     @Override
     public List<Product> retrieveProduct(){
+      Query query = em.createQuery("SELECT p FROM Product p WHERE p.status='A'");
+      return query.getResultList();
+    }
+    
+    @Override
+    public List<Product> retrieveProductIncludingInactive(){
       Query query = em.createQuery("SELECT p FROM Product p");
       return query.getResultList();
-        
     }
     
     @Override
@@ -60,14 +65,14 @@ public class ProductController implements ProductControllerRemote, ProductContro
     
     @Override
     public List<Product> retrieveProductsByTeam(String team){
-        Query query = em.createQuery("SELECT p FROM Product p WHERE p.team=:team");
+        Query query = em.createQuery("SELECT p FROM Product p WHERE p.team=:team AND p.status='A'");
         query.setParameter("team", team);
         return query.getResultList();
     }
     
     @Override
      public List<Product> retrieveProductsByCountry(String country){
-        Query query = em.createQuery("SELECT p FROM Product p WHERE p.country=:country");
+        Query query = em.createQuery("SELECT p FROM Product p WHERE p.country=:country  AND p.status='A'");
         query.setParameter("country", country);
         return query.getResultList();
     }
@@ -76,7 +81,7 @@ public class ProductController implements ProductControllerRemote, ProductContro
     public List<List<String>> retrieveCountriesAndTeams(){
         List<List<String>> countryAndTeamList = new ArrayList<List<String>>();
         
-        Query query = em.createQuery("SELECT p.country,p.team FROM Product p ORDER BY p.country");
+        Query query = em.createQuery("SELECT p.country,p.team FROM Product p WHERE p.status='A' ORDER BY p.country");
         List<Object[]> results = query.getResultList();
         
         for(Object[] o : results){
@@ -106,16 +111,7 @@ public class ProductController implements ProductControllerRemote, ProductContro
         return countryAndTeamList;
     }
     
-    //udpate product here
-    
-    //delete product here
-    
-    
-    
-    /*
-     * 
-     * Gets a list of products with sizes quantity <=10 , does not return sizes with >10
-     */
+    // Gets a list of products with sizes quantity <=10 , does not return sizes with >10
     @Override
      public List<Product> retrieveProductsRunningLow(){
         List<Product> allProductList = retrieveProduct();
@@ -156,5 +152,11 @@ public class ProductController implements ProductControllerRemote, ProductContro
         
     }
     
+    @Override
+    public void deleteProduct(Product product){
+        Product toBeDeleted = retrieveSingleProduct(product.getId());
+        toBeDeleted.setStatus("I");
+        em.flush();
+    }
     
 }

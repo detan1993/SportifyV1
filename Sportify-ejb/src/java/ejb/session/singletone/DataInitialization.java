@@ -6,13 +6,17 @@
 package ejb.session.singletone;
 
 import ejb.session.stateless.CustomerControllerLocal;
+import ejb.session.stateless.CustomerOrderControllerLocal;
 import ejb.session.stateless.ImageControllerLocal;
 import ejb.session.stateless.ProductControllerLocal;
+import ejb.session.stateless.ProductReviewControllerLocal;
 import ejb.session.stateless.ProductSizeControllerLocal;
 import ejb.session.stateless.StaffControllerLocal;
 import entity.Customer;
+import entity.CustomerOrder;
 import entity.Images;
 import entity.Product;
+import entity.ProductReview;
 import entity.ProductSize;
 import entity.Staff;
 import java.util.ArrayList;
@@ -44,12 +48,18 @@ public class DataInitialization {
 
     @EJB(name = "CustomerControllerLocal")
     private CustomerControllerLocal customerControllerLocal;
+    
+    @EJB(name = "CustomerOrderControllerLocal")
+    private CustomerOrderControllerLocal customerOrderControllerLocal;
 
     @EJB(name = "ProductControllerLocal")
     private ProductControllerLocal productControllerLocal;
 
     @EJB(name = "ImageControllerLocal")
     private ImageControllerLocal imageControllerLocal;
+    
+    @EJB(name = "ProductReviewControllerLocal")
+    private ProductReviewControllerLocal productReviewControllerLocal;
 
     @PersistenceContext(unitName = "Sportify-ejbPU")
     private EntityManager em;
@@ -81,8 +91,9 @@ public class DataInitialization {
     public void initializeData() {
 
         //Create new Customer . Date of birth format is DD-MM-YYYY
+         Customer newCustomer = new Customer("Jon", "Tan", "Address 1 Avenue 3", "30-01-2017", "Daviddetan93@gmail.com", "12345678", 0);
         try {
-            Customer newCustomer = new Customer("Jon", "Tan", "Address 1 Avenue 3", "30-01-2017", "Daviddetan93@gmail.com", "12345678", 0);
+           
             customerControllerLocal.createNewCustomer(newCustomer);
         } catch (CustomerSignUpException ex) {
             
@@ -121,11 +132,11 @@ public class DataInitialization {
 
         //Arsenal Away
         List<Images> arsenalAway = new ArrayList<>();
-        Images ArsenalProductAway_Main = new Images("<TeamName>_Main example ");
+        Images ArsenalProductAway_Main = new Images("images/image_ss_1.jpg");
         arsenalAway.add(imageControllerLocal.createNewImage(ArsenalProductAway_Main));
-        Images ArsenalProductAway_Sub1 = new Images("TeamName_Sub1");
+        Images ArsenalProductAway_Sub1 = new Images("images/image_ss_2.jpg");
         arsenalAway.add(imageControllerLocal.createNewImage(ArsenalProductAway_Sub1));
-        Images ArsenalProductAway_Sub2 = new Images("TeamName_Sub2");
+        Images ArsenalProductAway_Sub2 = new Images("images/image_ss_2.jpg");
         arsenalAway.add(imageControllerLocal.createNewImage(ArsenalProductAway_Sub2));
         Images ArsenalProductAway_Sub3 = new Images("TeamName_Sub2");
         arsenalAway.add(imageControllerLocal.createNewImage(ArsenalProductAway_Sub3));
@@ -137,6 +148,18 @@ public class DataInitialization {
 
         Product ArsenalAwayProduct = new Product("ARS0002", "Arsenal Away 2017/18", "Description", 99.90, "Arsenal", "Male", "England", new Date(), null, arsenalAway, arsenalAwaySize);
         productControllerLocal.CreateNewProduct(ArsenalAwayProduct);
+        
+        List<ProductReview> productReviewList_jon = new ArrayList<ProductReview>();
+        ProductReview productReview_jon = new ProductReview(7,"Looks good, feels good. Keep up the good work guys!", new Date(), ArsenalAwayProduct, null);
+        productReviewControllerLocal.CreateNewProductReview(productReview_jon);
+        
+        productReviewList_jon.add(productReview_jon);
+        ArsenalAwayProduct.setProductReviews(productReviewList_jon);
+        
+        List<Product> products_jonOrder = new ArrayList<Product>();
+        products_jonOrder.add(ArsenalAwayProduct);
+        CustomerOrder customerOrder = new CustomerOrder(104.9,0,new Date(),"Completed",newCustomer, null,productReviewList_jon,products_jonOrder);
+        customerOrderControllerLocal.CreateNewCustomerOrder(customerOrder);
 
         //Chealse Home
         Images ChealseaProductHome_Main = new Images("<TeamName>_Main example ");

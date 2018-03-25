@@ -62,3 +62,24 @@ body {
     font-size: 1.3em !important;
 
 }
+
+a:link:hover{
+    color:orange;
+}
+
+.ui-state-active a, .ui-state-active a:link{
+    color:orange;
+}
+
+#viewProductDialog{
+    margin-top:50px !important;
+}
+
+.ui-dialog .ui-dialog-titlebar .ui-dialog-titlebar-close{
+    float:right;
+}
+
+.ui-dialog .ui-dialog-titlebar .ui-dialog-title{
+    float:right;
+}
+
