@@ -6,17 +6,13 @@
 package ejb.session.singletone;
 
 import ejb.session.stateless.CustomerControllerLocal;
-import ejb.session.stateless.CustomerOrderControllerLocal;
 import ejb.session.stateless.ImageControllerLocal;
 import ejb.session.stateless.ProductControllerLocal;
-import ejb.session.stateless.ProductReviewControllerLocal;
 import ejb.session.stateless.ProductSizeControllerLocal;
 import ejb.session.stateless.StaffControllerLocal;
 import entity.Customer;
-import entity.CustomerOrder;
 import entity.Images;
 import entity.Product;
-import entity.ProductReview;
 import entity.ProductSize;
 import entity.Staff;
 import java.util.ArrayList;
@@ -48,18 +44,12 @@ public class DataInitialization {
 
     @EJB(name = "CustomerControllerLocal")
     private CustomerControllerLocal customerControllerLocal;
-    
-    @EJB(name = "CustomerOrderControllerLocal")
-    private CustomerOrderControllerLocal customerOrderControllerLocal;
 
     @EJB(name = "ProductControllerLocal")
     private ProductControllerLocal productControllerLocal;
 
     @EJB(name = "ImageControllerLocal")
     private ImageControllerLocal imageControllerLocal;
-    
-    @EJB(name = "ProductReviewControllerLocal")
-    private ProductReviewControllerLocal productReviewControllerLocal;
 
     @PersistenceContext(unitName = "Sportify-ejbPU")
     private EntityManager em;
@@ -91,12 +81,11 @@ public class DataInitialization {
     public void initializeData() {
 
         //Create new Customer . Date of birth format is DD-MM-YYYY
-         Customer newCustomer = new Customer("Jon", "Tan", "Address 1 Avenue 3", "30-01-2017", "Daviddetan93@gmail.com", "12345678", 0);
         try {
-           
+            Customer newCustomer = new Customer("Jon", "Tan", "Address 1 Avenue 3", "30-01-2017", "Daviddetan93@gmail.com", "12345678", 0);
             customerControllerLocal.createNewCustomer(newCustomer);
         } catch (CustomerSignUpException ex) {
-            
+
         }
 
         //create new Staff 
@@ -104,7 +93,7 @@ public class DataInitialization {
         staffControllerLocal.createStaff(newStaff);
         Staff newSalesStaff = new Staff("Jiong Yi", "Lee", "jy@Sportify.com", "12345678", "Sales");
         staffControllerLocal.createStaff(newSalesStaff);
-        
+
         /*
          Each Jersey have 4 pictures 
          example Chealse_Main.PNG   , Chealsea_Sub1.PNG , Chealsea_Sub2.PNG , Chealsea_Sub3.png
@@ -113,14 +102,16 @@ public class DataInitialization {
          */
         //Arsenal home
         List<Images> arsenalHome = new ArrayList<>();
-        Images ArsenalProductHome_Main = new Images("<TeamName>_Main example ");
+        Images ArsenalProductHome_Main = new Images("images/products/ars_home.jpg");
         arsenalHome.add(imageControllerLocal.createNewImage(ArsenalProductHome_Main));
-        Images ArsenalProductHome_Sub1 = new Images("TeamName_Sub1");
+        Images ArsenalProductHome_Sub1 = new Images("images/products/ars_home_1.jpg");
         arsenalHome.add(imageControllerLocal.createNewImage(ArsenalProductHome_Sub1));
-        Images ArsenalProductHome_Sub2 = new Images("TeamName_Sub2");
+        Images ArsenalProductHome_Sub2 = new Images("images/products/ars_home_2.jpg");
         arsenalHome.add(imageControllerLocal.createNewImage(ArsenalProductHome_Sub2));
-        Images ArsenalProductHome_Sub3 = new Images("TeamName_Sub2");
+        Images ArsenalProductHome_Sub3 = new Images("images/products/ars_home_3.jpg");
         arsenalHome.add(imageControllerLocal.createNewImage(ArsenalProductHome_Sub3));
+        Images ArsenalProductHome_Sub4 = new Images("images/products/ars_home_4.jpg");
+        arsenalHome.add(imageControllerLocal.createNewImage(ArsenalProductHome_Sub4));
 
         List<ProductSize> arsenalHomeSize = new ArrayList<>();
         arsenalHomeSize.add(productSizeControllerLocal.createSizeForProduct(new ProductSize("XL", 10)));
@@ -132,11 +123,11 @@ public class DataInitialization {
 
         //Arsenal Away
         List<Images> arsenalAway = new ArrayList<>();
-        Images ArsenalProductAway_Main = new Images("images/image_ss_1.jpg");
+        Images ArsenalProductAway_Main = new Images("images/products/ars_away.jpg");
         arsenalAway.add(imageControllerLocal.createNewImage(ArsenalProductAway_Main));
-        Images ArsenalProductAway_Sub1 = new Images("images/image_ss_2.jpg");
+        Images ArsenalProductAway_Sub1 = new Images("images/products/ars_away_2.jpg");
         arsenalAway.add(imageControllerLocal.createNewImage(ArsenalProductAway_Sub1));
-        Images ArsenalProductAway_Sub2 = new Images("images/image_ss_2.jpg");
+        Images ArsenalProductAway_Sub2 = new Images("TeamName_Sub2");
         arsenalAway.add(imageControllerLocal.createNewImage(ArsenalProductAway_Sub2));
         Images ArsenalProductAway_Sub3 = new Images("TeamName_Sub2");
         arsenalAway.add(imageControllerLocal.createNewImage(ArsenalProductAway_Sub3));
@@ -148,30 +139,121 @@ public class DataInitialization {
 
         Product ArsenalAwayProduct = new Product("ARS0002", "Arsenal Away 2017/18", "Description", 99.90, "Arsenal", "Male", "England", new Date(), null, arsenalAway, arsenalAwaySize);
         productControllerLocal.CreateNewProduct(ArsenalAwayProduct);
-        
-        List<ProductReview> productReviewList_jon = new ArrayList<ProductReview>();
-        ProductReview productReview_jon = new ProductReview(7,"Looks good, feels good. Keep up the good work guys!", new Date(), ArsenalAwayProduct, null);
-        productReviewControllerLocal.CreateNewProductReview(productReview_jon);
-        
-        productReviewList_jon.add(productReview_jon);
-        ArsenalAwayProduct.setProductReviews(productReviewList_jon);
-        
-        List<Product> products_jonOrder = new ArrayList<Product>();
-        products_jonOrder.add(ArsenalAwayProduct);
-        CustomerOrder customerOrder = new CustomerOrder(104.9,0,new Date(),"Completed",newCustomer, null,productReviewList_jon,products_jonOrder);
-        customerOrderControllerLocal.CreateNewCustomerOrder(customerOrder);
 
         //Chealse Home
-        Images ChealseaProductHome_Main = new Images("<TeamName>_Main example ");
+        List<Images> chelseaHome = new ArrayList<>();
+        Images ChealseaProductHome_Main = new Images("images/products/chel_home.jpg");
+        chelseaHome.add(imageControllerLocal.createNewImage(ChealseaProductHome_Main));
         Images ChealseaProductHome_Sub1 = new Images("TeamName_Sub1");
+        chelseaHome.add(imageControllerLocal.createNewImage(ChealseaProductHome_Sub1));
         Images ChealseaProductHome_Sub2 = new Images("TeamName_Sub2");
+        chelseaHome.add(imageControllerLocal.createNewImage(ChealseaProductHome_Sub2));
         Images ChealseaProductHome_Sub3 = new Images("TeamName_Sub2");
+        chelseaHome.add(imageControllerLocal.createNewImage(ChealseaProductHome_Sub3));
+        
+         List<ProductSize> chelseaHomeSize = new ArrayList<>();
+        chelseaHomeSize.add(productSizeControllerLocal.createSizeForProduct(new ProductSize("XL", 10)));
+        chelseaHomeSize.add(productSizeControllerLocal.createSizeForProduct(new ProductSize("L", 10)));
+        chelseaHomeSize.add(productSizeControllerLocal.createSizeForProduct(new ProductSize("M", 10)));
+        
+        Product ChelseaHomeProduct = new Product("CHL0001", "Chelsea Home 2017/18", "Description", 89.90, "Chelsea", "Male", "England", new Date(), null, chelseaHome, chelseaHomeSize);
+        productControllerLocal.CreateNewProduct(ChelseaHomeProduct);
 
         //Chealse Away
-        Images ChealseaProductAway_Main = new Images("<TeamName>_Main example ");
+        List<Images> chelseaAway = new ArrayList<>();
+        Images ChealseaProductAway_Main = new Images("images/products/chel_away.jpg");
+        chelseaAway.add(imageControllerLocal.createNewImage(ChealseaProductAway_Main));
         Images ChealseaProductAway_Sub1 = new Images("TeamName_Sub1");
+        chelseaAway.add(imageControllerLocal.createNewImage(ChealseaProductAway_Sub1));
         Images ChealseaProductAway_Sub2 = new Images("TeamName_Sub2");
+        chelseaAway.add(imageControllerLocal.createNewImage(ChealseaProductAway_Sub2));
         Images ChealseaProductAway_Sub3 = new Images("TeamName_Sub2");
+        chelseaAway.add(imageControllerLocal.createNewImage(ChealseaProductAway_Sub3));
+        
+         List<ProductSize> chelseaAwaySize = new ArrayList<>();
+        chelseaAwaySize.add(productSizeControllerLocal.createSizeForProduct(new ProductSize("XL", 20)));
+        chelseaAwaySize.add(productSizeControllerLocal.createSizeForProduct(new ProductSize("S", 10)));
+        chelseaAwaySize.add(productSizeControllerLocal.createSizeForProduct(new ProductSize("M", 15)));
+        
+         Product ChelseaAwayProduct = new Product("CHL0002", "Chelsea Away 2017/18", "Description", 100, "Chelsea", "Male", "England", new Date(), null, chelseaAway, chelseaAwaySize);
+        productControllerLocal.CreateNewProduct(ChelseaAwayProduct);
+        
+        //Barca Home
+        List<Images> barcaHome = new ArrayList<>();
+        Images BarcaProductHome_Main = new Images("images/products/barca_home.jpg");
+        barcaHome.add(imageControllerLocal.createNewImage(BarcaProductHome_Main));
+        Images Barca_ProductHome_Sub1 = new Images("TeamName_Sub1");
+        barcaHome.add(imageControllerLocal.createNewImage(Barca_ProductHome_Sub1));
+        Images Barca_ProductHome_Sub2 = new Images("TeamName_Sub2");
+        barcaHome.add(imageControllerLocal.createNewImage(Barca_ProductHome_Sub2));
+        Images Barca_ProductHome_Sub3 = new Images("TeamName_Sub2");
+        barcaHome.add(imageControllerLocal.createNewImage(Barca_ProductHome_Sub3));
+        
+         List<ProductSize> barcaHomeSize = new ArrayList<>();
+        barcaHomeSize.add(productSizeControllerLocal.createSizeForProduct(new ProductSize("XL", 10)));
+        barcaHomeSize.add(productSizeControllerLocal.createSizeForProduct(new ProductSize("L", 10)));
+        barcaHomeSize.add(productSizeControllerLocal.createSizeForProduct(new ProductSize("M", 10)));
+        
+        Product BarcaHomeProduct = new Product("BAR0001", "Barcelona Home 2017/18", "Description", 89.90, "Barcelona", "Male", "Spain", new Date(), null, barcaHome, barcaHomeSize);
+        productControllerLocal.CreateNewProduct(BarcaHomeProduct);
+        
+        //Barca Away
+        List<Images> barcaAway = new ArrayList<>();
+        Images BarcaProductAway_Main = new Images("images/products/barca_away.jpg");
+        barcaAway.add(imageControllerLocal.createNewImage(BarcaProductAway_Main));
+        Images Barca_ProductAway_Sub1 = new Images("TeamName_Sub1");
+        barcaHome.add(imageControllerLocal.createNewImage(Barca_ProductAway_Sub1));
+        Images Barca_ProductAway_Sub2 = new Images("TeamName_Sub2");
+        barcaAway.add(imageControllerLocal.createNewImage(Barca_ProductAway_Sub2));
+        Images Barca_ProductAway_Sub3 = new Images("TeamName_Sub2");
+        barcaAway.add(imageControllerLocal.createNewImage(Barca_ProductAway_Sub3));
+        
+         List<ProductSize> barcaAwaySize = new ArrayList<>();
+        barcaAwaySize.add(productSizeControllerLocal.createSizeForProduct(new ProductSize("XL", 10)));
+        barcaAwaySize.add(productSizeControllerLocal.createSizeForProduct(new ProductSize("L", 10)));
+        barcaAwaySize.add(productSizeControllerLocal.createSizeForProduct(new ProductSize("M", 10)));
+        
+        Product BarcaAwayProduct = new Product("BAR0002", "Barcelona Away 2017/18", "Description", 89.90, "Barcelona", "Male", "Spain", new Date(), null, barcaAway, barcaAwaySize);
+        productControllerLocal.CreateNewProduct(BarcaAwayProduct);
+        
+         //Real Madrid Home
+        List<Images> rmHome = new ArrayList<>();
+        Images RmProductHome_Main = new Images("images/products/rm_home.jpg");
+        rmHome.add(imageControllerLocal.createNewImage(RmProductHome_Main));
+        Images Rm_ProductHome_Sub1 = new Images("TeamName_Sub1");
+        rmHome.add(imageControllerLocal.createNewImage(Rm_ProductHome_Sub1));
+        Images Rm_ProductHome_Sub2 = new Images("TeamName_Sub2");
+        rmHome.add(imageControllerLocal.createNewImage(Rm_ProductHome_Sub2));
+        Images Rm_ProductHome_Sub3 = new Images("TeamName_Sub2");
+        rmHome.add(imageControllerLocal.createNewImage(Rm_ProductHome_Sub3));
+        
+         List<ProductSize> rmHomeSize = new ArrayList<>();
+        rmHomeSize.add(productSizeControllerLocal.createSizeForProduct(new ProductSize("XL", 10)));
+        rmHomeSize.add(productSizeControllerLocal.createSizeForProduct(new ProductSize("L", 10)));
+        rmHomeSize.add(productSizeControllerLocal.createSizeForProduct(new ProductSize("M", 10)));
+        
+        Product RmHomeProduct = new Product("RM0001", "Real Madrid Home 2017/18", "Description", 59.90, "Real Madrid", "Male", "Spain", new Date(), null, rmHome, rmHomeSize);
+        productControllerLocal.CreateNewProduct(RmHomeProduct);
+        
+          //Real Madrid Away
+        List<Images> rmAway = new ArrayList<>();
+        Images RmProductAway_Main = new Images("images/products/rm_away.jpg");
+        rmAway.add(imageControllerLocal.createNewImage(RmProductAway_Main));
+        Images Rm_ProductAway_Sub1 = new Images("TeamName_Sub1");
+        rmAway.add(imageControllerLocal.createNewImage(Rm_ProductAway_Sub1));
+        Images Rm_ProductAway_Sub2 = new Images("TeamName_Sub2");
+        rmAway.add(imageControllerLocal.createNewImage(Rm_ProductAway_Sub2));
+        Images Rm_ProductAway_Sub3 = new Images("TeamName_Sub2");
+        rmAway.add(imageControllerLocal.createNewImage(Rm_ProductAway_Sub3));
+        
+         List<ProductSize> rmAwaySize = new ArrayList<>();
+        rmAwaySize.add(productSizeControllerLocal.createSizeForProduct(new ProductSize("XL", 10)));
+        rmAwaySize.add(productSizeControllerLocal.createSizeForProduct(new ProductSize("L", 10)));
+        rmAwaySize.add(productSizeControllerLocal.createSizeForProduct(new ProductSize("M", 10)));
+        
+        Product RmAwayProduct = new Product("RM0002", "Real Madrid Away 2017/18", "Description", 59.90, "Real Madrid", "Male", "Spain", new Date(), null, rmAway, rmAwaySize);
+        productControllerLocal.CreateNewProduct(RmAwayProduct);
+
 
         //Liverpoll Home
         /*    Images LiverpoolProductHome_Main = new Images("<TeamName>_Main example ");
