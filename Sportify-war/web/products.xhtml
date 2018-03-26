@@ -21,7 +21,7 @@
             <h3>Country:</h3>
             <h:form id="countryForm">
                 <p:selectOneMenu id="country" value="#{viewAllProductsManagedBean.countrySelected}" style="width:150px">
-                    <f:ajax listener="#{viewAllProductsManagedBean.filterByCountry}" render="@all" />
+                    <p:ajax listener="#{viewAllProductsManagedBean.filterByCountry}" update=":teamForm:teamDropDown :form:productGrid" />
                     <f:selectItem itemLabel="Select Country" itemValue="" noSelectionOption="true" />
                     <f:selectItems value="#{viewAllProductsManagedBean.countries}" />
                 </p:selectOneMenu>
@@ -30,7 +30,7 @@
             <h3>Team:</h3>
             <h:form id="teamForm">
                 <p:selectOneMenu id="teamDropDown" value="#{viewAllProductsManagedBean.teamSelected}" style="width:150px">
-                    <f:ajax listener="#{viewAllProductsManagedBean.filterByTeam}" render="@all" />
+                    <p:ajax listener="#{viewAllProductsManagedBean.filterByTeam}" update=":form:productGrid" />
                     <f:selectItem itemLabel="Select Team" itemValue="" noSelectionOption="true" />
                     <f:selectItems value="#{viewAllProductsManagedBean.teams}" />
                 </p:selectOneMenu>
@@ -47,10 +47,6 @@
                         rows="12" paginator="true" id="productGrid"
                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                         rowsPerPageTemplate="6,12,16">
-
-                <!--                <f:facet name="header">
-                                    Sportify Jerseys
-                                </f:facet>-->
 
                 <p:panel header="#{product.productName}" style="text-align:center;">
                     <h:panelGrid columns="1" style="width:100%">
