@@ -7,6 +7,7 @@ package jsf.staff.managedbean;
 
 import ejb.session.stateless.ProductControllerLocal;
 import entity.Product;
+import entity.ProductSize;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -83,13 +84,13 @@ public class StaffProductManagedBean  implements Serializable{
         }
     }
    
-    public void updateProduct(ActionEvent event)
+    public void updateProduct()
     {
         
         try{
             
-            productControllerLocal.updateProduct(selectedProductsToUpdate);
-             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New product created successfully (Product ID: " + selectedProductsToUpdate.getId() + ")", null));
+            productControllerLocal.updateProduct(selectedProductsToView);
+             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New product created successfully (Product ID: " + selectedProductsToView.getId() + ")", null));
             
         }catch(Exception ex){
               FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred while updating the product: " + ex.getMessage(), null));
@@ -180,15 +181,23 @@ public class StaffProductManagedBean  implements Serializable{
     
     
     public void deleteProduct(){
-        System.out.println("Product id: " + selectedProductToDelete.getId());
+        System.out.println("To delete Product id: " + selectedProductToDelete.getId());
+        System.out.println("Before deleting size is : " + products.size());
         try{
             productControllerLocal.deleteProduct(selectedProductToDelete);
+            products = productControllerLocal.retrieveProductIncludingInactive();
+            System.out.println("After deleting size is : " + products.size());
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Product deleted successfully", null));
         }catch(Exception ex){
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred while deleting the product: " + ex.getMessage(), null));
         }
     }
     
+    
+    public void addProductSize(ActionEvent event){
+        System.out.println("Total Sizes: " + selectedProductsToView.getSizes().size());
+        selectedProductsToView.getSizes().add(new ProductSize());
+    }
     
     /**
      * @return the products
