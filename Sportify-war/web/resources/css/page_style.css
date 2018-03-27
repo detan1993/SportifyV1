@@ -1,0 +1,20 @@
+.products_img_display:hover{
+    position: relative !important;
+    -webkit-transform: scale(1.5) !important;
+    -ms-transform: scale(1.5) !important;
+    -o-transform: scale(1.5) !important;
+    transform: scale(1.5) !important;
+    z-index: 1000 !important;
+    
+    -webkit-transition: all 0.5s ease-in-out !important;
+    -moz-transition: all 0.5s ease-in-out !important;
+    -ms-transition: all 0.5s ease-in-out !important;
+    -o-transition: all 0.5s ease-in-out !important;
+    transition: all 0.5s ease-in-out !important;
+}
+.explore_div{
+    margin-left: 80px;
+}
+/** {
+    
+}*/

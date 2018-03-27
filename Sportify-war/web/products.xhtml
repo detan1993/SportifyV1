@@ -6,11 +6,7 @@
                 xmlns:f="http://xmlns.jcp.org/jsf/core"
                 xmlns:h="http://xmlns.jcp.org/jsf/html">
 
-    <head>
-        <style>
-
-        </style>
-    </head>
+  
 
     <ui:define name="west">
         <p:panel style="margin-top:-4px">
@@ -40,8 +36,8 @@
     </ui:define>
 
     <ui:define name="center">
-        <h:outputStylesheet library="css" name="page_style.css"/>
-
+       <h:outputStylesheet name="css/page_style.css"/>
+<!--       <link rel="stylesheet" href="resources/css/page_style.css" />-->
         <h:form id="form">
             <p:dataGrid styleClass="productsGrid" var="product" value="#{viewAllProductsManagedBean.products}" columns="4" layout="grid"
                         rows="12" paginator="true" id="productGrid"
@@ -53,7 +49,7 @@
 
                         <p:panel style=" background-color: white;">
                             <h:link outcome="detailedProduct">
-                                <p:graphicImage name="#{product.images[0].imagePath}" styleClass="content" />
+                                <p:graphicImage name="#{product.images[0].imagePath}" styleClass="products_img_display" />
                                 <f:param name="productId" value="#{product.id}" />
                             </h:link>
                             <br/>
@@ -61,9 +57,11 @@
                             <br />
                             <h:outputText value="#{product.description}" style="color:black; text-align: center" />
                         </p:panel>
+                        
                         <f:facet name="footer">
-                            <p:commandButton value="Explore" update="@form" icon="fa fa-binoculars" /> 
+                            <p:commandButton value="Explore" action="#{viewAllProductsManagedBean.exploreRedirect(product.id)}" icon="fa fa-binoculars" class="explore_div" />
                         </f:facet>  
+                           
                     </h:panelGrid>
                 </p:panel>
 

@@ -47,7 +47,7 @@ public class ProductController implements ProductControllerRemote, ProductContro
     
     @Override
     public List<Product> retrieveProduct(){
-      Query query = em.createQuery("SELECT p FROM Product p WHERE p.status='A'");
+      Query query = em.createQuery("SELECT p FROM Product p WHERE p.status='A' ORDER BY p.team");
       return query.getResultList();
     }
     
@@ -66,14 +66,14 @@ public class ProductController implements ProductControllerRemote, ProductContro
     
     @Override
     public List<Product> retrieveProductsByTeam(String team){
-        Query query = em.createQuery("SELECT p FROM Product p WHERE p.team=:team AND p.status='A'");
+        Query query = em.createQuery("SELECT p FROM Product p WHERE p.team=:team AND p.status='A' ORDER BY p.team");
         query.setParameter("team", team);
         return query.getResultList();
     }
     
     @Override
      public List<Product> retrieveProductsByCountry(String country){
-        Query query = em.createQuery("SELECT p FROM Product p WHERE p.country=:country  AND p.status='A'");
+        Query query = em.createQuery("SELECT p FROM Product p WHERE p.country=:country  AND p.status='A' ORDER BY p.team");
         query.setParameter("country", country);
         return query.getResultList();
     }
@@ -82,7 +82,7 @@ public class ProductController implements ProductControllerRemote, ProductContro
     public List<List<String>> retrieveCountriesAndTeams(){
         List<List<String>> countryAndTeamList = new ArrayList<List<String>>();
         
-        Query query = em.createQuery("SELECT p.country,p.team FROM Product p WHERE p.status='A' ORDER BY p.country");
+        Query query = em.createQuery("SELECT p.country,p.team FROM Product p WHERE p.status='A' ORDER BY p.country, p.team");
         List<Object[]> results = query.getResultList();
         
         for(Object[] o : results){

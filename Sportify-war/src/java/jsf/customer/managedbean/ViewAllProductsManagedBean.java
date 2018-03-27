@@ -79,7 +79,10 @@ public class ViewAllProductsManagedBean implements Serializable {
                 products = productController.retrieveProductsByCountry(countrySelected);
             }
         }
-
+    }
+    
+    public String exploreRedirect(long id){
+        return "detailedProduct?faces-redirect=true&productId=" + id;
     }
 
     public List<Product> getProducts() {

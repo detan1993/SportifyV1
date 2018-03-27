@@ -25,14 +25,16 @@ public class ViewDetailedManagedBean implements Serializable{
     private Product product;
     private List<String> images;
     private String selectedImage;
-    private List<ProductSize> sizesAvailable;
+    private List<String> sizesAvailable;
+    private String sizeSelected;
+    private String quantity;
 
     @PostConstruct
     public void postConstruct() {
         
         product = new Product();
         images = new ArrayList<>();
-        setSizesAvailable(new ArrayList<>());
+        sizesAvailable = new ArrayList<>();
         
         List<Images> getProdImages = new ArrayList<Images>();
         
@@ -46,7 +48,12 @@ public class ViewDetailedManagedBean implements Serializable{
                 product = productController.retrieveSingleProduct(productIdLong);
                 
                  //get product sizes for this product
-                setSizesAvailable(product.getSizes());
+                 List<ProductSize> prodSize = new ArrayList<>();
+                 prodSize = product.getSizes();
+                
+                 for (ProductSize p: prodSize){
+                     sizesAvailable.add(p.getSize());
+                 }
                 
                 //get images for this product
                 if (product != null){
@@ -98,11 +105,33 @@ public class ViewDetailedManagedBean implements Serializable{
         this.selectedImage = selectedImage;
     }
 
-    public List<ProductSize> getSizesAvailable() {
+    public List<String> getSizesAvailable() {
         return sizesAvailable;
     }
 
-    public void setSizesAvailable(List<ProductSize> sizesAvailable) {
+    public void setSizesAvailable(List<String> sizesAvailable) {
         this.sizesAvailable = sizesAvailable;
+    }
+
+    public String getSizeSelected() {
+        return sizeSelected;
+    }
+
+    public void setSizeSelected(String sizeSelected) {
+        this.sizeSelected = sizeSelected;
+    }
+
+    /**
+     * @return the quantity
+     */
+    public String getQuantity() {
+        return quantity;
+    }
+
+    /**
+     * @param quantity the quantity to set
+     */
+    public void setQuantity(String quantity) {
+        this.quantity = quantity;
     }
 }

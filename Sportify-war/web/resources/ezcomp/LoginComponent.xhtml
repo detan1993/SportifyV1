@@ -21,7 +21,7 @@
                     <h:outputText value="Hi #{sessionScope['currentCustomer'].firstName}!" />&nbsp;
                     <p:commandButton id="logOutButton" value="LOGOUT" actionListener="#{customerLoginManagedBean.logout}" icon="ui-icon-unlocked"/>
                      <p:commandButton icon="fa fa-shopping-cart">
-                         <h:outputLabel><div style="position: absolute;
+                         <h:outputLabel rendered="#{sessionScope['isCartExist']}"><div style="position: absolute;
                                         right: 105px;
                                         /* left: 20px; */
                                         top: 10px;

@@ -34,20 +34,38 @@
                     <h:outputText style="font-size: 60px" value="$#{viewDetailedManagedBean.product.price} "></h:outputText>
                 </p:panel>
                 <p:panel>
+                    <h:form>
+                        <table cellspacing="5" style="width:220px">
+                            <tr>
+                                <td>
+                                    <span style="color:white;font-size:15px">Size :</span> 
+                                </td>
+                                <td>
+                                    <p:selectOneMenu id="prod_size" value="#{viewDetailedManagedBean.sizeSelected}" style="width:80px;font-size:15px" required="true">
+                                        <f:selectItem itemLabel="Select Size" itemValue="" noSelectionOption="true" />
+                                        <f:selectItems value="#{viewDetailedManagedBean.sizesAvailable}" />
+                                    </p:selectOneMenu>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <span style="color:white;font-size:15px">Quantity :</span> 
+                                </td>
+                                <td>
+                                    <p:spinner id="quantity" value="#{viewDetailedManagedBean.quantity}" required="true" label="quantity" requiredMessage="Please enter quantity." size="4" /> 
+                                </td>
+                            </tr>
+                        </table>
 
-                    <p>Size / Stock(s) Available:</p>
-                    <p:dataList var="productDetails" value="#{viewDetailedManagedBean.sizesAvailable}" id="productSizesGridList" type="definition" style="margin-top:-25px">
-                        <h:outputText value="#{productDetails.size} / #{productDetails.qty} "></h:outputText>
-                    </p:dataList>
-
-                    <f:facet name="footer">
-                        <p:commandButton value="Add to Cart" icon="fa fa-plus-circle" style="margin-top:-25px" /> 
-                    </f:facet>  
+                        <div style="margin-top:10px;margin-left:40px">
+                            <p:commandButton value="Add to Cart" icon="fa fa-plus-circle" /> 
+                     </div>
+                    </h:form>
                 </p:panel>
             </p:panel>
             <h:form id="form">
                 <p:panel>
-                    <p:galleria value="#{viewDetailedManagedBean.images}" var="image" panelHeight="480" style="margin:auto;margin-top:-295px">
+                    <p:galleria value="#{viewDetailedManagedBean.images}" var="image" panelHeight="480" style="margin-left:450px;margin-top:-295px">
                         <f:facet name="header">
                             #{viewDetailedManagedBean.product.productName}
                         </f:facet>

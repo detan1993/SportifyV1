@@ -80,7 +80,7 @@ public class DataInitialization {
     }
 
     public void initializeData() {
- 
+
         //Create new Customer . Date of birth format is DD-MM-YYYY
         try {
             Customer newCustomer = new Customer("Jon", "Tan", "Address 1 Avenue 3", "30-01-2017", "Daviddetan93@gmail.com", "12345678", 0);
@@ -94,18 +94,18 @@ public class DataInitialization {
         staffControllerLocal.createStaff(newStaff);
         Staff newSalesStaff = new Staff("Jiong Yi", "Lee", "jy@Sportify.com", "12345678", "Sales");
         staffControllerLocal.createStaff(newSalesStaff);
-        
+
         Calendar cal = Calendar.getInstance();
-        Date date = new Date(); 
+        Date date = new Date();
         /*
          Each Jersey have 4 pictures 
          example Chealse_Main.PNG   , Chealsea_Sub1.PNG , Chealsea_Sub2.PNG , Chealsea_Sub3.png
 
          For each country we show 6 teams. Each team we display 2 jersey (home and away). Hence for each country we have in total 12 products.
          */
-        
+
         List<Images> manuHome = new ArrayList<>();
-        Images manuProductHome_Main = new Images("<TeamName>_Main example ");
+        Images manuProductHome_Main = new Images("images/products/manu_home.jpg");
         manuHome.add(imageControllerLocal.createNewImage(manuProductHome_Main));
         Images manuProductHome_Sub1 = new Images("TeamName_Sub1");
         manuHome.add(imageControllerLocal.createNewImage(manuProductHome_Sub1));
@@ -121,11 +121,12 @@ public class DataInitialization {
 
         cal.set(2018, Calendar.JANUARY, 23); //Year, month and day of month
         date = cal.getTime();
+
         Product manuHomeProduct = new Product("Manu001", "Man United Home 2017/18", "Description", 249.90, "Man United", "Male", "England", date, null, manuHome, manuHomeSize);
         productControllerLocal.CreateNewProduct(manuHomeProduct);
-               
+
         List<Images> sevillaHome = new ArrayList<>();
-        Images sevillaProductHome_Main = new Images("<TeamName>_Main example ");
+        Images sevillaProductHome_Main = new Images("images/products/sevilla_home.jpg");
         sevillaHome.add(imageControllerLocal.createNewImage(sevillaProductHome_Main));
         Images sevillaProductHome_Sub1 = new Images("TeamName_Sub1");
         sevillaHome.add(imageControllerLocal.createNewImage(sevillaProductHome_Sub1));
@@ -141,12 +142,12 @@ public class DataInitialization {
 
         cal.set(2018, Calendar.JANUARY, 23); //Year, month and day of month
         date = cal.getTime();
+
         Product sevillaHomeProduct = new Product("Sevilla001", "Sevilla Home 2017/18", "Description", 79.90, "Sevilla", "Male", "Spain", date, null, sevillaHome, sevillaHomeSize);
         productControllerLocal.CreateNewProduct(sevillaHomeProduct);
-        
-        
+
         List<Images> liverpoolHome = new ArrayList<>();
-        Images liverpoolProductHome_Main = new Images("<TeamName>_Main example ");
+        Images liverpoolProductHome_Main = new Images("images/products/liverpool_home.jpg");
         liverpoolHome.add(imageControllerLocal.createNewImage(liverpoolProductHome_Main));
         Images liverpoolProductHome_Sub1 = new Images("TeamName_Sub1");
         liverpoolHome.add(imageControllerLocal.createNewImage(liverpoolProductHome_Sub1));
@@ -162,12 +163,12 @@ public class DataInitialization {
 
         cal.set(2018, Calendar.FEBRUARY, 23); //Year, month and day of month
         date = cal.getTime();
+
         Product liverpoolHomeProduct = new Product("Liverpool001", "Liverpool Home 2017/18", "Description", 349.90, "Liverpool", "Male", "England", date, null, liverpoolHome, liverpoolHomeSize);
         productControllerLocal.CreateNewProduct(liverpoolHomeProduct);
-        
-        
+
         List<Images> atlMadridHome = new ArrayList<>();
-        Images atlMadridroductHome_Main = new Images("<TeamName>_Main example ");
+        Images atlMadridroductHome_Main = new Images("images/products/altl_home.jpg");
         atlMadridHome.add(imageControllerLocal.createNewImage(atlMadridroductHome_Main));
         Images atlMadridProductHome_Sub1 = new Images("TeamName_Sub1");
         atlMadridHome.add(imageControllerLocal.createNewImage(atlMadridProductHome_Sub1));
@@ -183,19 +184,19 @@ public class DataInitialization {
 
         cal.set(2018, Calendar.FEBRUARY, 23); //Year, month and day of month
         date = cal.getTime();
-        Product atlMadridHomeProduct = new Product("AlthelicoMadrid001", "Athelico Madrid Home 2017/18", "Description", 599.90, "Athelico Madrid", "Male", "Spain", date, null, atlMadridHome, atlMadridHomeSize);
+
+        Product atlMadridHomeProduct = new Product("AtleticoMadrid001", "Atletico Madrid Home 2017/18", "Description", 599.90, "Atletico Madrid", "Male", "Spain", date, null, atlMadridHome, atlMadridHomeSize);
         productControllerLocal.CreateNewProduct(atlMadridHomeProduct);
-        
-        
+
         //Arsenal home
         List<Images> arsenalHome = new ArrayList<>();
-        Images ArsenalProductHome_Main = new Images("<TeamName>_Main example ");
+        Images ArsenalProductHome_Main = new Images("images/products/ars_home.jpg");
         arsenalHome.add(imageControllerLocal.createNewImage(ArsenalProductHome_Main));
-        Images ArsenalProductHome_Sub1 = new Images("TeamName_Sub1");
+        Images ArsenalProductHome_Sub1 = new Images("images/products/ars_home_1.jpg");
         arsenalHome.add(imageControllerLocal.createNewImage(ArsenalProductHome_Sub1));
-        Images ArsenalProductHome_Sub2 = new Images("TeamName_Sub2");
+        Images ArsenalProductHome_Sub2 = new Images("images/products/ars_home_2.jpg");
         arsenalHome.add(imageControllerLocal.createNewImage(ArsenalProductHome_Sub2));
-        Images ArsenalProductHome_Sub3 = new Images("TeamName_Sub2");
+        Images ArsenalProductHome_Sub3 = new Images("images/products/ars_home_3.jpg");
         arsenalHome.add(imageControllerLocal.createNewImage(ArsenalProductHome_Sub3));
 
         List<ProductSize> arsenalHomeSize = new ArrayList<>();
@@ -203,14 +204,17 @@ public class DataInitialization {
         arsenalHomeSize.add(productSizeControllerLocal.createSizeForProduct(new ProductSize("L", 10)));
         arsenalHomeSize.add(productSizeControllerLocal.createSizeForProduct(new ProductSize("M", 10)));
 
-        Product ArsenalHomeProduct = new Product("ARS0001", "Arsenal Home 2017/18", "Description", 99.90, "Arsenal", "Male", "England", new Date(), null, arsenalHome, arsenalHomeSize);
+        cal.set(2018, Calendar.MARCH, 14); //Year, month and day of month
+        date = cal.getTime();
+
+        Product ArsenalHomeProduct = new Product("ARS0001", "Arsenal Home 2017/18", "Description", 15.90, "Arsenal", "Male", "England", date, null, arsenalHome, arsenalHomeSize);
         productControllerLocal.CreateNewProduct(ArsenalHomeProduct);
 
         //Arsenal Away
         List<Images> arsenalAway = new ArrayList<>();
-        Images ArsenalProductAway_Main = new Images("<TeamName>_Main example ");
+        Images ArsenalProductAway_Main = new Images("images/products/ars_away.jpg");
         arsenalAway.add(imageControllerLocal.createNewImage(ArsenalProductAway_Main));
-        Images ArsenalProductAway_Sub1 = new Images("TeamName_Sub1");
+        Images ArsenalProductAway_Sub1 = new Images("images/products/ars_away_2.jpg");
         arsenalAway.add(imageControllerLocal.createNewImage(ArsenalProductAway_Sub1));
         Images ArsenalProductAway_Sub2 = new Images("TeamName_Sub2");
         arsenalAway.add(imageControllerLocal.createNewImage(ArsenalProductAway_Sub2));
@@ -222,11 +226,14 @@ public class DataInitialization {
         arsenalAwaySize.add(productSizeControllerLocal.createSizeForProduct(new ProductSize("L", 15)));
         arsenalAwaySize.add(productSizeControllerLocal.createSizeForProduct(new ProductSize("M", 5)));
 
-        Product ArsenalAwayProduct = new Product("ARS0002", "Arsenal Away 2017/18", "Description", 349.90, "Arsenal", "Male", "England", new Date(), null, arsenalAway, arsenalAwaySize);
+        cal.set(2018, Calendar.FEBRUARY, 1); //Year, month and day of month
+        date = cal.getTime();
+
+        Product ArsenalAwayProduct = new Product("ARS0002", "Arsenal Away 2017/18", "Description", 149.50, "Arsenal", "Male", "England", date, null, arsenalAway, arsenalAwaySize);
         productControllerLocal.CreateNewProduct(ArsenalAwayProduct);
-        
+
         List<Images> barcaHome = new ArrayList<>();
-        Images BarcaProductHome_Main = new Images("<TeamName>_Main example ");
+        Images BarcaProductHome_Main = new Images("images/products/barca_home.jpg");
         barcaHome.add(imageControllerLocal.createNewImage(BarcaProductHome_Main));
         Images BarcaProductHome_Sub1 = new Images("TeamName_Sub1");
         barcaHome.add(imageControllerLocal.createNewImage(BarcaProductHome_Sub1));
@@ -240,8 +247,143 @@ public class DataInitialization {
         barcaHomeSize.add(productSizeControllerLocal.createSizeForProduct(new ProductSize("L", 10)));
         barcaHomeSize.add(productSizeControllerLocal.createSizeForProduct(new ProductSize("M", 10)));
 
-        Product BarcaHomeProduct = new Product("Barca0001", "Barcelona Home 2017/18", "Description", 399.90, "Barcelona", "Male", "Spain", new Date(), null, barcaHome, barcaHomeSize);
+        cal.set(2018, Calendar.APRIL, 1); //Year, month and day of month
+        date = cal.getTime();
+
+        Product BarcaHomeProduct = new Product("Barca0001", "Barcelona Home 2017/18", "Description", 200.90, "Barcelona", "Male", "Spain", date, null, barcaHome, barcaHomeSize);
         productControllerLocal.CreateNewProduct(BarcaHomeProduct);
+
+        //Barca Away
+        List<Images> barcaAway = new ArrayList<>();
+        Images BarcaProductAway_Main = new Images("images/products/barca_away.jpg");
+        barcaAway.add(imageControllerLocal.createNewImage(BarcaProductAway_Main));
+        Images Barca_ProductAway_Sub1 = new Images("TeamName_Sub1");
+        barcaHome.add(imageControllerLocal.createNewImage(Barca_ProductAway_Sub1));
+        Images Barca_ProductAway_Sub2 = new Images("TeamName_Sub2");
+        barcaAway.add(imageControllerLocal.createNewImage(Barca_ProductAway_Sub2));
+        Images Barca_ProductAway_Sub3 = new Images("TeamName_Sub2");
+        barcaAway.add(imageControllerLocal.createNewImage(Barca_ProductAway_Sub3));
+
+        List<ProductSize> barcaAwaySize = new ArrayList<>();
+        barcaAwaySize.add(productSizeControllerLocal.createSizeForProduct(new ProductSize("XL", 10)));
+        barcaAwaySize.add(productSizeControllerLocal.createSizeForProduct(new ProductSize("L", 10)));
+        barcaAwaySize.add(productSizeControllerLocal.createSizeForProduct(new ProductSize("M", 10)));
+
+        cal.set(2018, Calendar.APRIL, 20); //Year, month and day of month
+        date = cal.getTime();
+
+        Product BarcaAwayProduct = new Product("BAR0002", "Barcelona Away 2017/18", "Description", 111.80, "Barcelona", "Male", "Spain", date, null, barcaAway, barcaAwaySize);
+        productControllerLocal.CreateNewProduct(BarcaAwayProduct);
+
+        //Chelsea Home
+        List<Images> chelseaHome = new ArrayList<>();
+        Images ChealseaProductHome_Main = new Images("images/products/chel_home.jpg");
+        chelseaHome.add(imageControllerLocal.createNewImage(ChealseaProductHome_Main));
+        Images ChealseaProductHome_Sub1 = new Images("TeamName_Sub1");
+        chelseaHome.add(imageControllerLocal.createNewImage(ChealseaProductHome_Sub1));
+        Images ChealseaProductHome_Sub2 = new Images("TeamName_Sub2");
+        chelseaHome.add(imageControllerLocal.createNewImage(ChealseaProductHome_Sub2));
+        Images ChealseaProductHome_Sub3 = new Images("TeamName_Sub2");
+        chelseaHome.add(imageControllerLocal.createNewImage(ChealseaProductHome_Sub3));
+
+        List<ProductSize> chelseaHomeSize = new ArrayList<>();
+        chelseaHomeSize.add(productSizeControllerLocal.createSizeForProduct(new ProductSize("XL", 10)));
+        chelseaHomeSize.add(productSizeControllerLocal.createSizeForProduct(new ProductSize("L", 10)));
+        chelseaHomeSize.add(productSizeControllerLocal.createSizeForProduct(new ProductSize("M", 10)));
+
+        cal.set(2018, Calendar.MARCH, 14); //Year, month and day of month
+        date = cal.getTime();
+
+        Product ChelseaHomeProduct = new Product("CHL0001", "Chelsea Home 2017/18", "Description", 129.90, "Chelsea", "Male", "England", date, null, chelseaHome, chelseaHomeSize);
+        productControllerLocal.CreateNewProduct(ChelseaHomeProduct);
+
+        //Chelsea Away
+        List<Images> chelseaAway = new ArrayList<>();
+        Images ChealseaProductAway_Main = new Images("images/products/chel_away.jpg");
+        chelseaAway.add(imageControllerLocal.createNewImage(ChealseaProductAway_Main));
+        Images ChealseaProductAway_Sub1 = new Images("TeamName_Sub1");
+        chelseaAway.add(imageControllerLocal.createNewImage(ChealseaProductAway_Sub1));
+        Images ChealseaProductAway_Sub2 = new Images("TeamName_Sub2");
+        chelseaAway.add(imageControllerLocal.createNewImage(ChealseaProductAway_Sub2));
+        Images ChealseaProductAway_Sub3 = new Images("TeamName_Sub2");
+        chelseaAway.add(imageControllerLocal.createNewImage(ChealseaProductAway_Sub3));
+
+        List<ProductSize> chelseaAwaySize = new ArrayList<>();
+        chelseaAwaySize.add(productSizeControllerLocal.createSizeForProduct(new ProductSize("XL", 20)));
+        chelseaAwaySize.add(productSizeControllerLocal.createSizeForProduct(new ProductSize("S", 10)));
+        chelseaAwaySize.add(productSizeControllerLocal.createSizeForProduct(new ProductSize("M", 15)));
+
+        cal.set(2018, Calendar.FEBRUARY, 28); //Year, month and day of month
+        date = cal.getTime();
+
+        Product ChelseaAwayProduct = new Product("CHL0002", "Chelsea Away 2017/18", "Description", 100, "Chelsea", "Male", "England", date, null, chelseaAway, chelseaAwaySize);
+        productControllerLocal.CreateNewProduct(ChelseaAwayProduct);
+
+        //Real Madrid Home
+        List<Images> rmHome = new ArrayList<>();
+        Images RmProductHome_Main = new Images("images/products/rm_home.jpg");
+        rmHome.add(imageControllerLocal.createNewImage(RmProductHome_Main));
+        Images Rm_ProductHome_Sub1 = new Images("TeamName_Sub1");
+        rmHome.add(imageControllerLocal.createNewImage(Rm_ProductHome_Sub1));
+        Images Rm_ProductHome_Sub2 = new Images("TeamName_Sub2");
+        rmHome.add(imageControllerLocal.createNewImage(Rm_ProductHome_Sub2));
+        Images Rm_ProductHome_Sub3 = new Images("TeamName_Sub2");
+        rmHome.add(imageControllerLocal.createNewImage(Rm_ProductHome_Sub3));
+
+        List<ProductSize> rmHomeSize = new ArrayList<>();
+        rmHomeSize.add(productSizeControllerLocal.createSizeForProduct(new ProductSize("XL", 10)));
+        rmHomeSize.add(productSizeControllerLocal.createSizeForProduct(new ProductSize("L", 10)));
+        rmHomeSize.add(productSizeControllerLocal.createSizeForProduct(new ProductSize("M", 10)));
+
+        cal.set(2018, Calendar.FEBRUARY, 12); //Year, month and day of month
+        date = cal.getTime();
+
+        Product RmHomeProduct = new Product("RM0001", "Real Madrid Home 2017/18", "Description", 59.90, "Real Madrid", "Male", "Spain", date, null, rmHome, rmHomeSize);
+        productControllerLocal.CreateNewProduct(RmHomeProduct);
+
+        //Real Madrid Away
+        List<Images> rmAway = new ArrayList<>();
+        Images RmProductAway_Main = new Images("images/products/rm_away.jpg");
+        rmAway.add(imageControllerLocal.createNewImage(RmProductAway_Main));
+        Images Rm_ProductAway_Sub1 = new Images("TeamName_Sub1");
+        rmAway.add(imageControllerLocal.createNewImage(Rm_ProductAway_Sub1));
+        Images Rm_ProductAway_Sub2 = new Images("TeamName_Sub2");
+        rmAway.add(imageControllerLocal.createNewImage(Rm_ProductAway_Sub2));
+        Images Rm_ProductAway_Sub3 = new Images("TeamName_Sub2");
+        rmAway.add(imageControllerLocal.createNewImage(Rm_ProductAway_Sub3));
+
+        List<ProductSize> rmAwaySize = new ArrayList<>();
+        rmAwaySize.add(productSizeControllerLocal.createSizeForProduct(new ProductSize("XL", 10)));
+        rmAwaySize.add(productSizeControllerLocal.createSizeForProduct(new ProductSize("L", 10)));
+        rmAwaySize.add(productSizeControllerLocal.createSizeForProduct(new ProductSize("M", 10)));
+
+        cal.set(2018, Calendar.MARCH, 1); //Year, month and day of month
+        date = cal.getTime();
+
+        Product RmAwayProduct = new Product("RM0002", "Real Madrid Away 2017/18", "Description", 59.90, "Real Madrid", "Male", "Spain", date, null, rmAway, rmAwaySize);
+        productControllerLocal.CreateNewProduct(RmAwayProduct);
+        
+        //AC Milan Home
+        List<Images> acMilanHome = new ArrayList<>();
+        Images acMilanProductHome_Main = new Images("images/products/acmilan_home.jpg");
+        acMilanHome.add(imageControllerLocal.createNewImage(acMilanProductHome_Main));
+        Images acMilan_ProductHome_Sub1 = new Images("TeamName_Sub1");
+        acMilanHome.add(imageControllerLocal.createNewImage(acMilan_ProductHome_Sub1));
+        Images acMilan_ProductHome_Sub2 = new Images("TeamName_Sub2");
+        acMilanHome.add(imageControllerLocal.createNewImage(acMilan_ProductHome_Sub2));
+        Images acMilan_ProductHome_Sub3 = new Images("TeamName_Sub2");
+        acMilanHome.add(imageControllerLocal.createNewImage(acMilan_ProductHome_Sub3));
+
+        List<ProductSize> acMilanHomeSize = new ArrayList<>();
+        acMilanHomeSize.add(productSizeControllerLocal.createSizeForProduct(new ProductSize("XL", 5)));
+        acMilanHomeSize.add(productSizeControllerLocal.createSizeForProduct(new ProductSize("L", 7)));
+        acMilanHomeSize.add(productSizeControllerLocal.createSizeForProduct(new ProductSize("S", 9)));
+
+        cal.set(2018, Calendar.MARCH, 26); //Year, month and day of month
+        date = cal.getTime();
+
+        Product AcMilanHomeProduct = new Product("ACM0001", "AC Milan Home 2017/18", "Description", 59.90, "AC Milan", "Male", "Italy", date, null, acMilanHome, acMilanHomeSize);
+        productControllerLocal.CreateNewProduct(AcMilanHomeProduct);
 
         //Chealse Home
         /*Images ChealseaProductHome_Main = new Images("<TeamName>_Main example ");
@@ -254,7 +396,7 @@ public class DataInitialization {
         Images ChealseaProductAway_Sub1 = new Images("TeamName_Sub1");
         Images ChealseaProductAway_Sub2 = new Images("TeamName_Sub2");
         Images ChealseaProductAway_Sub3 = new Images("TeamName_Sub2");*/
-    /*    List<Images> chealseaHome = new ArrayList<>();
+ /*    List<Images> chealseaHome = new ArrayList<>();
         Images ChealseaProductHome_Main = new Images("<TeamName>_Main example ");
         chealseaHome.add(imageControllerLocal.createNewImage(ChealseaProductHome_Main));
         Images ChealseaProductHome_Sub1 = new Images("TeamName_Sub1");
@@ -263,7 +405,6 @@ public class DataInitialization {
         chealseaHome.add(imageControllerLocal.createNewImage(ChealseaProductHome_Sub2));
         Images ChealseaProductHome_Sub3 = new Images("TeamName_Sub2");
         chealseaHome.add(imageControllerLocal.createNewImage(ChealseaProductHome_Sub3));*/
-      
         //Liverpoll Home
         /*   Images LiverpoolProductHome_Main = new Images("<TeamName>_Main example ");
          Images LiverpoolProductHome_Sub1 = new Images("TeamName_Sub1");
