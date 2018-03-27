@@ -1,0 +1,39 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 23 Mar, 2018, 7:16:14 PM
+    Author     : David
+*/
+
+.jqplot-axis
+{
+    color:white !important;
+}
+
+.jqplot-xaxis{
+
+    color: orange !important;
+}
+.jqplot-title{
+
+    color: orange !important;
+}
+
+
+
+.jqplot-series-canvas {
+   /* background: lightgray;*/
+}
+
+/*.ui-tabs .ui-tabs-nav li{float:right!important;}
+*/
+
+
+.topCustomerDiv{
+    color :  orange!important;
+    /*rgb(140,220,255)*/
+    text-align: center !important;
+}

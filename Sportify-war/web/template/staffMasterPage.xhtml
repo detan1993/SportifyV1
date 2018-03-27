@@ -18,13 +18,19 @@
                 
                
             }
+            
+            ::-webkit-scrollbar {
+                display: none;
+            }
+            
+          
 
         </style>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <title>Sportify Staff Portal</title>
     </h:head>
 
-    <h:body>
+    <h:body >
         <h:outputStylesheet library="css" name="default.css"/>
         <h:outputStylesheet library="css" name="staffMasterPage.css"/>
 
@@ -38,16 +44,16 @@
             <p:layoutUnit position="west" size="220"  gutter="0">
                 <h:form>
                     <p:menu style="width:200px; margin-top: 60px;">
-                        <p:menuitem styleClass="staffNav_menuItem" value="Profile" icon="ui-icon-star"/>
-                        <p:menuitem value="Product"  styleClass="staffNav_menuItem" outcome="/staffProduct.xhtml" icon="ui-icon-star"/>
-                        <p:menuitem value="Voucher" styleClass="staffNav_menuItem" outcome="/staffVoucher.xhtml" icon="ui-icon-star"/>
-                        <p:menuitem  value="Dashboard" styleClass="staffNav_menuItem" outcome="/staffDashboard.xhtml" icon="ui-icon-star"/>
-                        <p:menuitem value="Logout" styleClass="staffNav_menuItem" actionListener="#{staffIndexManagedBean.logout}" icon="ui-icon-disk" />
+                        <p:menuitem styleClass="staffNav_menuItem" value="PROFILE" icon="ui-icon-star"/>
+                        <p:menuitem value="PRODUCT"  styleClass="staffNav_menuItem" outcome="/staffProduct.xhtml" icon="ui-icon-star"/>
+                        <p:menuitem value="VOUCHER" styleClass="staffNav_menuItem" outcome="/staffVoucher.xhtml" icon="ui-icon-star"/>
+                        <p:menuitem  value="DASHBOARD" styleClass="staffNav_menuItem" outcome="/staffDashboard.xhtml" icon="ui-icon-star"/>
+                        <p:menuitem value="LOGOUT" styleClass="staffNav_menuItem" actionListener="#{staffIndexManagedBean.logout}" icon="ui-icon-disk" />
                     </p:menu>
                 </h:form>
             </p:layoutUnit>
 
-            <p:layoutUnit position="center" gutter="0" size="500">
+            <p:layoutUnit position="center" gutter="0" size="500" style="overflow: auto !important">
                      <ui:insert name="center">
                                               
                      </ui:insert>
