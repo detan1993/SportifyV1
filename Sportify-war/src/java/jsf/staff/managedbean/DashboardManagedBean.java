@@ -87,7 +87,11 @@ public class DashboardManagedBean implements Serializable {
 
     @PostConstruct
     public void postConstruct() {
-       totalSalesByMonthsCountry = dashboardControllerLocal.retrieveAllSalesByMonths();
+        
+        try{
+            
+        
+            totalSalesByMonthsCountry = dashboardControllerLocal.retrieveAllSalesByMonths();
        totalSalesByTeam = dashboardControllerLocal.retrieveSalesByTeamAndCountry();
        totalSalesByTeamFilter = dashboardControllerLocal.getCountries();
         setProducts(productControllerLocal.retrieveProduct());
@@ -108,6 +112,12 @@ public class DashboardManagedBean implements Serializable {
         createLineModels();
         createRatingBarModels();
         livePieModel = getLiveComparisonPieChart();
+       
+        }
+        catch(Exception ex)
+        {
+            ex.printStackTrace();
+        }
         
         
     }
@@ -183,7 +193,9 @@ public class DashboardManagedBean implements Serializable {
         
         for(int i=0; i<totalCountry; i++)
         {
-                      
+            
+            System.out.println("Total country is " + totalCountry);
+            
             LineChartSeries c = new LineChartSeries();
             String countryName = totalSalesByMonthsCountry.get(0).get(i).getCountryName();
             
@@ -196,6 +208,8 @@ public class DashboardManagedBean implements Serializable {
             
             for(int j=0; j< totalSalesByMonthsCountry.size(); j++)
             {
+                  System.out.println("j is" + j);
+            
                   monthName = totalSalesByMonthsCountry.get(j).get(i).getMonth();
                   salesAmount = totalSalesByMonthsCountry.get(j).get(i).getSales();
                   System.out.println("Country name in managedb bean is " + countryName + " month is " + monthName + " sales is" + salesAmount);

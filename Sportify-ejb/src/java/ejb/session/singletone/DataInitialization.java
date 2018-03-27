@@ -222,8 +222,26 @@ public class DataInitialization {
         arsenalAwaySize.add(productSizeControllerLocal.createSizeForProduct(new ProductSize("L", 15)));
         arsenalAwaySize.add(productSizeControllerLocal.createSizeForProduct(new ProductSize("M", 5)));
 
-        Product ArsenalAwayProduct = new Product("ARS0002", "Arsenal Away 2017/18", "Description", 149.90, "Arsenal", "Male", "England", new Date(), null, arsenalAway, arsenalAwaySize);
+        Product ArsenalAwayProduct = new Product("ARS0002", "Arsenal Away 2017/18", "Description", 349.90, "Arsenal", "Male", "England", new Date(), null, arsenalAway, arsenalAwaySize);
         productControllerLocal.CreateNewProduct(ArsenalAwayProduct);
+        
+        List<Images> barcaHome = new ArrayList<>();
+        Images BarcaProductHome_Main = new Images("<TeamName>_Main example ");
+        barcaHome.add(imageControllerLocal.createNewImage(BarcaProductHome_Main));
+        Images BarcaProductHome_Sub1 = new Images("TeamName_Sub1");
+        barcaHome.add(imageControllerLocal.createNewImage(BarcaProductHome_Sub1));
+        Images BarcaProductHome_Sub2 = new Images("TeamName_Sub2");
+        barcaHome.add(imageControllerLocal.createNewImage(BarcaProductHome_Sub2));
+        Images BarcaProductHome_Sub3 = new Images("TeamName_Sub2");
+        barcaHome.add(imageControllerLocal.createNewImage(BarcaProductHome_Sub3));
+
+        List<ProductSize> barcaHomeSize = new ArrayList<>();
+        barcaHomeSize.add(productSizeControllerLocal.createSizeForProduct(new ProductSize("XL", 10)));
+        barcaHomeSize.add(productSizeControllerLocal.createSizeForProduct(new ProductSize("L", 10)));
+        barcaHomeSize.add(productSizeControllerLocal.createSizeForProduct(new ProductSize("M", 10)));
+
+        Product BarcaHomeProduct = new Product("Barca0001", "Barcelona Home 2017/18", "Description", 399.90, "Barcelona", "Male", "Spain", new Date(), null, barcaHome, barcaHomeSize);
+        productControllerLocal.CreateNewProduct(BarcaHomeProduct);
 
         //Chealse Home
         /*Images ChealseaProductHome_Main = new Images("<TeamName>_Main example ");
@@ -236,7 +254,7 @@ public class DataInitialization {
         Images ChealseaProductAway_Sub1 = new Images("TeamName_Sub1");
         Images ChealseaProductAway_Sub2 = new Images("TeamName_Sub2");
         Images ChealseaProductAway_Sub3 = new Images("TeamName_Sub2");*/
-        List<Images> chealseaHome = new ArrayList<>();
+    /*    List<Images> chealseaHome = new ArrayList<>();
         Images ChealseaProductHome_Main = new Images("<TeamName>_Main example ");
         chealseaHome.add(imageControllerLocal.createNewImage(ChealseaProductHome_Main));
         Images ChealseaProductHome_Sub1 = new Images("TeamName_Sub1");
@@ -244,7 +262,7 @@ public class DataInitialization {
         Images ChealseaProductHome_Sub2 = new Images("TeamName_Sub2");
         chealseaHome.add(imageControllerLocal.createNewImage(ChealseaProductHome_Sub2));
         Images ChealseaProductHome_Sub3 = new Images("TeamName_Sub2");
-        chealseaHome.add(imageControllerLocal.createNewImage(ChealseaProductHome_Sub3));
+        chealseaHome.add(imageControllerLocal.createNewImage(ChealseaProductHome_Sub3));*/
       
         //Liverpoll Home
         /*   Images LiverpoolProductHome_Main = new Images("<TeamName>_Main example ");
