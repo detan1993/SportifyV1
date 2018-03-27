@@ -8,7 +8,9 @@ package ejb.session.stateless;
 import entity.Product;
 import entity.ProductSize;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import javax.ejb.EJB;
 import javax.ejb.Local;
 import javax.ejb.Remote;
 import javax.ejb.Stateless;
@@ -24,7 +26,6 @@ import javax.persistence.Query;
 @Local(ProductControllerLocal.class)
 @Remote(ProductControllerRemote.class)
 public class ProductController implements ProductControllerRemote, ProductControllerLocal {
-
     @PersistenceContext(unitName = "Sportify-ejbPU")
     private EntityManager em;
 
@@ -116,16 +117,22 @@ public class ProductController implements ProductControllerRemote, ProductContro
      public List<Product> retrieveProductsRunningLow(){
         List<Product> allProductList = retrieveProduct();
         
-        for(Product p : allProductList){
+       //Using iterator as forloop cannot remove sizes while looping through it
+        System.out.println("******************************************Begin retrieve products running low");
+        
+        
+        Iterator<Product> i = allProductList.iterator();
+        while(i.hasNext()){
+            Product p = i.next();
+            System.out.println("Product Id : " + p.getId() + " Name: " + p.getProductName() + " Sizes: " + p.getSizes().size());
             
-            System.out.println("*********************Product: " + p.getProductName());
+            Iterator<ProductSize> is = p.getSizes().iterator();
+            while(is.hasNext()){
+                ProductSize ps = is.next();
             
-            for(ProductSize s : p.getSizes()){
-                
-                System.out.println("*********************Product size: " + s.getSize() + " quantity: " + s.getQty());
-                
-                if(s.getQty()>10){
-                    p.getSizes().remove(s);
+                System.out.println("Size: " + ps.getSize() + " Qty: " + ps.getQty());
+                if(ps.getQty() > 10){
+                    is.remove();
                 }
             }
         }

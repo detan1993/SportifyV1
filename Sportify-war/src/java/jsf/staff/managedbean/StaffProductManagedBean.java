@@ -6,6 +6,7 @@
 package jsf.staff.managedbean;
 
 import ejb.session.stateless.ProductControllerLocal;
+import ejb.session.stateless.ProductSizeControllerLocal;
 import entity.Product;
 import entity.ProductSize;
 import java.io.Serializable;
@@ -31,6 +32,9 @@ public class StaffProductManagedBean  implements Serializable{
     @EJB(name = "ProductControllerLocal")
     private ProductControllerLocal productControllerLocal;
     
+    @EJB(name = "ProductSizeControllerLocal")
+    private ProductSizeControllerLocal productSizeControllerLocal;
+    
     private List<Product> products;
     private List<Product> lowStockProducts;
     private Product newProduct;
@@ -54,6 +58,11 @@ public class StaffProductManagedBean  implements Serializable{
         
         //retrieve list of products
         products = productControllerLocal.retrieveProductIncludingInactive();
+        newProduct = new Product();
+        ProductSize s = new ProductSize("",0);
+        newProduct.getSizes().add(s);
+        
+        System.out.println("POST CONSTRUCT: " + newProduct.getSizes().size());
         
         //put the products into the filter list . This is for the facelet view 
         filteredProducts = products;
@@ -68,12 +77,14 @@ public class StaffProductManagedBean  implements Serializable{
     {
         try
         {
+            for(ProductSize ps : newProduct.getSizes()){
+                productSizeControllerLocal.createSizeForProduct(ps);
+            }
+            
             Product newProductRecord = productControllerLocal.CreateNewProduct(newProduct);
-            //add newly created product to products and filter list.
             products.add(newProductRecord);
             filteredProducts.add(newProductRecord);
             
-            //destroy the new product data
             newProduct = new Product();
 
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New product created successfully (Product ID: " + newProductRecord.getId() + ")", null));
@@ -90,7 +101,7 @@ public class StaffProductManagedBean  implements Serializable{
         try{
             
             productControllerLocal.updateProduct(selectedProductsToView);
-             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New product created successfully (Product ID: " + selectedProductsToView.getId() + ")", null));
+             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Product updated successfully (Product ID: " + selectedProductsToView.getId() + ")", null));
             
         }catch(Exception ex){
               FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred while updating the product: " + ex.getMessage(), null));
@@ -194,10 +205,19 @@ public class StaffProductManagedBean  implements Serializable{
     }
     
     
-    public void addProductSize(ActionEvent event){
+    public void addProductSize_create(){
+        System.out.println("Total Sizes: " + newProduct.getSizes().size());
+        newProduct.getSizes().add(new ProductSize());
+    }
+    public void addProductSize_update(ActionEvent event){
         System.out.println("Total Sizes: " + selectedProductsToView.getSizes().size());
         selectedProductsToView.getSizes().add(new ProductSize());
     }
+    public void removeProductSize_create(ProductSize size){
+        System.out.println("Size to be removed: " + size.getSize() + " qty: " + size.getQty());
+        newProduct.getSizes().remove(size);
+    }
+    
     
     /**
      * @return the products
@@ -223,7 +243,7 @@ public class StaffProductManagedBean  implements Serializable{
     /**
      * @param newProduct the newProductEntity to set
      */
-    public void setNewProductEntity(Product newProduct) {
+    public void setNewProduct(Product newProduct) {
         this.newProduct = newProduct;
     }
 

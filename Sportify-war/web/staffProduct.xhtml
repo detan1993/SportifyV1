@@ -8,11 +8,55 @@
                 xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
   
         <ui:define name="center">
-            <p:tabView dynamic="true" >
+            <p:tabView>
             <p:tab title="Create Product">
-                <h:panelGrid columns="6" cellpadding="10">
-                    
-                </h:panelGrid>
+                <h:form id="form_createProduct">
+                    <p:commandButton value="Create new Product" actionListener="#{staffProductManagedBean.createNewProduct}" update="@form" style="float:right;"/>
+                    <p:panel>
+                        <p:panelGrid columns="2">
+                            <p:panelGrid columns="4">
+                                <h:outputLabel for="productName" value="Product Name:" />
+                                <p:inputText  value="#{staffProductManagedBean.newProduct.productName}" required="true"/>
+                                <h:outputLabel for="productCode" value="Product Code:" />
+                                <p:inputText  value="#{staffProductManagedBean.newProduct.productCode}" required="true"/>
+                                <h:outputLabel for="country" value="Country: " />
+                                <p:inputText value="#{staffProductManagedBean.newProduct.country}" required="true"/>
+                                <h:outputLabel for="team" value="Team: " />
+                                <p:inputText value="#{staffProductManagedBean.newProduct.team}" required="true"/>
+                            </p:panelGrid>
+                            <p:panelGrid columns="2">
+                                <h:outputLabel for="price" value="Price: $" />
+                                <p:inputText  value="#{staffProductManagedBean.newProduct.price}"  required="true"/>
+                                <h:outputLabel for="description" value="Description:"/>
+                                <h:inputTextarea cols="60" rows="2" value="#{staffProductManagedBean.newProduct.description}" required="true" style="resize:none;"/>
+                            </p:panelGrid>
+                        </p:panelGrid>
+                    </p:panel>
+                    <p:panel>
+                        <p:panelGrid>
+                            <p:panel style="width:49%;float:left;">
+                                <p:fileUpload fileUploadListener="#{staffProductManagedBean.handleFileUpload}" mode="advanced" dragDropSupport="false"
+                                              multiple="true" update="@form" sizeLimit="100000" fileLimit="99" allowTypes="/(\.|\/)(gif|jpe?g|png)$/" />
+                            </p:panel>
+                            <p:panel style="width:49%;float:right;">
+                                <p:commandButton value="Add a new Size" >
+                                    <p:ajax listener="#{staffProductManagedBean.addProductSize_create}" update="pg_createProductSize" />
+                                </p:commandButton>
+                                <h:panelGroup id="pg_createProductSize">
+                                    <br />
+                                    <ui:repeat value="#{staffProductManagedBean.newProduct.sizes}" var="size">
+                                        <h:outputLabel value="Size: " />
+                                        <p:inputText value="#{size.size}" />&nbsp;&nbsp;&nbsp;
+                                        <h:outputLabel value="Quantity: " />
+                                        <p:inputText value="#{size.qty}" />&nbsp;&nbsp;&nbsp;
+                                        <p:commandButton icon="ui-icon-trash" action="#{staffProductManagedBean.removeProductSize_create(size)}" update="#{p:component('pg_createProductSize')}" />
+                                        <br/><!--{p:component('pg_createProductSize')-->
+                                    </ui:repeat>
+                               </h:panelGroup>
+                            </p:panel>
+                        </p:panelGrid>
+                    </p:panel>
+                </h:form>
             </p:tab>
             <p:tab title="View Products">
                 <h:form id="formAllProducts">
@@ -143,7 +187,7 @@
                         </p:panelGrid>
                     </p:tab>
                     <p:tab title="Product Size and Quantity">
-                        <p:commandButton value="Add a new Size" actionListener="#{staffProductManagedBean.addProductSize}" update="pg_productSizes"/>
+                        <p:commandButton value="Add a new Size" actionListener="#{staffProductManagedBean.addProductSize_update}" update="pg_productSizes"/>
                          <h:panelGroup id="pg_productSizes">
                              <br />
                              <ui:repeat value="#{staffProductManagedBean.selectedProductsToView.sizes}" var="size">
