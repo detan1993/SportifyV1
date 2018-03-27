@@ -38,15 +38,6 @@
             }
         </style>
 
-<!--        <script>
-            $(function () {
-                $(".productPageLink a").attr('href', "#{request.contextPath}/products.xhtml");
-            });
-
-            $(".productPageLink").click(function () {
-                window.location.href = "#{request.contextPath}/products.xhtm1";
-            }).css('cursor', 'pointer');
-        </script>-->
     </h:head>
 
     <h:body>
@@ -79,6 +70,10 @@
 
                 <ez:LoginComponent />
 
+            </p:layoutUnit>
+            
+             <p:layoutUnit position="west" gutter="0">
+                <ui:insert name="west">west</ui:insert>
             </p:layoutUnit>
 
             <p:layoutUnit position="center" gutter="0">

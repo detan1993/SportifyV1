@@ -15,17 +15,34 @@
     <cc:implementation>
         <!-- If user has not login -->
         <div style="margin-left: 1200px;margin-top: -30px;">
-            
-             <h:panelGroup rendered="#{sessionScope['isLogin']}">
-                 <h:form>
-                <h:outputText value="Hi #{sessionScope['currentCustomer'].firstName}!" />&nbsp;
-                <p:commandButton id="logOutButton" value="LOGOUT" actionListener="#{customerLoginManagedBean.logout}" icon="ui-icon-unlocked"/>
+
+            <h:panelGroup rendered="#{sessionScope['isLogin']}">
+                <h:form>
+                    <h:outputText value="Hi #{sessionScope['currentCustomer'].firstName}!" />&nbsp;
+                    <p:commandButton id="logOutButton" value="LOGOUT" actionListener="#{customerLoginManagedBean.logout}" icon="ui-icon-unlocked"/>
+                     <p:commandButton icon="fa fa-shopping-cart">
+                         <h:outputLabel><div style="position: absolute;
+                                        right: 105px;
+                                        /* left: 20px; */
+                                        top: 10px;
+                                        background-color: orange;
+                                        line-height: px;
+                                        width: 25px;
+                                        height: 20px;
+                                        border-radius: 10px;
+                                        text-align: center;
+                                        z-index: 2;
+                                        font-weight: bold;">3</div>
+                    </h:outputLabel>
+                </p:commandButton>
                 </h:form>
             </h:panelGroup>
-            
+
             <h:panelGroup rendered="#{!sessionScope['isLogin']}">
                 <p:commandButton id="signUpButton" value="SIGN UP" onclick="PF('signUpDialog').show(); PF('loginDialog').hide()"/>&nbsp;
-                <p:commandButton id="loginButton" value="LOGIN" onclick="PF('loginDialog').show();PF('signUpDialog').hide()"/>
+                <p:commandButton id="loginButton" value="LOGIN" onclick="PF('loginDialog').show();PF('signUpDialog').hide()"/>&nbsp;
+                <p:commandButton icon="fa fa-shopping-cart" onclick="PF('loginDialog').show();PF('signUpDialog').hide()" />
+
                 <ui:include src="/customerLogin.xhtml"/>
                 <ui:include src="/customerSignUp.xhtml"/>
             </h:panelGroup> 

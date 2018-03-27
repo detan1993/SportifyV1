@@ -32,10 +32,6 @@ public class ProductReview implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date reviewDate;
     
-    private String staffResponse;
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date staffResponseDate;
-    
     @ManyToOne
     private Product product;
     @ManyToOne
@@ -44,12 +40,10 @@ public class ProductReview implements Serializable {
     public ProductReview() {
     }
 
-    public ProductReview(double rating, String review, Date reviewDate, String staffResponse, Date staffResponseDate, Product product, CustomerOrder customerOrder) {
+    public ProductReview(double rating, String review, Date reviewDate,Product product, CustomerOrder customerOrder) {
         this.rating = rating;
         this.review = review;
         this.reviewDate = reviewDate;
-        this.staffResponse = staffResponse;
-        this.staffResponseDate = staffResponseDate;
         this.product = product;
         this.customerOrder = customerOrder;
     }
@@ -85,22 +79,6 @@ public class ProductReview implements Serializable {
 
     public void setReviewDate(Date reviewDate) {
         this.reviewDate = reviewDate;
-    }
-
-    public String getStaffResponse() {
-        return staffResponse;
-    }
-
-    public void setStaffResponse(String staffResponse) {
-        this.staffResponse = staffResponse;
-    }
-
-    public Date getStaffResponseDate() {
-        return staffResponseDate;
-    }
-
-    public void setStaffResponseDate(Date staffResponseDate) {
-        this.staffResponseDate = staffResponseDate;
     }
     
     public CustomerOrder getCustomerOrder() {

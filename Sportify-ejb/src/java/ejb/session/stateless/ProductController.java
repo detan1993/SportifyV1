@@ -8,7 +8,9 @@ package ejb.session.stateless;
 import entity.Product;
 import entity.ProductSize;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import javax.ejb.EJB;
 import javax.ejb.Local;
 import javax.ejb.Remote;
 import javax.ejb.Stateless;
@@ -24,7 +26,6 @@ import javax.persistence.Query;
 @Local(ProductControllerLocal.class)
 @Remote(ProductControllerRemote.class)
 public class ProductController implements ProductControllerRemote, ProductControllerLocal {
-
     @PersistenceContext(unitName = "Sportify-ejbPU")
     private EntityManager em;
 
@@ -46,9 +47,14 @@ public class ProductController implements ProductControllerRemote, ProductContro
     
     @Override
     public List<Product> retrieveProduct(){
+      Query query = em.createQuery("SELECT p FROM Product p WHERE p.status='A'");
+      return query.getResultList();
+    }
+    
+    @Override
+    public List<Product> retrieveProductIncludingInactive(){
       Query query = em.createQuery("SELECT p FROM Product p");
       return query.getResultList();
-        
     }
     
     @Override
@@ -60,14 +66,14 @@ public class ProductController implements ProductControllerRemote, ProductContro
     
     @Override
     public List<Product> retrieveProductsByTeam(String team){
-        Query query = em.createQuery("SELECT p FROM Product p WHERE p.team=:team");
+        Query query = em.createQuery("SELECT p FROM Product p WHERE p.team=:team AND p.status='A'");
         query.setParameter("team", team);
         return query.getResultList();
     }
     
     @Override
      public List<Product> retrieveProductsByCountry(String country){
-        Query query = em.createQuery("SELECT p FROM Product p WHERE p.country=:country");
+        Query query = em.createQuery("SELECT p FROM Product p WHERE p.country=:country  AND p.status='A'");
         query.setParameter("country", country);
         return query.getResultList();
     }
@@ -76,7 +82,7 @@ public class ProductController implements ProductControllerRemote, ProductContro
     public List<List<String>> retrieveCountriesAndTeams(){
         List<List<String>> countryAndTeamList = new ArrayList<List<String>>();
         
-        Query query = em.createQuery("SELECT p.country,p.team FROM Product p ORDER BY p.country");
+        Query query = em.createQuery("SELECT p.country,p.team FROM Product p WHERE p.status='A' ORDER BY p.country");
         List<Object[]> results = query.getResultList();
         
         for(Object[] o : results){
@@ -106,30 +112,27 @@ public class ProductController implements ProductControllerRemote, ProductContro
         return countryAndTeamList;
     }
     
-    //udpate product here
-    
-    //delete product here
-    
-    
-    
-    /*
-     * 
-     * Gets a list of products with sizes quantity <=10 , does not return sizes with >10
-     */
+    // Gets a list of products with sizes quantity <=10 , does not return sizes with >10
     @Override
      public List<Product> retrieveProductsRunningLow(){
         List<Product> allProductList = retrieveProduct();
         
-        for(Product p : allProductList){
+       //Using iterator as forloop cannot remove sizes while looping through it
+        System.out.println("******************************************Begin retrieve products running low");
+        
+        
+        Iterator<Product> i = allProductList.iterator();
+        while(i.hasNext()){
+            Product p = i.next();
+            System.out.println("Product Id : " + p.getId() + " Name: " + p.getProductName() + " Sizes: " + p.getSizes().size());
             
-            System.out.println("*********************Product: " + p.getProductName());
+            Iterator<ProductSize> is = p.getSizes().iterator();
+            while(is.hasNext()){
+                ProductSize ps = is.next();
             
-            for(ProductSize s : p.getSizes()){
-                
-                System.out.println("*********************Product size: " + s.getSize() + " quantity: " + s.getQty());
-                
-                if(s.getQty()>10){
-                    p.getSizes().remove(s);
+                System.out.println("Size: " + ps.getSize() + " Qty: " + ps.getQty());
+                if(ps.getQty() > 10){
+                    is.remove();
                 }
             }
         }
@@ -156,5 +159,11 @@ public class ProductController implements ProductControllerRemote, ProductContro
         
     }
     
+    @Override
+    public void deleteProduct(Product product){
+        Product toBeDeleted = retrieveSingleProduct(product.getId());
+        toBeDeleted.setStatus("I");
+        em.flush();
+    }
     
 }

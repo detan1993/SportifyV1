@@ -6,6 +6,7 @@
 package entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Entity;
@@ -37,6 +38,7 @@ public class Product implements Serializable {
     private String country;
     @Temporal(TemporalType.TIMESTAMP)
     private Date dateCreated;
+    private String status;
     
     @OneToMany
     private List<ProductSize> sizes;
@@ -48,6 +50,9 @@ public class Product implements Serializable {
     private List<Images> images;
 
     public Product() {
+        this.sizes = new ArrayList<ProductSize>();
+        this.images = new ArrayList<Images>();
+        this.status = "A";
     }
 
     public Product(String productCode, String productName, String description, double price, String team, String gender, String country, Date dateCreated, List<ProductReview> productReviews, List<Images> images, List<ProductSize> sizes) {
@@ -61,7 +66,9 @@ public class Product implements Serializable {
         this.dateCreated = dateCreated;
         this.sizes = sizes;
         this.productReviews = productReviews;
+        
         this.images = images;
+        this.status="A";
     }
 
    
@@ -152,6 +159,14 @@ public class Product implements Serializable {
 
     public void setProductReviews(List<ProductReview> productReviews) {
         this.productReviews = productReviews;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     

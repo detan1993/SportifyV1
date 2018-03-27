@@ -1,0 +1,65 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="./template/masterPage.xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:h="http://xmlns.jcp.org/jsf/html">
+
+    <head>
+        <!--        <style>
+                    .divWest{
+                        width:500px !important;
+                    }
+                </style>-->
+    </head>
+
+    <ui:define name="west">
+
+    </ui:define>
+    <!--    <ui:define name="center">
+        <p:contentFlow id="productImages" var="image">   
+            <p:graphicImage name="images/image_ss_1.jpg" value="images/image_ss_1.jpg" styleClass="content" />   
+        </p:contentFlow>
+    </ui:define>
+    -->
+
+    <ui:define name="center">
+        <p:panel style="margin: auto">
+            <p:panel style="width:250px; margin-left:200px;margin-top: -27px">
+                <p:panel style="text-align: center">
+                    <f:facet name="header">
+                        PRODUCT DETAILS 
+                    </f:facet>
+                    <h:outputText style="font-size: 60px" value="$#{viewDetailedManagedBean.product.price} "></h:outputText>
+                </p:panel>
+                <p:panel>
+
+                    <p>Size / Stock(s) Available:</p>
+                    <p:dataList var="productDetails" value="#{viewDetailedManagedBean.sizesAvailable}" id="productSizesGridList" type="definition" style="margin-top:-25px">
+                        <h:outputText value="#{productDetails.size} / #{productDetails.qty} "></h:outputText>
+                    </p:dataList>
+
+                    <f:facet name="footer">
+                        <p:commandButton value="Add to Cart" icon="fa fa-plus-circle" style="margin-top:-25px" /> 
+                    </f:facet>  
+                </p:panel>
+            </p:panel>
+            <h:form id="form">
+                <p:panel>
+                    <p:galleria value="#{viewDetailedManagedBean.images}" var="image" panelHeight="480" style="margin:auto;margin-top:-295px">
+                        <f:facet name="header">
+                            #{viewDetailedManagedBean.product.productName}
+                        </f:facet>
+                        <p:commandButton>
+                            <p:graphicImage name="#{image}"/>
+                            <f:setPropertyActionListener value="#{image}" target="#{viewDetailedManagedBean.selectedImage}" />
+                        </p:commandButton>
+                    </p:galleria>
+                </p:panel>
+
+            </h:form>
+        </p:panel>
+    </ui:define>
+
+</ui:composition>
