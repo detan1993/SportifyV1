@@ -11,6 +11,7 @@ import javax.ejb.Remote;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 /**
  *
@@ -39,6 +40,27 @@ public class ProductSizeController implements ProductSizeControllerRemote, Produ
         em.flush();
         em.refresh(newSizeForProduct);
         return newSizeForProduct;
+    }
+    
+    @Override
+    public ProductSize retrieveSingleProductSize(long id){
+      Query query = em.createQuery("SELECT p FROM ProductSize p WHERE p.id=:id");
+      query.setParameter("id", id);
+      return (ProductSize)query.getResultList().get(0);
+    }
+    
+    @Override
+    public void updateSizeForProduct(ProductSize size){
+        System.out.println("Id: " + size.getId() + " Size: " + size.getSize() + " Qty: " + size.getQty());
+        
+        if(size.getId() != null){
+            ProductSize toUpdate = retrieveSingleProductSize(size.getId());
+            toUpdate.setSize(size.getSize());
+            toUpdate.setQty(size.getQty());
+            em.flush();
+        }else{
+            createSizeForProduct(size);
+        }
     }
     
     

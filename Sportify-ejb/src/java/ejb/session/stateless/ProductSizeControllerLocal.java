@@ -8,6 +8,7 @@ package ejb.session.stateless;
 import entity.ProductSize;
 
 public interface ProductSizeControllerLocal {
-    
-     public ProductSize createSizeForProduct(ProductSize newSizeForProduct);
+    public ProductSize createSizeForProduct(ProductSize newSizeForProduct);
+    public ProductSize retrieveSingleProductSize(long id);
+    public void updateSizeForProduct(ProductSize size);
 }

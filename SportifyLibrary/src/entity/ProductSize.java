@@ -58,9 +58,18 @@ public class ProductSize implements Serializable {
             return false;
         }
         ProductSize other = (ProductSize) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+        /*if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+            return false;
+        }*/
+        
+        if(!this.size.equals(other.size)){
             return false;
         }
+        
+        if(this.qty != other.qty){
+            return false;
+        }
+        
         return true;
     }
 

@@ -10,5 +10,6 @@ import entity.ProductSize;
 public interface ProductSizeControllerRemote {
 
     public ProductSize createSizeForProduct(ProductSize newSizeForProduct);
-    
+    public ProductSize retrieveSingleProductSize(long id);
+    public void updateSizeForProduct(ProductSize size);
 }

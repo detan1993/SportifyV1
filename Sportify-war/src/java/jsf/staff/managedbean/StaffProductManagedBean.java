@@ -11,6 +11,7 @@ import entity.Product;
 import entity.ProductSize;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -71,10 +72,7 @@ public class StaffProductManagedBean  implements Serializable{
         
     }
     
-    
-
-    public void createNewProduct(ActionEvent event)
-    {
+    public void createNewProduct(ActionEvent event){
         try
         {
             for(ProductSize ps : newProduct.getSizes()){
@@ -94,22 +92,19 @@ public class StaffProductManagedBean  implements Serializable{
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred while creating the new product: " + ex.getMessage(), null));
         }
     }
-   
-    public void updateProduct()
-    {
-        
+    public void updateProduct(){
         try{
             
             productControllerLocal.updateProduct(selectedProductsToView);
+            for(ProductSize ps : selectedProductsToView.getSizes()){
+                productSizeControllerLocal.updateSizeForProduct(ps);
+            }
              FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Product updated successfully (Product ID: " + selectedProductsToView.getId() + ")", null));
             
         }catch(Exception ex){
               FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred while updating the product: " + ex.getMessage(), null));
         }
-        
-    
-    }
-    
+    }  
     public void handleFileUpload(FileUploadEvent event) {
         
         /*
@@ -188,9 +183,7 @@ public class StaffProductManagedBean  implements Serializable{
             FacesMessage message = new FacesMessage("Error", event.getFile().getFileName() + " has some problems.");
             FacesContext.getCurrentInstance().addMessage(null, message);
         }*/
-    }
-    
-    
+    } 
     public void deleteProduct(){
         System.out.println("To delete Product id: " + selectedProductToDelete.getId());
         System.out.println("Before deleting size is : " + products.size());
@@ -213,9 +206,11 @@ public class StaffProductManagedBean  implements Serializable{
         System.out.println("Total Sizes: " + selectedProductsToView.getSizes().size());
         selectedProductsToView.getSizes().add(new ProductSize());
     }
-    public void removeProductSize_create(ProductSize size){
-        System.out.println("Size to be removed: " + size.getSize() + " qty: " + size.getQty());
-        newProduct.getSizes().remove(size);
+    public void removeProductSize_create(int index){
+        newProduct.getSizes().remove(index);
+    }
+    public void removeProductSize_update(int index){
+        selectedProductsToView.getSizes().remove(index);
     }
     
     
