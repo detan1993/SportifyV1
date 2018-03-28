@@ -10,7 +10,7 @@
         <ui:define name="center">
             <p:tabView>
             <p:tab title="Create Product">
-                <h:form id="form_createProduct">
+                <h:form id="form_createProduct" enctype="multipart/form-data">
                     <p:commandButton value="Create new Product" actionListener="#{staffProductManagedBean.createNewProduct}" update="@form" style="float:right;"/>
                     <p:panel>
                         <p:panelGrid columns="2">
@@ -35,7 +35,7 @@
                     <p:panel>
                         <p:panelGrid>
                             <p:panel style="width:49%;float:left;">
-                                <p:fileUpload fileUploadListener="#{staffProductManagedBean.handleFileUpload}" mode="advanced" dragDropSupport="false"
+                                <p:fileUpload fileUploadListener="#{staffProductManagedBean.handleFileUpload_create}" mode="advanced" dragDropSupport="false"
                                               multiple="true" update="@form" sizeLimit="10000000" fileLimit="99" allowTypes="/(\.|\/)(gif|jpe?g|png)$/" />
                             </p:panel>
                             <p:panel style="width:49%;float:right;">
