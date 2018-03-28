@@ -1,12 +1,78 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-                template="./template/staffMasterPage.xhtml">
+                template="./template/staffMasterPage.xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
 
     
     <ui:define name="center">
-        <p style="color:orange; font-size:1.3em;"> 
-            Vouchers page - Only Sales role </p>
+        <p:tabView>
+            <p:tab title="Create Voucher">
+                 <h:form id="form_createVoucher">
+                    <p:commandButton value="Create new Voucher" actionListener="#{staffVoucherManagedBean.createNewVoucher}" update="@form"/>
+                    <br/><br/>
+                    
+                        <p:panel header="Details">
+                            <p:panelGrid columns="4" >
+                            <h:outputLabel for="voucherCode" value="Voucher Code" />
+                            <p:inputText  value="#{staffVoucherManagedBean.newVoucher.voucherCode}" required="true"/>
+                            <h:outputLabel for="voucherValue" value="Voucher Value:" />
+                            <p:inputText  value="#{staffVoucherManagedBean.newVoucher.voucherValue}" required="true"/>
+                            <br/>
+                            <h:outputLabel for="voucherQuantity" value="Quantity per Customer: " />
+                            <p:inputText value="#{staffVoucherManagedBean.newVoucher.quantity}" required="true"/>
+                            <h:outputLabel for="expiryDate" value="Expiry Date: " />
+                            <p:inputText value="#{staffVoucherManagedBean.newVoucher.quantity}" required="true"/>
+                               </p:panelGrid>
+                        </p:panel>
+                 
+                </h:form>
+            </p:tab>
+            <p:tab title="View Vouchers">
+                <h:form id="form_allVouchers">
+                    <p:dataTable id="dt_allVouchers" widgetVar="dt_allVouchers" value="#{staffVoucherManagedBean.vouchers}" var="voucher" rowKey="#{voucher.id}" rowIndexVar="row"
+                                 filteredValue="#{staffVoucherManagedBean.filteredVouchers}"
+                             rows="20" paginator="true" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="10,20,50">
+
+                        <f:facet name="header">
+                            <p:outputPanel style="text-align: right;">
+                                <h:outputText value="Search all fields:" />
+                                <p:inputText id="globalFilter" onkeyup="PF('dt_allVouchers').filter()" style="width:300px" placeholder="Enter keyword"/>
+                            </p:outputPanel>
+                        </f:facet>
+
+                        <p:column headerText="Voucher ID" sortBy="#{voucher.id}" filterBy="#{voucher.id}" filterMatchMode="contains">
+                            <h:outputText value="#{voucher.id}" />
+                        </p:column>
+
+                        <p:column headerText="Voucher Code" sortBy="#{voucher.voucherCode}" filterBy="#{voucher.voucherCode}" filterMatchMode="contains">
+                            <h:outputText value="#{voucher.voucherCode}" />
+                        </p:column>
+
+                        <p:column headerText="Voucher Value" sortBy="#{voucher.voucherValue}" filterBy="#{voucher.voucherValue}" filterMatchMode="contains">
+                            <h:outputText value="#{voucher.voucherValue}">
+                                <f:convertNumber type="currency" currencySymbol="$" maxIntegerDigits="5" maxFractionDigits="2"/>
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column headerText="Voucher Type" sortBy="#{voucher.type}" filterBy="#{voucher.type}" filterMatchMode="contains">
+                            <h:outputText value="#{product.type}" />
+                        </p:column>
+
+                        <p:column headerText="Action" >
+                            <p:commandButton oncomplete="PF('viewVoucherDialog').show()" icon="ui-icon-document" title="View" update=":form_viewVoucher:viewVoucherDialog">
+                                <f:setPropertyActionListener value="#{voucher}" target="#{staffVoucherManagedBean.selectedVoucher}" />
+                            </p:commandButton>
+                        </p:column>
+                    </p:dataTable>
+                </h:form>
+            </p:tab>
+        </p:tabView>
+        
+        
     </ui:define>
 
 </ui:composition>

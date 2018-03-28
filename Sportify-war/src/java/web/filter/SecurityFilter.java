@@ -155,7 +155,9 @@ public class SecurityFilter implements Filter {
 
     private Boolean excludeLoginCheckStaff(String path)
     {
-        if(path.equals("/staffLogin.xhtml") || path.equals("/staffError.xhtml") || path.equals("/staffProduct.xhtml") || path.equals("/staffTest.xhtml"))
+        if(path.equals("/staffLogin.xhtml") || path.equals("/staffError.xhtml") || path.equals("/staffProduct.xhtml") || path.equals("/staffTest.xhtml")
+                || path.startsWith("/javax.faces.resource/staffUploadedFiles") || path.startsWith("/staffUploadedFiles")
+                )
         {
             return true;
         }

@@ -11,8 +11,9 @@
             <p:tabView>
             <p:tab title="Create Product">
                 <h:form id="form_createProduct" enctype="multipart/form-data">
-                    <p:commandButton value="Create new Product" actionListener="#{staffProductManagedBean.createNewProduct}" update="@form" style="float:right;"/>
-                    <p:panel>
+                     <p:commandButton value="Create new Product" actionListener="#{staffProductManagedBean.createNewProduct}" update="@form" style="float:right"/>
+                     <br/><br/>
+                    <p:panel header="Details">
                         <p:panelGrid columns="2">
                             <p:panelGrid columns="4">
                                 <h:outputLabel for="productName" value="Product Name:" />
@@ -34,12 +35,15 @@
                     </p:panel>
                     <p:panel>
                         <p:panelGrid>
-                            <p:panel style="width:49%;float:left;">
+                            <p:panel style="width:49%;float:left;"  header="Images">
+                                <br/>
                                 <p:fileUpload fileUploadListener="#{staffProductManagedBean.handleFileUpload_create}" mode="advanced" dragDropSupport="false"
                                               multiple="true" update="@form" sizeLimit="10000000" fileLimit="99" allowTypes="/(\.|\/)(gif|jpe?g|png)$/" />
                             </p:panel>
-                            <p:panel style="width:49%;float:right;">
+                            <p:panel style="width:49%;float:right;"  header="Sizes">
+                                <br/>
                                 <p:commandButton value="Add a new Size"  actionListener="#{staffProductManagedBean.addProductSize_create}" update="pg_createProductSize" process="pg_createProductSize @this"/>
+                                <BR/>
                                 <h:panelGroup id="pg_createProductSize">
                                     <br />
                                     <ui:repeat value="#{staffProductManagedBean.newProduct.sizes}" var="size" varStatus="sizeStatus">

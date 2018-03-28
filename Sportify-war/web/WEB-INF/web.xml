@@ -10,7 +10,7 @@
     </context-param>
     <context-param>
          <param-name>alternatedocroot_1</param-name>
-        <param-value>C:/Users/shanw/Desktop/NUS/Modules/Y3S2/IS3106/Project/Github_Sportify/glassfish-uploadedfiles/uploadedFiles</param-value>
+        <param-value>C:/Users/shanw/Desktop/NUS/Modules/Y3S2/IS3106/Project/Github_Sportify/glassfish-uploadedfiles/staffUploadedFiles</param-value>
     </context-param>
     <context-param>
         <param-name>primefaces.FONT_AWESOME</param-name>
