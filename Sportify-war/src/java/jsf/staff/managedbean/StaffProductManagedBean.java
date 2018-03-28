@@ -205,7 +205,7 @@ public class StaffProductManagedBean  implements Serializable{
     }
     
     
-    public void addProductSize_create(){
+    public void addProductSize_create(ActionEvent event){
         System.out.println("Total Sizes: " + newProduct.getSizes().size());
         newProduct.getSizes().add(new ProductSize());
     }

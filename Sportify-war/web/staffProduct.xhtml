@@ -39,9 +39,7 @@
                                               multiple="true" update="@form" sizeLimit="100000" fileLimit="99" allowTypes="/(\.|\/)(gif|jpe?g|png)$/" />
                             </p:panel>
                             <p:panel style="width:49%;float:right;">
-                                <p:commandButton value="Add a new Size" >
-                                    <p:ajax listener="#{staffProductManagedBean.addProductSize_create}" update="pg_createProductSize" />
-                                </p:commandButton>
+                                <p:commandButton value="Add a new Size"  actionListener="#{staffProductManagedBean.addProductSize_create}" update="pg_createProductSize"/>
                                 <h:panelGroup id="pg_createProductSize">
                                     <br />
                                     <ui:repeat value="#{staffProductManagedBean.newProduct.sizes}" var="size">
@@ -49,7 +47,7 @@
                                         <p:inputText value="#{size.size}" />&nbsp;&nbsp;&nbsp;
                                         <h:outputLabel value="Quantity: " />
                                         <p:inputText value="#{size.qty}" />&nbsp;&nbsp;&nbsp;
-                                        <p:commandButton icon="ui-icon-trash" action="#{staffProductManagedBean.removeProductSize_create(size)}" update="#{p:component('pg_createProductSize')}" />
+                                       
                                         <br/><!--{p:component('pg_createProductSize')-->
                                     </ui:repeat>
                                </h:panelGroup>
