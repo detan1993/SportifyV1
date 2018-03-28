@@ -35,15 +35,16 @@
                 </p:panel>
                 <p:panel>
                     <h:form>
+                        <p:growl id="growl" showDetail="true" /> 
                         <table cellspacing="5" style="width:220px">
                             <tr>
                                 <td>
                                     <span style="color:white;font-size:15px">Size :</span> 
                                 </td>
                                 <td>
-                                    <p:selectOneMenu id="prod_size" value="#{viewDetailedManagedBean.sizeSelected}" style="width:80px;font-size:15px" required="true">
+                                    <p:selectOneMenu id="prod_size" value="#{viewDetailedManagedBean.sizeSelected}" style="width:80px;font-size:15px" required="true" requiredMessage="Please enter size.">
                                         <f:selectItem itemLabel="Select Size" itemValue="" noSelectionOption="true" />
-                                        <f:selectItems value="#{viewDetailedManagedBean.sizesAvailable}" />
+                                        <f:selectItems value="#{viewDetailedManagedBean.sizeDropDown}" />
                                     </p:selectOneMenu>
                                 </td>
                             </tr>
@@ -58,7 +59,7 @@
                         </table>
 
                         <div style="margin-top:10px;margin-left:40px">
-                            <p:commandButton value="Add to Cart" icon="fa fa-plus-circle" /> 
+                            <p:commandButton value="Add to Cart" icon="fa fa-plus-circle" actionListener="#{viewDetailedManagedBean.addToCart}" update="growl" /> 
                      </div>
                     </h:form>
                 </p:panel>

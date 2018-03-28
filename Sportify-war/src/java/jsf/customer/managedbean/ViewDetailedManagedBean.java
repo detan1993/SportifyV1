@@ -6,18 +6,25 @@ import entity.Product;
 import entity.ProductSize;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
+import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 @Named(value = "viewDetailedManagedBean")
 @ViewScoped
-public class ViewDetailedManagedBean implements Serializable{
+public class ViewDetailedManagedBean implements Serializable {
 
     @EJB
     private ProductControllerLocal productController;
@@ -25,46 +32,53 @@ public class ViewDetailedManagedBean implements Serializable{
     private Product product;
     private List<String> images;
     private String selectedImage;
-    private List<String> sizesAvailable;
+    // private List<String> sizesAvailable;
     private String sizeSelected;
     private String quantity;
+    private Map<String, String> sizeDropDown = new HashMap<String, String>();
+    private ArrayList<String[]> checkIfCartExist;
 
     @PostConstruct
     public void postConstruct() {
-        
+
         product = new Product();
         images = new ArrayList<>();
-        sizesAvailable = new ArrayList<>();
-        
+
+        //sizesAvailable = new ArrayList<>();
         List<Images> getProdImages = new ArrayList<Images>();
-        
+
         HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
         String productId = request.getParameter("productId");
-        
-        
+
         try {
             long productIdLong = Long.parseLong(productId);
             if (productId != null && !productId.equals("")) {
                 product = productController.retrieveSingleProduct(productIdLong);
-                
-                 //get product sizes for this product
-                 List<ProductSize> prodSize = new ArrayList<>();
-                 prodSize = product.getSizes();
-                
-                 for (ProductSize p: prodSize){
-                     sizesAvailable.add(p.getSize());
-                 }
-                
+
+                //get product sizes for this product                 
+                List<ProductSize> prodSize = new ArrayList<>();
+                // List<String> sizesAvailable;
+                prodSize = product.getSizes();
+
+                for (ProductSize p : prodSize) {
+                    //sizesAvailable.add(p.getSize());
+                    long prodSizeId = p.getId();
+                    String prodSizeIdStr = String.valueOf(prodSizeId);
+                    sizeDropDown.put(p.getSize(), prodSizeIdStr); //label, value
+                }
+
                 //get images for this product
-                if (product != null){
-                    if (product.getImages() != null){
+                if (product != null) {
+                    if (product.getImages() != null) {
                         getProdImages = product.getImages();
-                        
+
                         int skipFirstImage = 0;
-                        for (Images image: getProdImages){
-                            if (skipFirstImage == 0){}
-                            else{images.add(image.getImagePath());}
-                           skipFirstImage++;
+                        for (Images image : getProdImages) {
+                            if (skipFirstImage == 0) {
+                            } else {
+                                images.add(image.getImagePath());
+                            }
+                            skipFirstImage++;
                         }
                     }
                 }
@@ -73,9 +87,106 @@ public class ViewDetailedManagedBean implements Serializable{
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred while retrieving Product Id. " + ex.getMessage(), null));
         }
     }
-    
-    public void showSelectedImage(){
-        
+
+    public void showSelectedImage() {
+
+    }
+
+    public void addToCart() {
+
+        checkIfCartExist = (ArrayList<String[]>) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("currentItemCart");
+        ArrayList<String[]> itemsAdded = new ArrayList<>();
+
+       
+        if (checkIfCartExist != null) {
+             Iterator<String[]> i = checkIfCartExist.iterator();
+            //shoppingCart exist
+            System.out.println("Cart Session exist");
+            boolean updatingCurrentItem = false;
+            
+            while(i.hasNext()){
+                String[] item = i.next();
+                
+                System.out.println("Compare prodId : " + item[0] + " = " + product.getId().toString());
+                System.out.println("Compare prodSizeId : " + item[1] + " = " + sizeSelected);
+                if (item[0].equals(product.getId().toString()) && item[1].equals(sizeSelected)) {
+                    int prevQuantity = Integer.parseInt(item[2]);
+                    System.out.println("PrevQuantity: " + prevQuantity);
+                    int newQuantity = prevQuantity + Integer.parseInt(quantity);
+                    System.out.println("New Quantity: " + newQuantity);
+                    i.remove();
+
+                    String[] newItemDetail = new String[3];
+                    newItemDetail[0] = product.getId().toString();
+                    newItemDetail[1] = sizeSelected;
+                    newItemDetail[2] = String.valueOf(newQuantity);
+                    checkIfCartExist.add(newItemDetail);
+                    updatingCurrentItem = true;
+                    break;
+                } 
+//                else {
+//                    checkIfCartExist.add(newItem());
+//                }
+            }
+
+//            for (String[] item : checkIfCartExist) {
+//                // if same product is added to cart, increment quantity
+//                System.out.println("Compare prodId : " + item[0] + " = " + product.getId().toString());
+//                System.out.println("Compare prodSizeId : " + item[1] + " = " + sizeSelected);
+//                if (item[0].equals(product.getId().toString()) && item[1].equals(sizeSelected)) {
+//                    int prevQuantity = Integer.parseInt(item[2]);
+//                    System.out.println("PrevQuantity: " + prevQuantity);
+//                    int newQuantity = prevQuantity + Integer.parseInt(quantity);
+//                    System.out.println("New Quantity: " + newQuantity);
+//                    checkIfCartExist.remove(item);
+//
+//                    String[] newItemDetail = new String[3];
+//                    newItemDetail[0] = product.getId().toString();
+//                    newItemDetail[1] = sizeSelected;
+//                    newItemDetail[2] = String.valueOf(newQuantity);
+//                    checkIfCartExist.add(newItemDetail);
+//
+//                    break;
+//                } else {
+//                    checkIfCartExist.add(newItem());
+//                }
+//            }
+            if (updatingCurrentItem == false){
+                checkIfCartExist.add(newItem());
+            
+        }
+
+            System.out.println("Arraylist count size session cart: " + checkIfCartExist.size());
+            for (String[] temp : checkIfCartExist) {
+                System.out.println(Arrays.toString(temp));
+            }
+            
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Item Added Successfully!", "Product: " + product.getProductName()));
+            
+            //System.out.println(Arrays.toString(checkIfCartExist.toArray()));
+        } else {
+            System.out.println("Cart Session does not exist");
+
+            itemsAdded.add(newItem());
+            FacesContext.getCurrentInstance().getExternalContext().getSession(true);
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("currentItemCart", itemsAdded);
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Item Added Successfully!", "Product: " + product.getProductName()));
+
+            //System.out.println("Cart Session does not exist");
+            // System.out.println(Arrays.toString(itemsAdded.toArray()));
+            System.out.println("Arrylist count size of itemsAdded: " + itemsAdded.size());
+            for (String[] temp : itemsAdded) {
+                System.out.println(Arrays.toString(temp));
+            }
+        }
+    }
+
+    public String[] newItem() {
+        String[] cartItems = new String[3];
+        cartItems[0] = product.getId().toString();
+        cartItems[1] = sizeSelected;
+        cartItems[2] = quantity;
+        return cartItems;
     }
 
     public ViewDetailedManagedBean() {
@@ -105,14 +216,13 @@ public class ViewDetailedManagedBean implements Serializable{
         this.selectedImage = selectedImage;
     }
 
-    public List<String> getSizesAvailable() {
-        return sizesAvailable;
-    }
-
-    public void setSizesAvailable(List<String> sizesAvailable) {
-        this.sizesAvailable = sizesAvailable;
-    }
-
+//    public List<String> getSizesAvailable() {
+//        return sizesAvailable;
+//    }
+//
+//    public void setSizesAvailable(List<String> sizesAvailable) {
+//        this.sizesAvailable = sizesAvailable;
+//    }
     public String getSizeSelected() {
         return sizeSelected;
     }
@@ -121,17 +231,19 @@ public class ViewDetailedManagedBean implements Serializable{
         this.sizeSelected = sizeSelected;
     }
 
-    /**
-     * @return the quantity
-     */
     public String getQuantity() {
         return quantity;
     }
 
-    /**
-     * @param quantity the quantity to set
-     */
     public void setQuantity(String quantity) {
         this.quantity = quantity;
+    }
+
+    public Map<String, String> getSizeDropDown() {
+        return sizeDropDown;
+    }
+
+    public void setSizeDropDown(Map<String, String> sizeDropDown) {
+        this.sizeDropDown = sizeDropDown;
     }
 }
