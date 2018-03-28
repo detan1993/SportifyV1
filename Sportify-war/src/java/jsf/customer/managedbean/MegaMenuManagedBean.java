@@ -20,7 +20,6 @@ public class MegaMenuManagedBean implements Serializable {
 
     private MenuModel model;
     private DefaultSubMenu rootMenu;
-   // private DefaultSubMenu productsPageLink;
     
     @EJB
     private ProductControllerLocal productControllerLocal;
@@ -30,10 +29,7 @@ public class MegaMenuManagedBean implements Serializable {
     public void postConstruct() {
         model = new DefaultMenuModel();
         rootMenu = new DefaultSubMenu("FOOTBALL JERSEYS");
-        //productsPageLink = new DefaultSubMenu("SHOP NOW!");
-       // productsPageLink.setStyleClass("productPageLink");
         model.addElement(rootMenu);
-        //model.addElement(productsPageLink);
 
         menuItems = productControllerLocal.retrieveCountriesAndTeams();
         List<String> teams;
@@ -49,13 +45,7 @@ public class MegaMenuManagedBean implements Serializable {
                 }                
             }
             addMenu(country, teams);
-            
         }
-
-       /* addMenu("ENGLAND", "Arsenal", "Chelsea", "Manu", "Man City");
-        addMenu("SPAIN", "Real Madrid", "Barca", "Atletico", "Getafe");
-        addMenu("GERMANY", "Bayern");
-        addMenu("FRANCE", "PSG", "Lyon");*/
     }
 
     public void addMenu(String label, List<String> items) {
@@ -68,7 +58,7 @@ public class MegaMenuManagedBean implements Serializable {
 
         for (String item : items) {
             DefaultMenuItem mi = new DefaultMenuItem(item);
-            mi.setUrl("#");
+            mi.setUrl("products.xhtml?teamName=" + item);
             theColumnMenu.addElement(mi);
         }
         //the main menu has columns instead of items

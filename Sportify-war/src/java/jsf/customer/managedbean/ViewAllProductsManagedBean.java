@@ -10,8 +10,10 @@ import java.util.List;
 import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
+import javax.servlet.http.HttpServletRequest;
 
 @Named(value = "viewAllProductsManagedBean")
 @ViewScoped
@@ -34,9 +36,19 @@ public class ViewAllProductsManagedBean implements Serializable {
 
     @PostConstruct
     public void postConstruct() {
-        products = productController.retrieveProduct();
+        
+        HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
+        String teamName = request.getParameter("teamName");
+        
+        if (teamName != null && !teamName.equals("")){
+            products = productController.retrieveProductsByTeam(teamName);
+        }
+        else{
+            products = productController.retrieveProduct();
+        }
+        
+        //for populating dropdown filter 
         List<List<String>> countriesAndTeams = productController.retrieveCountriesAndTeams();
-
         for (int i = 0; i < countriesAndTeams.size(); i++) {
             String country = "";
             Map<String, String> map = new HashMap<String, String>();

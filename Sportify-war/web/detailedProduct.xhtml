@@ -31,7 +31,9 @@
                     <f:facet name="header">
                         PRODUCT DETAILS 
                     </f:facet>
-                    <h:outputText style="font-size: 60px" value="$#{viewDetailedManagedBean.product.price} "></h:outputText>
+                    <h:panelGroup id="qtyOnChange">
+                        <h:outputText style="font-size: 60px" value="$#{viewDetailedManagedBean.priceOnChange} "></h:outputText>
+                    </h:panelGroup>
                 </p:panel>
                 <p:panel>
                     <h:form>
@@ -53,14 +55,16 @@
                                     <span style="color:white;font-size:15px">Quantity :</span> 
                                 </td>
                                 <td>
-                                    <p:spinner id="quantity" value="#{viewDetailedManagedBean.quantity}" required="true" label="quantity" requiredMessage="Please enter quantity." size="4" /> 
+                                    <p:spinner id="quantity" value="#{viewDetailedManagedBean.quantity}" required="true" label="quantity" requiredMessage="Please enter quantity." size="4" min="1">
+                                        <p:ajax listener="#{viewDetailedManagedBean.qtyOnChange}" update="#{p:component('qtyOnChange')}" process="@this" />   
+                                    </p:spinner> 
                                 </td>
                             </tr>
                         </table>
 
                         <div style="margin-top:10px;margin-left:40px">
-                            <p:commandButton value="Add to Cart" icon="fa fa-plus-circle" actionListener="#{viewDetailedManagedBean.addToCart}" update="growl" /> 
-                     </div>
+                            <p:commandButton value="Add to Cart" icon="fa fa-plus-circle" actionListener="#{viewDetailedManagedBean.addToCart}" update="growl #{p:component('notiNumNoLogin')} #{p:component('notiNum')}" />
+                        </div>
                     </h:form>
                 </p:panel>
             </p:panel>
