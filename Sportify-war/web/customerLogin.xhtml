@@ -11,34 +11,55 @@
                 margin-left:560px;
                 margin-top:-220px;
             }
+
+            .ui-growl {   
+                
+                top: 40%;
+                left: 37%;
+                height: 110px;
+                z-index:9999; 
+            }
         </style>
+
+        <!--        <script>
+        //            var validator = null;
+        //            $(document).ready(function () {
+        //            validator = $("form[id='loginForm']").validate({
+        //            
+        //            });
+        //            });
+        
+                    jQuery(document).ready(function () {
+                        // binds form submission and fields to the validation engine
+                        jQuery("#formID").validationEngine();
+                    });
+                </script>-->
     </h:head>
+
+    <!--    <h:outputStylesheet name="validation/css/template.css" />
+        <h:outputStylesheet name="validation/css/validationEngine.jquery.css" />
+        <h:outputScript name="validation/scripts/jquery.validationEngine-en.js" />
+        <h:outputScript name="validation/scripts/jquery.validationEngine.js" />-->
 
     <h:form id="loginForm">
 
         <p:dialog styleClass="loginDialog" showEffect="bounce" header="Login" widgetVar="loginDialog" resizable="false" visible="#{facesContext.validationFailed}" draggable="false">
-            <!--            <p:messages id="login_error_messages" closable="true"></p:messages>-->
 
-            <!--            <p:growl id="growlLogin" /> -->
+<!--            <p:growl life="3000"/>-->
+<p:messages id="login_error_messages" closable="true"></p:messages>
+            <h:panelGrid columns="3" cellpadding="5">
+                <h:outputLabel for="email" value="Email:*" style="color:white" />
+                <p:inputText id="email" value="#{customerLoginManagedBean.email}" label="email" required="true" requiredMessage="Please enter email." style="#{not component.valid ? 'background-color:#FF9999;' : 'background-color:white;'}" />
+                <p:message for="email" display="icon" />
 
+                <h:outputLabel for="passwordLogin" value="Password:*" style="color:white" />
+                <p:password id="passwordLogin" value="#{customerLoginManagedBean.password}" label="password" required="true" requiredMessage="Please enter password." style="#{not component.valid ? 'background-color:#FF9999;' : 'background-color:white;'}"  />
+                <p:message for="passwordLogin" display="icon" />
 
-
-            <h:panelGrid columns="2" cellpadding="5">
-                <h:outputLabel for="email" value="Email" style="color:white" />
-                <p:inputText id="email" value="#{customerLoginManagedBean.email}" required="true" label="email" requiredMessage="Please enter email." />
-                <p:message for="email" display="tooltip" />
-                <p:tooltip position="top" /> 
-                
-                <h:outputLabel for="passwordLogin" value="Password:" style="color:white" />
-                <p:password id="passwordLogin" value="#{customerLoginManagedBean.password}" required="true" label="password" requiredMessage="Please enter password." />
-                <p:message for="passwordLogin" display="tooltip" />
-
-              
-                
-                <f:facet name="footer">
-                    <p:commandButton value="Login" update="@form" actionListener="#{customerLoginManagedBean.login}" icon="fa fa-key" /> 
-                </f:facet>  
             </h:panelGrid>
+            <f:facet name="footer">
+                <p:commandButton value="Login" update="@form" actionListener="#{customerLoginManagedBean.login}" icon="fa fa-key" /> 
+            </f:facet>  
         </p:dialog>
 
 
