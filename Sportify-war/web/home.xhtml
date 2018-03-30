@@ -3,24 +3,17 @@
 <ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
                 template="./template/masterPage.xhtml"
                 xmlns:h="http://xmlns.jcp.org/jsf/html"
-                xmlns:p="http://primefaces.org/ui">
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
 
     <h:head>
       
     </h:head>
 
     <ui:define name="west">
-<!--        <p:panel style="margin-top:250px">
-            <p:commandButton type="button" onclick="PF('switcher').previous();"
-                             icon="fa fa-chevron-left" id="prev" styleClass="navArrowsLeft"/>
-        </p:panel>-->
     </ui:define>
 
     <ui:define name="east">
-<!--        <p:panel style="margin-top:250px">
-            <p:commandButton type="button" onclick="PF('switcher').next();"
-                             icon="fa fa-chevron-right" id="next" styleClass="navArrowsRight"/>
-        </p:panel>-->
     </ui:define>
 
     <ui:define name="center">
@@ -42,26 +35,32 @@
                      <h:graphicImage name="images/front_page_image.jpg" width="745px">
                 </h:graphicImage>
                 </p:column>
-                <p:column>
-                    TEXT
+                 <p:column style="text-align: center">
+                   
+                     <p style="font-size:20px; font-weight: bold">GET YOUR FAVOURITE ENGLISH KIT NOW!</p>
+                     <p style="text-align:center">When it comes to English football shirts, you can see fans wearing them all around the world just to show their support for their club. We are happy to offer a great selection of English soccer jerseys just for you. 
+                         So what are you waiting for? Shop with us now!</p>
+                   
                 </p:column>
                 
             </p:row>
             <p:row>
-                 <p:column>
-                    TEXT
+                <p:column style="text-align: center">
+                     <p style="font-size:20px; font-weight: bold">STAR PLAYER SHIRTS ARE NOW AVAILABLE!</p>
+                     <p style="text-align:center">Football Star Players plays in many different clubs, 
+                         but we have made a collection for you right here.
+                         Here you can find all the biggest stars across different teams. You can find Cristiano Ronaldo, Paul Pogba, Messi 
+                         and many many more in our huge collection of football shirts. Get them now while stocks last!</p>
                 </p:column>
                 <p:column>
-                    <h:graphicImage name="images/front_page_image_2.jpg" width="745px">
+                    <h:graphicImage name="images/front_page_image_2.jpg" width="730px" style="margin-left:-20px;margin-top:-7px">
                 </h:graphicImage>
                 </p:column>
                
-            </p:row> 
-            
-           
+            </p:row>             
         </p:panelGrid>
-
-
+       
+        <ui:include src="customerFooter.xhtml"/>
     </ui:define>
 
 </ui:composition>
