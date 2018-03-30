@@ -11,6 +11,11 @@
         <title>SPORTIFY | Bringing the game closer</title>
 
         <style>
+
+            body{
+                cursor: url('resources/images/football_cursor.png'), default !important;
+            }
+
             .ui-widget-content {
                 border:none;
             }
@@ -36,6 +41,7 @@
                 border: 0 !important;
                 border-radius: 0px !important;
             }
+
         </style>
         <h:outputStylesheet library="css" name="default.css"/>
         <h:outputStylesheet library="css" name="cssLayout.css"/>
@@ -47,7 +53,7 @@
         <p:layout fullPage="true">
 
             <p:layoutUnit position="north" size="100" gutter="0">
-                <div class="logoSection"><img class="logoImage" src="images/Sportify.png"/></div>  
+                <div class="logoSection"><img style="cursor:pointer" class="logoImage" src="images/Sportify.png" onclick="window.location.href = 'home.xhtml'"/></div>  
 
                 <div class="menuSection">
                     <p:megaMenu model="#{megaMenuManagedBean.menuModel}">
@@ -79,6 +85,10 @@
 
             <p:layoutUnit position="center" gutter="0">
                 <ui:insert name="center">center</ui:insert>
+            </p:layoutUnit>
+
+            <p:layoutUnit position="east" gutter="0">
+                <ui:insert name="east">east</ui:insert>
             </p:layoutUnit>
 
             <p:layoutUnit position="south"  gutter="0">

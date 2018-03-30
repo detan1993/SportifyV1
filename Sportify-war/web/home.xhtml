@@ -4,35 +4,63 @@
                 template="./template/masterPage.xhtml"
                 xmlns:h="http://xmlns.jcp.org/jsf/html"
                 xmlns:p="http://primefaces.org/ui">
-    
+
     <h:head>
-        <style>
-            .navArrowsLeft{
-                height:2000px;
-                width:2000px;
-                margin-top: 100px;
-            }
-        </style>
+      
     </h:head>
-    
+
     <ui:define name="west">
-        
+<!--        <p:panel style="margin-top:250px">
+            <p:commandButton type="button" onclick="PF('switcher').previous();"
+                             icon="fa fa-chevron-left" id="prev" styleClass="navArrowsLeft"/>
+        </p:panel>-->
     </ui:define>
 
-      <ui:define name="center">
-        <p:commandButton type="button" onclick="PF('switcher').previous();"
-                         icon="fa fa-chevron-left" id="prev" styleClass="navArrowsLeft"/>
-        <p:commandButton type="button" onclick="PF('switcher').next();"
-                         icon="fa fa-chevron-right" id="next" styleClass="navArrowsRight"/>
+    <ui:define name="east">
+<!--        <p:panel style="margin-top:250px">
+            <p:commandButton type="button" onclick="PF('switcher').next();"
+                             icon="fa fa-chevron-right" id="next" styleClass="navArrowsRight"/>
+        </p:panel>-->
+    </ui:define>
+
+    <ui:define name="center">
 
         <p:imageSwitch effect="fade" widgetVar="switcher" id="manuelSwitcher"
                        slideshowAuto="true">
-           
+
             <h:graphicImage name="images/image_ss_1.jpg" width="1490px"/>
-                <h:graphicImage name="images/image_ss_2.jpg" width="1490px"/>
-                <h:graphicImage name="images/image_ss_3.jpg" width="1490px"/>
-                
+            <h:graphicImage name="images/image_ss_2.jpg" width="1490px"/>
+            <h:graphicImage name="images/image_ss_3.jpg" width="1490px"/>
+
         </p:imageSwitch>
+
+        <p:separator/>
+        
+        <p:panelGrid>
+             <p:row>
+                 <p:column>
+                     <h:graphicImage name="images/front_page_image.jpg" width="745px">
+                </h:graphicImage>
+                </p:column>
+                <p:column>
+                    TEXT
+                </p:column>
+                
+            </p:row>
+            <p:row>
+                 <p:column>
+                    TEXT
+                </p:column>
+                <p:column>
+                    <h:graphicImage name="images/front_page_image_2.jpg" width="745px">
+                </h:graphicImage>
+                </p:column>
+               
+            </p:row> 
+            
+           
+        </p:panelGrid>
+
 
     </ui:define>
 
