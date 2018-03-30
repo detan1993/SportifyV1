@@ -5,7 +5,7 @@
     -o-transform: scale(1.5) !important;
     transform: scale(1.5) !important;
     z-index: 1000 !important;
-    
+
     -webkit-transition: all 0.5s ease-in-out !important;
     -moz-transition: all 0.5s ease-in-out !important;
     -ms-transition: all 0.5s ease-in-out !important;
@@ -19,6 +19,12 @@
 .ui-widget{
     font-family: "Trajan Pro" !important;
 }
-/** {
-    
-}*/
+
+ .ui-layout-unit{
+             border: none !important;
+        }
+
+
+
+
+

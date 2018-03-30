@@ -1,0 +1,10 @@
+.ui-button-icon-only .ui-icon.fa, .ui-button-text-icon-left .ui-icon.fa, .ui-button-text-icon-right .ui-icon.fa{
+    margin-top: -11px !important;
+    height: 20px !important;
+    width: 20px !important;
+}
+
+.center_width{
+    margin-left: -30px !important;
+    margin-top:-10px !important;
+}
