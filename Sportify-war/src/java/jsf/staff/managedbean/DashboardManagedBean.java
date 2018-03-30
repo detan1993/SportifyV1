@@ -5,18 +5,22 @@
  */
 package jsf.staff.managedbean;
 
+import ejb.session.stateless.CustomerOrderControllerRemote;
 import ejb.session.stateless.DashboardControllerLocal;
 import ejb.session.stateless.ProductControllerLocal;
 import entity.Product;
 import java.io.Serializable;
+import java.text.DateFormat;
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
-import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import org.primefaces.event.DashboardReorderEvent;
@@ -29,11 +33,14 @@ import org.primefaces.model.chart.Axis;
 import org.primefaces.model.chart.AxisType;
 import org.primefaces.model.chart.CategoryAxis;
 import org.primefaces.model.chart.ChartSeries;
+import org.primefaces.model.chart.DonutChartModel;
 import org.primefaces.model.chart.HorizontalBarChartModel;
 import org.primefaces.model.chart.LineChartModel;
 import org.primefaces.model.chart.LineChartSeries;
 import org.primefaces.model.chart.PieChartModel;
 import util.helperClass.CountrySales;
+import util.helperClass.TopTenCustomer;
+import javax.faces.application.FacesMessage;
 
 /**
  *
@@ -43,21 +50,20 @@ import util.helperClass.CountrySales;
 @ViewScoped
 public class DashboardManagedBean implements Serializable {
 
+    @EJB(name = "CustomerOrderControllerLocal")
+    private CustomerOrderControllerRemote customerOrderControllerLocal;
+
     @EJB(name = "ProductControllerLocal")
     private ProductControllerLocal productControllerLocal;
 
     @EJB(name = "DashboardControllerLocal")
     private DashboardControllerLocal dashboardControllerLocal;
-    
-    
 
     /**
      * Creates a new instance of DashboardManagedBean
      */
-    
-    
-    
-    final String [] monthsArray = {"Jan" , "Feb" , "Mar" , "Apr" , "May" , "Jun" , "Jul" , "Aug" , "Sep" , "Oct" , "Nov" , "Dec" }; ;
+    final String[] monthsArray = {"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
+    ;
     private LineChartModel salesLineChart;
     private PieChartModel livePieModel;
     private HorizontalBarChartModel horizontalRating;
@@ -68,11 +74,18 @@ public class DashboardManagedBean implements Serializable {
     private Date salesDate;
     private Date currentDate;
     private DashboardModel dashboardPosition;
-    private List<Product> products ;
+    private List<Product> products;
     private Product selectedProducts;
-    
-   
 
+    //Top customer. 
+    private List<TopTenCustomer> topCustomers;
+    private String selectFilterTopCustomer;
+    private TopTenCustomer selectedCustomer;
+    private DonutChartModel donutModel2;
+    private Date customerFrom;
+    private Date customerTo;
+    
+    
     public DashboardManagedBean() {
         livePieModel = new PieChartModel();
         totalSalesByMonthsCountry = new ArrayList<>();
@@ -81,58 +94,78 @@ public class DashboardManagedBean implements Serializable {
         totalSalesByTeamFilter = new ArrayList<>();
         products = new ArrayList<>();
         selectedProducts = new Product();
-        
-       
+        topCustomers = new ArrayList<>();
+        selectedCustomer = new TopTenCustomer();
+        donutModel2 = new DonutChartModel();
+
     }
 
     @PostConstruct
     public void postConstruct() {
-        
-        try{
-            
-        
+
+        try {
+
+            topCustomers = customerOrderControllerLocal.RetrieveTopTenCustomersByOrder();
+            //  customerOrderControllerLocal.RetrieveAllCustomerOrder();
             totalSalesByMonthsCountry = dashboardControllerLocal.retrieveAllSalesByMonths();
-       totalSalesByTeam = dashboardControllerLocal.retrieveSalesByTeamAndCountry();
-       totalSalesByTeamFilter = dashboardControllerLocal.getCountries();
-        setProducts(productControllerLocal.retrieveProduct());
-       
-        dashboardPosition = new DefaultDashboardModel();
-        DashboardColumn column1 = new DefaultDashboardColumn();
-        DashboardColumn column2 = new DefaultDashboardColumn();
+            totalSalesByTeam = dashboardControllerLocal.retrieveSalesByTeamAndCountry();
+            totalSalesByTeamFilter = dashboardControllerLocal.getCountries();
+            products = productControllerLocal.retrieveProduct();
 
-         
-        column1.addWidget("barchartToggle");
-         
-        column1.addWidget("salesCountry");
-        column2.addWidget("stackChart");
-         
+            dashboardPosition = new DefaultDashboardModel();
+            DashboardColumn column1 = new DefaultDashboardColumn();
+            DashboardColumn column2 = new DefaultDashboardColumn();
 
-        dashboardPosition.addColumn(column1);
-        dashboardPosition.addColumn(column2);
-        createLineModels();
-        createRatingBarModels();
-        livePieModel = getLiveComparisonPieChart();
-       
-        }
-        catch(Exception ex)
-        {
+            column1.addWidget("barchartToggle");
+
+            column1.addWidget("salesCountry");
+            column2.addWidget("stackChart");
+
+            dashboardPosition.addColumn(column1);
+            dashboardPosition.addColumn(column2);
+            //   createLineModels();
+            createRatingBarModels();
+            livePieModel = getLiveComparisonPieChart();
+
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
-        
-        
+
     }
-    
-    
-      public void onRowSelect(SelectEvent event) {
+
+    public void onRowSelect(SelectEvent event) {
         FacesMessage msg = new FacesMessage("Product Selected", ((Product) event.getObject()).getId().toString());
         FacesContext.getCurrentInstance().addMessage(null, msg);
     }
+
+    public void searchTopCustomer(ActionEvent actionEvent) {
+          
+          
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        if(customerFrom == null || customerTo == null)
+        {
+            addMessage("From and To Date is required for searching");
+        }
+        else{
+            
+           
+       System.out.println("Date selected from " + df.format(customerFrom));
+        System.out.println("Date selected to " + df.format(customerTo)); 
+        topCustomers = customerOrderControllerLocal.RetrieveTopTenCustomerByOrderByRanger(df.format(customerFrom) ,df.format(customerTo));
+        //call session bean here.
+        
+        }
+     
+        
+        
+    }
     
-      public void click() {
-        System.out.println("Date selected is " + salesDate );
+    public void addMessage(String summary) {
+        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, summary,  null);
+        FacesContext.getCurrentInstance().addMessage(null, message);
     }
 
-   /* private void createLineModels() {
+    /* private void createLineModels() {
 
         Axis yAxis;
 
@@ -145,96 +178,80 @@ public class DashboardManagedBean implements Serializable {
         yAxis.setMin(0);
         yAxis.setMax(100);
     }*/
-       
     public void handleReorder(DashboardReorderEvent event) {
         FacesMessage message = new FacesMessage();
         message.setSeverity(FacesMessage.SEVERITY_INFO);
         message.setSummary("Reordered: " + event.getWidgetId());
         message.setDetail("Item index: " + event.getItemIndex() + ", Column index: " + event.getColumnIndex() + ", Sender index: " + event.getSenderColumnIndex());
-         
+
         //addMessage(message);
     }
-      
-     private void createLineModels() {
-         
-         if(!totalSalesByMonthsCountry.isEmpty())
-         {
-        Axis yAxis; 
-        salesLineChart = initCategoryModel();
-        salesLineChart.setTitle("Product Sales by Month Year 2018");
-        salesLineChart.setLegendPosition("se");
-        salesLineChart.setShowPointLabels(true);
-        salesLineChart.getAxes().put(AxisType.X, new CategoryAxis("Months"));
-        yAxis = salesLineChart.getAxis(AxisType.Y);
-        yAxis.setLabel("Sales($)");
-        yAxis.setMin(0);
-             
-         }
-         
- 
+
+    private void createLineModels() {
+
+        if (!totalSalesByMonthsCountry.isEmpty()) {
+            Axis yAxis;
+            salesLineChart = initCategoryModel();
+            salesLineChart.setTitle("Product Sales by Month Year 2018");
+            salesLineChart.setLegendPosition("se");
+            salesLineChart.setShowPointLabels(true);
+            salesLineChart.getAxes().put(AxisType.X, new CategoryAxis("Months"));
+            yAxis = salesLineChart.getAxis(AxisType.Y);
+            yAxis.setLabel("Sales($)");
+            yAxis.setMin(0);
+
+        }
+
     }
 
     private LineChartModel initCategoryModel() {
 
-        
         LineChartModel model = new LineChartModel();
         DecimalFormat formatter = new DecimalFormat("#0.00");
         String monthName = "";
         Double salesAmount = 0.0;
-        
-        List<LineChartSeries> countries = new ArrayList<>();
-        
 
-        
-        int totalCountry =  totalSalesByMonthsCountry.get(0).size(); //this will let me know the number of country per each month
+        List<LineChartSeries> countries = new ArrayList<>();
+
+        int totalCountry = totalSalesByMonthsCountry.get(0).size(); //this will let me know the number of country per each month
         System.out.println("****** TOTAL Country is " + totalCountry);
-        
-     
-        
-        for(int i=0; i<totalCountry; i++)
-        {
-            
+
+        for (int i = 0; i < totalCountry; i++) {
+
             System.out.println("Total country is " + totalCountry);
-            
+
             LineChartSeries c = new LineChartSeries();
             String countryName = totalSalesByMonthsCountry.get(0).get(i).getCountryName();
-            
-            if(!countryName.equals("Total"))
-                  c.setLabel(countryName + " League");
-            else
-                 c.setLabel(countryName);
-                       
-          
-            
-            for(int j=0; j< totalSalesByMonthsCountry.size(); j++)
-            {
-                  System.out.println("j is" + j);
-            
-                  monthName = totalSalesByMonthsCountry.get(j).get(i).getMonth();
-                  salesAmount = totalSalesByMonthsCountry.get(j).get(i).getSales();
-                  System.out.println("Country name in managedb bean is " + countryName + " month is " + monthName + " sales is" + salesAmount);
-                //populate chart for i index country firs
-                 c.set( monthName , Double.parseDouble(formatter.format(salesAmount)));
+
+            if (!countryName.equals("Total")) {
+                c.setLabel(countryName + " League");
+            } else {
+                c.setLabel(countryName);
             }
-            
-            
+
+            for (int j = 0; j < totalSalesByMonthsCountry.size(); j++) {
+                System.out.println("j is" + j);
+
+                monthName = totalSalesByMonthsCountry.get(j).get(i).getMonth();
+                salesAmount = totalSalesByMonthsCountry.get(j).get(i).getSales();
+                System.out.println("Country name in managedb bean is " + countryName + " month is " + monthName + " sales is" + salesAmount);
+                //populate chart for i index country firs
+                c.set(monthName, Double.parseDouble(formatter.format(salesAmount)));
+            }
+
             c.setSmoothLine(true);
-            
+
             countries.add(c);
         }
-        
-        
-        for(LineChartSeries country : countries){
-            
+
+        for (LineChartSeries country : countries) {
+
             model.addSeries(country);
-    
+
         }
-        
-         model.setSeriesColors("black,FFA500, 3363FF");
-            
-            
-        
-      
+
+        model.setSeriesColors("black,FFA500, 3363FF");
+
 //      /*  for (String monthsArray1 : monthsArray) {
 //            Object salesByMonth = totalSalesByMonths.get(monthsArray1);
 //            if (salesByMonth != null) {
@@ -242,17 +259,14 @@ public class DashboardManagedBean implements Serializable {
 //                england.set(monthsArray1, (Double)salesByMonth);
 //            }
 //        }*/
-
-      //  LineChartSeries england = new LineChartSeries();
-       // england.setLabel("England League ");      
- //        england.set("2014-01-01", 51);
+        //  LineChartSeries england = new LineChartSeries();
+        // england.setLabel("England League ");      
+        //        england.set("2014-01-01", 51);
 //        england.set("2014-02-01", 22);
 //        england.set("2014-03-01", 65);
 //        england.set("2014-04-01", 74);
 //        england.set("2014-05-01", 80);
 //        england.set("2014-06-01", 82); 
-        
-
 //        
 //        england.set("2014-01-01", 51);
 //        england.set("2014-02-01", 22);
@@ -302,9 +316,7 @@ public class DashboardManagedBean implements Serializable {
 //        axis.setTickFormat("%b, %y");
 //        dateModel.getAxes().put(AxisType.X, axis);
 //        return dateModel;
-
-        
-       /* for (String monthsArray1 : monthsArray) {
+        /* for (String monthsArray1 : monthsArray) {
             Object salesByMonth = totalSalesByMonths.get(monthsArray1);
             if (salesByMonth != null) {
                 System.out.println("Sales is " +  (Double)salesByMonth);
@@ -324,36 +336,30 @@ public class DashboardManagedBean implements Serializable {
         spain.set("May" ,   4210.20);
         spain.set("Jun" ,  2121.71);
         spain.set("Jul" , 6513.66);*/
-        /*spain.setSmoothLine(true);
+ /*spain.setSmoothLine(true);
          
         model.addSeries(england);
         model.addSeries(spain);
         model.setSeriesColors("black,FFA500");*/
-         
         return model;
     }
 
     public PieChartModel getLiveComparisonPieChart() {
-        
-        
+
         int sizeOfTeam = totalSalesByTeam.size();
         String defaultCountry = totalSalesByTeamFilter.get(0);  //need to change abit
-        for(int i =0; i<sizeOfTeam; i++)
-        {
-            
-            String [] teamInfo = totalSalesByTeam.get(i);
-            if(teamInfo[1].equals(defaultCountry))  //default country means the first row from the database query
+        for (int i = 0; i < sizeOfTeam; i++) {
+
+            String[] teamInfo = totalSalesByTeam.get(i);
+            if (teamInfo[1].equals(defaultCountry)) //default country means the first row from the database query
             {
                 livePieModel.getData().put(teamInfo[0], Double.parseDouble(teamInfo[2]));
-                
+
             }
-            
-            
+
         }
-        
-        
-        
-     /*   int random1 = (int) (Math.random() * 1000);
+
+        /*   int random1 = (int) (Math.random() * 1000);
         int random2 = (int) (Math.random() * 1000);
         int random3 = (int) (Math.random() * 1000);
         int random4 = (int) (Math.random() * 1000);
@@ -366,17 +372,16 @@ public class DashboardManagedBean implements Serializable {
         livePieModel.getData().put("Man City", random4);
         livePieModel.getData().put("Man United", random5);
         livePieModel.getData().put("Tottenham", random6);*/
-
         livePieModel.setTitle("Sales($) By Clubs");
         livePieModel.setLegendPosition("se");
-      //  livePieModel.
+        //  livePieModel.
 
         return livePieModel;
     }
-    
+
     private void createRatingBarModels() {
         horizontalRating = new HorizontalBarChartModel();
- 
+
         ChartSeries goods = new ChartSeries();
         goods.setLabel("Good");
         goods.set("2004", 50);
@@ -384,7 +389,7 @@ public class DashboardManagedBean implements Serializable {
         goods.set("2006", 44);
         goods.set("2007", 55);
         goods.set("2008", 25);
- 
+
         ChartSeries average = new ChartSeries();
         average.setLabel("Average");
         average.set("2004", 52);
@@ -392,7 +397,7 @@ public class DashboardManagedBean implements Serializable {
         average.set("2006", 82);
         average.set("2007", 35);
         average.set("2008", 120);
-        
+
         ChartSeries bad = new ChartSeries();
         bad.setLabel("Average");
         bad.set("2004", 52);
@@ -400,24 +405,23 @@ public class DashboardManagedBean implements Serializable {
         bad.set("2006", 82);
         bad.set("2007", 35);
         bad.set("2008", 120);
- 
+
         horizontalRating.addSeries(goods);
         horizontalRating.addSeries(average);
-         horizontalRating.addSeries(bad);
-         
+        horizontalRating.addSeries(bad);
+
         horizontalRating.setTitle("Product Rating");
         horizontalRating.setLegendPosition("se");
         horizontalRating.setStacked(true);
-         
+
         Axis xAxis = horizontalRating.getAxis(AxisType.X);
         xAxis.setLabel("No Of Rating");
         xAxis.setMin(0);
         xAxis.setMax(200);
-         
+
         Axis yAxis = horizontalRating.getAxis(AxisType.Y);
-        yAxis.setLabel("Rating Category");        
+        yAxis.setLabel("Rating Category");
     }
- 
 
     /**
      * @return the salesLineChart
@@ -460,7 +464,6 @@ public class DashboardManagedBean implements Serializable {
     public void setHorizontalRating(HorizontalBarChartModel horizontalRating) {
         this.horizontalRating = horizontalRating;
     }
-
 
     /**
      * @return the salesDate
@@ -572,6 +575,114 @@ public class DashboardManagedBean implements Serializable {
      */
     public void setSelectedProducts(Product selectedProducts) {
         this.selectedProducts = selectedProducts;
+    }
+
+    /**
+     * @return the topCustomers
+     */
+    public List<TopTenCustomer> getTopCustomers() {
+        return topCustomers;
+    }
+
+    /**
+     * @param topCustomers the topCustomers to set
+     */
+    public void setTopCustomers(List<TopTenCustomer> topCustomers) {
+        this.topCustomers = topCustomers;
+    }
+
+    public void onTopCustomerFilterChange() {
+        System.out.println("SELECTED VALUE IS " + selectFilterTopCustomer);
+        //List<Product>
+        
+        if(selectFilterTopCustomer.equals("TQTY"))
+        {
+          Collections.sort(topCustomers, TopTenCustomer.BY_NO_PURCHASE);
+        }
+        else if(selectFilterTopCustomer.equals("AP")){
+            Collections.sort(topCustomers, TopTenCustomer.BY_AVG_PURCHASE);
+        }
+        else if (selectFilterTopCustomer.equals("TP")){
+            Collections.sort(topCustomers, TopTenCustomer.BY_TOTAL_PURCHASE);
+        }
+        
+        
+        for(int reassignRank=1; reassignRank<=topCustomers.size(); reassignRank++)
+        {
+            topCustomers.get(reassignRank-1).setRank(reassignRank);
+        }
+   
+
+    }
+
+    /**
+     * @return the selectFilterTopCustomer
+     */
+    public String getSelectFilterTopCustomer() {
+        return selectFilterTopCustomer;
+    }
+
+    /**
+     * @param selectFilterTopCustomer the selectFilterTopCustomer to set
+     */
+    public void setSelectFilterTopCustomer(String selectFilterTopCustomer) {
+        this.selectFilterTopCustomer = selectFilterTopCustomer;
+    }
+
+    /**
+     * @return the selectedCustomer
+     */
+    public TopTenCustomer getSelectedCustomer() {
+        return selectedCustomer;
+    }
+
+    /**
+     * @param selectedCustomer the selectedCustomer to set
+     */
+    public void setSelectedCustomer(TopTenCustomer selectedCustomer) {
+        this.selectedCustomer = selectedCustomer;
+    }
+
+    /**
+     * @return the donutModel2
+     */
+    public DonutChartModel getDonutModel2() {
+        return donutModel2;
+    }
+
+    /**
+     * @param donutModel2 the donutModel2 to set
+     */
+    public void setDonutModel2(DonutChartModel donutModel2) {
+        this.donutModel2 = donutModel2;
+    }
+
+    /**
+     * @return the customerFrom
+     */
+    public Date getCustomerFrom() {
+        return customerFrom;
+    }
+
+    /**
+     * @param customerFrom the customerFrom to set
+     */
+    public void setCustomerFrom(Date customerFrom) {
+        this.customerFrom = customerFrom;
+    }
+
+    /**
+     * @return the customerTo
+     */
+    public Date getCustomerTo() {
+        return customerTo;
+    }
+
+    /**
+     * @param customerTo the customerTo to set
+     */
+    public void setCustomerTo(Date customerTo) {
+        this.customerTo = customerTo;
     }
 
 }

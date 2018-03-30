@@ -23,6 +23,10 @@ and open the template in the editor.
 }
 
 
+/*.ui-datepicker-calendar{
+    display: none;
+}​*/
+
 
 .jqplot-series-canvas {
    /* background: lightgray;*/
@@ -37,3 +41,4 @@ and open the template in the editor.
     /*rgb(140,220,255)*/
     text-align: center !important;
 }
+

@@ -231,7 +231,7 @@
               <br /><br/>
               <p:commandButton value="No" oncomplete="PF('deleteProductDialog').hide()" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
               <p:commandButton value="Yes" oncomplete="PF('deleteProductDialog').hide()" >
-                  <f:ajax event="click" execute="@all" listener="#{staffProductManagedBean.deleteProduct}" render=":formAllProducts:dataTableAllProducts" />
+                 <f:ajax event="click" execute="@all" listener="#{staffProductManagedBean.deleteProduct}" render=":formAllProducts:dataTableAllProducts" />
               </p:commandButton>
 <!--TODO: UPDATE DATA TABLE 
 

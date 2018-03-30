@@ -60,6 +60,17 @@ public class CustomerOrder implements Serializable {
         this.products = products;
     }
 
+    public CustomerOrder(double totalAmount, double totalPointsAwarded, Date datePaid, String deliveryStatus, Customer customer, List<Product> products) {
+        this.totalAmount = totalAmount;
+        this.totalPointsAwarded = totalPointsAwarded;
+        this.datePaid = datePaid;
+        this.deliveryStatus = deliveryStatus;
+        this.customer = customer;
+        this.products = products;
+    }
+    
+    
+
     
     
     public Long getId() {

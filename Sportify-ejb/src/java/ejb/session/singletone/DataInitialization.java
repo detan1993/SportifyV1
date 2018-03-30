@@ -6,11 +6,13 @@
 package ejb.session.singletone;
 
 import ejb.session.stateless.CustomerControllerLocal;
+import ejb.session.stateless.CustomerOrderControllerRemote;
 import ejb.session.stateless.ImageControllerLocal;
 import ejb.session.stateless.ProductControllerLocal;
 import ejb.session.stateless.ProductSizeControllerLocal;
 import ejb.session.stateless.StaffControllerLocal;
 import entity.Customer;
+import entity.CustomerOrder;
 import entity.Images;
 import entity.Product;
 import entity.ProductSize;
@@ -37,6 +39,9 @@ import util.exception.CustomerSignUpException;
 @LocalBean
 public class DataInitialization {
 
+    @EJB(name = "CustomerOrderControllerLocal")
+    private CustomerOrderControllerRemote customerOrderControllerLocal;
+
     @EJB(name = "StaffControllerLocal")
     private StaffControllerLocal staffControllerLocal;
 
@@ -51,6 +56,8 @@ public class DataInitialization {
 
     @EJB(name = "ImageControllerLocal")
     private ImageControllerLocal imageControllerLocal;
+    
+    
 
     @PersistenceContext(unitName = "Sportify-ejbPU")
     private EntityManager em;
@@ -82,9 +89,18 @@ public class DataInitialization {
     public void initializeData() {
 
         //Create new Customer . Date of birth format is DD-MM-YYYY
+        Customer newCustomer1 = new Customer("Jon", "Tan", "Address 1 Avenue 3", "30-01-2018", "Daviddetan93@gmail.com", "12345678", 0);
+        Customer newCustomer2 = new Customer("Paul" ,"Ang", " Address 2 Avenue 4" , "30-02-2018" , "paul80@gmail.com" , "12345678" , 0);
+        Customer newCustomer3 = new Customer("Alan" , "Chua" , "Address 3 avenue 21" , " 02-03-2018" , "alan_chua@gmail.com" , "12345678" , 0);
+        Customer newCustomer4 = new Customer("Steven" , "Lim" , "AMK 21 ave 21" , " 04-03-2018" , "setve@gmail.com" , "12345678" , 0);
+        
         try {
-            Customer newCustomer = new Customer("Jon", "Tan", "Address 1 Avenue 3", "30-01-2017", "Daviddetan93@gmail.com", "12345678", 0);
-            customerControllerLocal.createNewCustomer(newCustomer);
+            newCustomer1 = customerControllerLocal.createNewCustomer(newCustomer1);
+            newCustomer2 = customerControllerLocal.createNewCustomer(newCustomer2);
+            newCustomer3 = customerControllerLocal.createNewCustomer(newCustomer3);
+            newCustomer4 = customerControllerLocal.createNewCustomer(newCustomer4);
+            
+
         } catch (CustomerSignUpException ex) {
 
         }
@@ -123,7 +139,7 @@ public class DataInitialization {
         date = cal.getTime();
 
         Product manuHomeProduct = new Product("Manu001", "Man United Home 2017/18", "Description", 249.90, "Man United", "Male", "England", date, null, manuHome, manuHomeSize);
-        productControllerLocal.CreateNewProduct(manuHomeProduct);
+        manuHomeProduct = productControllerLocal.CreateNewProduct(manuHomeProduct);
 
         List<Images> sevillaHome = new ArrayList<>();
         Images sevillaProductHome_Main = new Images("images/products/sevilla_home.jpg");
@@ -144,7 +160,7 @@ public class DataInitialization {
         date = cal.getTime();
 
         Product sevillaHomeProduct = new Product("Sevilla001", "Sevilla Home 2017/18", "Description", 79.90, "Sevilla", "Male", "Spain", date, null, sevillaHome, sevillaHomeSize);
-        productControllerLocal.CreateNewProduct(sevillaHomeProduct);
+        sevillaHomeProduct = productControllerLocal.CreateNewProduct(sevillaHomeProduct);
 
         List<Images> liverpoolHome = new ArrayList<>();
         Images liverpoolProductHome_Main = new Images("images/products/liverpool_home.jpg");
@@ -165,7 +181,7 @@ public class DataInitialization {
         date = cal.getTime();
 
         Product liverpoolHomeProduct = new Product("Liverpool001", "Liverpool Home 2017/18", "Description", 349.90, "Liverpool", "Male", "England", date, null, liverpoolHome, liverpoolHomeSize);
-        productControllerLocal.CreateNewProduct(liverpoolHomeProduct);
+        liverpoolHomeProduct = productControllerLocal.CreateNewProduct(liverpoolHomeProduct);
 
         List<Images> atlMadridHome = new ArrayList<>();
         Images atlMadridroductHome_Main = new Images("images/products/altl_home.jpg");
@@ -186,7 +202,7 @@ public class DataInitialization {
         date = cal.getTime();
 
         Product atlMadridHomeProduct = new Product("AtleticoMadrid001", "Atletico Madrid Home 2017/18", "Description", 599.90, "Atletico Madrid", "Male", "Spain", date, null, atlMadridHome, atlMadridHomeSize);
-        productControllerLocal.CreateNewProduct(atlMadridHomeProduct);
+        atlMadridHomeProduct = productControllerLocal.CreateNewProduct(atlMadridHomeProduct);
 
         //Arsenal home
         List<Images> arsenalHome = new ArrayList<>();
@@ -207,8 +223,8 @@ public class DataInitialization {
         cal.set(2018, Calendar.MARCH, 14); //Year, month and day of month
         date = cal.getTime();
 
-        Product ArsenalHomeProduct = new Product("ARS0001", "Arsenal Home 2017/18", "Description", 15.90, "Arsenal", "Male", "England", date, null, arsenalHome, arsenalHomeSize);
-        productControllerLocal.CreateNewProduct(ArsenalHomeProduct);
+        Product ArsenalHomeProduct = new Product("ARS0001", "Arsenal Home 2017/18", "Description", 159.90, "Arsenal", "Male", "England", date, null, arsenalHome, arsenalHomeSize);
+        ArsenalHomeProduct = productControllerLocal.CreateNewProduct(ArsenalHomeProduct);
 
         //Arsenal Away
         List<Images> arsenalAway = new ArrayList<>();
@@ -230,7 +246,7 @@ public class DataInitialization {
         date = cal.getTime();
 
         Product ArsenalAwayProduct = new Product("ARS0002", "Arsenal Away 2017/18", "Description", 149.50, "Arsenal", "Male", "England", date, null, arsenalAway, arsenalAwaySize);
-        productControllerLocal.CreateNewProduct(ArsenalAwayProduct);
+        ArsenalAwayProduct = productControllerLocal.CreateNewProduct(ArsenalAwayProduct);
 
         List<Images> barcaHome = new ArrayList<>();
         Images BarcaProductHome_Main = new Images("images/products/barca_home.jpg");
@@ -251,7 +267,7 @@ public class DataInitialization {
         date = cal.getTime();
 
         Product BarcaHomeProduct = new Product("Barca0001", "Barcelona Home 2017/18", "Description", 200.90, "Barcelona", "Male", "Spain", date, null, barcaHome, barcaHomeSize);
-        productControllerLocal.CreateNewProduct(BarcaHomeProduct);
+         BarcaHomeProduct = productControllerLocal.CreateNewProduct(BarcaHomeProduct);
 
         //Barca Away
         List<Images> barcaAway = new ArrayList<>();
@@ -273,7 +289,7 @@ public class DataInitialization {
         date = cal.getTime();
 
         Product BarcaAwayProduct = new Product("BAR0002", "Barcelona Away 2017/18", "Description", 111.80, "Barcelona", "Male", "Spain", date, null, barcaAway, barcaAwaySize);
-        productControllerLocal.CreateNewProduct(BarcaAwayProduct);
+        BarcaAwayProduct = productControllerLocal.CreateNewProduct(BarcaAwayProduct);
 
         //Chelsea Home
         List<Images> chelseaHome = new ArrayList<>();
@@ -295,7 +311,7 @@ public class DataInitialization {
         date = cal.getTime();
 
         Product ChelseaHomeProduct = new Product("CHL0001", "Chelsea Home 2017/18", "Description", 129.90, "Chelsea", "Male", "England", date, null, chelseaHome, chelseaHomeSize);
-        productControllerLocal.CreateNewProduct(ChelseaHomeProduct);
+       ChelseaHomeProduct = productControllerLocal.CreateNewProduct(ChelseaHomeProduct);
 
         //Chelsea Away
         List<Images> chelseaAway = new ArrayList<>();
@@ -317,7 +333,7 @@ public class DataInitialization {
         date = cal.getTime();
 
         Product ChelseaAwayProduct = new Product("CHL0002", "Chelsea Away 2017/18", "Description", 100, "Chelsea", "Male", "England", date, null, chelseaAway, chelseaAwaySize);
-        productControllerLocal.CreateNewProduct(ChelseaAwayProduct);
+       ChelseaAwayProduct = productControllerLocal.CreateNewProduct(ChelseaAwayProduct);
 
         //Real Madrid Home
         List<Images> rmHome = new ArrayList<>();
@@ -339,7 +355,7 @@ public class DataInitialization {
         date = cal.getTime();
 
         Product RmHomeProduct = new Product("RM0001", "Real Madrid Home 2017/18", "Description", 59.90, "Real Madrid", "Male", "Spain", date, null, rmHome, rmHomeSize);
-        productControllerLocal.CreateNewProduct(RmHomeProduct);
+       RmHomeProduct = productControllerLocal.CreateNewProduct(RmHomeProduct);
 
         //Real Madrid Away
         List<Images> rmAway = new ArrayList<>();
@@ -361,7 +377,7 @@ public class DataInitialization {
         date = cal.getTime();
 
         Product RmAwayProduct = new Product("RM0002", "Real Madrid Away 2017/18", "Description", 59.90, "Real Madrid", "Male", "Spain", date, null, rmAway, rmAwaySize);
-        productControllerLocal.CreateNewProduct(RmAwayProduct);
+       RmAwayProduct = productControllerLocal.CreateNewProduct(RmAwayProduct);
         
         //AC Milan Home
         List<Images> acMilanHome = new ArrayList<>();
@@ -383,7 +399,7 @@ public class DataInitialization {
         date = cal.getTime();
 
         Product AcMilanHomeProduct = new Product("ACM0001", "AC Milan Home 2017/18", "Description", 59.90, "AC Milan", "Male", "Italy", date, null, acMilanHome, acMilanHomeSize);
-        productControllerLocal.CreateNewProduct(AcMilanHomeProduct);
+       AcMilanHomeProduct = productControllerLocal.CreateNewProduct(AcMilanHomeProduct);
 
         //Chealse Home
         /*Images ChealseaProductHome_Main = new Images("<TeamName>_Main example ");
@@ -456,6 +472,93 @@ public class DataInitialization {
          Images HospurProductAway_Sub1 = new Images("TeamName_Sub1");
          Images HospurProductAway_Sub2 = new Images("TeamName_Sub2");
          Images HospurProductAway_Sub3 = new Images("TeamName_Sub2");*/
+        try {
+
+            //Customer 1
+            List<Product> cust1Jan = new ArrayList<>();
+            cust1Jan.add(RmHomeProduct);
+            cust1Jan.add(AcMilanHomeProduct);
+            List<Product> cust1Feb = new ArrayList<>();
+            cust1Feb.add(ChelseaAwayProduct);
+            List<Product> cust1Mar = new ArrayList<>();
+            cust1Mar.add(atlMadridHomeProduct);
+            cust1Mar.add(RmAwayProduct);
+            
+            
+            
+            //Customer 2
+            List<Product> cust2Jan = new ArrayList<>();
+            cust2Jan.add(RmHomeProduct);
+            cust2Jan.add(AcMilanHomeProduct);
+            cust2Jan.add(ChelseaAwayProduct);
+            cust2Jan.add(ChelseaHomeProduct);
+            List<Product> cust2Feb = new ArrayList<>();
+            cust2Feb.add(BarcaHomeProduct);
+            cust2Feb.add(BarcaAwayProduct);
+            List<Product> cust2Mar = new ArrayList<>();
+            cust2Mar.add(atlMadridHomeProduct);
+            cust2Mar.add(RmAwayProduct);
+            
+            
+            //Customer 3
+           
+            List<Product> cust3Feb = new ArrayList<>();
+            cust3Feb.add(atlMadridHomeProduct);
+            List<Product> cust3Mar = new ArrayList<>();
+            cust3Mar.add(ArsenalAwayProduct);
+            cust3Mar.add(ArsenalHomeProduct);
+            cust3Mar.add(liverpoolHomeProduct);
+            cust3Mar.add(RmHomeProduct);
+            cust3Mar.add(manuHomeProduct);
+            cust3Mar.add(BarcaAwayProduct);
+            
+
+            cal.set(2018, Calendar.JANUARY, 26); //Year, month and day of month
+            Date dateJan = cal.getTime();
+            cal.set(2018, Calendar.FEBRUARY, 26);
+            Date dateFeb = cal.getTime();
+            cal.set(2018, Calendar.MARCH, 26);
+            Date dateMar = cal.getTime();
+            CustomerOrder cust1OrderJan = new CustomerOrder(119.80, 20, dateJan, "Delivered", newCustomer1, cust1Jan);
+            customerOrderControllerLocal.CreateNewCustomerOrder(cust1OrderJan);
+            
+            CustomerOrder cust1OrderFeb = new CustomerOrder(100.0, 20, dateFeb, "Delivered", newCustomer1, cust1Feb);
+            customerOrderControllerLocal.CreateNewCustomerOrder(cust1OrderFeb);
+            CustomerOrder cust1OrderMar = new CustomerOrder(659.80, 100, dateMar, "Delivered", newCustomer1, cust1Mar);
+            customerOrderControllerLocal.CreateNewCustomerOrder(cust1OrderMar);
+            
+            cal.set(2018, Calendar.JANUARY, 28); //Year, month and day of month
+             dateJan = cal.getTime();
+            cal.set(2018, Calendar.FEBRUARY, 27);
+            dateFeb = cal.getTime();
+            cal.set(2018, Calendar.MARCH, 30);
+            dateMar = cal.getTime();
+            
+            CustomerOrder cust2OrderJan = new CustomerOrder(349.80, 30, dateJan, "Delivered", newCustomer2, cust2Jan);
+            customerOrderControllerLocal.CreateNewCustomerOrder(cust2OrderJan);
+            
+            CustomerOrder cust2OrderFeb = new CustomerOrder(230.70, 20, dateFeb, "Delivered", newCustomer2, cust2Feb);
+            customerOrderControllerLocal.CreateNewCustomerOrder(cust2OrderFeb);
+            CustomerOrder cust2OrderMar = new CustomerOrder(659.80, 100, dateMar, "Delivered", newCustomer2, cust2Mar);
+            customerOrderControllerLocal.CreateNewCustomerOrder(cust2OrderMar);
+
+            
+            cal.set(2018, Calendar.FEBRUARY, 21);
+            dateFeb = cal.getTime();
+            cal.set(2018, Calendar.MARCH, 14);
+            dateMar = cal.getTime();
+
+             CustomerOrder cust3OrderFeb = new CustomerOrder(599.90, 100, dateFeb, "Delivered", newCustomer3, cust3Feb);
+            customerOrderControllerLocal.CreateNewCustomerOrder(cust3OrderFeb);
+            CustomerOrder cust3OrderMar = new CustomerOrder(1000.80, 100, dateMar, "Delivered", newCustomer3, cust2Mar);
+            customerOrderControllerLocal.CreateNewCustomerOrder(cust3OrderMar);
+
+
+        }catch(Exception ex)
+        {
+            ex.printStackTrace();
+        }
+    
     }
 
     // Add business logic below. (Right-click in editor and choose

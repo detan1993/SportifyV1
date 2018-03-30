@@ -42,91 +42,8 @@
                         <h:form>
                             <p:growl id="msgs" showDetail="true" />
 
-                            <p:outputPanel id="restrictPanel" layout="block" style="width:99%;height:500px;border:0px solid #666666;margin-bottom:20px">
-
-
-                                <p:panel  id="barchartToggle" header="Product Sales" toggleable="true"  toggleSpeed="500" closeSpeed="500" widgetVar="panel" style="margin-bottom:20px;border-color: white !important;">
-
-                                    <br/>
-                                    <h:panelGrid >
-                                        <!--                            <h:outputText style="color:white" value="Products Sales August - December" />-->
-
-                                        <div >
-                                            <p:chart type="line"  model="#{dashboardManagedBean.salesLineChart}" responsive="true" style="height:350px; width:1200px"/>
-
-                                        </div>
-
-                                    </h:panelGrid>
-                                </p:panel>
-
-
-                                <p:panel id="pnl" header="Sales by Country" style="border-color:lightgrey !important; " toggleable="true"  toggleSpeed="500" closeSpeed="500" >
-
-                                        <div> 
-                                            <h:panelGrid columns="2" cellpadding="5">
-                                                <p:outputLabel for="country" style="color:white;" value="Country: " />
-                                                <p:selectOneMenu id="country" value="haha" style="width:150px">
-            <!--                                        <p:ajax listener="#{dropdownView.onCountryChange}" update="city" />
-                                                    <f:selectItem itemLabel="Select Country" itemValue="" noSelectionOption="true" />-->
-                                                    <f:selectItems value="#{dashboardManagedBean.totalSalesByTeamFilter}" />
-                                                </p:selectOneMenu>
-                                            </h:panelGrid>
-                                        </div>
-
-                                        <div style="margin-top:15px">
-                                            <p:chart id="votes" type="pie" model="#{dashboardManagedBean.livePieModel}" style="width:575px; height:350px"/>
-                                        </div>
-
-
-                                    </p:panel>
-
-                                    <p:panel id="pn2" header="View Products Rating" style="border-color:lightgrey !important;" toggleable="true"  toggleSpeed="500" closeSpeed="500">
-
-                                        <div> 
-                                            <h:panelGrid columns="2" cellpadding="5">
-                                                <p:outputLabel for="countTest" style="color:white;" value="Country: " />
-                                                <p:selectOneMenu id="countTest" value="haha" style="width:150px">
-            <!--                                        <p:ajax listener="#{dropdownView.onCountryChange}" update="city" />
-                                                    <f:selectItem itemLabel="Select Country" itemValue="" noSelectionOption="true" />-->
-                                                    <f:selectItems value="#{dashboardManagedBean.totalSalesByTeamFilter}" />
-                                                </p:selectOneMenu>
-                                            </h:panelGrid>
-                                        </div>
-
-                                        <div style="margin-top:15px">
-                                            <p:chart type="bar" model="#{dashboardManagedBean.horizontalRating}" style="width:575px; height:350px"/>
-                                        </div>
-
-                                    </p:panel>
-
-
-                               
-                                <br/>
-
-                                <p:panel  id="test2" header="Testing" toggleable="true"  toggleSpeed="500" closeSpeed="500" widgetVar="panel" style="margin-bottom:20px;border-color: white !important;">
-
-                                    <br/>
-                                    <h:panelGrid >
-                                        <!--                            <h:outputText style="color:white" value="Products Sales August - December" />-->
-
-                                        <div >
-                                            <p:chart type="line"  model="#{dashboardManagedBean.salesLineChart}" responsive="true" style="height:350px; width:1200px"/>
-
-                                        </div>
-
-                                    </h:panelGrid>
-                                </p:panel>
-
-
-                            </p:outputPanel>
-
-
-                            <p:draggable for="pnl" grid="20 , 40" containment="parent"  opacity ="0.3" />
-                            <p:draggable for="pn2" grid="20 , 40" containment="parent"  opacity="0.3" />
-
-
-
-                            <p:draggable for="barchartToggle"   containment="parent" />
+                            <!-- line chart state here !-->
+                   
                         </h:form>
 
                     </div>
@@ -134,19 +51,114 @@
 
                 </p:tab>
 
-                <p:tab title="Customer and Product Report">
-
-                    <!--                    <p:growl id="msgGrow" showDetail="true" />-->
+                <p:tab title="Customer Report">
 
                     <div style="margin-top: 25px;">
-                        <h:form id="selectDateFormTopSales">
+                        <h:form id="selectDateTopCustomerForm">
                             <p:growl id="msgsTopSales" showDetail="true" />
                             <h:panelGrid columns="5" cellpadding="5">
-                                <p:outputLabel style="color:white;" for="fromDateTop" value="From" />
-                                <p:calendar id="fromDateTop" value="#{dashboardManagedBean.salesDate}"  maxdate="#{dashboardManagedBean.currentDate}" />
-                                <p:outputLabel style="color:white;" for="toDateTop" value="To" />
-                                <p:calendar id="toDateTop"  value="#{dashboardManagedBean.salesDate}"  maxdate="#{dashboardManagedBean.currentDate}" />
-                                <p:commandButton  update="msgsTopSales" actionListener="#{dashboardManagedBean.click}" icon="ui-icon-search" />
+                                <p:outputLabel style="color:white;" for="customerFromDate" value="From" />
+                                <p:calendar id="customerFromDate"  value="#{dashboardManagedBean.customerFrom}" beforeShowDay="disableFromDays"  pattern="dd/MMM/yyyy" maxdate="#{dashboardManagedBean.currentDate}" />
+                                <p:outputLabel style="color:white;"   for="customerToDate" value="To" />
+                                <p:calendar id="customerToDate" value="#{dashboardManagedBean.customerTo}" beforeShowDay="disableToDays"  pattern="dd/MMM/yyyy"   maxdate="#{dashboardManagedBean.currentDate}" />
+                                <p:commandButton process="selectDateTopCustomerForm" update="msgsTopSales #{p:component('topCustomerTable')} " actionListener="#{dashboardManagedBean.searchTopCustomer}" icon="ui-icon-search" />
+                            </h:panelGrid>
+
+                        </h:form>
+                        
+
+                    </div>
+
+                    <div>
+
+                        <h:form id="topCustomerFilter">
+                            <p:growl id="topMsg" showDetail="true" />
+                            <h:panelGrid columns="2" cellpadding="5">
+
+                                <p:outputLabel for="customerRankFilter" style="color:white;" value="Rank By: " />
+                                <p:selectOneMenu id="customerRankFilter" value="#{dashboardManagedBean.selectFilterTopCustomer}" style="width:150px">
+                                    <f:selectItem itemLabel="Total Purchases(S$)" itemValue ="TP" />
+                                    <f:selectItem itemLabel="Total No. of Purchases" itemValue ="TQTY" />
+                                    <f:selectItem itemLabel="Avg Purchases" itemValue ="AP" />
+                                    <p:ajax  event="change" update="#{p:component('topCustomerTable')}" listener="#{dashboardManagedBean.onTopCustomerFilterChange}"/>
+                                </p:selectOneMenu>
+                                
+           
+                            </h:panelGrid>
+
+
+                        </h:form>
+                    </div>
+
+                    <div style="margin-top: 25px;">
+
+                        <p:dataTable id="topCustomerTable" var="customer" value="#{dashboardManagedBean.topCustomers}">
+                            <f:facet name="header">
+                                Top 10 Customer
+                            </f:facet>
+                            <p:column headerText="Rank">
+                                <h:outputText value="#{customer.rank}"/>
+                            </p:column>
+                            <p:column headerText="Email">
+                                <h:outputText styleClass="topCustomerDiv"  value="#{customer.email}" />
+                            </p:column>
+                            <p:column headerText="Total Purchase($)">
+                                <h:outputText styleClass="topCustomerDiv"  value="#{customer.totalPurchase}" />
+                            </p:column>
+                            <p:column headerText="Total No of Purchase">
+                                <h:outputText styleClass="topCustomerDiv"  value="#{customer.totalNoOfPurchase}" />
+                            </p:column>
+                            <p:column headerText="Avg Purchase per Transaction">
+                                <h:outputText styleClass="topCustomerDiv"  value="#{customer.averagePurchasePerTransaction}" />
+                            </p:column>
+                            <p:column style="width:32px;text-align: center">
+                                <p:commandButton update="#{p:component('formViewTopCustomer')}" oncomplete="PF('customerDialog').show()" icon="ui-icon-search" title="View">
+                                    <f:setPropertyActionListener value="#{customer}" target="#{dashboardManagedBean.selectedCustomer}" />
+                                </p:commandButton>
+                            </p:column>
+                        </p:dataTable>
+
+                    </div>
+
+
+                    <h:form id="formViewTopCustomer">
+
+                        <p:dialog id="customerDialog" appendTo="@(body)" widgetVar="customerDialog" header="Profile" modal="true" height="300" width="480" closable="true" resizable="false">
+                            <p:outputPanel id="carDetail" style="text-align:center;">
+                                <p:panelGrid  columns="2" rendered="#{not empty dashboardManagedBean.selectedProducts}" columnClasses="label,value">
+
+                                    <h:outputText value="Name:" />
+                                    <h:outputText value="#{dashboardManagedBean.selectedCustomer.fullName}" />
+
+                                    <h:outputText value="Birthday:" />
+                                    <h:outputText value="#{dashboardManagedBean.selectedCustomer.accountCreated}" />
+                                    
+                                      <h:outputText value="Loyalty Point:" />
+                                      <h:outputText value="#{dashboardManagedBean.selectedCustomer.loyaltyPoint}" />
+
+                                      <h:outputText value="Total Purchase ($) By Team:" />
+                  
+                                      
+                                </p:panelGrid>
+                            </p:outputPanel>
+                        </p:dialog>
+                    </h:form>
+
+
+
+                </p:tab>
+                
+                <p:tab title="Product Report">
+                    
+                       <div style="margin-top: 25px;">
+                        <h:form id="selectDateTopProductForm">
+                    
+                            <h:panelGrid columns="5" cellpadding="5">
+                                <p:outputLabel style="color:white;" for="productFromDate" value="From" />
+                                <p:calendar id="productFromDate" value="#{dashboardManagedBean.salesDate}"  maxdate="#{dashboardManagedBean.currentDate}" />
+                                <p:outputLabel style="color:white;" for="productToDate" value="To" />
+                                <p:calendar id="productToDate"  value="#{dashboardManagedBean.salesDate}"  maxdate="#{dashboardManagedBean.currentDate}" />
+                                <p:commandButton actionListener="#{dashboardManagedBean.click}" icon="ui-icon-search" />
                             </h:panelGrid>
 
                         </h:form>
@@ -155,12 +167,12 @@
 
                     <div>
 
-                        <h:form id="topForm">
+                        <h:form id="topProductFilter">
                             <p:growl id="topMsg" showDetail="true" />
                             <h:panelGrid columns="2" cellpadding="5">
 
-                                <p:outputLabel for="rankFilter" style="color:white;" value="Rank By: " />
-                                <p:selectOneMenu id="rankFilter" value="haha" style="width:150px">
+                                <p:outputLabel for="productRankFilter" style="color:white;" value="Rank By: " />
+                                <p:selectOneMenu id="productRankFilter" value="haha" style="width:150px">
                                     <f:selectItems value="#{dashboardManagedBean.totalSalesByTeamFilter}" />
                                 </p:selectOneMenu>
                             </h:panelGrid>
@@ -168,54 +180,7 @@
 
                         </h:form>
                     </div>
-
-                    <div style="margin-top: 25px;">
-
-                        <p:dataTable id="basicDT" var="product" value="#{dashboardManagedBean.products}">
-                            <f:facet name="header">
-                                Top 10 Customer
-                            </f:facet>
-                            <p:column headerText="Id">
-                                <h:outputText value="#{product.id}" />
-                            </p:column>
-                            <p:column headerText="Team Name">
-                                <h:outputText styleClass="topCustomerDiv"  value="#{product.team}" />
-                            </p:column>
-                            <p:column headerText="Country">
-                                <h:outputText styleClass="topCustomerDiv"  value="#{product.country}" />
-                            </p:column>
-                            <p:column headerText="Price($)">
-                                <h:outputText styleClass="topCustomerDiv"  value="#{product.price}" />
-                            </p:column>
-                            <p:column style="width:32px;text-align: center">
-                                <p:commandButton update="#{p:component('formViewCustomer')}" oncomplete="PF('customerDialog').show()" icon="ui-icon-search" title="View">
-                                    <f:setPropertyActionListener value="#{product}" target="#{dashboardManagedBean.selectedProducts}" />
-                                </p:commandButton>
-                            </p:column>
-                        </p:dataTable>
-
-                    </div>
-
-
-                    <h:form id="formViewCustomer">
-
-                        <p:dialog id="customerDialog" appendTo="@(body)" widgetVar="customerDialog" header="Customer Profile" modal="true" height="250" width="450" closable="true" resizable="false">
-                            <p:outputPanel id="carDetail" style="text-align:center;">
-                                <p:panelGrid  columns="2" rendered="#{not empty dashboardManagedBean.selectedProducts}" columnClasses="label,value">
-
-                                    <h:outputText value="Id:" />
-                                    <h:outputText value="#{dashboardManagedBean.selectedProducts.id}" />
-
-                                    <h:outputText value="Test 1" />
-                                    <h:outputText value="#{dashboardManagedBean.selectedProducts.productCode}" />
-
-                                </p:panelGrid>
-                            </p:outputPanel>
-                        </p:dialog>
-                    </h:form>
-
-
-
+                    
                 </p:tab>
 
 

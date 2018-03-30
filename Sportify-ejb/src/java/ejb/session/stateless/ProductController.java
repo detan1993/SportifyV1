@@ -48,7 +48,7 @@ public class ProductController implements ProductControllerRemote, ProductContro
     @Override
     public List<Product> retrieveProduct(){
       Query query = em.createQuery("SELECT p FROM Product p WHERE p.status='A' ORDER BY p.team");
-      return query.getResultList();
+      return query.setMaxResults(5).getResultList();
     }
     
     @Override
