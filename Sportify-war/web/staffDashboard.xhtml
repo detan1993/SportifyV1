@@ -121,29 +121,7 @@
                     </div>
 
 
-                    <h:form id="formViewTopCustomer">
-
-                        <p:dialog id="customerDialog" appendTo="@(body)" widgetVar="customerDialog" header="Profile" modal="true" height="300" width="480" closable="true" resizable="false">
-                            <p:outputPanel id="carDetail" style="text-align:center;">
-                                <p:panelGrid  columns="2" rendered="#{not empty dashboardManagedBean.selectedProducts}" columnClasses="label,value">
-
-                                    <h:outputText value="Name:" />
-                                    <h:outputText value="#{dashboardManagedBean.selectedCustomer.fullName}" />
-
-                                    <h:outputText value="Birthday:" />
-                                    <h:outputText value="#{dashboardManagedBean.selectedCustomer.accountCreated}" />
-                                    
-                                      <h:outputText value="Loyalty Point:" />
-                                      <h:outputText value="#{dashboardManagedBean.selectedCustomer.loyaltyPoint}" />
-
-                                      <h:outputText value="Total Purchase ($) By Team:" />
-                  
-                                      
-                                </p:panelGrid>
-                            </p:outputPanel>
-                        </p:dialog>
-                    </h:form>
-
+            
 
 
                 </p:tab>
