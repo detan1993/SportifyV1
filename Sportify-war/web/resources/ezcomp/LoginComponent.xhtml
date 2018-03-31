@@ -24,12 +24,11 @@
                         <h:outputLabel rendered="#{sessionScope['currentItemCartExist']}">
                             <h:panelGroup id="notiNum">
                                 <h:outputText style="position: absolute;
-                                              right: 105px;
-                                              top: 10px;
+                                              right: 80px;
+                                              top: 18px;
                                               background-color: orange;
-                                              /*                                 line-height: px;*/
                                               width: 25px;
-                                              height: 20px;
+                                              height: 17px;
                                               border-radius: 10px;
                                               text-align: center;
                                               z-index: 2;
@@ -42,17 +41,18 @@
             </h:panelGroup>
 
             <h:panelGroup id="noLoginFormPanel" rendered="#{!sessionScope['isLogin']}">
+                <h:form id="noLoginForm">
                 <p:commandButton id="signUpButton" value="SIGN UP" onclick="PF('signUpDialog').show(); PF('loginDialog').hide()"/>&nbsp;
                 <p:commandButton id="loginButton" value="LOGIN" onclick="PF('loginDialog').show();PF('signUpDialog').hide()"/>&nbsp;
                 <p:commandButton icon="fa fa-shopping-cart" action="#{viewDetailedManagedBean.checkOutRedirect}">
                     <h:outputLabel rendered="#{sessionScope['currentItemCartExist']}">
                         <h:panelGroup id="notiNumNoLogin">
                             <h:outputText style="position: absolute;
-                                          right: 105px;
-                                          top: 10px;
+                                          right: 80px;
+                                          top: 18px;
                                           background-color: orange;
                                           width: 25px;
-                                          height: 20px;
+                                          height: 17px;
                                           border-radius: 10px;
                                           text-align: center;
                                           z-index: 2;
@@ -61,10 +61,10 @@
                         </h:panelGroup>
                     </h:outputLabel>
                 </p:commandButton>
-               
-                    <ui:include src="/customerLogin.xhtml"/>
-                    <ui:include src="/customerSignUp.xhtml"/>
-                
+                </h:form>
+                <ui:include src="/customerLogin.xhtml"/>
+                <ui:include src="/customerSignUp.xhtml"/>
+
             </h:panelGroup> 
         </div>
     </cc:implementation>
