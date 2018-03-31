@@ -5,11 +5,17 @@
  */
 package jsf.staff.managedbean;
 
+import ejb.session.stateless.CustomerControllerLocal;
+import ejb.session.stateless.CustomerVoucherControllerLocal;
 import ejb.session.stateless.VoucherControllerLocal;
+import entity.Customer;
+import entity.CustomerVoucher;
 import entity.Voucher;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
@@ -27,16 +33,30 @@ import javax.faces.view.ViewScoped;
 public class StaffVoucherManagedBean implements Serializable{
     @EJB(name="voucherControllerLocal")
     private VoucherControllerLocal voucherControllerLocal;
+    
+    @EJB(name="CustomerControllerLocal")
+    private CustomerControllerLocal customerControllerLocal;
+    
+    @EJB(name="customerVoucherControllerLocal")
+    private CustomerVoucherControllerLocal customerVoucherControllerLocal;
 
     private List<Voucher> vouchers;
     private Voucher newVoucher;
     private Voucher selectedVoucher;
     private List<Voucher> filteredVouchers;
+    
+    private boolean isSpecific;
+    private Map<String,Integer> monthList;
+    private int selectedMonth;
+    
+    private int totalVoucherAmount;
+    private int currentVoucherAmount;
      
     public StaffVoucherManagedBean() {
         vouchers = new ArrayList<Voucher>();
         newVoucher = new Voucher();
         filteredVouchers = new ArrayList<Voucher>();
+        monthList = new HashMap<String,Integer>();
     }
     
     @PostConstruct
@@ -44,13 +64,43 @@ public class StaffVoucherManagedBean implements Serializable{
         vouchers = voucherControllerLocal.retrieveVouchers();
         newVoucher = new Voucher();
         filteredVouchers = vouchers;
+        isSpecific = false;
         
+        //Populate month list
+        monthList.put("January",1);
+        monthList.put("February",2);
+        monthList.put("March",3);
+        monthList.put("April",4);
+        monthList.put("May",5);
+        monthList.put("June",6);
+        monthList.put("July",7);
+        monthList.put("August",8);
+        monthList.put("September",9);
+        monthList.put("October",10);
+        monthList.put("November",11);
+        monthList.put("December",12);
     }
 
-     public void createNewVoucher(ActionEvent event){
+    public void createNewVoucher(ActionEvent event){
         try
         {
+            voucherControllerLocal.createNewVoucher(newVoucher);
+            List<Customer> customersToBeGivenVouchers = new ArrayList<Customer>();
+            CustomerVoucher cv = new CustomerVoucher();
             
+            if(isSpecific){
+                customersToBeGivenVouchers = customerControllerLocal.retrieveCustomerByMonth(selectedMonth);
+            }else{
+                customersToBeGivenVouchers = customerControllerLocal.retrieveCustomer();
+            }
+            
+            for(Customer c : customersToBeGivenVouchers){
+                cv.setCustomer(c);
+                cv.setVoucher(newVoucher);
+                for(int i=0;i<newVoucher.getQuantity();i++){
+                      customerVoucherControllerLocal.createNewCustomerVoucher(cv);
+                }
+            }
 
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New voucher created successfully (Voucher ID: " + newVoucher.getId() + ")", null));
         }
@@ -59,7 +109,6 @@ public class StaffVoucherManagedBean implements Serializable{
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred while creating the new voucher: " + ex.getMessage(), null));
         }
     }
-    
     
     public List<Voucher> getVouchers() {
         return vouchers;
@@ -92,7 +141,38 @@ public class StaffVoucherManagedBean implements Serializable{
     public void setFilteredVouchers(List<Voucher> filteredVouchers) {
         this.filteredVouchers = filteredVouchers;
     }
-    
+
+    public VoucherControllerLocal getVoucherControllerLocal() {
+        return voucherControllerLocal;
+    }
+
+    public void setVoucherControllerLocal(VoucherControllerLocal voucherControllerLocal) {
+        this.voucherControllerLocal = voucherControllerLocal;
+    }
+
+    public boolean isIsSpecific() {
+        return isSpecific;
+    }
+
+    public void setIsSpecific(boolean isSpecific) {
+        this.isSpecific = isSpecific;
+    }
+
+    public Map<String, Integer> getMonthList() {
+        return monthList;
+    }
+
+    public void setMonthList(Map<String, Integer> monthList) {
+        this.monthList = monthList;
+    }
+
+    public int getSelectedMonth() {
+        return selectedMonth;
+    }
+
+    public void setSelectedMonth(int selectedMonth) {
+        this.selectedMonth = selectedMonth;
+    }
     
     
 }

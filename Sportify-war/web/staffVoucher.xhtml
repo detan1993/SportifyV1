@@ -14,21 +14,28 @@
                  <h:form id="form_createVoucher">
                     <p:commandButton value="Create new Voucher" actionListener="#{staffVoucherManagedBean.createNewVoucher}" update="@form"/>
                     <br/><br/>
-                    
-                        <p:panel header="Details">
-                            <p:panelGrid columns="4" >
+                    <p:panel header="Details">
+                        <p:panelGrid columns="4" >
                             <h:outputLabel for="voucherCode" value="Voucher Code" />
                             <p:inputText  value="#{staffVoucherManagedBean.newVoucher.voucherCode}" required="true"/>
                             <h:outputLabel for="voucherValue" value="Voucher Value:" />
                             <p:inputText  value="#{staffVoucherManagedBean.newVoucher.voucherValue}" required="true"/>
-                            <br/>
                             <h:outputLabel for="voucherQuantity" value="Quantity per Customer: " />
                             <p:inputText value="#{staffVoucherManagedBean.newVoucher.quantity}" required="true"/>
                             <h:outputLabel for="expiryDate" value="Expiry Date: " />
-                            <p:inputText value="#{staffVoucherManagedBean.newVoucher.quantity}" required="true"/>
-                               </p:panelGrid>
-                        </p:panel>
-                 
+                            <p:calendar id="popup" value="#{staffVoucherManagedBean.newVoucher.dateExpired}" />
+                        </p:panelGrid>
+                        <p:selectBooleanCheckbox id="cb_voucher" value="#{staffVoucherManagedBean.isSpecific}">
+                            <p:ajax event="change" update="v_specificPanel" />
+                        </p:selectBooleanCheckbox> 
+                        &nbsp;&nbsp; Specific selection of Customers only<br />
+                        <p:panelGrid id="v_specificPanel" rendered="#{staffVoucherManagedBean.isSpecific}">
+                            <h:outputLabel value="Month of Birth: " />
+                            <p:selectOneMenu id="teamDropDown" value="#{staffVoucherManagedBean.selectedMonth}" style="width:150px">
+                                <f:selectItems value="#{staffVoucherManagedBean.monthList}" />
+                            </p:selectOneMenu>
+                        </p:panelGrid>
+                    </p:panel>
                 </h:form>
             </p:tab>
             <p:tab title="View Vouchers">
@@ -72,6 +79,25 @@
             </p:tab>
         </p:tabView>
         
+        
+         <h:form id="form_viewVoucher">
+            <p:dialog id="viewVoucherDialog" showEffect="slide" widgetVar="viewVoucherDialog" resizable="false" draggable="false">
+                <p:panelGrid columns="4" >
+                    <h:outputLabel for="voucherCode" value="Voucher Code" />
+                    <p:inputText  value="#{staffVoucherManagedBean.selectedVoucher.voucherCode}" required="true"/>
+                    <h:outputLabel for="voucherValue" value="Voucher Value:" />
+                    <p:inputText  value="#{staffVoucherManagedBean.selectedVoucher.voucherValue}" required="true"/>
+                    <h:outputLabel for="voucherQuantity" value="Quantity per Customer: " />
+                    <p:inputText value="#{staffVoucherManagedBean.selectedVoucher.quantity}" required="true"/>
+                    <h:outputLabel for="expiryDate" value="Expiry Date: " />
+                    <p:calendar id="popup" value="#{staffVoucherManagedBean.selectedVoucher.dateExpired}" />
+                </p:panelGrid>
+                <br/><br/>
+                <p:panel>
+                    
+                </p:panel>
+          </p:dialog>
+        </h:form>
         
     </ui:define>
 

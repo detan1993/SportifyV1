@@ -6,12 +6,15 @@
 package entity;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 /**
  *
@@ -30,17 +33,21 @@ public class Voucher implements Serializable {
     private String voucherCode;
     private String type;
     
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date dateExpired;
+    
     @OneToMany(mappedBy="voucher")
     private List<CustomerVoucher> customerVouchers;
 
     public Voucher() {
     }
 
-    public Voucher(double voucherValue, int quantity, String voucherCode, String type, List<CustomerVoucher> customerVouchers) {
+    public Voucher(double voucherValue, int quantity, String voucherCode, String type, Date dateCreated, List<CustomerVoucher> customerVouchers) {
         this.voucherValue = voucherValue;
         this.quantity = quantity;
         this.voucherCode = voucherCode;
         this.type = type;
+        this.dateExpired = dateCreated;
         this.customerVouchers = customerVouchers;
     }
 
@@ -86,6 +93,14 @@ public class Voucher implements Serializable {
         this.type = type;
     }
 
+    public Date getDateExpired() {
+        return dateExpired;
+    }
+
+    public void setDateExpired(Date dateExpired) {
+        this.dateExpired = dateExpired;
+    }
+    
     public List<CustomerVoucher> getCustomerVouchers() {
         return customerVouchers;
     }

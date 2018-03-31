@@ -17,4 +17,6 @@ public interface CustomerControllerRemote {
     public Customer login(String email, String password) throws InvalidLoginCredentialException;
 
     public Customer retrieveCustomer(String email) throws CustomerNotFoundException;
+
+    List<Customer> retrieveCustomerByMonth(int month);
 }
