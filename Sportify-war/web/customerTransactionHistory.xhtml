@@ -13,6 +13,34 @@
     <ui:define name="center">
         <p:panel header="MY PAST TRANSACTIONS">
             
+              <p:repeat value="#{viewAllProductsManagedBean.products}" var="item">
+                        <p:panelGrid columns="2" style="height:100px" >
+                            <p:row>
+                                <p:column rowspan="2">
+                                    <p:graphicImage name="images/avatar_review.png" width="100px" height="100px" />
+                                </p:column>
+                                
+                            </p:row>
+
+                            <p:row>
+                                 <p:column style="text-align: center">
+                                   PRODUCT NAME: ARSENAL  
+                                   <br />
+                                    QUANTITY: 2
+                                    <br />
+                                    TOTAL PRICE: $120.59
+                                    <br />
+                                    YOUR REVIEW: REVIEW REVIEW REVIEW REVIEW REVIEW REVIEW REVIEW REVIEW REVIEW REVIEW REVIEW REVIEW
+                                    <br />
+                                    <p:rating value="4" readonly="true" />
+                                </p:column>
+                              
+                                <p:column> </p:column>
+                            </p:row>
+
+                        </p:panelGrid>
+                        <br />
+                   </p:repeat>
             
         </p:panel>
     </ui:define>
