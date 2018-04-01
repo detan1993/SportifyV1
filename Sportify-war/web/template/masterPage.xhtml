@@ -41,6 +41,14 @@
                 border: 0 !important;
                 border-radius: 0px !important;
             }
+            
+            .ui-panelgrid .ui-panelgrid-cell{
+                border-style:none !important;
+            }
+            
+            .ui-state-active a, .ui-state-active a:link, .ui-state-active a:visited{
+                color:greenyellow !important;
+            }
 
         </style>
         <h:outputStylesheet library="css" name="default.css"/>
@@ -65,12 +73,12 @@
                 <div class="home_links">
                     <table style="border:none !important;">
                         <tr>
-                            <td style="padding-right:20px">
-                                <p:link style="font-weight: normal; text-decoration: none" value="REVIEWS" outcome="customerTransactionHistory"  />
+                             <td style="padding-right:20px;padding-left: 5px">
+                                <p:link style="font-weight: normal; text-decoration: none" value="MY PURCHASE HISTORY" outcome="customerTransactionHistory" rendered="#{sessionScope['isLogin']}" />
                             </td>
                             <td>
                                 <p:link style="font-weight: normal; text-decoration: none" outcome="products" value="SHOP NOW!" />     
-                            </td>
+                            </td> 
                         </tr>
                     </table>               
                 </div>

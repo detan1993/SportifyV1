@@ -15,6 +15,7 @@ import util.helperClass.TopTenCustomer;
  */
 public interface CustomerOrderControllerLocal {
      public CustomerOrder CreateNewCustomerOrder(CustomerOrder newCustomerOrder);
+     public List<CustomerOrder> GetCustomerOrder (long customerId);
      public List<CustomerOrder> RetrieveAllCustomerOrder();
      public List<TopTenCustomer> RetrieveTopTenCustomersByOrder();
      public List<TopTenCustomer> RetrieveTopTenCustomerByOrderByRanger(String dateFron, String dateTo);

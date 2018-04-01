@@ -39,6 +39,13 @@ public class CustomerOrderController implements CustomerOrderControllerRemote, C
         em.refresh(newCustomerOrder);
         return newCustomerOrder;
     }
+    
+    @Override
+    public List<CustomerOrder> GetCustomerOrder (long customerId){
+        Query query = em.createQuery("SELECT p FROM CustomerOrder p WHERE p.customer.id=:customerId");
+        query.setParameter("customerId", customerId);
+        return query.getResultList();
+    }
 
     @Override
     public List<CustomerOrder> RetrieveAllCustomerOrder() {

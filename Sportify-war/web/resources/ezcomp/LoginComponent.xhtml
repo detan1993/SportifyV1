@@ -19,7 +19,7 @@
             <h:panelGroup id="loginFormPanel" rendered="#{sessionScope['isLogin']}">
                 <h:form id="loginBarForm">
                     <h:outputText value="Hi #{sessionScope['currentCustomer'].firstName}!" />&nbsp;
-                    <p:commandButton id="logOutButton" value="LOGOUT" actionListener="#{customerLoginManagedBean.logout}" icon="ui-icon-unlocked"/>
+                    <p:commandButton id="logOutButton" value="LOGOUT" actionListener="#{customerLoginManagedBean.logout}" icon="ui-icon-unlocked"/>&nbsp;
                     <p:commandButton icon="fa fa-shopping-cart" action="#{viewDetailedManagedBean.checkOutRedirect}">
                         <h:outputLabel rendered="#{sessionScope['currentItemCartExist']}">
                             <h:panelGroup id="notiNum">

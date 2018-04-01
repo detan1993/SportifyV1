@@ -11,6 +11,8 @@ import javax.faces.event.ActionEvent;
 import javax.servlet.http.HttpSession;
 import entity.Customer;
 import java.util.ArrayList;
+import javax.faces.context.ExternalContext;
+import javax.servlet.http.HttpServletRequest;
 import org.primefaces.context.RequestContext;
 import util.exception.InvalidLoginCredentialException;
 
@@ -34,7 +36,10 @@ public class CustomerLoginManagedBean {
             FacesContext.getCurrentInstance().getExternalContext().getSession(true);
             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("isLogin", true);
             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("currentCustomer", currentCustomer);
-            FacesContext.getCurrentInstance().getExternalContext().redirect("home.xhtml");
+//            FacesContext.getCurrentInstance().getExternalContext().redirect("?faces-redirect=true");
+            ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
+            ec.redirect(((HttpServletRequest) ec.getRequest()).getRequestURI());
+            
         } catch (InvalidLoginCredentialException ex) {
             RequestContext.getCurrentInstance().execute("PF('loginDialog').show()");
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Invalid email or password", null));

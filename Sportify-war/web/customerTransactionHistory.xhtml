@@ -4,49 +4,130 @@
                 template="./template/masterPage.xhtml"
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:f="http://xmlns.jcp.org/jsf/core"
-                xmlns:h="http://xmlns.jcp.org/jsf/html">
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
 
     <ui:define name="west">
+        <p:panel style="overflow: hidden">
+             <p:graphicImage name="images/toby_model.jpg" width="311px" />
+        </p:panel>
        
     </ui:define>
 
     <ui:define name="center">
-        <p:panel header="MY PAST TRANSACTIONS">
-            
-              <p:repeat value="#{viewAllProductsManagedBean.products}" var="item">
-                        <p:panelGrid columns="2" style="height:100px" >
-                            <p:row>
-                                <p:column rowspan="2">
-                                    <p:graphicImage name="images/avatar_review.png" width="100px" height="100px" />
-                                </p:column>
-                                
-                            </p:row>
-
-                            <p:row>
-                                 <p:column style="text-align: center">
-                                   PRODUCT NAME: ARSENAL  
-                                   <br />
-                                    QUANTITY: 2
-                                    <br />
-                                    TOTAL PRICE: $120.59
-                                    <br />
-                                    YOUR REVIEW: REVIEW REVIEW REVIEW REVIEW REVIEW REVIEW REVIEW REVIEW REVIEW REVIEW REVIEW REVIEW
-                                    <br />
-                                    <p:rating value="4" readonly="true" />
-                                </p:column>
-                              
-                                <p:column> </p:column>
-                            </p:row>
-
-                        </p:panelGrid>
+        <p:panel header="PURCHASE HISTORY" style="text-align:center;font-size:20px">
+            <p:tabView style="text-align:left;font-size:15px">
+                <p:tab title="CURRENT TRANSACTIONS">
+                    <p:panel rendered="#{empty customerPurchaseHistoryManagedBean.productsOnHold}">
+                        <p:row>
+                            <p:column>
+                                <h:outputText value="You have no current transactions! &nbsp;"> </h:outputText>
+                            </p:column>
+                            <p:column>
+                                <p:commandButton value="SHOP NOW!" action="#{customerPurchaseHistoryManagedBean.shopNowRedirect}" icon="fa fa-shopping-cart"/>
+                            </p:column>
+                        </p:row>
                         <br />
-                   </p:repeat>
-            
+                        <br />
+                        <h:graphicImage name="images/jerseys_banner.jpg.png" width="840px" style="margin-left: -68px;" />
+                    </p:panel>
+
+                    <c:forEach items="#{customerPurchaseHistoryManagedBean.productsOnHold}" var="custOrderOnHold" rendered="#{not empty customerPurchaseHistoryManagedBean.productsOnHold}">
+                        <p:panel collapsed="true" toggleable="true" toggleSpeed="500" closeSpeed="500">
+                            <f:facet name="header">
+                                Transaction date: #{custOrderOnHold.key.datePaid}
+                                <br />
+                                Total Amount: SGD #{custOrderOnHold.key.totalAmount}
+                                <br />
+                                Total Points Awarded: #{custOrderOnHold.key.totalPointsAwarded}
+                                <br />
+                                DELIVERY STATUS: <h:outputText style="color:greenyellow" value="#{custOrderOnHold.key.deliveryStatus}"></h:outputText>
+                            </f:facet>
+                            <p:panelGrid>
+
+                                <!--looping each product for this order-->
+                                <c:forEach items="#{custOrderOnHold.value}" var="productDetailsOnHold">
+                                    <p:row>
+                                        <p:column rowspan="2">
+                                            <p:graphicImage name="#{productDetailsOnHold.images[0].imagePath}"  />
+                                        </p:column>
+                                        <p:row>
+                                            <p:column>
+                                                PRODUCT NAME: #{productDetailsOnHold.productName}  
+                                                <br />
+                                                QUANTITY: 1 (HARDCODED)
+                                                <br />
+                                                UNIT PRICE: #{productDetailsOnHold.price}
+                                                <br />
+                                            </p:column>
+                                        </p:row>
+                                    </p:row>
+                                </c:forEach>
+                            </p:panelGrid>
+                        </p:panel>
+                    </c:forEach>
+                </p:tab>
+                <p:tab title="PAST TRANSACTIONS">
+
+                    <p:panel rendered="#{empty customerPurchaseHistoryManagedBean.productOrderDetails}">
+                        <p:row>
+                            <p:column>
+                                <h:outputText value="You have no past transactions! &nbsp;"> </h:outputText>
+                            </p:column>
+                            <p:column>
+                                <p:commandButton value="SHOP NOW!" action="#{customerPurchaseHistoryManagedBean.shopNowRedirect}" icon="fa fa-shopping-cart"/>
+                            </p:column>
+                        </p:row>
+                        <br />
+                        <br />
+                       <h:graphicImage name="images/jerseys_banner.jpg.png" width="840px" style="margin-left: -68px;" />
+                    </p:panel>
+
+                    <!--looping each order-->
+                    <c:forEach items="#{customerPurchaseHistoryManagedBean.productOrderDetails}" var="custOrder" rendered="#{not empty customerPurchaseHistoryManagedBean.productOrderDetails}">
+
+                        <p:panel collapsed="true" toggleable="true" toggleSpeed="500" closeSpeed="500">
+                            <f:facet name="header">
+                                Transaction date: #{custOrder.key.datePaid}
+                                <br />
+                                Total Amount: SGD #{custOrder.key.totalAmount}
+                                <br />
+                                Total Points Awarded: #{custOrder.key.totalPointsAwarded}
+                                <br />
+                                DELIVERY STATUS: <h:outputText style="color:greenyellow" value="#{custOrder.key.deliveryStatus}"></h:outputText>
+                            </f:facet>
+                            <p:panelGrid>
+
+                                <!--looping each product for this order-->
+                                <c:forEach items="#{custOrder.value}" var="productDetails">
+                                    <p:row>
+                                        <p:column>
+                                            <p:graphicImage name="#{productDetails.images[0].imagePath}"  />
+                                        </p:column>
+
+                                        <p:column>
+                                            PRODUCT NAME: #{productDetails.productName}  
+                                            <br />
+                                            QUANTITY: 1 (HARDCODED)
+                                            <br />
+                                            UNIT PRICE: #{productDetails.price}
+                                        </p:column>
+
+                                    </p:row>
+                                </c:forEach>
+                            </p:panelGrid>
+                        </p:panel>
+
+                    </c:forEach>
+                </p:tab>
+            </p:tabView>
         </p:panel>
     </ui:define>
 
     <ui:define name="east">
-        
+        <p:panel style="float:right">
+            <p:graphicImage name="images/beckham_model.jpg" width="300px" />
+        </p:panel>
     </ui:define>
 
 </ui:composition>
