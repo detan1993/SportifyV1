@@ -39,6 +39,8 @@ public class ViewAllProductsManagedBean implements Serializable {
         
         HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
         String teamName = request.getParameter("teamName");
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("tempTeamName", true);
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("tempTeamNameStr", teamName);
         
         if (teamName != null && !teamName.equals("")){
             products = productController.retrieveProductsByTeam(teamName);

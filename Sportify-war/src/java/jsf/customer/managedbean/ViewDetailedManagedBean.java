@@ -46,6 +46,8 @@ public class ViewDetailedManagedBean implements Serializable {
 
         HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
         String productId = request.getParameter("productId");
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("tempProductId", true);
+        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("tempProductIdStr", productId);
 
         try {
             long productIdLong = Long.parseLong(productId);

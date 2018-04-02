@@ -35,7 +35,9 @@
                     <c:forEach items="#{customerPurchaseHistoryManagedBean.productsOnHold}" var="custOrderOnHold" rendered="#{not empty customerPurchaseHistoryManagedBean.productsOnHold}">
                         <p:panel collapsed="true" toggleable="true" toggleSpeed="500" closeSpeed="500">
                             <f:facet name="header">
-                                Transaction date: #{custOrderOnHold.key.datePaid}
+                             
+                                    
+                                Transaction date: <h:outputText value="#{custOrderOnHold.key.datePaid}"><f:convertDateTime pattern="dd MMM yyyy" /></h:outputText>
                                 <br />
                                 Total Amount: SGD #{custOrderOnHold.key.totalAmount}
                                 <br />
@@ -47,20 +49,30 @@
 
                                 <!--looping each product for this order-->
                                 <c:forEach items="#{custOrderOnHold.value}" var="productDetailsOnHold">
-                                    <p:row>
-                                        <p:column rowspan="2">
+                                     <p:row>
+                                        <p:column>
                                             <p:graphicImage name="#{productDetailsOnHold.images[0].imagePath}"  />
+                                           
                                         </p:column>
-                                        <p:row>
-                                            <p:column>
-                                                PRODUCT NAME: #{productDetailsOnHold.productName}  
-                                                <br />
-                                                QUANTITY: 1 (HARDCODED)
-                                                <br />
-                                                UNIT PRICE: #{productDetailsOnHold.price}
-                                                <br />
-                                            </p:column>
-                                        </p:row>
+
+                                        <p:column>
+                                            PRODUCT NAME: #{productDetailsOnHold.productName}  
+                                            <br />
+                                            QUANTITY: 1 (HARDCODED)
+                                            <br />
+                                            UNIT PRICE: #{productDetailsOnHold.price}
+                                            <br />
+                                            <br />
+                                      
+                                            <h:outputLabel value="MY REVIEW:REVIEW"></h:outputLabel>
+                                           
+                                        </p:column>
+                                    </p:row>
+                                    <p:row>
+                                        <p:column style="text-align:center">
+                                             <p:rating readonly="true" value="4"/>
+                                              <br /> 
+                                        </p:column>
                                     </p:row>
                                 </c:forEach>
                             </p:panelGrid>
@@ -88,7 +100,7 @@
 
                         <p:panel collapsed="true" toggleable="true" toggleSpeed="500" closeSpeed="500">
                             <f:facet name="header">
-                                Transaction date: #{custOrder.key.datePaid}
+                                Transaction date: <h:outputText value="#{custOrder.key.datePaid}"><f:convertDateTime pattern="dd MMM yyyy" /></h:outputText>
                                 <br />
                                 Total Amount: SGD #{custOrder.key.totalAmount}
                                 <br />
@@ -97,12 +109,12 @@
                                 DELIVERY STATUS: <h:outputText style="color:greenyellow" value="#{custOrder.key.deliveryStatus}"></h:outputText>
                             </f:facet>
                             <p:panelGrid>
-
                                 <!--looping each product for this order-->
                                 <c:forEach items="#{custOrder.value}" var="productDetails">
                                     <p:row>
                                         <p:column>
                                             <p:graphicImage name="#{productDetails.images[0].imagePath}"  />
+                                           
                                         </p:column>
 
                                         <p:column>
@@ -111,13 +123,22 @@
                                             QUANTITY: 1 (HARDCODED)
                                             <br />
                                             UNIT PRICE: #{productDetails.price}
+                                            <br />
+                                            <br />
+                                      
+                                            <h:outputLabel value="MY REVIEW:REVIEW"></h:outputLabel>
+                                           
                                         </p:column>
-
+                                    </p:row>
+                                    <p:row>
+                                        <p:column style="text-align:center">
+                                             <p:rating readonly="true" value="4"/>
+                                              <br /> 
+                                        </p:column>
                                     </p:row>
                                 </c:forEach>
                             </p:panelGrid>
                         </p:panel>
-
                     </c:forEach>
                 </p:tab>
             </p:tabView>
