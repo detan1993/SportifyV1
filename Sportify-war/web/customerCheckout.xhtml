@@ -11,7 +11,7 @@
             <h:outputStylesheet library="css" name="checkoutStyle.css" />
             <div id="left" align="left" style="margin-left: 100px">
                 <h:form>
-                    <p:dataScroller>
+                    <p:dataScroller value="#{customerCheckOutManagedBean.a}" var="product" chunkSize="10">
                         <f:facet name="header">
                             Your Cart
                         </f:facet>
@@ -19,8 +19,9 @@
                             <p:graphicImage name="images/logo.png"/>
                             <p:outputPanel>
                                 <h:panelGrid columns="2" cellpadding="5">
-                                    <h:outputText value="Product Code" style="font-weight: bold"></h:outputText>
-                                    <h:outputText value="Product Name" style="font-weight: bold"></h:outputText>
+                                    <h:outputText value="#{product.productName}" style="font-weight: bold"></h:outputText>
+                                    <h:outputText value="#{product.sizes.get(0)}" style="font-weight: bold"></h:outputText>
+                                    <h:outputText value="$#{product.price}" style="font-weight: bold"></h:outputText>
                                 </h:panelGrid>
                             </p:outputPanel>
                         </h:panelGrid>
@@ -34,7 +35,7 @@
                     <tr><td class="rowSpaceFirst" colspan="2">
                             <p:accordionPanel><p:tab title="DO YOU HAVE A PROMO CODE?">
                                     <h:panelGrid class="ui-accordion-content" columns="2">
-                                        <p:inputText style="float: left"/>
+                                        <p:inputText styleClass="ui-inputfield, .ui-widget-content .ui-inputfield, .ui-widget-header .ui-inputfield"/>
                                         <h:button value="Apply" class="applyBtn"></h:button>
                                     </h:panelGrid>
                                 </p:tab></p:accordionPanel>
@@ -43,18 +44,32 @@
                     <tr><td class="rowSpace">ESTIMATED SHIPPING COST</td><td class="rowSpace" align="right">$20</td></tr>       
                     <tr><td class="rowSpace">STANDARD FREE</td><td class="rowSpace" align="right">Arrives in 2 - 3 days</td></tr>             
                     <tr><td class="rowSpace">TOTAL</td><td class="rowSpace" align="right">$120</td></tr>
-                    <tr><td class="rowSpaceLast" colspan="3" align="center"> <h:button value="Checkout" class="checkoutBtn"></h:button></td></tr>
+                    <tr><td class="rowSpaceLast" colspan="3" align="center"> <h:button value="Checkout" styleClass="ui-widget input ui-widget select ui-widget textarea ui-widget button" class="checkoutBtn"></h:button></td></tr>
                 </table>
             </div>
             <div class="needHelp">
                 <div style="margin-left: 13px">
-                <h2 style="font-weight: bold; color: black;">Need Help?</h2>
-                <ul>
-                    <li><u>How do i get a Promo code?</u></li>
-                    <li><u>Are there any other payment methods?</u></li>
-                    <li><u>When can i receive my order?</u></li>
-                </ul>
-                <p><u>More help</u></p>
+                    <h2 style="font-weight: bold; color: white;">Need Help?</h2>
+                    <ul>
+                        <li>
+                            <h:outputLink id="track1" value="#">
+                                <h:outputText value="How do I get Promo codes?" />
+                            </h:outputLink>
+                            <p:tooltip id="toolTipTrack" for="track1" value="Our facebook page releases 100 promo codes weekly. Be sure to follow us to grab them!" trackMouse="true" /></li>  
+                            <li>
+                                <h:outputLink id="track2" value="#">
+                                     <h:outputText value="What payment methods are there available?" />
+                                </h:outputLink>
+                                 <p:tooltip id="toolTipTrack2" for="track2" value="We currently accept only Master and Visa" trackMouse="true" />
+                            </li>
+                        <li>
+                            <h:outputLink id="track3" value="#">
+                                     <h:outputText value="How long will it take before I receive my product?" />
+                                </h:outputLink>
+                                 <p:tooltip id="toolTipTrack3" for="track3" value="Orders generally take between 2 - 3 days to reach you while express orders only require a few hours to receive from the point of purchase" trackMouse="true" />
+                        </li>
+                    </ul>
+                    <p><u>More help</u></p>
                 </div>
             </div>
         </h:body>

@@ -170,7 +170,7 @@ public class SecurityFilter implements Filter {
    public Boolean excludeLoginCheckCustomer(String path){
        
         if(path.equals("/home.xhtml") ||  path.equals("/error.xhtml") || path.equals("/products.xhtml") || path.equals("/detailedProduct.xhtml") || path.equals("/customerTransactionHistory.xhtml") ||
-            path.startsWith("/images") ||
+            path.startsWith("/images") || path.equals("/customerCheckout.xhtml") ||
             path.startsWith("/javax.faces.resource"))
         {
             return true;

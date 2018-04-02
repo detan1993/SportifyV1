@@ -55,12 +55,17 @@ and open the template in the editor.
     font-weight: bold
 }
 
+.ui-widget input, .ui-widget select, .ui-widget textarea, .ui-widget button {
+    font-family: 'TradeGothicW02-BoldCn20 675505',Arial,sans-serif !important;
+    font-size: 15px !important;
+    font-weight: bold !important;
+}
+
 .applyBtn{
     border: none ;
     color: black ;
     font-family: 'TradeGothicW02-BoldCn20 675505',Arial,sans-serif;
     font-size: 12px;
-    font-weight: bold;
     float: left;
     background-color: #F7F7F7;
     margin-left: 5px;
@@ -98,4 +103,9 @@ and open the template in the editor.
 .ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default{
     border: 1px !important;
     background:none !important;
+}
+
+.ui-inputfield, .ui-widget-content .ui-inputfield, .ui-widget-header .ui-inputfield{
+    background-color: white !important;
+    color:white;
 }
