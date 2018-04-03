@@ -26,29 +26,30 @@ public class ViewAllProductsManagedBean implements Serializable {
     private Map<String, Map<String, String>> data = new HashMap<String, Map<String, String>>();
     private String countrySelected;
     private Map<String, String> countries;
+    private ArrayList<String> leagueCountries;
     private String teamSelected;
     private Map<String, String> teams;
 
     public ViewAllProductsManagedBean() {
         products = new ArrayList<>();
         countries = new HashMap<String, String>();
+        leagueCountries = new ArrayList<String>();
     }
 
     @PostConstruct
     public void postConstruct() {
-        
+
         HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
         String teamName = request.getParameter("teamName");
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("tempTeamName", true);
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("tempTeamNameStr", teamName);
-        
-        if (teamName != null && !teamName.equals("")){
+
+        if (teamName != null && !teamName.equals("")) {
             products = productController.retrieveProductsByTeam(teamName);
-        }
-        else{
+        } else {
             products = productController.retrieveProduct();
         }
-        
+
         //for populating dropdown filter 
         List<List<String>> countriesAndTeams = productController.retrieveCountriesAndTeams();
         for (int i = 0; i < countriesAndTeams.size(); i++) {
@@ -59,6 +60,7 @@ public class ViewAllProductsManagedBean implements Serializable {
                 if (j == 0) {
                     country = countriesAndTeams.get(i).get(j);
                     countries.put(country, country);
+                    leagueCountries.add(country);
                 } else {
                     team = countriesAndTeams.get(i).get(j);
                     map.put(team, team);
@@ -68,6 +70,7 @@ public class ViewAllProductsManagedBean implements Serializable {
         }
 
         System.out.println(Collections.singletonList(data));
+        System.out.println(Collections.singletonList(leagueCountries));
     }
 
     public void filterByCountry() {
@@ -94,8 +97,8 @@ public class ViewAllProductsManagedBean implements Serializable {
             }
         }
     }
-    
-    public String exploreRedirect(long id){
+
+    public String exploreRedirect(long id) {
         return "detailedProduct?faces-redirect=true&productId=" + id;
     }
 
@@ -147,4 +150,11 @@ public class ViewAllProductsManagedBean implements Serializable {
         this.data = data;
     }
 
+    public ArrayList<String> getLeagueCountries() {
+        return leagueCountries;
+    }
+
+    public void setLeagueCountries(ArrayList<String> leagueCountries) {
+        this.leagueCountries = leagueCountries;
+    }
 }

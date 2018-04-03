@@ -11,7 +11,7 @@
     -ms-transition: all 0.5s ease-in-out !important;
     -o-transition: all 0.5s ease-in-out !important;
     transition: all 0.5s ease-in-out !important;
-    
+
     z-index: 2 !important;
 }
 .explore_div{
@@ -25,6 +25,30 @@
 .ui-layout-unit{
     border: none !important;
 }
+.panelForImage{
+    width:20px !important;
+}
+.imagePanel1{
+    opacity: 0.4;
+    transition: 0.3s ease;
+    cursor: pointer;
+   
+}
+.imagePanel1:hover
+{
+    transform: scale(1.2,1.2) translateX(50px) ;
+    opacity: 1;
+}
+.textLeague{
+   position: absolute;
+    margin-top: 350px;
+    margin-left: -380px;
+    font-size: 40px;
+    font-weight: 1000;
+    word-break: break-word;
+    cursor: pointer;
+}
+
 
 
 

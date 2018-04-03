@@ -1,0 +1,58 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="./template/masterPage.xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+    <ui:define name="west">
+
+    </ui:define>
+
+    <ui:define name="center">
+        <h:outputStylesheet name="css/page_style.css" />
+        <p:panel style="margin-left:50px">
+            <p:panelGrid>
+                <p:dataGrid styleClass="leagueGrid" value="#{viewAllProductsManagedBean.leagueCountries}" var="leagueCountry" columns="3" layout="grid">
+                    
+                    <p:panel rendered="#{leagueCountry.equalsIgnoreCase('Spain')}">
+                          <h:link outcome="detailedProduct">
+                            <p:graphicImage name="images/products/spain_league_kit.jpg" styleClass="imagePanel1" width="320px">
+                            </p:graphicImage> 
+                            <f:param name="country" value="#{leagueCountry}" />
+                        </h:link>
+                        <h:outputText styleClass="textLeague" value="SPANISH TEAMS"></h:outputText>
+                    </p:panel>
+                    
+                      <p:panel rendered="#{leagueCountry.equalsIgnoreCase('England')}">
+                         <h:link outcome="detailedProduct">
+                             <p:graphicImage name="images/products/eng_league_kit.jpg" styleClass="imagePanel1" width="320px">
+                                </p:graphicImage> 
+                                <f:param name="country" value="#{leagueCountry}" />
+                            </h:link>
+                            <h:outputText styleClass="textLeague" value="ENGLISH TEAMS"></h:outputText>
+                    </p:panel>
+                    
+                    <p:panel rendered="#{leagueCountry.equalsIgnoreCase('Italy')}">
+                        <h:link outcome="detailedProduct">
+                            <p:graphicImage name="images/products/italy_league_kit.jpg" styleClass="imagePanel1" width="320px">
+                            </p:graphicImage> 
+                            <f:param name="country" value="#{leagueCountry}" />
+                        </h:link>
+                        <h:outputText styleClass="textLeague" value="ITALIAN TEAMS"></h:outputText>
+                    </p:panel>
+                     
+                     
+                 
+                </p:dataGrid>
+            </p:panelGrid>
+        </p:panel>
+    </ui:define>
+
+    <ui:define name="east">
+
+    </ui:define>
+
+</ui:composition>
