@@ -42,7 +42,7 @@
                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                         rowsPerPageTemplate="6,12,16">
 
- <p:panel header="#{product.productName}" style="text-align:center;">
+                <p:panel header="#{product.productName}" style="text-align:center;">
                     <h:panelGrid columns="1" style="width:100%">
 
                         <p:panel style=" background-color: white;">
@@ -53,13 +53,13 @@
                             <br/>
                             <h:outputText value="SGD#{product.price}" style="color:black; text-align: center" />
                             <br />
-                            <h:outputText value="#{product.description}" style="color:black; text-align: center" />
+                            <p:rating readonly="true" value="4" />
                         </p:panel>
-                        
+
                         <f:facet name="footer">
                             <p:commandButton value="Explore" action="#{viewAllProductsManagedBean.exploreRedirect(product.id)}" icon="fa fa-binoculars" styleClass="explore_div" />
                         </f:facet>  
-                           
+
                     </h:panelGrid>
                 </p:panel>
             </p:dataGrid>

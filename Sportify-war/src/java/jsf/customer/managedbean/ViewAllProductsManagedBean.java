@@ -38,16 +38,26 @@ public class ViewAllProductsManagedBean implements Serializable {
 
     @PostConstruct
     public void postConstruct() {
+        //clear existing sessions
+//         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("tempTeamName", null);
+//         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("tempCountry", null);
+//          FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("tempProductId", null);
 
         HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
         String teamName = request.getParameter("teamName");
-        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("tempTeamName", true);
-        FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("tempTeamNameStr", teamName);
 
-        if (teamName != null && !teamName.equals("")) {
+        String countryParam = request.getParameter("country");
+        if (countryParam != null && !countryParam.equals("")) {
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("tempCountry", true);
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("tempCountryStr", countryParam);
+            products = productController.retrieveProductsByCountry(countryParam);
+
+        } else if (teamName != null && !teamName.equals("")) {
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("tempTeamName", true);
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("tempTeamNameStr", teamName);
             products = productController.retrieveProductsByTeam(teamName);
         } else {
-            products = productController.retrieveProduct();
+            products = productController.getAllProducts();
         }
 
         //for populating dropdown filter 
@@ -80,7 +90,7 @@ public class ViewAllProductsManagedBean implements Serializable {
 
         } else {
             teams = new HashMap<String, String>();
-            products = productController.retrieveProduct();
+            products = productController.getAllProducts();
         }
 
         System.out.println(countrySelected);

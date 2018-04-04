@@ -10,6 +10,7 @@ import ejb.session.stateless.CustomerOrderControllerRemote;
 import ejb.session.stateless.ImageControllerLocal;
 import ejb.session.stateless.ProductControllerLocal;
 import ejb.session.stateless.ProductPurchaseControllerLocal;
+import ejb.session.stateless.ProductReviewControllerRemote;
 import ejb.session.stateless.ProductSizeControllerLocal;
 import ejb.session.stateless.StaffControllerLocal;
 import entity.Customer;
@@ -17,6 +18,7 @@ import entity.CustomerOrder;
 import entity.Images;
 import entity.Product;
 import entity.ProductPurchase;
+import entity.ProductReview;
 import entity.ProductSize;
 import entity.Staff;
 import java.util.ArrayList;
@@ -41,6 +43,9 @@ import util.exception.CustomerSignUpException;
 @LocalBean
 public class DataInitialization {
 
+    @EJB(name = "ProductReviewControllerLocal")
+    private ProductReviewControllerRemote productReviewControllerLocal;
+
     @EJB(name = "ProductPurchaseControllerLocal")
     private ProductPurchaseControllerLocal productPurchaseControllerLocal;
 
@@ -62,10 +67,6 @@ public class DataInitialization {
     @EJB(name = "ImageControllerLocal")
     private ImageControllerLocal imageControllerLocal;
     
-    
-    
-    
-
     @PersistenceContext(unitName = "Sportify-ejbPU")
     private EntityManager em;
 
@@ -552,7 +553,20 @@ public class DataInitialization {
             cal.set(2018, Calendar.MARCH, 30);
             dateMar = cal.getTime();
             
-
+            // create product reviews for customer 1
+            ProductReview prodReview1 = new ProductReview(3.0,"I like it just like that!",dateFeb,ChelseaAwayProduct,cust1OrderFeb);
+            ProductReview prodReview2 = new ProductReview(2.0,"I don't like the design of the shirt!",dateFeb,RmAwayProduct,cust1OrderFeb);
+            
+            productReviewControllerLocal.CreateNewProductReview(prodReview1);
+            productReviewControllerLocal.CreateNewProductReview(prodReview2);
+            
+            List<ProductReview> prodReviewsCust1 = new ArrayList();
+            prodReviewsCust1.add(prodReview1);
+            prodReviewsCust1.add(prodReview2);
+            
+            cust1OrderFeb.setProductReviews(prodReviewsCust1);
+            ChelseaAwayProduct.setProductReviews(prodReviewsCust1);
+            RmAwayProduct.setProductReviews(prodReviewsCust1);
             
             CustomerOrder cust2OrderJan = new CustomerOrder(352.35, 20, dateJan, "Delivered", newCustomer2);
             cust2OrderJan = customerOrderControllerLocal.CreateNewCustomerOrder(cust2OrderJan);
@@ -591,6 +605,7 @@ public class DataInitialization {
           customerOrderControllerLocal.addProductPurchase(cust3OrderMar.getId(), productPurchaseControllerLocal.createProductPurchase(new ProductPurchase(179.90, 2, cust3OrderMar, manuHomeProduct)));
         customerOrderControllerLocal.addProductPurchase(cust3OrderMar.getId(), productPurchaseControllerLocal.createProductPurchase(new ProductPurchase(125.0, 2, cust3OrderMar, BarcaAwayProduct)));
             
+        
 
 
             

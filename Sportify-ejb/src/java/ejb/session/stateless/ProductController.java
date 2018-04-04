@@ -26,6 +26,7 @@ import javax.persistence.Query;
 @Local(ProductControllerLocal.class)
 @Remote(ProductControllerRemote.class)
 public class ProductController implements ProductControllerRemote, ProductControllerLocal {
+
     @PersistenceContext(unitName = "Sportify-ejbPU")
     private EntityManager em;
 
@@ -35,114 +36,110 @@ public class ProductController implements ProductControllerRemote, ProductContro
 
     // Add business logic below. (Right-click in editor and choose
     // "Insert Code > Add Business Method")
-    
     @Override
-    public Product CreateNewProduct(Product newProduct)
-    {
+    public Product CreateNewProduct(Product newProduct) {
         em.persist(newProduct);
         em.flush();
         em.refresh(newProduct);
         return newProduct;
     }
-    
+
     @Override
-    public List<Product> retrieveProduct(){
-      Query query = em.createQuery("SELECT p FROM Product p WHERE p.status='A' ORDER BY p.team");
-      return query.setMaxResults(5).getResultList();
+    public List<Product> retrieveProduct() {
+        Query query = em.createQuery("SELECT p FROM Product p WHERE p.status='A' ORDER BY p.team");
+        return query.setMaxResults(5).getResultList();
     }
-    
+
     @Override
-    public List<Product> retrieveProductIncludingInactive(){
-      Query query = em.createQuery("SELECT p FROM Product p");
-      return query.getResultList();
+    public List<Product> retrieveProductIncludingInactive() {
+        Query query = em.createQuery("SELECT p FROM Product p");
+        return query.getResultList();
     }
-    
+
     @Override
-    public Product retrieveSingleProduct(long productId){
-      Query query = em.createQuery("SELECT p FROM Product p WHERE p.id=:productId");
-      query.setParameter("productId", productId);
-      return (Product)query.getResultList().get(0);
+    public Product retrieveSingleProduct(long productId) {
+        Query query = em.createQuery("SELECT p FROM Product p WHERE p.id=:productId");
+        query.setParameter("productId", productId);
+        return (Product) query.getResultList().get(0);
     }
-    
+
     @Override
-    public List<Product> retrieveProductsByTeam(String team){
+    public List<Product> retrieveProductsByTeam(String team) {
         Query query = em.createQuery("SELECT p FROM Product p WHERE p.team=:team AND p.status='A' ORDER BY p.team");
         query.setParameter("team", team);
         return query.getResultList();
     }
-    
+
     @Override
-     public List<Product> retrieveProductsByCountry(String country){
+    public List<Product> retrieveProductsByCountry(String country) {
         Query query = em.createQuery("SELECT p FROM Product p WHERE p.country=:country  AND p.status='A' ORDER BY p.team");
         query.setParameter("country", country);
         return query.getResultList();
     }
-    
+
     @Override
-    public List<List<String>> retrieveCountriesAndTeams(){
+    public List<List<String>> retrieveCountriesAndTeams() {
         List<List<String>> countryAndTeamList = new ArrayList<List<String>>();
-        
+
         Query query = em.createQuery("SELECT p.country,p.team FROM Product p WHERE p.status='A' ORDER BY p.country, p.team");
         List<Object[]> results = query.getResultList();
-        
-        for(Object[] o : results){
+
+        for (Object[] o : results) {
             boolean isCountryIn = false;
             boolean isTeamIn = true;
-            String country = (String)o[0];
-            String team = (String)o[1];
-            
-            for(int i=0;i<countryAndTeamList.size();i++){
-                if(countryAndTeamList.get(i).indexOf(country) ==0){
+            String country = (String) o[0];
+            String team = (String) o[1];
+
+            for (int i = 0; i < countryAndTeamList.size(); i++) {
+                if (countryAndTeamList.get(i).indexOf(country) == 0) {
                     isCountryIn = true;
-                    if(countryAndTeamList.get(i).indexOf(team) <0){
+                    if (countryAndTeamList.get(i).indexOf(team) < 0) {
                         isTeamIn = false;
                         countryAndTeamList.get(i).add(team);
                     }
                 }
             }
-            
-            if(isCountryIn ==false){
+
+            if (isCountryIn == false) {
                 List<String> newEntry = new ArrayList<String>();
                 newEntry.add(country);
                 newEntry.add(team);
                 countryAndTeamList.add(newEntry);
             }
         }
-        
+
         return countryAndTeamList;
     }
-    
+
     // Gets a list of products with sizes quantity <=10 , does not return sizes with >10
     @Override
-     public List<Product> retrieveProductsRunningLow(){
+    public List<Product> retrieveProductsRunningLow() {
         List<Product> allProductList = retrieveProduct();
-        
-       //Using iterator as forloop cannot remove sizes while looping through it
+
+        //Using iterator as forloop cannot remove sizes while looping through it
         System.out.println("******************************************Begin retrieve products running low");
-        
-        
+
         Iterator<Product> i = allProductList.iterator();
-        while(i.hasNext()){
+        while (i.hasNext()) {
             Product p = i.next();
             System.out.println("Product Id : " + p.getId() + " Name: " + p.getProductName() + " Sizes: " + p.getSizes().size());
-            
+
             Iterator<ProductSize> is = p.getSizes().iterator();
-            while(is.hasNext()){
+            while (is.hasNext()) {
                 ProductSize ps = is.next();
-            
+
                 System.out.println("Size: " + ps.getSize() + " Qty: " + ps.getQty());
-                if(ps.getQty() > 10){
+                if (ps.getQty() > 10) {
                     is.remove();
                 }
             }
         }
-        
+
         return allProductList;
     }
-    
+
     @Override
-    public void updateProduct(Product newProductInfo)
-    {
+    public void updateProduct(Product newProductInfo) {
         //getting product ID
         Product productToUpdate = retrieveSingleProduct(newProductInfo.getId());
         productToUpdate.setCountry(newProductInfo.getCountry());
@@ -154,16 +151,22 @@ public class ProductController implements ProductControllerRemote, ProductContro
         productToUpdate.setProductName(newProductInfo.getProductName());
         productToUpdate.setSizes(newProductInfo.getSizes());
         productToUpdate.setTeam(newProductInfo.getTeam());
-        
+
         em.flush();
-        
+
     }
-    
+
     @Override
-    public void deleteProduct(Product product){
+    public void deleteProduct(Product product) {
         Product toBeDeleted = retrieveSingleProduct(product.getId());
         toBeDeleted.setStatus("I");
         em.flush();
     }
-    
+
+    @Override
+    public List<Product> getAllProducts() {
+        Query query = em.createQuery("SELECT p FROM Product p WHERE p.status='A' ORDER BY p.team");
+        return query.getResultList();
+    }
+
 }

@@ -11,7 +11,6 @@ import javax.faces.event.ActionEvent;
 import javax.servlet.http.HttpSession;
 import entity.Customer;
 import java.util.ArrayList;
-import javax.faces.context.ExternalContext;
 import javax.servlet.http.HttpServletRequest;
 import org.primefaces.context.RequestContext;
 import util.exception.InvalidLoginCredentialException;
@@ -37,31 +36,47 @@ public class CustomerLoginManagedBean {
             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("isLogin", true);
             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("currentCustomer", currentCustomer);
 
+            HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
+            String productId = request.getParameter("productId");
+
+            if (productId != null) {
+                System.out.println("PRODUCT ID: " + productId);
+            }
+
             //check if tempProductId exist for redirecting to the same page
             Boolean productIdExist = (Boolean) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("tempProductId");
             String productIdStrExist = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("tempProductIdStr");
-            
+
             //check if tempTeamName exist for redirecting to the same page
             Boolean productTeamNameExist = (Boolean) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("tempTeamName");
             String productTeamNameStrExist = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("tempTeamNameStr");
 
+            //check if tempCountry exist for redirecting to the same page
+            Boolean productCountryNameExist = (Boolean) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("tempCountry");
+            String productCountryNameStrExist = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("tempCountryStr");
+
             if (productIdExist != null) {
                 if (productIdExist) {
                     FacesContext.getCurrentInstance().getExternalContext().redirect("?faces-redirect=true&productId=" + productIdStrExist);
-                } else {
-                    FacesContext.getCurrentInstance().getExternalContext().redirect("?faces-redirect=true");
+                    FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("tempTeamName", null);
+                    FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("tempCountry", null);
                 }
-            }else{
-                if (productTeamNameExist != null){
-                    if (productTeamNameExist){
-                         FacesContext.getCurrentInstance().getExternalContext().redirect("?faces-redirect=true&teamName=" + productTeamNameStrExist);
-                    }
+            } else if (productTeamNameExist != null) {
+                if (productTeamNameExist) {
+                    FacesContext.getCurrentInstance().getExternalContext().redirect("?faces-redirect=true&teamName=" + productTeamNameStrExist);
+                    FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("tempProductId", null);
+                    FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("tempCountry", null);
                 }
+            } else if (productCountryNameExist != null) {
+                if (productCountryNameExist) {
+                    FacesContext.getCurrentInstance().getExternalContext().redirect("?faces-redirect=true&country=" + productCountryNameStrExist);
+                    FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("tempProductId", null);
+                    FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("tempTeamName", null);
+                }
+            } else {
+                FacesContext.getCurrentInstance().getExternalContext().redirect("?faces-redirect=true");
             }
 
-//            FacesContext.getCurrentInstance().getExternalContext().redirect("?faces-redirect=true");
-//            ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
-//            ec.redirect(((HttpServletRequest) ec.getRequest()).getRequestURI());
         } catch (InvalidLoginCredentialException ex) {
             RequestContext.getCurrentInstance().execute("PF('loginDialog').show()");
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Invalid email or password", null));
@@ -71,8 +86,6 @@ public class CustomerLoginManagedBean {
     public void logout(ActionEvent event) throws IOException {
         ((HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true)).invalidate();
         FacesContext.getCurrentInstance().getExternalContext().redirect("home.xhtml");
-//        String currentPage = FacesContext.getCurrentInstance().getViewRoot().getViewId() + "?faces-redirect=true";
-//        FacesContext.getExternalContext().redirect(currentPage);
     }
 
     public String getPassword() {

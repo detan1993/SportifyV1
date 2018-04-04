@@ -35,8 +35,6 @@
                     <c:forEach items="#{customerPurchaseHistoryManagedBean.productsOnHold}" var="custOrderOnHold" rendered="#{not empty customerPurchaseHistoryManagedBean.productsOnHold}">
                         <p:panel collapsed="true" toggleable="true" toggleSpeed="500" closeSpeed="500">
                             <f:facet name="header">
-                             
-                                    
                                 Transaction date: <h:outputText value="#{custOrderOnHold.key.datePaid}"><f:convertDateTime pattern="dd MMM yyyy" /></h:outputText>
                                 <br />
                                 Total Amount: SGD #{custOrderOnHold.key.totalAmount}
@@ -51,16 +49,15 @@
                                 <c:forEach items="#{custOrderOnHold.value}" var="productDetailsOnHold">
                                      <p:row>
                                         <p:column>
-                                            <p:graphicImage name="#{productDetailsOnHold.images[0].imagePath}"  />
-                                           
+                                            <p:graphicImage name="#{productDetailsOnHold.productPurchase.images[0].imagePath}"  />
                                         </p:column>
 
                                         <p:column>
-                                            PRODUCT NAME: #{productDetailsOnHold.productName}  
+                                            PRODUCT NAME: #{productDetailsOnHold.productPurchase.productName}  
                                             <br />
-                                            QUANTITY: 1 (HARDCODED)
+                                            QUANTITY: #{productDetails.qtyPurchase}
                                             <br />
-                                            UNIT PRICE: #{productDetailsOnHold.price}
+                                            UNIT PRICE: SGD #{productDetailsOnHold.productPurchase.price}
                                             <br />
                                             <br />
                                       
@@ -113,16 +110,16 @@
                                 <c:forEach items="#{custOrder.value}" var="productDetails">
                                     <p:row>
                                         <p:column>
-                                            <p:graphicImage name="#{productDetails.images[0].imagePath}"  />
+                                            <p:graphicImage name="#{productDetails.productPurchase.images[0].imagePath}"  />
                                            
                                         </p:column>
 
                                         <p:column>
-                                            PRODUCT NAME: #{productDetails.productName}  
+                                            PRODUCT NAME: #{productDetails.productPurchase.productName}  
                                             <br />
-                                            QUANTITY: 1 (HARDCODED)
+                                            QUANTITY: #{productDetails.qtyPurchase} 
                                             <br />
-                                            UNIT PRICE: #{productDetails.price}
+                                            UNIT PRICE: SGD #{productDetails.productPurchase.price}
                                             <br />
                                             <br />
                                       

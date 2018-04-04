@@ -39,7 +39,7 @@
     transform: scale(1.2,1.2) translateX(50px) ;
     opacity: 1;
 }
-.textLeague{
+/*.textLeague{
    position: absolute;
     margin-top: 350px;
     margin-left: -380px;
@@ -47,7 +47,37 @@
     font-weight: 1000;
     word-break: break-word;
     cursor: pointer;
+}*/
+
+.textLeague1{
+   position: absolute;
+    margin-top: 250px;
+    margin-left: -287px;
+    font-size: 30px;
+    font-weight: 1000;
+    word-break: break-word;
+    cursor: pointer;
 }
+.textLeague2{
+   position: absolute;
+    margin-top: 250px;
+    margin-left: -274px;
+    font-size: 30px;
+    font-weight: 1000;
+    word-break: break-word;
+    cursor: pointer;
+}
+
+.textLeague3{
+   position: absolute;
+    margin-top: 250px;
+    margin-left: -280px;
+    font-size: 30px;
+    font-weight: 1000;
+    word-break: break-word;
+    cursor: pointer;
+}
+
 
 
 

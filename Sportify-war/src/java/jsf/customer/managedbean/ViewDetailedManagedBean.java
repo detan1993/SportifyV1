@@ -37,6 +37,10 @@ public class ViewDetailedManagedBean implements Serializable {
 
     @PostConstruct
     public void postConstruct() {
+        
+//         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("tempTeamName", null);
+//         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("tempCountry", null);
+//          FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("tempProductId", null);
 
         product = new Product();
         images = new ArrayList<>();

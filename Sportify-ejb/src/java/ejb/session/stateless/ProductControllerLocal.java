@@ -19,4 +19,5 @@ public interface ProductControllerLocal {
     public List<List<String>> retrieveCountriesAndTeams();
     public void updateProduct(Product newProductInfo);
     public void deleteProduct(Product product);
+    public List<Product> getAllProducts();
 }

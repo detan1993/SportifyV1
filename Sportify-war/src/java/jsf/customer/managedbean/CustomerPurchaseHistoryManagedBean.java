@@ -6,6 +6,7 @@ import entity.CustomerOrder;
 import entity.Product;
 import entity.ProductPurchase;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,33 +22,39 @@ public class CustomerPurchaseHistoryManagedBean implements Serializable {
 
     @EJB
     private CustomerOrderControllerRemote customerOrderController;
-    
+
     private List<CustomerOrder> getCustOrders;
     private Customer customer;
-    private Map<CustomerOrder, List<ProductPurchase>> productOrderDetails = new HashMap<CustomerOrder, List<ProductPurchase>>();
-    private Map<CustomerOrder, List<ProductPurchase>> productsOnHold = new HashMap<CustomerOrder, List<ProductPurchase>>();
+    private Map<CustomerOrder, List<ProductPurchase>> productOrderDetails = new HashMap();
+    private Map<CustomerOrder, List<ProductPurchase>> productsOnHold = new HashMap();
+    private Product product;
 
     @PostConstruct
     public void postConstruct() {
-        
+
         customer = (Customer) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("currentCustomer");
         getCustOrders = customerOrderController.GetCustomerOrder(customer.getId());
-        
+
         //get past transactions
-        for (CustomerOrder order : getCustOrders){
-            List<ProductPurchase> productDetails = order.getProductPurchase();
-            if (order.getDeliveryStatus().equalsIgnoreCase("Delivered")){
-                getProductOrderDetails().put(order, productDetails);
-            }else{
-                getProductsOnHold().put(order, productDetails);
+        for (CustomerOrder order : getCustOrders) {
+            List<ProductPurchase> productPurchaseDetails = order.getProductPurchase();
+            
+//            for (ProductPurchase p : productPurchaseDetails){
+//                Product pr = p.getProductPurchase();
+//            }
+            
+            if (order.getDeliveryStatus().equalsIgnoreCase("Delivered")) {
+                productOrderDetails.put(order, productPurchaseDetails);
+            } else {
+                productsOnHold.put(order, productPurchaseDetails);
             }
         }
     }
-    
-    public String shopNowRedirect(){
+
+    public String shopNowRedirect() {
         return "products?faces-redirect=true";
     }
-    
+
     public CustomerPurchaseHistoryManagedBean() {
     }
 
@@ -65,35 +72,29 @@ public class CustomerPurchaseHistoryManagedBean implements Serializable {
 
     public void setCustomer(Customer customer) {
         this.customer = customer;
-    }   
+    }
 
-    /**
-     * @return the productOrderDetails
-     */
     public Map<CustomerOrder, List<ProductPurchase>> getProductOrderDetails() {
         return productOrderDetails;
     }
 
-    /**
-     * @param productOrderDetails the productOrderDetails to set
-     */
     public void setProductOrderDetails(Map<CustomerOrder, List<ProductPurchase>> productOrderDetails) {
         this.productOrderDetails = productOrderDetails;
     }
 
-    /**
-     * @return the productsOnHold
-     */
     public Map<CustomerOrder, List<ProductPurchase>> getProductsOnHold() {
         return productsOnHold;
     }
 
-    /**
-     * @param productsOnHold the productsOnHold to set
-     */
     public void setProductsOnHold(Map<CustomerOrder, List<ProductPurchase>> productsOnHold) {
         this.productsOnHold = productsOnHold;
     }
 
-    
+    public Product getProduct() {
+        return product;
+    }
+
+    public void setProduct(Product product) {
+        this.product = product;
+    }
 }
