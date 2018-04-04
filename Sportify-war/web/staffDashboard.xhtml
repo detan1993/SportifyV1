@@ -40,70 +40,73 @@
                     </div>
 
                     <div style="height:100%; margin-top: 25px;">
-                        <h:form>
+                        <h:form id="chartsForm">
                             <p:growl id="msgs" showDetail="true" />
 
                             <!-- line chart state here !-->
-                            
-                              <p:outputPanel id="restrictPanel" layout="block" style="width:99%;height:500px;border:0px solid #666666;margin-bottom:20px">
+
+                            <p:outputPanel id="restrictPanel" layout="block" style="width:99%;height:500px;border:0px solid #666666;margin-bottom:20px">
 
 
-                                  <p:panel  id="barchartToggle" header="Product Sales" toggleable="true"  toggleSpeed="500" closeSpeed="500" widgetVar="panel" style="margin-bottom:20px;border-color: white !important;">
+                                <p:panel  id="barchartToggle" header="Product Sales" toggleable="true"  toggleSpeed="500" closeSpeed="500" widgetVar="panel" style="margin-bottom:20px;border-color: white !important;">
 
-                                      <br/>
-                                      <h:panelGrid >
-                                       
+                                    <br/>
+                                    <h:panelGrid >
 
-                                          <div >
+
+                                        <div >
 <!--                                              <p:chart type="line"  model="#{dashboardManagedBean.salesLineChart}" responsive="true" style="height:350px; width:1200px"/>-->
-                                              <p:chart type="bar" styleClass="stackbarChartOverview" model="#{dashboardManagedBean.stackBarModel}" style="height:350px; width:1200px"/>
-                                          </div>
+                                            <p:chart type="bar" styleClass="stackbarChartOverview" model="#{dashboardManagedBean.stackBarModel}" style="height:350px; width:1200px"/>
+                                        </div>
 
-                                      </h:panelGrid>
-                                  </p:panel>
+                                    </h:panelGrid>
+                                </p:panel>
 
 
                                 <p:panel id="pnl" header="Sales by Country" style="border-color:lightgrey !important; " toggleable="true"  toggleSpeed="500" closeSpeed="500" >
 
-                                        <div> 
+                                    <div> 
+                                        <h:form id="pieChartFilterForm">
                                             <h:panelGrid columns="2" cellpadding="5">
                                                 <p:outputLabel for="country" style="color:white;" value="Country: " />
-                                                <p:selectOneMenu id="country" value="haha" style="width:150px">
-            <!--                                        <p:ajax listener="#{dropdownView.onCountryChange}" update="city" />
-                                                    <f:selectItem itemLabel="Select Country" itemValue="" noSelectionOption="true" />-->
+                                                <p:selectOneMenu id="country" value="#{dashboardManagedBean.selectedTotalSalesByTeamPieChart}" style="width:150px">
                                                     <f:selectItems value="#{dashboardManagedBean.totalSalesByTeamFilter}" />
+                                                    <p:ajax  event="change"  update="dashboardParentForm:dashboardTab:chartsForm:teamSalesPieChartForm"  process="pieChartFilterForm"  listener="#{dashboardManagedBean.onPieChartTeamSalesSelected}"/>
+
                                                 </p:selectOneMenu>
                                             </h:panelGrid>
-                                        </div>
+                                        </h:form>
+                                    </div>
 
-                                        <div style="margin-top:15px">
-                                            <p:chart id="votes" type="pie" model="#{dashboardManagedBean.livePieModel}" style="width:575px; height:350px"/>
-                                        </div>
+                                    <div style="margin-top:15px">
+
+                                        <h:form id ="teamSalesPieChartForm" >
+                                            <p:chart type="pie" model="#{dashboardManagedBean.salesByTeamPieModel}" style="width:575px; height:350px"/></h:form>
+                                    </div>
+
+                                </p:panel>
+
+                                <p:panel id="pn2" header="View Products Rating" style="border-color:lightgrey !important;" toggleable="true"  toggleSpeed="500" closeSpeed="500">
+
+                                    <div> 
+                                        <h:panelGrid columns="2" cellpadding="5">
+                                            <p:outputLabel for="countTest" style="color:white;" value="Country: " />
+                                            <p:selectOneMenu id="countTest" value="haha" style="width:150px">
+        <!--                                        <p:ajax listener="#{dropdownView.onCountryChange}" update="city" />
+                                                <f:selectItem itemLabel="Select Country" itemValue="" noSelectionOption="true" />-->
+                                                <f:selectItems value="#{dashboardManagedBean.totalSalesByTeamFilter}" />
+                                            </p:selectOneMenu>
+                                        </h:panelGrid>
+                                    </div>
+
+                                    <div style="margin-top:15px">
+                                        <p:chart type="bar" model="#{dashboardManagedBean.horizontalRating}" style="width:575px; height:350px"/>
+                                    </div>
+
+                                </p:panel>
 
 
-                                    </p:panel>
 
-                                    <p:panel id="pn2" header="View Products Rating" style="border-color:lightgrey !important;" toggleable="true"  toggleSpeed="500" closeSpeed="500">
-
-                                        <div> 
-                                            <h:panelGrid columns="2" cellpadding="5">
-                                                <p:outputLabel for="countTest" style="color:white;" value="Country: " />
-                                                <p:selectOneMenu id="countTest" value="haha" style="width:150px">
-            <!--                                        <p:ajax listener="#{dropdownView.onCountryChange}" update="city" />
-                                                    <f:selectItem itemLabel="Select Country" itemValue="" noSelectionOption="true" />-->
-                                                    <f:selectItems value="#{dashboardManagedBean.totalSalesByTeamFilter}" />
-                                                </p:selectOneMenu>
-                                            </h:panelGrid>
-                                        </div>
-
-                                        <div style="margin-top:15px">
-                                            <p:chart type="bar" model="#{dashboardManagedBean.horizontalRating}" style="width:575px; height:350px"/>
-                                        </div>
-
-                                    </p:panel>
-
-
-                               
                                 <br/>
 
 
@@ -232,7 +235,7 @@
                                     <f:selectItem itemLabel="Total Purchases(S$)" itemValue ="TP" />
                                     <f:selectItem itemLabel="Total No. of Purchases" itemValue ="TQTY" />
                                     <f:selectItem itemLabel="Avg Profit" itemValue ="AP" />
-                                       <p:ajax  event="change" process="TopProductForm"  update="dashboardParentForm:dashboardTab:dataTablesProduct" listener="#{dashboardManagedBean.onTopProductGroupBy}"/>
+                                    <p:ajax  event="change" process="TopProductForm"  update="dashboardParentForm:dashboardTab:dataTablesProduct" listener="#{dashboardManagedBean.onTopProductGroupBy}"/>
                                 </p:selectOneMenu>
                                 <p:outputLabel style="color:white;" for="productFilterDdl" value="Group By: " />
                                 <p:selectOneMenu id="productFilterDdl" value="#{dashboardManagedBean.productGroupByType}" style="width:150px">
@@ -254,7 +257,7 @@
 
                             <c:if test="#{dashboardManagedBean.productGroupByType eq  'PC'}">
                                 <p:dataTable id="topProductCodeTable" var="product" value="#{dashboardManagedBean.topProductsCode}"
-                        paginator="true" rows="10" style="margin-bottom:20px" >
+                                             paginator="true" rows="10" style="margin-bottom:20px" >
                                     <f:facet name="header">
                                         Top 10 Profitable Products By Product Code
                                     </f:facet>
@@ -285,10 +288,10 @@
 
                             <c:if test="#{dashboardManagedBean.productGroupByType eq  'PT'}">
 
-                             
 
-                                
-                                
+
+
+
                                 <p:dataTable id="topProductTeamTable"  var="product" value="#{dashboardManagedBean.topProductsTeam}" >
                                     <f:facet name="header">
                                         Top 10 Profitable Products By Team
@@ -316,7 +319,7 @@
                                 </p:dataTable>
 
                             </c:if>
-                            
+
                         </h:form>
 
                     </div>

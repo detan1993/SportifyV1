@@ -6,6 +6,7 @@
 package ejb.session.stateless;
 
 import entity.CustomerOrder;
+import entity.Product;
 import entity.ProductPurchase;
 import java.text.DateFormatSymbols;
 import java.text.DecimalFormat;
@@ -136,10 +137,25 @@ public class DashboardController implements DashboardControllerRemote, Dashboard
         try {
 
             List<String[]> teamSales = new ArrayList<>();
-            Query query = em.createNativeQuery("SELECT p.team, p.country , SUM(p.price)  FROM Product p WHERE YEAR(p.dateCreated) = 2018 GROUP BY p.country, p.team");
-            List<Object[]> salesRecords = query.getResultList();
+            //Query query = em.createQuery("SELECT p.team, p.country , SUM(p.price)  FROM Product p WHERE SUBSTRING(p.dateCreated,1,4) = :sYear GROUP BY p.country, p.team");
+            //query.setParameter("sYear", "2018");
+            
+            Query query = em.createQuery("SELECT p FROM Product p ORDER BY p.country");
+            List<Product> products = query.getResultList();
+            HashMap<String, Double> teamSalesPair = new HashMap<>();
+            List<String> team = new ArrayList<>();
+            List<String> country = new ArrayList<>();
+            System.err.println("profuct Size " + products.size());
+            
+             Query q = em.createQuery("SELECT  p.productPurchase.team  , p.productPurchase.country , SUM(p.pricePurchase * p.qtyPurchase)    FROM ProductPurchase p  GROUP BY p.productPurchase.country, p.productPurchase.team ");
+             
+             List<Object[]> salesRecords = q.getResultList();
 
             for (int i = 0; i < salesRecords.size(); i++) {
+                 
+                System.out.println("******** TOTAL PURCAHSE FROM  " +  (String)salesRecords.get(i)[0] + " is " + (Double)salesRecords.get(i)[2] ) ;
+              
+    
                 String[] record = new String[3];
                 record[0] = (String) salesRecords.get(i)[0];
                 System.out.println("record[0]" + record[0]);
