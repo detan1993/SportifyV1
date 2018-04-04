@@ -29,19 +29,19 @@ public class TopTenCustomer {
     private String accountCreated;
     private int loyaltyPoint;
     private double averagePurchasePerTransaction;
-    private List<Product> totalProductPurchase;
+    private List<TopCustomerProduct> totalProducts;
 
     public TopTenCustomer() {
     }
 
-    public TopTenCustomer(String email, String fullName, double totalPurchase, int totalNoOfPurchase, String accountCreated, double averagePurchasePerTransaction, List<Product> totalProductPurchase) {
+    public TopTenCustomer(String email, String fullName, double totalPurchase, int totalNoOfPurchase, String accountCreated, double averagePurchasePerTransaction, List<TopCustomerProduct> totalProducts) {
         this.email = email;
         this.fullName = fullName;
         this.totalPurchase = totalPurchase;
         this.totalNoOfPurchase = totalNoOfPurchase;
         this.accountCreated = accountCreated;
         this.averagePurchasePerTransaction = averagePurchasePerTransaction;
-        this.totalProductPurchase = totalProductPurchase;
+        this.totalProducts = totalProducts;
     }
 
     public TopTenCustomer(int rank, String email,double totalPurchase, int totalNoOfPurchase, double averagePurchasePerTransaction) {
@@ -51,9 +51,6 @@ public class TopTenCustomer {
         this.totalNoOfPurchase = totalNoOfPurchase;
         this.averagePurchasePerTransaction = averagePurchasePerTransaction;
     }
-    
-    
-
     
     /**
      * @return the email
@@ -73,6 +70,7 @@ public class TopTenCustomer {
      * @return the fullName
      */
     public String getFullName() {
+        System.out.println("******** GETTING FULL NAME");
         return fullName;
     }
 
@@ -139,19 +137,7 @@ public class TopTenCustomer {
         this.averagePurchasePerTransaction = averagePurchasePerTransaction;
     }
 
-    /**
-     * @return the totalProductPurchase
-     */
-    public List<Product> getTotalProductPurchase() {
-        return totalProductPurchase;
-    }
 
-    /**
-     * @param totalProductPurchase the totalProductPurchase to set
-     */
-    public void setTotalProductPurchase(List<Product> totalProductPurchase) {
-        this.totalProductPurchase = totalProductPurchase;
-    }
 
     /**
      * @return the loyaltyPoint
@@ -193,6 +179,20 @@ public class TopTenCustomer {
      */
     public void setRank(int rank) {
         this.rank = rank;
+    }
+
+    /**
+     * @return the totalProducts
+     */
+    public List<TopCustomerProduct> getTotalProducts() {
+        return totalProducts;
+    }
+
+    /**
+     * @param totalProducts the totalProducts to set
+     */
+    public void setTotalProducts(List<TopCustomerProduct> totalProducts) {
+        this.totalProducts = totalProducts;
     }
 
   

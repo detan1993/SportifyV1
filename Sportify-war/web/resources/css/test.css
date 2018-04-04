@@ -23,13 +23,18 @@ and open the template in the editor.
 }
 
 
+.ui-datatable tbody td{
+	border-color:rgb(63,63,72)!important;
+        /*background-color: rgb(63,63,72) !important;*/
+}
+
 /*.ui-datepicker-calendar{
     display: none;
 }​*/
 
 
 .jqplot-series-canvas {
-   /* background: lightgray;*/
+    /* background: lightgray;*/
 }
 
 /*.ui-tabs .ui-tabs-nav li{float:right!important;}
@@ -40,5 +45,24 @@ and open the template in the editor.
     color :  orange!important;
     /*rgb(140,220,255)*/
     text-align: center !important;
+}
+
+.stackbarChartOverview .jqplot-xaxis-tick{
+    color:red !important;
+    font-size: 14px;
+    font-weight: normal;
+}
+
+.pieCustomerProduct .jqplot-data-label {
+    color:lightgray !important;
+    font-size: 14px;
+    font-weight: normal;
+}
+
+.pieCustomerProduct .jqplot-title{
+
+}
+.pieCustomerProduct .table.jqplot-table-legend{
+    background-color: transparent;
 }
 

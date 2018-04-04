@@ -9,6 +9,7 @@ import ejb.session.stateless.CustomerOrderControllerRemote;
 import ejb.session.stateless.DashboardControllerLocal;
 import ejb.session.stateless.ProductControllerLocal;
 import entity.Product;
+import java.io.InputStream;
 import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
@@ -33,7 +34,6 @@ import org.primefaces.model.chart.Axis;
 import org.primefaces.model.chart.AxisType;
 import org.primefaces.model.chart.CategoryAxis;
 import org.primefaces.model.chart.ChartSeries;
-import org.primefaces.model.chart.DonutChartModel;
 import org.primefaces.model.chart.HorizontalBarChartModel;
 import org.primefaces.model.chart.LineChartModel;
 import org.primefaces.model.chart.LineChartSeries;
@@ -41,6 +41,12 @@ import org.primefaces.model.chart.PieChartModel;
 import util.helperClass.CountrySales;
 import util.helperClass.TopTenCustomer;
 import javax.faces.application.FacesMessage;
+import org.primefaces.model.DefaultStreamedContent;
+import org.primefaces.model.StreamedContent;
+import org.primefaces.model.chart.BarChartModel;
+import util.helperClass.TopCustomerProduct;
+import util.helperClass.TopProductByCode;
+import util.helperClass.TopProductByTeam;
 
 /**
  *
@@ -81,11 +87,22 @@ public class DashboardManagedBean implements Serializable {
     private List<TopTenCustomer> topCustomers;
     private String selectFilterTopCustomer;
     private TopTenCustomer selectedCustomer;
-    private DonutChartModel donutModel2;
     private Date customerFrom;
     private Date customerTo;
+    private PieChartModel customerProductPie;
     
+    //Top product
+    private StreamedContent productFile;
+    private List<TopProductByCode> topProductsCode;
+    private List<TopProductByTeam> topProductsTeam;
+    private String productGroupByType;
+    private String selectFilterTopProduct;
     
+    //overview
+    
+    private BarChartModel barModel;
+    
+
     public DashboardManagedBean() {
         livePieModel = new PieChartModel();
         totalSalesByMonthsCountry = new ArrayList<>();
@@ -96,7 +113,16 @@ public class DashboardManagedBean implements Serializable {
         selectedProducts = new Product();
         topCustomers = new ArrayList<>();
         selectedCustomer = new TopTenCustomer();
-        donutModel2 = new DonutChartModel();
+        customerProductPie = new PieChartModel();
+        InputStream stream = FacesContext.getCurrentInstance().getExternalContext().getResourceAsStream("/resources/images/image_ss_1.jpg");
+        productFile = new DefaultStreamedContent(stream, "image/jpg", "test.jpg");
+        topProductsCode = new ArrayList<>();
+        topProductsTeam = new ArrayList<>();
+        productGroupByType = "PC";
+        selectFilterTopProduct = "TP";
+        
+        //overview
+       createBarModel();
 
     }
 
@@ -105,6 +131,9 @@ public class DashboardManagedBean implements Serializable {
 
         try {
 
+            topProductsCode = dashboardControllerLocal.getProductsSumByQuantityPurchaseByProductCode();
+            topProductsTeam = dashboardControllerLocal.getProductsSumByQuantityPurchaseByTeam();
+            topProductsCode =  topProductsCode.subList(0, 10);
             topCustomers = customerOrderControllerLocal.RetrieveTopTenCustomersByOrder();
             //  customerOrderControllerLocal.RetrieveAllCustomerOrder();
             totalSalesByMonthsCountry = dashboardControllerLocal.retrieveAllSalesByMonths();
@@ -132,36 +161,85 @@ public class DashboardManagedBean implements Serializable {
         }
 
     }
+    
 
+    
+    private BarChartModel initBarModel() {
+        BarChartModel model = new BarChartModel();
+ 
+           ChartSeries goods = new ChartSeries();
+        goods.setLabel("Good");
+        goods.set("2004", 50);
+        goods.set("2005", 96);
+        goods.set("2006", 44);
+        goods.set("2007", 55);
+        goods.set("2008", 25);
+
+        ChartSeries average = new ChartSeries();
+        average.setLabel("Average");
+        average.set("2004", 52);
+        average.set("2005", 60);
+        average.set("2006", 82);
+        average.set("2007", 35);
+        average.set("2008", 120);
+
+        ChartSeries bad = new ChartSeries();
+        bad.setLabel("bad");
+        bad.set("2004", 52);
+        bad.set("2005", 60);
+        bad.set("2006", 82);
+        bad.set("2007", 35);
+        bad.set("2008", 120);
+ 
+        model.addSeries(goods);
+        model.addSeries(average);
+        model.addSeries(bad);
+        model.setStacked(true);
+        model.setExtender("barExtender");
+        
+        
+        return model;
+    }
+    
+     private void createBarModel() {
+        setBarModel(initBarModel());
+         
+        getBarModel().setTitle("Bar Chart");
+        getBarModel().setLegendPosition("se");
+         
+        Axis xAxis = getBarModel().getAxis(AxisType.X);
+        xAxis.setLabel("Gender");
+         
+        Axis yAxis = getBarModel().getAxis(AxisType.Y);
+        yAxis.setLabel("Births");
+        yAxis.setMin(0);
+   
+    }
+     
+    
     public void onRowSelect(SelectEvent event) {
         FacesMessage msg = new FacesMessage("Product Selected", ((Product) event.getObject()).getId().toString());
         FacesContext.getCurrentInstance().addMessage(null, msg);
     }
 
     public void searchTopCustomer(ActionEvent actionEvent) {
-          
-          
+
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-        if(customerFrom == null || customerTo == null)
-        {
+        if (customerFrom == null || customerTo == null) {
             addMessage("From and To Date is required for searching");
+        } else {
+
+            System.out.println("Date selected from " + df.format(customerFrom));
+            System.out.println("Date selected to " + df.format(customerTo));
+            topCustomers = customerOrderControllerLocal.RetrieveTopTenCustomerByOrderByRanger(df.format(customerFrom), df.format(customerTo));
+            //call session bean here.
+
         }
-        else{
-            
-           
-       System.out.println("Date selected from " + df.format(customerFrom));
-        System.out.println("Date selected to " + df.format(customerTo)); 
-        topCustomers = customerOrderControllerLocal.RetrieveTopTenCustomerByOrderByRanger(df.format(customerFrom) ,df.format(customerTo));
-        //call session bean here.
-        
-        }
-     
-        
-        
+
     }
-    
+
     public void addMessage(String summary) {
-        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, summary,  null);
+        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, summary, null);
         FacesContext.getCurrentInstance().addMessage(null, message);
     }
 
@@ -594,26 +672,49 @@ public class DashboardManagedBean implements Serializable {
     public void onTopCustomerFilterChange() {
         System.out.println("SELECTED VALUE IS " + selectFilterTopCustomer);
         //List<Product>
-        
-        if(selectFilterTopCustomer.equals("TQTY"))
-        {
-          Collections.sort(topCustomers, TopTenCustomer.BY_NO_PURCHASE);
-        }
-        else if(selectFilterTopCustomer.equals("AP")){
+
+        if (selectFilterTopCustomer.equals("TQTY")) {
+            Collections.sort(topCustomers, TopTenCustomer.BY_NO_PURCHASE);
+        } else if (selectFilterTopCustomer.equals("AP")) {
             Collections.sort(topCustomers, TopTenCustomer.BY_AVG_PURCHASE);
-        }
-        else if (selectFilterTopCustomer.equals("TP")){
+        } else if (selectFilterTopCustomer.equals("TP")) {
             Collections.sort(topCustomers, TopTenCustomer.BY_TOTAL_PURCHASE);
         }
-        
-        
-        for(int reassignRank=1; reassignRank<=topCustomers.size(); reassignRank++)
-        {
-            topCustomers.get(reassignRank-1).setRank(reassignRank);
+
+        for (int reassignRank = 1; reassignRank <= topCustomers.size(); reassignRank++) {
+            topCustomers.get(reassignRank - 1).setRank(reassignRank);
         }
-   
 
     }
+    
+     public void onTopProductGroupBy() {
+        System.out.println("SELECTED GROUP VALUE IS " + productGroupByType + " SELECTED DDL IS " + selectFilterTopProduct );
+
+        if(productGroupByType.equals("PT")) //product code
+        {
+            if(selectFilterTopProduct.equals("TP"))
+                Collections.sort(topProductsTeam, TopProductByTeam.BY_TOTAL_PURCHASE);
+            else if(selectFilterTopProduct.equals("TQTY")) //total qty
+                Collections.sort(topProductsTeam, TopProductByTeam.BY_NO_PURCHASE);
+            else if(selectFilterTopProduct.equals("AP")){
+                Collections.sort(topProductsTeam, TopProductByTeam.BY_AVG_PURCHASE);
+            }
+            
+        }else if(productGroupByType.equals("PC")){
+            if(selectFilterTopProduct.equals("TP"))
+                Collections.sort(topProductsCode, TopProductByCode.BY_TOTAL_PURCHASE);
+            else if(selectFilterTopProduct.equals("TQTY")) //total qty
+                Collections.sort(topProductsCode, TopProductByCode.BY_NO_PURCHASE);
+            else if(selectFilterTopProduct.equals("AP")){
+                Collections.sort(topProductsCode, TopProductByCode.BY_AVG_PURCHASE);
+            }
+            
+        }
+    
+    }
+     
+   
+         
 
     /**
      * @return the selectFilterTopCustomer
@@ -640,21 +741,9 @@ public class DashboardManagedBean implements Serializable {
      * @param selectedCustomer the selectedCustomer to set
      */
     public void setSelectedCustomer(TopTenCustomer selectedCustomer) {
+        System.out.println("SET SELECTEC " + selectedCustomer);
         this.selectedCustomer = selectedCustomer;
-    }
-
-    /**
-     * @return the donutModel2
-     */
-    public DonutChartModel getDonutModel2() {
-        return donutModel2;
-    }
-
-    /**
-     * @param donutModel2 the donutModel2 to set
-     */
-    public void setDonutModel2(DonutChartModel donutModel2) {
-        this.donutModel2 = donutModel2;
+        populatedProfileChart();
     }
 
     /**
@@ -684,5 +773,131 @@ public class DashboardManagedBean implements Serializable {
     public void setCustomerTo(Date customerTo) {
         this.customerTo = customerTo;
     }
+
+    public void populatedProfileChart() {
+        System.out.println("************************Populating Profile " + selectedCustomer.getFullName());
+
+        setCustomerProductPie(new PieChartModel());
+        try{
+             List<TopCustomerProduct> custProducts = selectedCustomer.getTotalProducts();
+ System.out.println("************************PselectedCustomer.getTotalProducts() " + custProducts.size());
+ 
+        for (TopCustomerProduct p : custProducts)
+            getCustomerProductPie().set(p.getTeamName(), p.getTotalQtyPurchase());
+            
+
+            getCustomerProductPie().setTitle("Total No. of Purchase by Team");
+            getCustomerProductPie().setLegendPosition("e");
+            getCustomerProductPie().setFill(true);
+            getCustomerProductPie().setShowDataLabels(true);
+            getCustomerProductPie().setDiameter(190);
+            getCustomerProductPie().setExtender("pieExtender");
+        
+            
+        }catch(Exception ex){
+            ex.printStackTrace();
+        }
+       
+    }
+
+    /**
+     * @return the customerProductPie
+     */
+    public PieChartModel getCustomerProductPie() {
+        return customerProductPie;
+    }
+
+    /**
+     * @param customerProductPie the customerProductPie to set
+     */
+    public void setCustomerProductPie(PieChartModel customerProductPie) {
+        this.customerProductPie = customerProductPie;
+    }
+
+    /**
+     * @return the productFile
+     */
+    public StreamedContent getProductFile() {
+        return productFile;
+    }
+
+    /**
+     * @param productFile the productFile to set
+     */
+    public void setProductFile(StreamedContent productFile) {
+        this.productFile = productFile;
+    }
+
+    /**
+     * @return the topProductsCode
+     */
+    public List<TopProductByCode> getTopProductsCode() {
+        return topProductsCode;
+    }
+
+    /**
+     * @param topProductsCode the topProductsCode to set
+     */
+    public void setTopProductsCode(List<TopProductByCode> topProductsCode) {
+        this.topProductsCode = topProductsCode;
+    }
+
+    /**
+     * @return the productGroupByType
+     */
+    public String getProductGroupByType() {
+        return productGroupByType;
+    }
+
+    /**
+     * @param productGroupByType the productGroupByType to set
+     */
+    public void setProductGroupByType(String productGroupByType) {
+        this.productGroupByType = productGroupByType;
+    }
+
+    /**
+     * @return the topProductsTeam
+     */
+    public List<TopProductByTeam> getTopProductsTeam() {
+        return topProductsTeam;
+    }
+
+    /**
+     * @param topProductsTeam the topProductsTeam to set
+     */
+    public void setTopProductsTeam(List<TopProductByTeam> topProductsTeam) {
+        this.topProductsTeam = topProductsTeam;
+    }
+
+    /**
+     * @return the selectFilterTopProduct
+     */
+    public String getSelectFilterTopProduct() {
+        return selectFilterTopProduct;
+    }
+
+    /**
+     * @param selectFilterTopProduct the selectFilterTopProduct to set
+     */
+    public void setSelectFilterTopProduct(String selectFilterTopProduct) {
+        this.selectFilterTopProduct = selectFilterTopProduct;
+    }
+
+    /**
+     * @return the barModel
+     */
+    public BarChartModel getBarModel() {
+        return barModel;
+    }
+
+    /**
+     * @param barModel the barModel to set
+     */
+    public void setBarModel(BarChartModel barModel) {
+        this.barModel = barModel;
+    }
+
+  
 
 }

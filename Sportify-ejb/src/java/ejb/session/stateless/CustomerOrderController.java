@@ -15,6 +15,7 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import util.helperClass.TopCustomerProduct;
 import util.helperClass.TopTenCustomer;
 
 /**
@@ -53,7 +54,7 @@ public class CustomerOrderController implements CustomerOrderControllerRemote, C
         return query.getResultList();
     }
 
-    @Override
+  @Override
     public List<TopTenCustomer> RetrieveTopTenCustomersByOrder() {
 
         List<TopTenCustomer> custInformation = new ArrayList<>();
@@ -80,32 +81,8 @@ public class CustomerOrderController implements CustomerOrderControllerRemote, C
 
             System.out.println("************ size of cust is? " + custInformation.size());
             getNonAgreegatedValue(custInformation);
-            /*    for (int otherInformation = 0;  otherInformation<custInformation.size(); otherInformation++) {
-                
-                System.out.println("************** Populate customer products purchase data");
-                Query customerProductInformation = em.createQuery("SELECT p FROM CustomerOrder p WHERE p.customer.email = :cEmail");
-                customerProductInformation.setParameter("cEmail",custInformation.get(otherInformation).getEmail());
-                 
-                List<CustomerOrder> co = customerProductInformation.getResultList();
-                
-                for(int k=0; k<co.size(); k++){
-                    
-                    HashMap<Integer, String> idCountryPair = new HashMap<>();
-                    List<Product> products = co.get(k).getProducts();
-                    for(int product =0; product<products.size(); product++)
-                    {
-                        
-                    }
-                    
-                     Query q = em.createQuery("SELECT p FROM Product p WHERE p. = :cEmail");
-                }
-                 
-                 
-                System.out.println("************** data is " +  (otherRecord.get(0)[0].toString()) + " " + (otherRecord.get(0)[1].toString()));
-                 custInformation.get(otherInformation).setFullName((otherRecord.get(0)[0].toString()) + " " + (otherRecord.get(0)[1].toString()));
-                 custInformation.get(otherInformation).setLoyaltyPoint(Integer.parseInt(otherRecord.get(0)[2].toString()));
-                 custInformation.get(otherInformation).setAccountCreated(otherRecord.get(0)[3].toString());
-            }*/
+            getCustomerPurchaseByProducts(custInformation);
+        
 
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -143,6 +120,7 @@ public class CustomerOrderController implements CustomerOrderControllerRemote, C
             }
             
              getNonAgreegatedValue(custInformation);
+             getCustomerPurchaseByProducts(custInformation);
             
             
         } catch (Exception ex) {
@@ -170,4 +148,59 @@ public class CustomerOrderController implements CustomerOrderControllerRemote, C
         }
 
     }
+    
+    private void getCustomerPurchaseByProducts(List<TopTenCustomer> custInformation) {
+
+          System.out.println("************** Populate customer product data");
+
+          for (int pInfo = 0; pInfo < custInformation.size(); pInfo++) {
+              
+              List<String> teams= new ArrayList<>();
+              HashMap<String,Integer> teamCounterPair = new HashMap<>();
+              String email = custInformation.get(pInfo).getEmail();
+              Query productPurchaseQuery = em.createQuery("SELECT c FROM CustomerOrder c WHERE c.customer.email = :cEmail ");
+              productPurchaseQuery.setParameter("cEmail", email);
+              
+              List<CustomerOrder> orders = productPurchaseQuery.getResultList();
+              
+              
+              for(CustomerOrder order : orders ){
+                  
+                  List<Product> proPurchase = order.getProducts();
+                   for(Product product : proPurchase){
+                       String teamName =  product.getTeam();
+                       if(teamCounterPair.get(teamName) ==  null){
+                           System.out.println("*******************cust : " + email + " team name is " + teamName  + " null" + " QTY 1");
+                           teams.add(teamName); //add new name of the team
+                           teamCounterPair.put(teamName, 1);
+                       }else if(teamCounterPair.get(teamName) !=  null) //previously added to hashmap
+                       {
+                           
+                           System.out.println("******************* cust : " + email + "team name is " + teamName  + " not null. QTY = " + (teamCounterPair.get(teamName) + 1 ));
+                           teamCounterPair.put(teamName, teamCounterPair.get(teamName) + 1 );
+                       }
+                   }          
+              }
+              
+              List<TopCustomerProduct> products = new ArrayList<>();
+              for (int i = 0; i < teams.size(); i++) {
+                  
+                
+                  String teamName = teams.get(i);
+                  System.out.println("POPULATING TOPCUSTOME PRODUCTS. Team name is " + teamName + " total QTy : " + teamCounterPair.get(teamName)  );
+                  products.add(new TopCustomerProduct(teamName, teamCounterPair.get(teamName)));
+                 
+              }
+               custInformation.get(pInfo).setTotalProducts(products);
+               
+               //reset
+               
+          }
+          
+             //populating data to Top ten customer product attributes
+         
+       
+          
+    }
+
 }

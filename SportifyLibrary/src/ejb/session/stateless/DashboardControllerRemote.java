@@ -7,6 +7,8 @@ package ejb.session.stateless;
 
 import java.util.List;
 import util.helperClass.CountrySales;
+import util.helperClass.TopProductByCode;
+import util.helperClass.TopProductByTeam;
 
 
 
@@ -17,5 +19,9 @@ public interface DashboardControllerRemote {
     public List<String[]> retrieveSalesByTeamAndCountry();
 
     public List<String> getCountries();
+
+    public List<TopProductByCode> getProductsSumByQuantityPurchaseByProductCode();
+
+    public List<TopProductByTeam> getProductsSumByQuantityPurchaseByTeam();
     
 }

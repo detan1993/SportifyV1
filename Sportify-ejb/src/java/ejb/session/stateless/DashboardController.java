@@ -5,8 +5,13 @@
  */
 package ejb.session.stateless;
 
+import entity.CustomerOrder;
+import entity.Product;
 import java.text.DateFormatSymbols;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import javax.ejb.Local;
 import javax.ejb.Remote;
@@ -15,6 +20,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import util.helperClass.CountrySales;
+import util.helperClass.TopProductByCode;
+import util.helperClass.TopProductByTeam;
 
 /**
  *
@@ -143,5 +150,139 @@ public class DashboardController implements DashboardControllerRemote, Dashboard
 
         return countries;
     }
+    
+    @Override
+    public List<TopProductByCode> getProductsSumByQuantityPurchaseByProductCode(){
+        
+ 
+        List<String> productCodes = new ArrayList<>();
+        List<CustomerOrder> orders = new ArrayList<>();
+        List<TopProductByCode> topTenProductByCode = new ArrayList<>();
+        DecimalFormat df = new DecimalFormat("#.##");
+        HashMap<String, Integer> productCodeQuantityPair = new HashMap<>();
+        HashMap<String, Double>  productCodeSalesPair = new HashMap<>();
+        Query q = em.createQuery("SELECT o FROM CustomerOrder o");
+        orders = q.getResultList();
+        
+        for(int i=0; i<orders.size(); i++){ //top 10 
+            
+           List<Product> products = new ArrayList<>();
+           products = orders.get(i).getProducts();
+           
+           for(Product p : products)
+           {
+               String productCode = p.getProductCode();
+               double pricePurchase = p.getPrice();
+               
+               if(productCodeSalesPair.get(productCode) == null)
+               {
+                   System.out.println("*******************product code : " + productCode +  " Code is null" + " QTY 1");
+                   productCodes.add(productCode);
+                   productCodeSalesPair.put(productCode, pricePurchase); // this must change
+                   productCodeQuantityPair.put(productCode, 1);
+                   
+               }else if(productCodeSalesPair.get(productCode) != null){ // exisiting product code
+                   
+                 System.out.println("******************* product Code : " + productCode + "Code is not null. QTY = " +  (productCodeQuantityPair.get(productCode) + 1 ));
+                 System.out.println("******************* product Code : " + productCode + "Code is not null. Purchase is = " +  (productCodeSalesPair.get(productCode) + pricePurchase ));
+                   productCodeQuantityPair.put(productCode, productCodeQuantityPair.get(productCode) + 1);
+                   productCodeSalesPair.put(productCode, productCodeSalesPair.get(productCode) + pricePurchase);
+               }
+           }
+            
+        }
+        
+        System.out.println("***************** POPULATE BACK THE DATA TO TOP PRODUCY BY CODE");
+        
+        for(int i=0; i<productCodes.size(); i++){
+            
+            String productCode = productCodes.get(i);
+            topTenProductByCode.add(new TopProductByCode(productCode, productCodeQuantityPair.get(productCode) , Double.parseDouble(df.format(productCodeSalesPair.get(productCode)))));            
+        }
+        
+        Collections.sort(topTenProductByCode, TopProductByCode.BY_TOTAL_PURCHASE);
+        
+        //set the rank
+        for(int i =0; i<topTenProductByCode.size(); i++ ){
+            topTenProductByCode.get(i).setRank(i+1);
+            double tPurchase = topTenProductByCode.get(i).getAmountPurchased();
+            double tTotal = topTenProductByCode.get(i).getQuantityOrdered();
+            double avgProfit = Double.parseDouble(df.format(tPurchase/tTotal));
+            topTenProductByCode.get(i).setAverageProfit(avgProfit);
+        }
+ 
+        
+        return topTenProductByCode;
+    }
+    
+    
+    
+    @Override
+     public List<TopProductByTeam> getProductsSumByQuantityPurchaseByTeam(){
+        
+ 
+        List<String> teamNames = new ArrayList<>();
+        List<CustomerOrder> orders = new ArrayList<>();
+        List<TopProductByTeam> topTenProductByTeam = new ArrayList<>();
+        DecimalFormat df = new DecimalFormat("#.##");
+        HashMap<String, Integer> productTeamQuantityPair = new HashMap<>();
+        HashMap<String, Double>  productTeamSalesPair = new HashMap<>();
+        Query q = em.createQuery("SELECT o FROM CustomerOrder o");
+        orders = q.getResultList();
+        
+        for(int i=0; i<orders.size(); i++){ //top 10 
+            
+           List<Product> products = new ArrayList<>();
+           products = orders.get(i).getProducts();
+           
+           for(Product p : products)
+           {
+               String productTeam = p.getTeam();
+               double pricePurchase = p.getPrice();
+               
+               if(productTeamSalesPair.get(productTeam) == null)
+               {
+                   System.out.println("*******************product Team : " + productTeam +  " Team is null" + " QTY 1");
+                   teamNames.add(productTeam);
+                   productTeamSalesPair.put(productTeam, pricePurchase); // this must change
+                   productTeamQuantityPair.put(productTeam, 1);
+                   
+               }else if(productTeamSalesPair.get(productTeam) != null){ // exisiting product code
+                   
+                 System.out.println("******************* product Team : " + productTeam + " Team is not null. QTY = " +  (productTeamQuantityPair.get(productTeam) + 1 ));
+                 System.out.println("******************* product Team : " + productTeam + " Team is not null. Purchase is = " +  (productTeamSalesPair.get(productTeam) + pricePurchase ));
+                   productTeamQuantityPair.put(productTeam, productTeamQuantityPair.get(productTeam) + 1);
+                   productTeamSalesPair.put(productTeam, productTeamSalesPair.get(productTeam) + pricePurchase);
+               }
+           }
+            
+        }
+        
+        System.out.println("***************** POPULATE BACK THE DATA TO TOP PRODUCY BY CODE");
+        
+        for(int i=0; i<teamNames.size(); i++){
+            
+            String productTeam = teamNames.get(i);
+           // System.out.println("***************product Team " + productTeam + " purcahses : " + )
+            topTenProductByTeam.add(new TopProductByTeam(productTeam, productTeamQuantityPair.get(productTeam) , Double.parseDouble(df.format(productTeamSalesPair.get(productTeam)))));            
+        }
+        
+        Collections.sort(topTenProductByTeam, TopProductByTeam.BY_TOTAL_PURCHASE);
+        
+        //set the rank
+        for(int i =0; i<topTenProductByTeam.size(); i++ ){
+            topTenProductByTeam.get(i).setRank(i+1);
+            double tPurchase = topTenProductByTeam.get(i).getAmountPurchased();
+            double tTotal = topTenProductByTeam.get(i).getQuantityOrdered();
+            double avgProfit = Double.parseDouble(df.format(tPurchase/tTotal));
+            topTenProductByTeam.get(i).setAverageProfit(avgProfit);
+        }
+ 
+        
+        return topTenProductByTeam;
+    }
+        
+    
+//    private void getProductsSumBy
 
 }

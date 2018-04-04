@@ -61,7 +61,23 @@ function chartExtender() {
      textColor : '#ffffff'
      };
      //        //  this.cfg.series = [{seriesColors: ["red" ,"red", "red","red","red","red","red","red","red","red","red"]}];*/
+    
+   
 }
 
 
-     
+function pieExtender(){
+   this.cfg.grid = {background: '#DCDCDC' , borderColor: '#DCDCDC'};
+}
+
+function barExtender(){
+    
+    this.cfg.seriesDefaults.rendererOptions = {   barWidth: 60   };
+    
+    this.cfg.axes.yaxis.tickOptions  = { textColor: '#ffffff' };
+    this.cfg.axes.yaxis.labelOptions = {fontSize: '13pt', textColor: '#ffffff' , fontFamily: 'Trajan Pro'}; 
+     this.cfg.axes.xaxis.tickOptions  = { textColor: '#ffffff' ,  showGridline: false };
+      this.cfg.axes.xaxis.labelOptions = {fontSize: '13pt'  , textColor: '#ffffff' , fontFamily: 'Trajan Pro' }; 
+ //FFA500    
+}
+  

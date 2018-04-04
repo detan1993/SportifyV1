@@ -550,7 +550,7 @@ public class DataInitialization {
 
              CustomerOrder cust3OrderFeb = new CustomerOrder(599.90, 100, dateFeb, "Delivered", newCustomer3, cust3Feb);
             customerOrderControllerLocal.CreateNewCustomerOrder(cust3OrderFeb);
-            CustomerOrder cust3OrderMar = new CustomerOrder(1000.80, 100, dateMar, "Delivered", newCustomer3, cust2Mar);
+            CustomerOrder cust3OrderMar = new CustomerOrder(1000.80, 100, dateMar, "Delivered", newCustomer3, cust3Mar);
             customerOrderControllerLocal.CreateNewCustomerOrder(cust3OrderMar);
 
 
