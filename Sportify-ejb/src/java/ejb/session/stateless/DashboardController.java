@@ -6,7 +6,6 @@
 package ejb.session.stateless;
 
 import entity.CustomerOrder;
-import entity.Product;
 import entity.ProductPurchase;
 import java.text.DateFormatSymbols;
 import java.text.DecimalFormat;
@@ -40,71 +39,93 @@ public class DashboardController implements DashboardControllerRemote, Dashboard
         em.persist(object);
     }
 
+    
+    
+    
+    
     @Override
     public List<List<CountrySales>> retrieveAllSalesByMonths() {
 
-        double totalSales = 0;
-        int month = 0;
-        int comparingMonth = 0;
-
-        // List<CountrySales>[] salesRecord =  new Array[];
-        List<List<CountrySales>> salesRecord = new ArrayList<List<CountrySales>>();
-        List<CountrySales> countrySales = new ArrayList<>();
-
-        System.out.println("**********  REtrieve All sales By MOnths");
-
-        Query query = em.createNativeQuery("SELECT p.country, Month(p.dateCreated), SUM(p.price) FROM Product p GROUP by MONTH(p.dateCreated), p.country ORDER by MONTH(p.dateCreated)");
-        List<Object[]> salesRecords = query.getResultList();
-
-        //by right shoyld be travelling now hardcord first.
+        List<List<CountrySales>> countrySalesByMonths = new ArrayList<>();
         try {
 
-            System.out.println("******** sakes records is " + salesRecords.size());
-
-            for (Object[] obj : salesRecords) {
-
-                String country = (String) obj[0];
-                Double sales = (Double) obj[2];
-                System.out.println("********** country is " + country + " Month is " + (Integer) obj[1] + " sum of price is " + sales);
-
-                month = (Integer) obj[1];
-                if (comparingMonth == 0) {
-                    comparingMonth = month;
-                    System.out.println(" ********comporatingMOnth == 0.  Comparing month is now " + comparingMonth);
-
-                } else if (comparingMonth != 0 && comparingMonth != month) {
-                    //  System.out.println(" ********comporatingMOnth != 0.  Comparing month is now " + month );
-                    countrySales.add(new CountrySales("Total", totalSales, new DateFormatSymbols().getMonths()[comparingMonth - 1])); //some up sales for comparing montsh which is month -1 
-                    salesRecord.add(countrySales); // add the sales from month-1 to salesRecord.
-                    totalSales = 0; //reset
-                    comparingMonth = month;
-                    countrySales = new ArrayList<>();
-                }
-
-                totalSales += sales;
-                System.out.println("********* Adding country sales");
-                countrySales.add(new CountrySales(country, sales, new DateFormatSymbols().getMonths()[month - 1]));
+            Query getMonths = em.createQuery("SELECT DISTINCT(SUBSTRING(o.datePaid, 6,2)) FROM CustomerOrder o ORDER BY o.datePaid" );
+            List<String> salesMonths = getMonths.getResultList();
+          //  System.out.println("********* sales months is " + salesMonths.size() );
+            
+            for(int i =0; i<salesMonths.size(); i++){
+                
+                List<CountrySales> salesByCountry = new ArrayList<>();
+                String month = salesMonths.get(i);
+     
+                System.out.println("************ MONTH IS " + month);
+                
+             Query getCountrySalesByMonth = em.createQuery("SELECT o FROM CustomerOrder o WHERE  SUBSTRING(o.datePaid , 1,4) =:year AND SUBSTRING(o.datePaid , 6,2) =:month  ORDER BY o.datePaid");
+             getCountrySalesByMonth.setParameter("year", "2018");
+             getCountrySalesByMonth.setParameter("month", month);
+             List<CustomerOrder> orders = getCountrySalesByMonth.getResultList();
+     
+            System.out.println("******** sales records is " + orders.size());
+             HashMap<String,Double> countrySalesPair = new HashMap<>();
+             List<String> teamCountry = new ArrayList<>();
+             
+           
+             for (int j = 0; j < orders.size(); j++) {
+             List<ProductPurchase> products = orders.get(j).getProductPurchase();
+                   
+             for(ProductPurchase product : products ){
+                  
+                  System.out.println("**************** Product Purchase name " + product.getProductPurchase().getProductName() );
+                 
+                       String countryName =  product.getProductPurchase().getCountry();
+                       double purchaseAmount = product.getPricePurchase();
+                       
+                       if(countrySalesPair.get(countryName) ==  null){
+                           System.out.println("*******************Country is : " + countryName + " team name is " + product.getProductPurchase().getTeam()  + " amount Purchase " + purchaseAmount);
+                           teamCountry.add(countryName); //add new country of the team
+                           countrySalesPair.put(countryName, purchaseAmount);
+                       }else if(countrySalesPair.get(countryName) !=  null) //previously added to hashmap
+                       {
+                           
+                          System.out.println("*******************NOT NULL Country is : " + countryName + " team name is " + product.getProductPurchase().getTeam()  + " amount Purchase " + purchaseAmount);
+                           countrySalesPair.put(countryName, countrySalesPair.get(countryName) + purchaseAmount );
+                       }
+                      
+              }
+                       
+             }
+             
+             
+             for(int countryName=0; countryName<teamCountry.size(); countryName++){
+                 
+                 String monthsInWords = salesMonths.get(i);
+                 int monthInt  = 0;
+                  if(monthsInWords.substring(0,1).equals("0"))
+                  {
+                   monthInt = Integer.parseInt(monthsInWords.substring(1));
+                   monthsInWords = new DateFormatSymbols().getMonths()[monthInt-1];
+                  //salesMonths.get(i).substring(1);
+                  }
+                  else 
+                  {
+                      monthInt = Integer.parseInt(monthsInWords.substring(0));
+                      monthsInWords = new DateFormatSymbols().getMonths()[monthInt-1];
+                  }
+                   
+                 System.out.println("$$$$$$$$$$$$$$$$$$$ country name : " +  teamCountry.get(countryName)  + " sales($) " + countrySalesPair.get(teamCountry.get(countryName)) + " Months " + monthsInWords );
+                 salesByCountry.add(new CountrySales(teamCountry.get(countryName) , countrySalesPair.get(teamCountry.get(countryName)) , monthsInWords ));
+                   
+             }
+             
+             
+             countrySalesByMonths.add(salesByCountry);
 
             }
-
-            countrySales.add(new CountrySales("Total", totalSales, new DateFormatSymbols().getMonths()[month - 1])); //some up sales for comparing montsh which is month -1 
-            salesRecord.add(countrySales); // do final adding.
-
-        } catch (Exception ex) {
-            ex.printStackTrace();
+            
+        }catch(Exception ex){
+            
         }
-
-        for (int i = 0; i < salesRecord.size(); i++) {
-            List<CountrySales> a = salesRecord.get(i);
-            for (CountrySales b : a) {
-                System.out.println("Counry is " + b.getCountryName() + " Sales is " + b.getSales() + " month is " + b.getMonth());
-
-            }
-
-        }
-
-        retrieveSalesByTeamAndCountry();
-        return salesRecord;
+        return countrySalesByMonths;
     }
 
     

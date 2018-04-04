@@ -17,6 +17,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -73,7 +74,7 @@ public class DashboardManagedBean implements Serializable {
     private LineChartModel salesLineChart;
     private PieChartModel livePieModel;
     private HorizontalBarChartModel horizontalRating;
-    private List<List<CountrySales>> totalSalesByMonthsCountry;
+
 
     private List<String[]> totalSalesByTeam;
     private List<String> totalSalesByTeamFilter;
@@ -101,7 +102,7 @@ public class DashboardManagedBean implements Serializable {
     //overview
     
     private BarChartModel stackBarModel;
-    
+    private List<List<CountrySales>> totalSalesByMonthsCountry;
 
     public DashboardManagedBean() {
         livePieModel = new PieChartModel();
@@ -122,7 +123,7 @@ public class DashboardManagedBean implements Serializable {
         selectFilterTopProduct = "TP";
         
         //overview
-       createBarModel();
+
 
     }
 
@@ -155,6 +156,7 @@ public class DashboardManagedBean implements Serializable {
             //   createLineModels();
             createRatingBarModels();
             livePieModel = getLiveComparisonPieChart();
+            createCountrySalesStackBarModel();
 
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -164,54 +166,116 @@ public class DashboardManagedBean implements Serializable {
     
 
     
-    private BarChartModel initBarModel() {
+    private BarChartModel initCountrySalesStackBarModel() {
         BarChartModel model = new BarChartModel();
- 
-           ChartSeries goods = new ChartSeries();
-        goods.setLabel("Good");
-        goods.set("2004", 50);
-        goods.set("2005", 96);
-        goods.set("2006", 44);
-        goods.set("2007", 55);
-        goods.set("2008", 25);
+        int noOfCountry = totalSalesByTeamFilter.size();
+        HashMap<String, ChartSeries> countrySeriesPair = new HashMap<>();
+        DecimalFormat df = new DecimalFormat("#0.00"); 
+        ChartSeries countrySeries = new ChartSeries();
+        List<ChartSeries> stackBarChartSeries = new ArrayList<>();
+        
+      
+      System.out.println("*************** INITIALIZING STACK BAR");
+      try{
+          
+     
+           for(int i=0; i<noOfCountry; i++){
+            
+              countrySeries = new ChartSeries();
+              String countryName = totalSalesByTeamFilter.get(i); 
+               System.out.println("*************** COUNRY Name " + countryName );
+              countrySeries.setLabel(countryName); //country Name
+              countrySeriesPair.put(countryName, countrySeries);
+                        
+        }
+        
+        for(int totalCountrySales = 0; totalCountrySales< totalSalesByMonthsCountry.size(); totalCountrySales++){
+            
+            int countrySize = totalSalesByMonthsCountry.get(totalCountrySales).size();
+            List<CountrySales> sales = totalSalesByMonthsCountry.get(totalCountrySales);
+            System.out.println("*************** Inside the TOTALSALES BY COUNTRY. Size " + countrySize);
+            String countryNameFromSalesRecord = "";
+            String salesInString  = "";
+            String month = "";
+            List<String> countryHasSales = new ArrayList<>();
+            for(int i=0; i<countrySize; i++){
+                
+                   
+                 countryNameFromSalesRecord   = sales.get(i).getCountryName();
+                salesInString = sales.get(i).getSales().toString();
+                month = sales.get(i).getMonth();
+               // System.out.println("*************** COUNRY Name " + countryNameFromSalesRecord + " salesinString " + salesInString + " MONTH : " + month);
+                countrySeries = countrySeriesPair.get(countryNameFromSalesRecord);
+               // System.out.println("COUNTRY LABEL " + countrySeries.getLabel());
+                countrySeries.set(month,Double.parseDouble(salesInString));
+                countryHasSales.add(countryNameFromSalesRecord);
+                
+                countrySeriesPair.put(countryNameFromSalesRecord, countrySeries); //update chartSeries Value.
+                
+            }
+            
+            if(countrySize != noOfCountry){ //there are some country thats has no sales in that particular month
+                
+                for(int country=0; country<noOfCountry; country++){
+                    
+                    if(!countryHasSales.contains(totalSalesByTeamFilter.get(country))){
+                        
+                        
+                        System.out.println("********* Country " + totalSalesByTeamFilter.get(country) + " has no sales in Month " + month);
+                        countrySeries = countrySeriesPair.get(totalSalesByTeamFilter.get(country));
+                        countrySeries.set(month,0);
+                        countrySeriesPair.put(totalSalesByTeamFilter.get(country), countrySeries); 
+                    }
+                    
+                }
+                
+            }
+            
+            
+        }
 
-        ChartSeries average = new ChartSeries();
-        average.setLabel("Average");
-        average.set("2004", 52);
-        average.set("2005", 60);
-        average.set("2006", 82);
-        average.set("2007", 35);
-        average.set("2008", 120);
+        //add value to model
+        for(int i=0; i<noOfCountry; i++ )
+        {
+             String countryName = totalSalesByTeamFilter.get(i); 
+             model.addSeries(countrySeriesPair.get(countryName));
+             System.out.println("COUNTRY LABEL " + countrySeriesPair.get(countryName).getLabel());
+           System.out.println("COUNTRY DATA " + countrySeriesPair.get(countryName).getData().get("January"));
+            System.out.println("COUNTRY DATA " + countrySeriesPair.get(countryName).getData().get("February"));
+           System.out.println("COUNTRY DATA " + countrySeriesPair.get(countryName).getData().get("March"));
 
-        ChartSeries bad = new ChartSeries();
-        bad.setLabel("bad");
-        bad.set("2004", 52);
-        bad.set("2005", 60);
-        bad.set("2006", 82);
-        bad.set("2007", 35);
-        bad.set("2008", 120);
- 
-        model.addSeries(goods);
-        model.addSeries(average);
-        model.addSeries(bad);
+        }
+        
+      
+        //model.addSeries(italy);
+      // model.addSeries(spain);
+      //  model.addSeries(england);
         model.setStacked(true);
         model.setExtender("barExtender");
+          
+      }
+      
+      catch(Exception ex)
+      {
+          ex.printStackTrace();
+      }
+       
         
         
         return model;
     }
     
-     private void createBarModel() {
-        setBarModel(initBarModel());
+     private void createCountrySalesStackBarModel() {
+        setBarModel(initCountrySalesStackBarModel());
          
-        getStackBarModel().setTitle("Bar Chart");
+        getStackBarModel().setTitle("Sales By Country Per Month");
         getStackBarModel().setLegendPosition("se");
          
         Axis xAxis = getStackBarModel().getAxis(AxisType.X);
-        xAxis.setLabel("Gender");
+        xAxis.setLabel("Month");
          
         Axis yAxis = getStackBarModel().getAxis(AxisType.Y);
-        yAxis.setLabel("Births");
+        yAxis.setLabel("Sales($)");
         yAxis.setMin(0);
    
     }
