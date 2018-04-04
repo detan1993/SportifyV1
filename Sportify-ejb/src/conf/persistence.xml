@@ -12,6 +12,7 @@
     <class>entity.Voucher</class>
     <class>entity.Images</class>
     <class>entity.ProductSize</class>
+    <class>entity.ProductPurchase</class>
     <exclude-unlisted-classes>true</exclude-unlisted-classes>
     <properties>
       <property name="javax.persistence.schema-generation.database.action" value="drop-and-create"/>

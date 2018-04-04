@@ -9,12 +9,14 @@ import ejb.session.stateless.CustomerControllerLocal;
 import ejb.session.stateless.CustomerOrderControllerRemote;
 import ejb.session.stateless.ImageControllerLocal;
 import ejb.session.stateless.ProductControllerLocal;
+import ejb.session.stateless.ProductPurchaseControllerLocal;
 import ejb.session.stateless.ProductSizeControllerLocal;
 import ejb.session.stateless.StaffControllerLocal;
 import entity.Customer;
 import entity.CustomerOrder;
 import entity.Images;
 import entity.Product;
+import entity.ProductPurchase;
 import entity.ProductSize;
 import entity.Staff;
 import java.util.ArrayList;
@@ -39,6 +41,9 @@ import util.exception.CustomerSignUpException;
 @LocalBean
 public class DataInitialization {
 
+    @EJB(name = "ProductPurchaseControllerLocal")
+    private ProductPurchaseControllerLocal productPurchaseControllerLocal;
+
     @EJB(name = "CustomerOrderControllerLocal")
     private CustomerOrderControllerRemote customerOrderControllerLocal;
 
@@ -56,6 +61,8 @@ public class DataInitialization {
 
     @EJB(name = "ImageControllerLocal")
     private ImageControllerLocal imageControllerLocal;
+    
+    
     
     
 
@@ -475,30 +482,16 @@ public class DataInitialization {
         try {
 
             //Customer 1
-            List<Product> cust1Jan = new ArrayList<>();
-            cust1Jan.add(RmHomeProduct);
-            cust1Jan.add(AcMilanHomeProduct);
-            List<Product> cust1Feb = new ArrayList<>();
+            
+           // Custom
+            
+     /*       List<Product> cust1Feb = new ArrayList<>();
             cust1Feb.add(ChelseaAwayProduct);
             List<Product> cust1Mar = new ArrayList<>();
             cust1Mar.add(atlMadridHomeProduct);
             cust1Mar.add(RmAwayProduct);
             
-            
-            
-            //Customer 2
-            List<Product> cust2Jan = new ArrayList<>();
-            cust2Jan.add(RmHomeProduct);
-            cust2Jan.add(AcMilanHomeProduct);
-            cust2Jan.add(ChelseaAwayProduct);
-            cust2Jan.add(ChelseaHomeProduct);
-            List<Product> cust2Feb = new ArrayList<>();
-            cust2Feb.add(BarcaHomeProduct);
-            cust2Feb.add(BarcaAwayProduct);
-            List<Product> cust2Mar = new ArrayList<>();
-            cust2Mar.add(atlMadridHomeProduct);
-            cust2Mar.add(RmAwayProduct);
-            
+     
             
             //Customer 3
            
@@ -518,42 +511,89 @@ public class DataInitialization {
             cal.set(2018, Calendar.FEBRUARY, 26);
             Date dateFeb = cal.getTime();
             cal.set(2018, Calendar.MARCH, 26);
-            Date dateMar = cal.getTime();
-            CustomerOrder cust1OrderJan = new CustomerOrder(119.80, 20, dateJan, "Delivered", newCustomer1, cust1Jan);
-            customerOrderControllerLocal.CreateNewCustomerOrder(cust1OrderJan);
+            Date dateMar = cal.getTime(); */
             
-            CustomerOrder cust1OrderFeb = new CustomerOrder(100.0, 20, dateFeb, "Delivered", newCustomer1, cust1Feb);
-            customerOrderControllerLocal.CreateNewCustomerOrder(cust1OrderFeb);
-            CustomerOrder cust1OrderMar = new CustomerOrder(659.80, 100, dateMar, "Delivered", newCustomer1, cust1Mar);
-            customerOrderControllerLocal.CreateNewCustomerOrder(cust1OrderMar);
+           /// CustomerOrder customer1 =  
+            List<ProductPurchase> cust1purchase = new ArrayList<>();
+             List<ProductPurchase> cust2purchase = new ArrayList<>();
+              List<ProductPurchase> cust3purchase = new ArrayList<>();
+           // cust1Jan.add(new ProductPurchase(0, 0, order, RmHomeProduct))
+    
+            //cust1Jan.add(RmHomeProduct);
+           // cust1Jan.add(AcMilanHomeProduct);
+           
+             cal.set(2018, Calendar.JANUARY, 26); //Year, month and day of month
+            Date dateJan = cal.getTime();
+            cal.set(2018, Calendar.FEBRUARY, 26);
+            Date dateFeb = cal.getTime();
+            cal.set(2018, Calendar.MARCH, 26);
+            Date dateMar = cal.getTime();
+            
+            CustomerOrder cust1OrderJan = new CustomerOrder(160.90, 20, dateJan, "Delivered", newCustomer1);
+            cust1OrderJan = customerOrderControllerLocal.CreateNewCustomerOrder(cust1OrderJan);
+            ProductPurchase p1 = productPurchaseControllerLocal.createProductPurchase((new ProductPurchase(80.45 , 2  , cust1OrderJan, RmHomeProduct )));
+            customerOrderControllerLocal.addProductPurchase(cust1OrderJan.getId() , p1);
+                    
+            
+           CustomerOrder cust1OrderFeb = new CustomerOrder(100.0, 20, dateFeb, "Delivered", newCustomer1);
+           cust1OrderFeb =   customerOrderControllerLocal.CreateNewCustomerOrder(cust1OrderFeb);
+            customerOrderControllerLocal.addProductPurchase(cust1OrderFeb.getId() , productPurchaseControllerLocal.createProductPurchase(new ProductPurchase(100.0, 1, cust1OrderFeb, ChelseaAwayProduct)));
+           CustomerOrder cust1OrderMar = new CustomerOrder(659.80, 100, dateMar, "Delivered", newCustomer1);
+           cust1OrderMar =   customerOrderControllerLocal.CreateNewCustomerOrder(cust1OrderMar);
+           customerOrderControllerLocal.addProductPurchase(cust1OrderMar.getId(),productPurchaseControllerLocal.createProductPurchase(new ProductPurchase(300.00 ,1, cust1OrderMar , RmAwayProduct )));
+           customerOrderControllerLocal.addProductPurchase(cust1OrderMar.getId(),  productPurchaseControllerLocal.createProductPurchase(new ProductPurchase(359.80, 1, cust1OrderMar, atlMadridHomeProduct)));
+
+          //  customerOrderControllerLocal.CreateNewCustomerOrder(cust1OrderMar);
             
             cal.set(2018, Calendar.JANUARY, 28); //Year, month and day of month
-             dateJan = cal.getTime();
+            dateJan = cal.getTime();
             cal.set(2018, Calendar.FEBRUARY, 27);
             dateFeb = cal.getTime();
             cal.set(2018, Calendar.MARCH, 30);
             dateMar = cal.getTime();
             
-            CustomerOrder cust2OrderJan = new CustomerOrder(349.80, 30, dateJan, "Delivered", newCustomer2, cust2Jan);
-            customerOrderControllerLocal.CreateNewCustomerOrder(cust2OrderJan);
-            
-            CustomerOrder cust2OrderFeb = new CustomerOrder(230.70, 20, dateFeb, "Delivered", newCustomer2, cust2Feb);
-            customerOrderControllerLocal.CreateNewCustomerOrder(cust2OrderFeb);
-            CustomerOrder cust2OrderMar = new CustomerOrder(659.80, 100, dateMar, "Delivered", newCustomer2, cust2Mar);
-            customerOrderControllerLocal.CreateNewCustomerOrder(cust2OrderMar);
 
             
-            cal.set(2018, Calendar.FEBRUARY, 21);
+            CustomerOrder cust2OrderJan = new CustomerOrder(352.35, 20, dateJan, "Delivered", newCustomer2);
+            cust2OrderJan = customerOrderControllerLocal.CreateNewCustomerOrder(cust2OrderJan);
+            customerOrderControllerLocal.addProductPurchase(cust2OrderJan.getId(),productPurchaseControllerLocal.createProductPurchase(new ProductPurchase(80.45 , 1  , cust2OrderJan, RmHomeProduct )));
+            customerOrderControllerLocal.addProductPurchase(cust2OrderJan.getId(),productPurchaseControllerLocal.createProductPurchase(new ProductPurchase(66.45 , 1  , cust2OrderJan, AcMilanHomeProduct )));
+            customerOrderControllerLocal.addProductPurchase(cust2OrderJan.getId(), productPurchaseControllerLocal.createProductPurchase(new ProductPurchase(95.00 , 1  , cust2OrderJan, ChelseaAwayProduct )));
+            customerOrderControllerLocal.addProductPurchase(cust2OrderJan.getId(),productPurchaseControllerLocal.createProductPurchase(new ProductPurchase(110.45 , 1  , cust2OrderJan, ChelseaHomeProduct )));
+                                               
+            
+           CustomerOrder cust2OrderFeb = new CustomerOrder(250.0, 20, dateFeb, "Delivered", newCustomer2);
+           cust2OrderFeb =   customerOrderControllerLocal.CreateNewCustomerOrder(cust2OrderFeb);
+           customerOrderControllerLocal.addProductPurchase(cust2OrderFeb.getId(),productPurchaseControllerLocal.createProductPurchase(new ProductPurchase(125.0, 2, cust2OrderFeb, BarcaAwayProduct)));
+           
+           CustomerOrder cust2OrderMar = new CustomerOrder(659.80, 100, dateMar, "Delivered", newCustomer2);
+           cust2OrderMar =   customerOrderControllerLocal.CreateNewCustomerOrder(cust2OrderMar);
+             customerOrderControllerLocal.addProductPurchase(cust2OrderMar.getId(),productPurchaseControllerLocal.createProductPurchase(new ProductPurchase(300.00 ,1, cust2OrderMar , RmAwayProduct )));
+              customerOrderControllerLocal.addProductPurchase(cust2OrderMar.getId(),productPurchaseControllerLocal.createProductPurchase(new ProductPurchase(359.80, 1, cust2OrderMar, atlMadridHomeProduct)));
+
+                
+           cal.set(2018, Calendar.FEBRUARY, 21);
             dateFeb = cal.getTime();
             cal.set(2018, Calendar.MARCH, 14);
             dateMar = cal.getTime();
+            
+            
+            
+           CustomerOrder cust3OrderFeb = new CustomerOrder(719.60, 100, dateFeb, "Delivered", newCustomer3);
+           cust3OrderFeb =   customerOrderControllerLocal.CreateNewCustomerOrder(cust3OrderFeb);
+           customerOrderControllerLocal.addProductPurchase(cust3OrderFeb.getId(), productPurchaseControllerLocal.createProductPurchase(new ProductPurchase(359.80, 2, cust3OrderFeb, atlMadridHomeProduct)));
+           
+           CustomerOrder cust3OrderMar = new CustomerOrder(1133.40, 100, dateMar, "Delivered", newCustomer3);
+           cust3OrderMar =   customerOrderControllerLocal.CreateNewCustomerOrder(cust3OrderMar);
+            customerOrderControllerLocal.addProductPurchase(cust3OrderMar.getId(), productPurchaseControllerLocal.createProductPurchase(new ProductPurchase(100.0 ,1, cust3OrderMar , ArsenalAwayProduct )));
+            customerOrderControllerLocal.addProductPurchase(cust3OrderMar.getId(),productPurchaseControllerLocal.createProductPurchase(new ProductPurchase(120.90, 2, cust3OrderMar, ArsenalHomeProduct)));
+           customerOrderControllerLocal.addProductPurchase(cust3OrderMar.getId(), productPurchaseControllerLocal.createProductPurchase(new ProductPurchase(90.90, 2, cust3OrderMar, liverpoolHomeProduct)));
+          customerOrderControllerLocal.addProductPurchase(cust3OrderMar.getId(), productPurchaseControllerLocal.createProductPurchase(new ProductPurchase(179.90, 2, cust3OrderMar, manuHomeProduct)));
+        customerOrderControllerLocal.addProductPurchase(cust3OrderMar.getId(), productPurchaseControllerLocal.createProductPurchase(new ProductPurchase(125.0, 2, cust3OrderMar, BarcaAwayProduct)));
+            
 
-             CustomerOrder cust3OrderFeb = new CustomerOrder(599.90, 100, dateFeb, "Delivered", newCustomer3, cust3Feb);
-            customerOrderControllerLocal.CreateNewCustomerOrder(cust3OrderFeb);
-            CustomerOrder cust3OrderMar = new CustomerOrder(1000.80, 100, dateMar, "Delivered", newCustomer3, cust3Mar);
-            customerOrderControllerLocal.CreateNewCustomerOrder(cust3OrderMar);
 
-
+            
         }catch(Exception ex)
         {
             ex.printStackTrace();

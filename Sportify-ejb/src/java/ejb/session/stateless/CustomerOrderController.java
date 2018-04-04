@@ -7,6 +7,7 @@ package ejb.session.stateless;
 
 import entity.CustomerOrder;
 import entity.Product;
+import entity.ProductPurchase;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -151,7 +152,7 @@ public class CustomerOrderController implements CustomerOrderControllerRemote, C
     
     private void getCustomerPurchaseByProducts(List<TopTenCustomer> custInformation) {
 
-          System.out.println("************** Populate customer product data");
+         System.out.println("************** Populate customer product data");
 
           for (int pInfo = 0; pInfo < custInformation.size(); pInfo++) {
               
@@ -162,22 +163,25 @@ public class CustomerOrderController implements CustomerOrderControllerRemote, C
               productPurchaseQuery.setParameter("cEmail", email);
               
               List<CustomerOrder> orders = productPurchaseQuery.getResultList();
-              
+              System.out.println("**************** Customer Order size " + orders.size());
               
               for(CustomerOrder order : orders ){
                   
-                  List<Product> proPurchase = order.getProducts();
-                   for(Product product : proPurchase){
-                       String teamName =  product.getTeam();
+                  List<ProductPurchase> proPurchase = order.getProductPurchase();
+               //   List<Product> proPurchase = order.getProducts();
+                  System.out.println("**************** Product Purchaase  size " + proPurchase.size());
+                   for(ProductPurchase product : proPurchase){
+                       String teamName =  product.getProductPurchase().getTeam();
+                       int qtyPurchase = product.getQtyPurchase();
                        if(teamCounterPair.get(teamName) ==  null){
-                           System.out.println("*******************cust : " + email + " team name is " + teamName  + " null" + " QTY 1");
+                           System.out.println("*******************cust : " + email + " team name is " + teamName  + " null" + " QTY " + qtyPurchase);
                            teams.add(teamName); //add new name of the team
-                           teamCounterPair.put(teamName, 1);
+                           teamCounterPair.put(teamName, qtyPurchase);
                        }else if(teamCounterPair.get(teamName) !=  null) //previously added to hashmap
                        {
                            
-                           System.out.println("******************* cust : " + email + "team name is " + teamName  + " not null. QTY = " + (teamCounterPair.get(teamName) + 1 ));
-                           teamCounterPair.put(teamName, teamCounterPair.get(teamName) + 1 );
+                           System.out.println("******************* cust : " + email + "team name is " + teamName  + " not null. QTY = " + (teamCounterPair.get(teamName) + qtyPurchase ));
+                           teamCounterPair.put(teamName, teamCounterPair.get(teamName) + qtyPurchase );
                        }
                    }          
               }
@@ -201,6 +205,17 @@ public class CustomerOrderController implements CustomerOrderControllerRemote, C
          
        
           
+    }
+    
+    @Override
+    public void addProductPurchase(long newOrderId, ProductPurchase newProductPurchase){
+        
+        CustomerOrder order = em.find(CustomerOrder.class, newOrderId );
+        if(order != null){
+            
+            order.getProductPurchase().add(newProductPurchase);
+            em.flush();
+        }
     }
 
 }

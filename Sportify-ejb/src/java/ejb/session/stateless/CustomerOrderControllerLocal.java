@@ -6,6 +6,7 @@
 package ejb.session.stateless;
 
 import entity.CustomerOrder;
+import entity.ProductPurchase;
 import java.util.List;
 import util.helperClass.TopTenCustomer;
 
@@ -19,5 +20,5 @@ public interface CustomerOrderControllerLocal {
      public List<CustomerOrder> RetrieveAllCustomerOrder();
      public List<TopTenCustomer> RetrieveTopTenCustomersByOrder();
      public List<TopTenCustomer> RetrieveTopTenCustomerByOrderByRanger(String dateFron, String dateTo);
- 
+ public void addProductPurchase(long newOrderId, ProductPurchase newProductPurchase);
 }

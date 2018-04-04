@@ -4,6 +4,7 @@ import ejb.session.stateless.CustomerOrderControllerRemote;
 import entity.Customer;
 import entity.CustomerOrder;
 import entity.Product;
+import entity.ProductPurchase;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
@@ -23,8 +24,8 @@ public class CustomerPurchaseHistoryManagedBean implements Serializable {
     
     private List<CustomerOrder> getCustOrders;
     private Customer customer;
-    private Map<CustomerOrder, List<Product>> productOrderDetails = new HashMap<CustomerOrder, List<Product>>();
-    private Map<CustomerOrder, List<Product>> productsOnHold = new HashMap<CustomerOrder, List<Product>>();
+    private Map<CustomerOrder, List<ProductPurchase>> productOrderDetails = new HashMap<CustomerOrder, List<ProductPurchase>>();
+    private Map<CustomerOrder, List<ProductPurchase>> productsOnHold = new HashMap<CustomerOrder, List<ProductPurchase>>();
 
     @PostConstruct
     public void postConstruct() {
@@ -34,11 +35,11 @@ public class CustomerPurchaseHistoryManagedBean implements Serializable {
         
         //get past transactions
         for (CustomerOrder order : getCustOrders){
-            List<Product> productDetails = order.getProducts();
+            List<ProductPurchase> productDetails = order.getProductPurchase();
             if (order.getDeliveryStatus().equalsIgnoreCase("Delivered")){
-                productOrderDetails.put(order, productDetails);
+                getProductOrderDetails().put(order, productDetails);
             }else{
-                productsOnHold.put(order, productDetails);
+                getProductsOnHold().put(order, productDetails);
             }
         }
     }
@@ -66,19 +67,33 @@ public class CustomerPurchaseHistoryManagedBean implements Serializable {
         this.customer = customer;
     }   
 
-    public Map<CustomerOrder, List<Product>> getProductOrderDetails() {
+    /**
+     * @return the productOrderDetails
+     */
+    public Map<CustomerOrder, List<ProductPurchase>> getProductOrderDetails() {
         return productOrderDetails;
     }
 
-    public void setProductOrderDetails(Map<CustomerOrder, List<Product>> productOrderDetails) {
+    /**
+     * @param productOrderDetails the productOrderDetails to set
+     */
+    public void setProductOrderDetails(Map<CustomerOrder, List<ProductPurchase>> productOrderDetails) {
         this.productOrderDetails = productOrderDetails;
     }
 
-    public Map<CustomerOrder, List<Product>> getProductsOnHold() {
+    /**
+     * @return the productsOnHold
+     */
+    public Map<CustomerOrder, List<ProductPurchase>> getProductsOnHold() {
         return productsOnHold;
     }
 
-    public void setProductsOnHold(Map<CustomerOrder, List<Product>> productsOnHold) {
+    /**
+     * @param productsOnHold the productsOnHold to set
+     */
+    public void setProductsOnHold(Map<CustomerOrder, List<ProductPurchase>> productsOnHold) {
         this.productsOnHold = productsOnHold;
     }
+
+    
 }

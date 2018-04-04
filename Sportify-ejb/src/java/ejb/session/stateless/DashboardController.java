@@ -7,6 +7,7 @@ package ejb.session.stateless;
 
 import entity.CustomerOrder;
 import entity.Product;
+import entity.ProductPurchase;
 import java.text.DateFormatSymbols;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -154,38 +155,46 @@ public class DashboardController implements DashboardControllerRemote, Dashboard
     @Override
     public List<TopProductByCode> getProductsSumByQuantityPurchaseByProductCode(){
         
+        List<TopProductByCode> topTenProductByCode = new ArrayList<>();
+        try{
+            
+     
  
         List<String> productCodes = new ArrayList<>();
         List<CustomerOrder> orders = new ArrayList<>();
-        List<TopProductByCode> topTenProductByCode = new ArrayList<>();
+
         DecimalFormat df = new DecimalFormat("#.##");
         HashMap<String, Integer> productCodeQuantityPair = new HashMap<>();
         HashMap<String, Double>  productCodeSalesPair = new HashMap<>();
         Query q = em.createQuery("SELECT o FROM CustomerOrder o");
         orders = q.getResultList();
-        
+        System.out.println("************ orders size is " + orders.size());
         for(int i=0; i<orders.size(); i++){ //top 10 
             
-           List<Product> products = new ArrayList<>();
-           products = orders.get(i).getProducts();
+           List<ProductPurchase> products = new ArrayList<>();
            
-           for(Product p : products)
+               products = orders.get(i).getProductPurchase();
+        
+           
+           for(ProductPurchase p : products)
            {
-               String productCode = p.getProductCode();
-               double pricePurchase = p.getPrice();
+               System.out.println("************ ProductPurchase p : products " + p.getProductPurchase().getProductCode());
+               String productCode = p.getProductPurchase().getProductCode();
+               double pricePurchase = p.getPricePurchase() * p.getQtyPurchase();
+               int qtyPurchase = p.getQtyPurchase();
                
                if(productCodeSalesPair.get(productCode) == null)
                {
                    System.out.println("*******************product code : " + productCode +  " Code is null" + " QTY 1");
                    productCodes.add(productCode);
-                   productCodeSalesPair.put(productCode, pricePurchase); // this must change
-                   productCodeQuantityPair.put(productCode, 1);
+                   productCodeSalesPair.put(productCode, pricePurchase); 
+                   productCodeQuantityPair.put(productCode, qtyPurchase);
                    
                }else if(productCodeSalesPair.get(productCode) != null){ // exisiting product code
                    
-                 System.out.println("******************* product Code : " + productCode + "Code is not null. QTY = " +  (productCodeQuantityPair.get(productCode) + 1 ));
+                 System.out.println("******************* product Code : " + productCode + "Code is not null. QTY = " +  (productCodeQuantityPair.get(productCode) + qtyPurchase ));
                  System.out.println("******************* product Code : " + productCode + "Code is not null. Purchase is = " +  (productCodeSalesPair.get(productCode) + pricePurchase ));
-                   productCodeQuantityPair.put(productCode, productCodeQuantityPair.get(productCode) + 1);
+                   productCodeQuantityPair.put(productCode, productCodeQuantityPair.get(productCode) + qtyPurchase);
                    productCodeSalesPair.put(productCode, productCodeSalesPair.get(productCode) + pricePurchase);
                }
            }
@@ -210,6 +219,11 @@ public class DashboardController implements DashboardControllerRemote, Dashboard
             double avgProfit = Double.parseDouble(df.format(tPurchase/tTotal));
             topTenProductByCode.get(i).setAverageProfit(avgProfit);
         }
+        
+        }
+        catch(Exception ex){
+         ex.printStackTrace();
+        }
  
         
         return topTenProductByCode;
@@ -229,36 +243,38 @@ public class DashboardController implements DashboardControllerRemote, Dashboard
         HashMap<String, Double>  productTeamSalesPair = new HashMap<>();
         Query q = em.createQuery("SELECT o FROM CustomerOrder o");
         orders = q.getResultList();
-        
+        System.out.println("************ orders size is " + orders.size());
         for(int i=0; i<orders.size(); i++){ //top 10 
             
-           List<Product> products = new ArrayList<>();
-           products = orders.get(i).getProducts();
+           List<ProductPurchase> products = new ArrayList<>();
+           products = orders.get(i).getProductPurchase();
            
-           for(Product p : products)
+           for(ProductPurchase p : products)
            {
-               String productTeam = p.getTeam();
-               double pricePurchase = p.getPrice();
+               String productTeam = p.getProductPurchase().getTeam();
+               int qtyPurchase =  p.getQtyPurchase();
+               double pricePurchase = p.getPricePurchase() * qtyPurchase;
+               
                
                if(productTeamSalesPair.get(productTeam) == null)
                {
                    System.out.println("*******************product Team : " + productTeam +  " Team is null" + " QTY 1");
                    teamNames.add(productTeam);
-                   productTeamSalesPair.put(productTeam, pricePurchase); // this must change
-                   productTeamQuantityPair.put(productTeam, 1);
+                   productTeamSalesPair.put(productTeam, pricePurchase); 
+                   productTeamQuantityPair.put(productTeam, qtyPurchase);
                    
                }else if(productTeamSalesPair.get(productTeam) != null){ // exisiting product code
                    
-                 System.out.println("******************* product Team : " + productTeam + " Team is not null. QTY = " +  (productTeamQuantityPair.get(productTeam) + 1 ));
+                 System.out.println("******************* product Team : " + productTeam + " Team is not null. QTY = " +  (productTeamQuantityPair.get(productTeam) + qtyPurchase ));
                  System.out.println("******************* product Team : " + productTeam + " Team is not null. Purchase is = " +  (productTeamSalesPair.get(productTeam) + pricePurchase ));
-                   productTeamQuantityPair.put(productTeam, productTeamQuantityPair.get(productTeam) + 1);
+                   productTeamQuantityPair.put(productTeam, productTeamQuantityPair.get(productTeam) + qtyPurchase);
                    productTeamSalesPair.put(productTeam, productTeamSalesPair.get(productTeam) + pricePurchase);
                }
            }
             
         }
         
-        System.out.println("***************** POPULATE BACK THE DATA TO TOP PRODUCY BY CODE");
+        System.out.println("***************** POPULATE BACK THE DATA TO TOP PRODUCY BY Nmae");
         
         for(int i=0; i<teamNames.size(); i++){
             

@@ -43,13 +43,20 @@ public class CustomerOrder implements Serializable {
     private CustomerVoucher customerVoucher;
     @OneToMany(mappedBy="customerOrder")
     private List<ProductReview> productReviews;
-    @ManyToMany
-    private List<Product> products;
+    @OneToMany(mappedBy="order")
+    private List<ProductPurchase> productPurchase;
+    
+    
+    
+//    @ManyToMany
+//    private List<Product> products;
+    
+     
 
     public CustomerOrder() {
     }
 
-    public CustomerOrder(double totalAmount, double totalPointsAwarded, Date datePaid, String deliveryStatus, Customer customer, CustomerVoucher customerVoucher, List<ProductReview> productReviews, List<Product> products) {
+    public CustomerOrder(double totalAmount, double totalPointsAwarded, Date datePaid, String deliveryStatus, Customer customer, CustomerVoucher customerVoucher, List<ProductReview> productReviews) {
         this.totalAmount = totalAmount;
         this.totalPointsAwarded = totalPointsAwarded;
         this.datePaid = datePaid;
@@ -57,16 +64,16 @@ public class CustomerOrder implements Serializable {
         this.customer = customer;
         this.customerVoucher = customerVoucher;
         this.productReviews = productReviews;
-        this.products = products;
+       // this.products = products;
     }
 
-    public CustomerOrder(double totalAmount, double totalPointsAwarded, Date datePaid, String deliveryStatus, Customer customer, List<Product> products) {
+    public CustomerOrder(double totalAmount, double totalPointsAwarded, Date datePaid, String deliveryStatus, Customer customer ) {
         this.totalAmount = totalAmount;
         this.totalPointsAwarded = totalPointsAwarded;
         this.datePaid = datePaid;
         this.deliveryStatus = deliveryStatus;
         this.customer = customer;
-        this.products = products;
+      
     }
     
     
@@ -141,13 +148,13 @@ public class CustomerOrder implements Serializable {
 
     
     
-    public List<Product> getProducts() {
-        return products;
-    }
-
-    public void setProducts(List<Product> products) {
-        this.products = products;
-    }
+//    public List<Product> getProducts() {
+//        return products;
+//    }
+//
+//    public void setProducts(List<Product> products) {
+//        this.products = products;
+//    }
 
     @Override
     public int hashCode() {
@@ -173,5 +180,21 @@ public class CustomerOrder implements Serializable {
     public String toString() {
         return "entity.CustomerOrder[ id=" + id + " ]";
     }
+
+    /**
+     * @return the productPurchase
+     */
+    public List<ProductPurchase> getProductPurchase() {
+        return productPurchase;
+    }
+
+    /**
+     * @param productPurchase the productPurchase to set
+     */
+    public void setProductPurchase(List<ProductPurchase> productPurchase) {
+        this.productPurchase = productPurchase;
+    }
+
+  
     
 }

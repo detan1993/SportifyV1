@@ -46,6 +46,9 @@ public class Product implements Serializable {
     @OneToMany(mappedBy="product")
     private List<ProductReview> productReviews;
     
+    @OneToMany(mappedBy="productPurchase")
+    private List<ProductPurchase> productsPurchase;
+    
     @OneToMany
     private List<Images> images;
 
@@ -208,6 +211,20 @@ public class Product implements Serializable {
      */
     public void setSizes(List<ProductSize> sizes) {
         this.sizes = sizes;
+    }
+
+    /**
+     * @return the productsPurchase
+     */
+    public List<ProductPurchase> getProductsPurchase() {
+        return productsPurchase;
+    }
+
+    /**
+     * @param productsPurchase the productsPurchase to set
+     */
+    public void setProductsPurchase(List<ProductPurchase> productsPurchase) {
+        this.productsPurchase = productsPurchase;
     }
     
 }

@@ -100,7 +100,7 @@ public class DashboardManagedBean implements Serializable {
     
     //overview
     
-    private BarChartModel barModel;
+    private BarChartModel stackBarModel;
     
 
     public DashboardManagedBean() {
@@ -133,7 +133,7 @@ public class DashboardManagedBean implements Serializable {
 
             topProductsCode = dashboardControllerLocal.getProductsSumByQuantityPurchaseByProductCode();
             topProductsTeam = dashboardControllerLocal.getProductsSumByQuantityPurchaseByTeam();
-            topProductsCode =  topProductsCode.subList(0, 10);
+          //  topProductsCode =  topProductsCode.subList(0, 10);
             topCustomers = customerOrderControllerLocal.RetrieveTopTenCustomersByOrder();
             //  customerOrderControllerLocal.RetrieveAllCustomerOrder();
             totalSalesByMonthsCountry = dashboardControllerLocal.retrieveAllSalesByMonths();
@@ -204,13 +204,13 @@ public class DashboardManagedBean implements Serializable {
      private void createBarModel() {
         setBarModel(initBarModel());
          
-        getBarModel().setTitle("Bar Chart");
-        getBarModel().setLegendPosition("se");
+        getStackBarModel().setTitle("Bar Chart");
+        getStackBarModel().setLegendPosition("se");
          
-        Axis xAxis = getBarModel().getAxis(AxisType.X);
+        Axis xAxis = getStackBarModel().getAxis(AxisType.X);
         xAxis.setLabel("Gender");
          
-        Axis yAxis = getBarModel().getAxis(AxisType.Y);
+        Axis yAxis = getStackBarModel().getAxis(AxisType.Y);
         yAxis.setLabel("Births");
         yAxis.setMin(0);
    
@@ -780,7 +780,7 @@ public class DashboardManagedBean implements Serializable {
         setCustomerProductPie(new PieChartModel());
         try{
              List<TopCustomerProduct> custProducts = selectedCustomer.getTotalProducts();
- System.out.println("************************PselectedCustomer.getTotalProducts() " + custProducts.size());
+            System.out.println("************************PselectedCustomer.getTotalProducts() " + custProducts.size());
  
         for (TopCustomerProduct p : custProducts)
             getCustomerProductPie().set(p.getTeamName(), p.getTotalQtyPurchase());
@@ -885,17 +885,17 @@ public class DashboardManagedBean implements Serializable {
     }
 
     /**
-     * @return the barModel
+     * @return the stackBarModel
      */
-    public BarChartModel getBarModel() {
-        return barModel;
+    public BarChartModel getStackBarModel() {
+        return stackBarModel;
     }
 
     /**
-     * @param barModel the barModel to set
+     * @param stackBarModel the stackBarModel to set
      */
-    public void setBarModel(BarChartModel barModel) {
-        this.barModel = barModel;
+    public void setBarModel(BarChartModel stackBarModel) {
+        this.stackBarModel = stackBarModel;
     }
 
   
