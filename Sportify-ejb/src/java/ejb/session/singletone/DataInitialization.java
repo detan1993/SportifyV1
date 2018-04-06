@@ -110,19 +110,39 @@ public class DataInitialization {
         date3 = cal.getTime();
         cal.set(2018, Calendar.APRIL, 1);
         date4 = cal.getTime();
-
+        
+        Date bdaeDate = new Date();
+        cal.set(1993, Calendar.MAY, 13);
+        bdaeDate = cal.getTime();
+        
+        Date bdaeDate2 = new Date();
+        cal.set(1994, Calendar.MARCH, 13);
+        bdaeDate = cal.getTime();
+        
+        Date bdaeDate3 = new Date();
+        cal.set(1992, Calendar.DECEMBER, 1);
+        bdaeDate = cal.getTime();
+        
+        Date bdaeDate4 = new Date();
+        cal.set(1989, Calendar.JULY, 3);
+        bdaeDate = cal.getTime();
+        
+        Date bdaeDate5 = new Date();
+        cal.set(1981, Calendar.MAY, 8);
+        bdaeDate = cal.getTime();
+        
         //Create new Customer . Date of birth format is DD-MM-YYYY
-        Customer newCustomer1 = new Customer("Jon", "Tan", "Address 1 Avenue 3", "123456", "30-01-1988", "Daviddetan93@gmail.com", "12345678", 0, date);
-        Customer newCustomer2 = new Customer("Paul", "Ang", " Address 2 Avenue 4", "546162", "30-02-1990", "paul80@gmail.com", "12345678", 0, date);
-        Customer newCustomer3 = new Customer("Alan", "Chua", "Address 3 avenue 21", "318282", "02-03-1981", "alan_chua@gmail.com", "12345678", 0, date2);
-        Customer newCustomer4 = new Customer("Steven", "Lim", "AMK 21 ave 21", "310292", "04-03-1993", "setve@gmail.com", "12345678", 0, date2);
-        Customer newCustomer5 = new Customer("Liew Shan", "Wei", "Yishun Blk 22", "453121", "04-03-1993", "shanwLiew@gmail.com", "12345678", 0, date3);
-        Customer newCustomer6 = new Customer("Danny", "Poo", "AMK 21 ave 23", "310293", "04-03-1993", "danny@gmail.com", "12345678", 0, date3);
-        Customer newCustomer7 = new Customer("Dennis", "Ang", "Kovan 21 Street 1", "541213", "04-03-1980", "dennis@gmail.com", "12345678", 0, date3);
-        Customer newCustomer8 = new Customer("Derian", "Lim", "Punggo1 ave 51", "453123", "04-03-1991", "derian@gmail.com", "12345678", 0, date3);
-        Customer newCustomer9 = new Customer("Jason", "Ang", "Jurong East 45", "103021", "04-03-1976", "jason@gmail.com", "12345678", 0, date3);
-        Customer newCustomer10 = new Customer("Katie", "Perry", "Serangoo North ave 45", "323412", "04-03-1990", "katPer@gmail.com", "12345678", 0, date4);
-        Customer newCustomer11 = new Customer("Steve", "Tan", "Tampiness st 21 block 21", "100721", "04-03-1984", "steveTan@gmail.com", "12345678", 0, date4);
+        Customer newCustomer1 = new Customer("Jon", "Tan", "Address 1 Avenue 3", "123456", bdaeDate, "Daviddetan93@gmail.com", "12345678", 0, date);
+        Customer newCustomer2 = new Customer("Paul", "Ang", " Address 2 Avenue 4", "546162", bdaeDate2, "paul80@gmail.com", "12345678", 0, date);
+        Customer newCustomer3 = new Customer("Alan", "Chua", "Address 3 avenue 21", "318282", bdaeDate3, "alan_chua@gmail.com", "12345678", 0, date2);
+        Customer newCustomer4 = new Customer("Steven", "Lim", "AMK 21 ave 21", "310292", bdaeDate4, "setve@gmail.com", "12345678", 0, date2);
+        Customer newCustomer5 = new Customer("Liew Shan", "Wei", "Yishun Blk 22", "453121", bdaeDate5, "shanwLiew@gmail.com", "12345678", 0, date3);
+        Customer newCustomer6 = new Customer("Danny", "Poo", "AMK 21 ave 23", "310293", bdaeDate3, "danny@gmail.com", "12345678", 0, date3);
+        Customer newCustomer7 = new Customer("Dennis", "Ang", "Kovan 21 Street 1", "541213", bdaeDate2, "dennis@gmail.com", "12345678", 0, date3);
+        Customer newCustomer8 = new Customer("Derian", "Lim", "Punggo1 ave 51", "453123", bdaeDate4, "derian@gmail.com", "12345678", 0, date3);
+        Customer newCustomer9 = new Customer("Jason", "Ang", "Jurong East 45", "103021", bdaeDate5, "jason@gmail.com", "12345678", 0, date3);
+        Customer newCustomer10 = new Customer("Katie", "Perry", "Serangoo North ave 45", "6262523", bdaeDate4, "katPer@gmail.com", "12345678", 0, date4);
+        Customer newCustomer11 = new Customer("Steve", "Tan", "Tampiness st 21 block 21", "372626", bdaeDate, "steveTan@gmail.com", "12345678", 0, date4);
 
         try {
             newCustomer1 = customerControllerLocal.createNewCustomer(newCustomer1);
@@ -574,19 +594,17 @@ public class DataInitialization {
             dateMar = cal.getTime();
 
             // create product reviews for customer 1
-            ProductReview prodReview1 = new ProductReview(3.0, "I like it just like that!", dateFeb, ChelseaAwayProduct, cust1OrderFeb);
-            ProductReview prodReview2 = new ProductReview(2.0, "I don't like the design of the shirt!", dateFeb, RmAwayProduct, cust1OrderFeb);
+            ProductReview prodReview1 = new ProductReview(3, "I like it just like that!", dateFeb, ChelseaAwayProduct, cust1OrderFeb);
+            ProductReview prodReview2 = new ProductReview(4, "I don't like the design of the shirt!", dateFeb, RmAwayProduct, cust1OrderFeb);
 
             productReviewControllerLocal.CreateNewProductReview(prodReview1);
             productReviewControllerLocal.CreateNewProductReview(prodReview2);
-
-            List<ProductReview> prodReviewsCust1 = new ArrayList();
-            prodReviewsCust1.add(prodReview1);
-            prodReviewsCust1.add(prodReview2);
-
-            cust1OrderFeb.setProductReviews(prodReviewsCust1);
-            ChelseaAwayProduct.setProductReviews(prodReviewsCust1);
-            RmAwayProduct.setProductReviews(prodReviewsCust1);
+            
+            ChelseaAwayProduct.getProductReviews().add(prodReview1);
+            RmAwayProduct.getProductReviews().add(prodReview2);
+            
+            cust1OrderFeb.getProductReviews().add(prodReview1);
+            cust1OrderFeb.getProductReviews().add(prodReview2);
 
             CustomerOrder cust2OrderJan = new CustomerOrder(352.35, 20, dateJan, "Delivered", newCustomer2);
             cust2OrderJan = customerOrderControllerLocal.CreateNewCustomerOrder(cust2OrderJan);
@@ -608,7 +626,20 @@ public class DataInitialization {
             dateFeb = cal.getTime();
             cal.set(2018, Calendar.MARCH, 14);
             dateMar = cal.getTime();
+            
+            // create product reviews for customer 2
+            ProductReview prodReview3 = new ProductReview(5, "Awesome product!", dateFeb, ChelseaAwayProduct, cust2OrderJan);
+            ProductReview prodReview4 = new ProductReview(2, "Real Madrid sucks!", dateFeb, RmAwayProduct, cust2OrderJan);
 
+            productReviewControllerLocal.CreateNewProductReview(prodReview3);
+            productReviewControllerLocal.CreateNewProductReview(prodReview4);
+            
+            ChelseaAwayProduct.getProductReviews().add(prodReview3);
+            RmAwayProduct.getProductReviews().add(prodReview4);
+            
+            cust2OrderJan.getProductReviews().add(prodReview3);
+            cust2OrderJan.getProductReviews().add(prodReview4);
+            
             CustomerOrder cust3OrderFeb = new CustomerOrder(719.60, 100, dateFeb, "Delivered", newCustomer3);
             cust3OrderFeb = customerOrderControllerLocal.CreateNewCustomerOrder(cust3OrderFeb);
             customerOrderControllerLocal.addProductPurchase(cust3OrderFeb.getId(), productPurchaseControllerLocal.createProductPurchase(new ProductPurchase(359.80, 2, cust3OrderFeb, atlMadridHomeProduct)));

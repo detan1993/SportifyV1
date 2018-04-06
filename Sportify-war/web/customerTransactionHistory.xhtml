@@ -9,41 +9,39 @@
 
     <ui:define name="west">
         <p:panel style="overflow: hidden">
-             <p:graphicImage name="images/toby_model.jpg" width="311px" />
+            <p:graphicImage name="images/toby_model.jpg" width="311px" />
         </p:panel>
-       
+
     </ui:define>
 
     <ui:define name="center">
-        <p:panel header="PURCHASE HISTORY" style="text-align:center;font-size:20px">
+        <p:panel style="text-align:center;font-size:20px; margin-top: -5px">
             <p:tabView style="text-align:left;font-size:15px">
                 <p:tab title="MY PROFILE">
-                    <p:panel>
-                        <p:row>
-                            <p:column>
-                                <h:outputText value="Name: "> </h:outputText>
-                            </p:column>
-                            <p:column>
-                                <h:outputText value="#{customerPurchaseHistoryManagedBean.customer.firstName + ' ' + customerPurchaseHistoryManagedBean.customer.lastName}"> </h:outputText>
-                            </p:column>
-                        </p:row>
-                        <p:row>
-                            <p:column>
-                                <h:outputText value="Address: "> </h:outputText>
-                            </p:column>
-                            <p:column>
-                                <h:outputText value="#{customerPurchaseHistoryManagedBean.customer.address + ' ' + customerPurchaseHistoryManagedBean.customer.zipCode}"> </h:outputText>
-                            </p:column>
-                        </p:row>
-                         <p:row>
-                            <p:column>
-                                <h:outputText value="DOB: "> </h:outputText>
-                            </p:column>
-                            <p:column>
-                                <h:outputText value="#{customerPurchaseHistoryManagedBean.customer.dateOfBirth}"> </h:outputText>
-                            </p:column>
-                        </p:row>
-                    </p:panel>
+                    <p:panelGrid columns="2" style="margin-left:-22px">
+
+                        <h:outputText value="Name: "> </h:outputText>
+                        <h:outputText value="#{customerPurchaseHistoryManagedBean.customer.firstName} #{customerPurchaseHistoryManagedBean.customer.lastName}"> </h:outputText>
+
+                        <h:outputText value="Address: "> </h:outputText>
+                        <h:outputText value="#{customerPurchaseHistoryManagedBean.customer.address} #{customerPurchaseHistoryManagedBean.customer.zipCode}"> </h:outputText>
+
+                        <h:outputText value="DOB: "> </h:outputText>
+                        <h:outputText value="#{customerPurchaseHistoryManagedBean.customer.dateOfBirth}"> 
+                            <f:convertDateTime pattern="dd MMM yyyy" />
+                        </h:outputText>
+
+                        <h:outputText value="Email: "> </h:outputText>
+                        <h:outputText value="#{customerPurchaseHistoryManagedBean.customer.email}"> </h:outputText>
+
+                        <h:outputText value="My Loyalty Points: "> </h:outputText>
+                        <h:outputText value="#{customerPurchaseHistoryManagedBean.customer.loyaltyPoints}"> </h:outputText>
+
+                        <h:outputText value="Date Registered: "> </h:outputText>
+                        <h:outputText value="#{customerPurchaseHistoryManagedBean.customer.dateRegistered}">
+                            <f:convertDateTime pattern="dd MMM yyyy" />
+                        </h:outputText>
+                    </p:panelGrid>
                 </p:tab>
                 <p:tab title="CURRENT TRANSACTIONS">
                     <p:panel rendered="#{empty customerPurchaseHistoryManagedBean.productsOnHold}">
@@ -75,7 +73,7 @@
 
                                 <!--looping each product for this order-->
                                 <c:forEach items="#{custOrderOnHold.value}" var="productDetailsOnHold">
-                                     <p:row>
+                                    <p:row>
                                         <p:column>
                                             <p:graphicImage name="#{productDetailsOnHold.productPurchase.images[0].imagePath}"  />
                                         </p:column>
@@ -88,15 +86,15 @@
                                             UNIT PRICE: SGD #{productDetailsOnHold.productPurchase.price}
                                             <br />
                                             <br />
-                                      
+
                                             <h:outputLabel value="MY REVIEW:REVIEW"></h:outputLabel>
-                                           
+
                                         </p:column>
                                     </p:row>
                                     <p:row>
                                         <p:column style="text-align:center">
-                                             <p:rating readonly="true" value="4"/>
-                                              <br /> 
+                                            <p:rating readonly="true" value="4"/>
+                                            <br /> 
                                         </p:column>
                                     </p:row>
                                 </c:forEach>
@@ -117,7 +115,7 @@
                         </p:row>
                         <br />
                         <br />
-                       <h:graphicImage name="images/jerseys_banner.jpg.png" width="840px" style="margin-left: -68px;" />
+                        <h:graphicImage name="images/jerseys_banner.jpg.png" width="840px" style="margin-left: -68px;" />
                     </p:panel>
 
                     <!--looping each order-->
@@ -139,7 +137,7 @@
                                     <p:row>
                                         <p:column>
                                             <p:graphicImage name="#{productDetails.productPurchase.images[0].imagePath}"  />
-                                           
+
                                         </p:column>
 
                                         <p:column>
@@ -150,17 +148,22 @@
                                             UNIT PRICE: SGD #{productDetails.productPurchase.price}
                                             <br />
                                             <br />
-                                      
-                                            <h:outputLabel value="MY REVIEW:REVIEW"></h:outputLabel>
-                                           
+
+                                            <h:outputLabel value="MY REVIEW" rendered="#{not empty productDetails.productPurchase.productReviews}"></h:outputLabel>
+                                            <br />
+                                            <p:repeat value="#{productDetails.productPurchase.productReviews}" var="prodReview">
+                                                <h:outputLabel value="#{prodReview.review}"></h:outputLabel>
+                                                <p:rating readonly="true" value="#{prodReview.rating}"/>
+                                            </p:repeat>
+
                                         </p:column>
                                     </p:row>
-                                    <p:row>
+<!--                                    <p:row>
                                         <p:column style="text-align:center">
-                                             <p:rating readonly="true" value="4"/>
-                                              <br /> 
+                                            
+                                            <br /> 
                                         </p:column>
-                                    </p:row>
+                                    </p:row>-->
                                 </c:forEach>
                             </p:panelGrid>
                         </p:panel>

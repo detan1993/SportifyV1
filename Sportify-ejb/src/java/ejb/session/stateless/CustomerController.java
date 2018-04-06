@@ -24,77 +24,80 @@ import util.exception.InvalidLoginCredentialException;
 @Remote(CustomerControllerRemote.class)
 @Stateless
 public class CustomerController implements CustomerControllerRemote, CustomerControllerLocal {
-    
+
     @PersistenceContext(unitName = "Sportify-ejbPU")
     private EntityManager em;
 
     public void persist(Object object) {
         em.persist(object);
     }
-    
+
     @Override
-    public Customer createNewCustomer(Customer newCustomer){
-        
+    public Customer createNewCustomer(Customer newCustomer) {
+
         em.persist(newCustomer);
         em.flush();
         em.refresh(newCustomer);
-        
+
         return newCustomer;
     }
-    
+
     @Override
-    public List<Customer> retrieveCustomer(){
-      Query query = em.createQuery("SELECT e FROM Customer e");
-      return query.getResultList();
+    public List<Customer> retrieveCustomer() {
+        Query query = em.createQuery("SELECT e FROM Customer e");
+        return query.getResultList();
     }
-    
-    
+
     @Override
     public Customer retrieveCustomer(String email) throws CustomerNotFoundException {
         Query query = em.createQuery("Select e FROM Customer e WHERE e.email =:email");
         query.setParameter("email", email);
         Customer c = new Customer();
-        if(query.getResultList().size() >0){
-            return (Customer)query.getSingleResult();
-        }
-        else
+        if (query.getResultList().size() > 0) {
+            return (Customer) query.getSingleResult();
+        } else {
             throw new CustomerNotFoundException("Wrong customer credential");
-        
+        }
+
     }
-    
+
     @Override
     public List<Customer> retrieveCustomerByMonth(int month) {
         Query query = em.createQuery("Select e FROM Customer e WHERE SUBSTRING(e.dateOfBirth,4,2) =:month");
         query.setParameter("month", month);
         return query.getResultList();
     }
-    
+
     @Override
-    public Customer login(String email, String password) throws InvalidLoginCredentialException
-    {
-         
+    public Customer login(String email, String password) throws InvalidLoginCredentialException {
+
         System.out.println("Custoemr login email: " + email + " password: " + password);
-        
-        try{
-              Customer customer = retrieveCustomer(email);
-              if(customer != null)
-              {
-                  if(customer.getPassword().equals(password))
-                      return customer;
-                  else
-                      throw new InvalidLoginCredentialException("Wrong user password");
-              }
-              else{
-                  throw new InvalidLoginCredentialException("Username does not exist or invalid password!");
-              }
-            
-        }catch(CustomerNotFoundException ex)
-        {
+
+        try {
+            Customer customer = retrieveCustomer(email);
+            if (customer != null) {
+                if (customer.getPassword().equals(password)) {
+                    return customer;
+                } else {
+                    throw new InvalidLoginCredentialException("Wrong user password");
+                }
+            } else {
+                throw new InvalidLoginCredentialException("Username does not exist or invalid password!");
+            }
+
+        } catch (CustomerNotFoundException ex) {
             throw new InvalidLoginCredentialException("Username does not exist or invalid password!");
         }
-
-      
     }
 
-    
+    @Override
+    public boolean checkEmailAlreadyExist(String email){
+        Query query = em.createQuery("Select e FROM Customer e WHERE e.email =:email");
+        query.setParameter("email", email);
+        Customer c = new Customer();
+        if (query.getResultList().size() > 0) {
+            return true;
+        }
+        return false;
+    }
 }

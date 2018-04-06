@@ -32,7 +32,8 @@ public class Customer implements Serializable {
     private String lastName;
     private String address;
     private String zipCode;
-    private String dateOfBirth;
+    @Temporal(TemporalType.DATE)
+    private Date dateOfBirth;
     private String email;
     private String password;
     private int loyaltyPoints;
@@ -47,7 +48,7 @@ public class Customer implements Serializable {
     public Customer() {
     }
 
-    public Customer(String firstName, String lastName, String address, String zipCode, String dateOfBirth, String email, String password, int loyaltyPoints, Date dateRegistered) {
+    public Customer(String firstName, String lastName, String address, String zipCode, Date dateOfBirth, String email, String password, int loyaltyPoints, Date dateRegistered) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.address = address;
@@ -59,7 +60,7 @@ public class Customer implements Serializable {
         this.dateRegistered = dateRegistered;
     }
     
-    public Customer(String firstName, String lastName, String address, String dateOfBirth, String email, String password, int loyaltyPoints, List<CustomerOrder> customerOrders, List<CustomerVoucher> customerVouchers) {
+    public Customer(String firstName, String lastName, String address, Date dateOfBirth, String email, String password, int loyaltyPoints, List<CustomerOrder> customerOrders, List<CustomerVoucher> customerVouchers) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.address = address;
@@ -103,13 +104,7 @@ public class Customer implements Serializable {
         this.address = address;
     }
 
-    public String getDateOfBirth() {
-        return dateOfBirth;
-    }
-
-    public void setDateOfBirth(String dateOfBirth) {
-        this.dateOfBirth = dateOfBirth;
-    }
+   
 
     public String getEmail() {
         return email;
@@ -190,5 +185,13 @@ public class Customer implements Serializable {
     
     public void setDateRegistered(Date dateRegistered) {
         this.dateRegistered = dateRegistered;
+    }
+
+    public Date getDateOfBirth() {
+        return dateOfBirth;
+    }
+
+    public void setDateOfBirth(Date dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
     }
 }

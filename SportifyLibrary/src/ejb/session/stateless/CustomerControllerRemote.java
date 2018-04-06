@@ -19,4 +19,5 @@ public interface CustomerControllerRemote {
     public Customer retrieveCustomer(String email) throws CustomerNotFoundException;
 
     List<Customer> retrieveCustomerByMonth(int month);
+    public boolean checkEmailAlreadyExist(String email);
 }

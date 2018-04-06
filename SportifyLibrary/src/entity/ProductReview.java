@@ -27,7 +27,7 @@ public class ProductReview implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     
-    private double rating;
+    private int rating;
     private String review;
     @Temporal(TemporalType.TIMESTAMP)
     private Date reviewDate;
@@ -40,7 +40,7 @@ public class ProductReview implements Serializable {
     public ProductReview() {
     }
 
-    public ProductReview(double rating, String review, Date reviewDate,Product product, CustomerOrder customerOrder) {
+    public ProductReview(int rating, String review, Date reviewDate,Product product, CustomerOrder customerOrder) {
         this.rating = rating;
         this.review = review;
         this.reviewDate = reviewDate;
@@ -57,13 +57,7 @@ public class ProductReview implements Serializable {
         this.id = id;
     }
 
-    public double getRating() {
-        return rating;
-    }
 
-    public void setRating(double rating) {
-        this.rating = rating;
-    }
 
     public String getReview() {
         return review;
@@ -121,5 +115,12 @@ public class ProductReview implements Serializable {
     public String toString() {
         return "entity.ProductReview[ id=" + id + " ]";
     }
-    
+
+    public int getRating() {
+        return rating;
+    }
+
+    public void setRating(int rating) {
+        this.rating = rating;
+    }
 }

@@ -32,12 +32,14 @@
 
                 <h:outputLabel for="address" value="Address:" />
                 <p:inputText  value="#{signUpManagedBean.customerEntity.address}" label="Address" required="true" requiredMessage="Please enter your Address."/>
-                
+
                 <h:outputLabel for="zipCode" value="Zip Code:" />
                 <p:inputText  value="#{signUpManagedBean.customerEntity.zipCode}" label="Zip Code" required="true" requiredMessage="Please enter Zip Code."/>
 
                 <h:outputLabel for="dob" value="Date of Birth:" />
-                <p:calendar styleClass="calendarDOB" value="#{signUpManagedBean.customerEntity.dateOfBirth}" label="Date of Birth" required="true" navigator="true" pattern="dd-MM-yyyy" yearRange="c-70:c+10" requiredMessage="Please enter your Date of Birth." />
+                <p:calendar styleClass="calendarDOB" value="#{signUpManagedBean.customerEntity.dateOfBirth}" label="Date of Birth" required="true" navigator="true" pattern="dd-MM-yyyy" yearRange="c-70:c+10" requiredMessage="Please enter your Date of Birth.">
+                    <f:convertDateTime pattern="dd-MM-yyyy" />
+                </p:calendar>
 
                 <h:outputLabel for="email" value="Email (This will be your username):" />
                 <p:inputText  value="#{signUpManagedBean.customerEntity.email}" label="Email" required="true" requiredMessage="Please enter your Email."/>

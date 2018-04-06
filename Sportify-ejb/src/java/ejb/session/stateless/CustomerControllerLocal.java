@@ -18,4 +18,5 @@ public interface CustomerControllerLocal {
        public Customer retrieveCustomer(String email) throws CustomerNotFoundException;
 
     List<Customer> retrieveCustomerByMonth(int month);
+    public boolean checkEmailAlreadyExist(String email);
 }
