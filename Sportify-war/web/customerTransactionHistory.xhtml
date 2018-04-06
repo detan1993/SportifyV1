@@ -17,6 +17,34 @@
     <ui:define name="center">
         <p:panel header="PURCHASE HISTORY" style="text-align:center;font-size:20px">
             <p:tabView style="text-align:left;font-size:15px">
+                <p:tab title="MY PROFILE">
+                    <p:panel>
+                        <p:row>
+                            <p:column>
+                                <h:outputText value="Name: "> </h:outputText>
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{customerPurchaseHistoryManagedBean.customer.firstName + ' ' + customerPurchaseHistoryManagedBean.customer.lastName}"> </h:outputText>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column>
+                                <h:outputText value="Address: "> </h:outputText>
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{customerPurchaseHistoryManagedBean.customer.address + ' ' + customerPurchaseHistoryManagedBean.customer.zipCode}"> </h:outputText>
+                            </p:column>
+                        </p:row>
+                         <p:row>
+                            <p:column>
+                                <h:outputText value="DOB: "> </h:outputText>
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{customerPurchaseHistoryManagedBean.customer.dateOfBirth}"> </h:outputText>
+                            </p:column>
+                        </p:row>
+                    </p:panel>
+                </p:tab>
                 <p:tab title="CURRENT TRANSACTIONS">
                     <p:panel rendered="#{empty customerPurchaseHistoryManagedBean.productsOnHold}">
                         <p:row>

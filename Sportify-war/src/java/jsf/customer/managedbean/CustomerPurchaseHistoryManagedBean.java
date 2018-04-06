@@ -6,7 +6,6 @@ import entity.CustomerOrder;
 import entity.Product;
 import entity.ProductPurchase;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -38,10 +37,6 @@ public class CustomerPurchaseHistoryManagedBean implements Serializable {
         //get past transactions
         for (CustomerOrder order : getCustOrders) {
             List<ProductPurchase> productPurchaseDetails = order.getProductPurchase();
-            
-//            for (ProductPurchase p : productPurchaseDetails){
-//                Product pr = p.getProductPurchase();
-//            }
             
             if (order.getDeliveryStatus().equalsIgnoreCase("Delivered")) {
                 productOrderDetails.put(order, productPurchaseDetails);

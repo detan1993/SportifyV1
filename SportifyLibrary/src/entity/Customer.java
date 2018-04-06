@@ -6,12 +6,15 @@
 package entity;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 /**
  *
@@ -28,10 +31,13 @@ public class Customer implements Serializable {
     private String firstName;
     private String lastName;
     private String address;
+    private String zipCode;
     private String dateOfBirth;
     private String email;
     private String password;
     private int loyaltyPoints;
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date dateRegistered;
 
     @OneToMany(mappedBy="customer")
     private List<CustomerOrder> customerOrders;
@@ -41,19 +47,18 @@ public class Customer implements Serializable {
     public Customer() {
     }
 
-    public Customer(String firstName, String lastName, String address, String dateOfBirth, String email, String password, int loyaltyPoints) {
+    public Customer(String firstName, String lastName, String address, String zipCode, String dateOfBirth, String email, String password, int loyaltyPoints, Date dateRegistered) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.address = address;
+        this.zipCode = zipCode;
         this.dateOfBirth = dateOfBirth;
         this.email = email;
         this.password = password;
         this.loyaltyPoints = loyaltyPoints;
+        this.dateRegistered = dateRegistered;
     }
     
-    
-    
-
     public Customer(String firstName, String lastName, String address, String dateOfBirth, String email, String password, int loyaltyPoints, List<CustomerOrder> customerOrders, List<CustomerVoucher> customerVouchers) {
         this.firstName = firstName;
         this.lastName = lastName;
@@ -66,8 +71,6 @@ public class Customer implements Serializable {
         this.customerVouchers = customerVouchers;
     }
 
-    
-    
     public Long getId() {
         return id;
     }
@@ -148,8 +151,6 @@ public class Customer implements Serializable {
         this.customerVouchers = customerVouchers;
     }
 
-    
-    
     @Override
     public int hashCode() {
         int hash = 0;
@@ -174,5 +175,20 @@ public class Customer implements Serializable {
     public String toString() {
         return "entity.Customer[ id=" + id + " ]";
     }
+
+    public String getZipCode() {
+        return zipCode;
+    }
+
+    public void setZipCode(String zipCode) {
+        this.zipCode = zipCode;
+    }   
+
+    public Date getDateRegistered() {
+        return dateRegistered;
+    }
     
+    public void setDateRegistered(Date dateRegistered) {
+        this.dateRegistered = dateRegistered;
+    }
 }
