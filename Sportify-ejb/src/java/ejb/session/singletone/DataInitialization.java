@@ -597,8 +597,8 @@ public class DataInitialization {
             ProductReview prodReview1 = new ProductReview(3, "I like it just like that!", dateFeb, ChelseaAwayProduct, cust1OrderFeb);
             ProductReview prodReview2 = new ProductReview(4, "I don't like the design of the shirt!", dateFeb, RmAwayProduct, cust1OrderFeb);
 
-            productReviewControllerLocal.CreateNewProductReview(prodReview1);
-            productReviewControllerLocal.CreateNewProductReview(prodReview2);
+             prodReview1 =  productReviewControllerLocal.CreateNewProductReview(prodReview1);
+            prodReview2 =  productReviewControllerLocal.CreateNewProductReview(prodReview2);
             
             ChelseaAwayProduct.getProductReviews().add(prodReview1);
             RmAwayProduct.getProductReviews().add(prodReview2);
@@ -631,8 +631,8 @@ public class DataInitialization {
             ProductReview prodReview3 = new ProductReview(5, "Awesome product!", dateFeb, ChelseaAwayProduct, cust2OrderJan);
             ProductReview prodReview4 = new ProductReview(2, "Real Madrid sucks!", dateFeb, RmAwayProduct, cust2OrderJan);
 
-            productReviewControllerLocal.CreateNewProductReview(prodReview3);
-            productReviewControllerLocal.CreateNewProductReview(prodReview4);
+           prodReview3 = productReviewControllerLocal.CreateNewProductReview(prodReview3);
+           prodReview4 = productReviewControllerLocal.CreateNewProductReview(prodReview4);
             
             ChelseaAwayProduct.getProductReviews().add(prodReview3);
             RmAwayProduct.getProductReviews().add(prodReview4);
@@ -652,6 +652,14 @@ public class DataInitialization {
             customerOrderControllerLocal.addProductPurchase(cust3OrderMar.getId(), productPurchaseControllerLocal.createProductPurchase(new ProductPurchase(179.90, 2, cust3OrderMar, manuHomeProduct)));
             customerOrderControllerLocal.addProductPurchase(cust3OrderMar.getId(), productPurchaseControllerLocal.createProductPurchase(new ProductPurchase(125.0, 2, cust3OrderMar, BarcaAwayProduct)));
 
+            cal.set(2018, Calendar.APRIL, 1);
+            Date dateApril = cal.getTime();
+            CustomerOrder cust4OrderApril = new CustomerOrder(129.90, 100, dateApril, "Delivered", newCustomer4);
+            cust4OrderApril = customerOrderControllerLocal.CreateNewCustomerOrder(cust4OrderApril);
+            customerOrderControllerLocal.addProductPurchase(cust4OrderApril.getId(), productPurchaseControllerLocal.createProductPurchase(new ProductPurchase(129.90, 1, cust4OrderApril, ChelseaHomeProduct)));
+
+            
+            
         } catch (Exception ex) {
             ex.printStackTrace();
         }

@@ -108,7 +108,8 @@ public class DashboardManagedBean implements Serializable {
     private List<List<CountrySales>> totalSalesByMonthsCountry;
     private String selectedTotalSalesByTeamPieChart;
     private List<PerformanceBoard> boardsInformation ;
-
+      private int number;
+ 
     public DashboardManagedBean() {
         salesByTeamPieModel = new PieChartModel();
         totalSalesByMonthsCountry = new ArrayList<>();
@@ -988,6 +989,11 @@ public class DashboardManagedBean implements Serializable {
      
     }
 
+    public void timerUpdate(){
+        boardsInformation = dashboardControllerLocal.getPerformanceInformation();
+        number++;
+        System.out.println("*********** NUMBER " + number);
+    }
     /**
      * @return the salesByTeamPieModel
      */
@@ -1014,6 +1020,20 @@ public class DashboardManagedBean implements Serializable {
      */
     public void setBoardsInformation(List<PerformanceBoard> boardsInformation) {
         this.boardsInformation = boardsInformation;
+    }
+
+    /**
+     * @return the number
+     */
+    public int getNumber() {
+        return number;
+    }
+
+    /**
+     * @param number the number to set
+     */
+    public void setNumber(int number) {
+        this.number = number;
     }
   
 

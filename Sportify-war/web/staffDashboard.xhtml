@@ -91,15 +91,15 @@
 
                               
                                 <p:panel id="pn2" header="Sportify Perfomance" style="border-color:lightgrey !important; width: 600px;" toggleable="true"  toggleSpeed="500">
-
-                                    <p:dataGrid var="board" value="#{dashboardManagedBean.boardsInformation}" columns="2" layout="grid"
-                                                id="topCust">
+                                    <h:form id="performanceForm" >
+                                    <h:outputText id="txt_count" value="#{dashboardManagedBean.number}" />
+                                    <p:poll interval="10"  process="@this"  listener="#{dashboardManagedBean.timerUpdate}" update="boardInformation" />
+                                    <p:dataGrid var="board" value="#{dashboardManagedBean.boardsInformation}" columns="2" layout="grid" id="boardInformation">
                                         
-                                      
                                             <h:panelGrid columns="1" style="width:100%;background-color: white!important; text-align: center;">
                                                  <h:outputText  value=""/>
                                                  <h:outputText  style="font-weight: bold; font-size: 15px;"  value="#{board.titleInformation}" />
-                                                <br/>
+                                                 <br/>
                                                 <h:outputText style="font-size:15px;" value="#{board.totalInformation}" />
                                                 <h:outputText style="font-size: 40px; font-family: sans-serif; color: orange;" value="#{board.totalValue}" />
                                                 <br/>
@@ -118,6 +118,7 @@
                                      
 
                                     </p:dataGrid>
+                                    </h:form>
 <!--                                    <div> 
                                         <h:panelGrid columns="2" cellpadding="5">
                                             <p:outputLabel for="countTest" style="color:white;" value="Country: " />
