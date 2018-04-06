@@ -149,21 +149,18 @@
                                             <br />
                                             <br />
 
-                                            <h:outputLabel value="MY REVIEW" rendered="#{not empty productDetails.productPurchase.productReviews}"></h:outputLabel>
+                                            <h:outputLabel value="MY REVIEW" rendered="#{customerPurchaseHistoryManagedBean.getProductReview(productDetails.productPurchase, custOrder) != null}"></h:outputLabel>
+                                            <h:outputLabel value="#{customerPurchaseHistoryManagedBean.productReview.review}" rendered="#{customerPurchaseHistoryManagedBean.getProductReview(productDetails.productPurchase, custOrder) != null}"></h:outputLabel>
+                                            <p:rating readonly="true" value="#{customerPurchaseHistoryManagedBean.productReview.rating}" rendered="#{customerPurchaseHistoryManagedBean.getProductReview(productDetails.productPurchase, custOrder) != null}"/>
                                             <br />
-                                            <p:repeat value="#{productDetails.productPurchase.productReviews}" var="prodReview">
-                                                <h:outputLabel value="#{prodReview.review}"></h:outputLabel>
-                                                <p:rating readonly="true" value="#{prodReview.rating}"/>
-                                            </p:repeat>
-
                                         </p:column>
                                     </p:row>
-<!--                                    <p:row>
+                                    <p:row>
                                         <p:column style="text-align:center">
-                                            
+                                            <p:rating readonly="true" value="4"/>
                                             <br /> 
                                         </p:column>
-                                    </p:row>-->
+                                    </p:row>
                                 </c:forEach>
                             </p:panelGrid>
                         </p:panel>

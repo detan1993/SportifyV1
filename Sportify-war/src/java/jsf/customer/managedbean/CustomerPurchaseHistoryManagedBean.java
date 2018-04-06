@@ -1,10 +1,12 @@
 package jsf.customer.managedbean;
 
 import ejb.session.stateless.CustomerOrderControllerRemote;
+import ejb.session.stateless.ProductReviewControllerRemote;
 import entity.Customer;
 import entity.CustomerOrder;
 import entity.Product;
 import entity.ProductPurchase;
+import entity.ProductReview;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
@@ -21,12 +23,16 @@ public class CustomerPurchaseHistoryManagedBean implements Serializable {
 
     @EJB
     private CustomerOrderControllerRemote customerOrderController;
+    
+    @EJB
+    private ProductReviewControllerRemote productReviewController;
 
     private List<CustomerOrder> getCustOrders;
     private Customer customer;
     private Map<CustomerOrder, List<ProductPurchase>> productOrderDetails = new HashMap();
     private Map<CustomerOrder, List<ProductPurchase>> productsOnHold = new HashMap();
     private Product product;
+    private ProductReview productReview;
 
     @PostConstruct
     public void postConstruct() {
@@ -44,6 +50,11 @@ public class CustomerPurchaseHistoryManagedBean implements Serializable {
                 productsOnHold.put(order, productPurchaseDetails);
             }
         }
+        //productReview = productReviewController.getProductReview();
+    }
+    
+    public ProductReview getProductReview (Product product, CustomerOrder customerOrder){
+        return productReview = productReviewController.getProductReview(product, customerOrder);
     }
 
     public String shopNowRedirect() {
@@ -91,5 +102,13 @@ public class CustomerPurchaseHistoryManagedBean implements Serializable {
 
     public void setProduct(Product product) {
         this.product = product;
+    }
+
+    public ProductReview getProductReview() {
+        return productReview;
+    }
+
+    public void setProductReview(ProductReview productReview) {
+        this.productReview = productReview;
     }
 }

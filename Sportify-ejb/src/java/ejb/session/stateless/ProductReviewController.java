@@ -5,6 +5,7 @@
  */
 package ejb.session.stateless;
 
+import entity.CustomerOrder;
 import entity.Product;
 import entity.ProductReview;
 import java.util.List;
@@ -12,6 +13,7 @@ import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 /**
  *
@@ -42,6 +44,14 @@ public class ProductReviewController implements ProductReviewControllerRemote, P
     public List<ProductReview> retrieveProductReviewsByProductId (int productId){
         Product p = productControllerLocal.retrieveSingleProduct(productId);
         return p.getProductReviews();
+    }
+    
+    @Override
+    public ProductReview getProductReview (Product product, CustomerOrder customerOrder){
+        Query query = em.createQuery("SELECT p FROM ProductReview p WHERE p.product=:product AND p.customerOrder=:customerOrder");
+        query.setParameter("product", product);
+        query.setParameter("customerOrder", customerOrder);
+        return (ProductReview) query.getResultList().get(0);
     }
     
     
