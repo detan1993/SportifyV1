@@ -361,16 +361,27 @@ public class DashboardController implements DashboardControllerRemote, Dashboard
      }
      private PerformanceBoard customerBoard(){
       
-      PerformanceBoard customer = null;
+      PerformanceBoard customer = new PerformanceBoard();
       try{
-           int totalCustomer = 0;
+           int totalRegisteredCustomer = 0;
+           int totalRegisteredCustomer_CurrentMonth =0;
+           List<Integer> countCustomer  = new ArrayList<>();
          
          Query query = em.createQuery("SELECT COUNT(c.id) FROM Customer c");
-         List<Integer> countCustomer = query.getResultList();
-         totalCustomer = countCustomer.get(0);
+         countCustomer = query.getResultList();
+         totalRegisteredCustomer = countCustomer.get(0);
          
-      //   query = em.createQuery("SELECT COUNT(*) FROM Customer c WHERE  ")
-          
+         query = em.createQuery("SELECT COUNT(*) FROM CUSTOMER c WHERE SUBSTRING(c.`DATEREGISTERED`,6,2) = '04'");
+         countCustomer = query.getResultList();
+         totalRegisteredCustomer_CurrentMonth = countCustomer.get(0);
+         
+         customer.setTitleInformation("CUSTOMER INFORMATION");
+         customer.setTotalInformation("TOTAL CUSTOMER");
+         System.out.println("****************** tota; customer " + String.valueOf((int)totalRegisteredCustomer));
+         customer.setTotalValue(String.valueOf((int)totalRegisteredCustomer));
+         customer.setCurrentMonthInformation(String.valueOf((int) totalRegisteredCustomer_CurrentMonth) + " NEW CUSTOMERS THIS MONTH");
+         
+                 
       }catch(Exception ex){
           
       }

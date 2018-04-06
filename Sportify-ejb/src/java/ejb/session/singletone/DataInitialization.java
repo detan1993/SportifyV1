@@ -117,10 +117,10 @@ public class DataInitialization {
         Customer newCustomer3 = new Customer("Alan", "Chua", "Address 3 avenue 21", "318282", "02-03-1981", "alan_chua@gmail.com", "12345678", 0, date2);
         Customer newCustomer4 = new Customer("Steven", "Lim", "AMK 21 ave 21", "310292", "04-03-1993", "setve@gmail.com", "12345678", 0, date2);
         Customer newCustomer5 = new Customer("Liew Shan", "Wei", "Yishun Blk 22", "453121", "04-03-1993", "shanwLiew@gmail.com", "12345678", 0, date3);
-        Customer newCustomer6 = new Customer("Danny", "Poo", "AMK 21 ave 23", "310293", "04-03-1993", "danny@gmail.com", "12345678", 0, date4);
-        Customer newCustomer7 = new Customer("Dennis", "Ang", "Kovan 21 Street 1", "541213", "04-03-1980", "dennis@gmail.com", "12345678", 0, date4);
-        Customer newCustomer8 = new Customer("Derian", "Lim", "Punggo1 ave 51", "453123", "04-03-1991", "derian@gmail.com", "12345678", 0, date4);
-        Customer newCustomer9 = new Customer("Jason", "Ang", "Jurong East 45", "103021", "04-03-1976", "jason@gmail.com", "12345678", 0, date4);
+        Customer newCustomer6 = new Customer("Danny", "Poo", "AMK 21 ave 23", "310293", "04-03-1993", "danny@gmail.com", "12345678", 0, date3);
+        Customer newCustomer7 = new Customer("Dennis", "Ang", "Kovan 21 Street 1", "541213", "04-03-1980", "dennis@gmail.com", "12345678", 0, date3);
+        Customer newCustomer8 = new Customer("Derian", "Lim", "Punggo1 ave 51", "453123", "04-03-1991", "derian@gmail.com", "12345678", 0, date3);
+        Customer newCustomer9 = new Customer("Jason", "Ang", "Jurong East 45", "103021", "04-03-1976", "jason@gmail.com", "12345678", 0, date3);
         Customer newCustomer10 = new Customer("Katie", "Perry", "Serangoo North ave 45", "323412", "04-03-1990", "katPer@gmail.com", "12345678", 0, date4);
         Customer newCustomer11 = new Customer("Steve", "Tan", "Tampiness st 21 block 21", "100721", "04-03-1984", "steveTan@gmail.com", "12345678", 0, date4);
 

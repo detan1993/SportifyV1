@@ -13,15 +13,15 @@ public class PerformanceBoard {
     
     private String titleInformation;
     private String totalInformation;
-    private double totalValue;
+    private String totalValue;
     private String currentMonthInformation;
     private String figureInformation;
-    private double figurePercentage;
+    private String figurePercentage;
 
     public PerformanceBoard() {
     }
 
-    public PerformanceBoard(String titleInformation, String totalInformation, double totalValue, String currentMonthInformation, String figureInformation, double figurePercentage) {
+    public PerformanceBoard(String titleInformation, String totalInformation, String totalValue, String currentMonthInformation, String figureInformation, String figurePercentage) {
         this.titleInformation = titleInformation;
         this.totalInformation = totalInformation;
         this.totalValue = totalValue;
@@ -61,19 +61,6 @@ public class PerformanceBoard {
         this.totalInformation = totalInformation;
     }
 
-    /**
-     * @return the totalValue
-     */
-    public double getTotalValue() {
-        return totalValue;
-    }
-
-    /**
-     * @param totalValue the totalValue to set
-     */
-    public void setTotalValue(double totalValue) {
-        this.totalValue = totalValue;
-    }
 
     /**
      * @return the currentMonthInformation
@@ -104,16 +91,30 @@ public class PerformanceBoard {
     }
 
     /**
+     * @return the totalValue
+     */
+    public String getTotalValue() {
+        return totalValue;
+    }
+
+    /**
+     * @param totalValue the totalValue to set
+     */
+    public void setTotalValue(String totalValue) {
+        this.totalValue = totalValue;
+    }
+
+    /**
      * @return the figurePercentage
      */
-    public double getFigurePercentage() {
+    public String getFigurePercentage() {
         return figurePercentage;
     }
 
     /**
      * @param figurePercentage the figurePercentage to set
      */
-    public void setFigurePercentage(double figurePercentage) {
+    public void setFigurePercentage(String figurePercentage) {
         this.figurePercentage = figurePercentage;
     }
 
