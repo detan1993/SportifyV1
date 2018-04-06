@@ -63,7 +63,9 @@
                                 </p:panel>
 
 
-                                <p:panel id="pnl" header="Sales by Country" style="border-color:lightgrey !important; " toggleable="true"  toggleSpeed="500" closeSpeed="500" >
+
+                                <h:panelGrid columns="2"  cellpadding="10">
+                                     <p:panel id="pnl" header="Sales by Country" style="border-color:lightgrey !important; width: 600px;" toggleable="true"  toggleSpeed="500"  >
 
                                     <div> 
                                         <h:form id="pieChartFilterForm">
@@ -71,43 +73,76 @@
                                                 <p:outputLabel for="country" style="color:white;" value="Country: " />
                                                 <p:selectOneMenu id="country" value="#{dashboardManagedBean.selectedTotalSalesByTeamPieChart}" style="width:150px">
                                                     <f:selectItems value="#{dashboardManagedBean.totalSalesByTeamFilter}" />
-                                                    <p:ajax  event="change"  update="dashboardParentForm:dashboardTab:chartsForm:teamSalesPieChartForm"  process="pieChartFilterForm"  listener="#{dashboardManagedBean.onPieChartTeamSalesSelected}"/>
+                                                    <p:ajax  event="change"  update="dashboardParentForm:dashboardTab:chartsForm:teamSalesPieChartForm"  listener="#{dashboardManagedBean.onPieChartTeamSalesSelected}"/>
 
                                                 </p:selectOneMenu>
                                             </h:panelGrid>
                                         </h:form>
                                     </div>
 
-                                    <div style="margin-top:15px">
-
+                                
+                                         
+                                     <br/>
                                         <h:form id ="teamSalesPieChartForm" >
-                                            <p:chart type="pie" model="#{dashboardManagedBean.salesByTeamPieModel}" style="width:575px; height:350px"/></h:form>
-                                    </div>
+                                            <p:chart type="pie" model="#{dashboardManagedBean.salesByTeamPieModel}" style="width:550px; height:330px"/></h:form>
+                               
 
                                 </p:panel>
 
-                                <p:panel id="pn2" header="View Products Rating" style="border-color:lightgrey !important;" toggleable="true"  toggleSpeed="500" closeSpeed="500">
+                              
+                                <p:panel id="pn2" header="Sportify Perfomance" style="border-color:lightgrey !important; width: 600px;" toggleable="true"  toggleSpeed="500">
 
-                                    <div> 
+                                    <p:dataGrid var="customers" value="#{dashboardManagedBean.topCustomers}" columns="2" layout="grid"
+                                                id="topCust">
+                                        
+                                      
+                                            <h:panelGrid columns="1" style="width:100%;background-color: white!important; text-align: center;">
+                                                 <h:outputText  value=""/>
+                                                <h:outputText  style="font-weight: bold; font-size: 15px;"  value="CUSTOMER INFORMATION" />
+                                                <br/>
+                                                 <h:outputText style="font-size:15px;" value="TOTAL CUSTOMER" />
+                                                <h:outputText style="font-size: 40px; font-family: sans-serif; color: orange;" value="#{customers.totalPurchase}" />
+                                                <br/>
+                                                <h:outputText  style="font-size:13px;" value="#{customers.averagePurchasePerTransaction} NEW CUSTOMER THIS MONTH" />
+                                                <h:panelGrid columns="2" >
+                                                 <p:graphicImage  style="padding: 0 0 0 35px" name="images/increase_1.png" width="13px" height="13px"/>
+                                                <h:outputText  style="font-size: 13px;" value="CUSTOMER INCREASE BY #{customers.totalNoOfPurchase}%" /> 
+                                                </h:panelGrid>
+                                                
+                                                <h:outputText  value=""/>
+                                            </h:panelGrid>
+                                     
+
+                                    </p:dataGrid>
+<!--                                    <div> 
                                         <h:panelGrid columns="2" cellpadding="5">
                                             <p:outputLabel for="countTest" style="color:white;" value="Country: " />
                                             <p:selectOneMenu id="countTest" value="haha" style="width:150px">
-        <!--                                        <p:ajax listener="#{dropdownView.onCountryChange}" update="city" />
-                                                <f:selectItem itemLabel="Select Country" itemValue="" noSelectionOption="true" />-->
+                                                <p:ajax listener="#{dropdownView.onCountryChange}" update="city" />
+                                                <f:selectItem itemLabel="Select Country" itemValue="" noSelectionOption="true" />
                                                 <f:selectItems value="#{dashboardManagedBean.totalSalesByTeamFilter}" />
                                             </p:selectOneMenu>
                                         </h:panelGrid>
                                     </div>
 
                                     <div style="margin-top:15px">
-                                        <p:chart type="bar" model="#{dashboardManagedBean.horizontalRating}" style="width:575px; height:350px"/>
-                                    </div>
+                                        <p:chart type="bar" model="#{dashboardManagedBean.horizontalRating}" style="width:500x; height:365px"/>
+                                    </div>-->
 
                                 </p:panel>
 
-
+                                </h:panelGrid>
 
                                 <br/>
+                                 <h:panelGrid >
+
+
+                                        <div >
+<!--                                              <p:chart type="line"  model="#{dashboardManagedBean.salesLineChart}" responsive="true" style="height:350px; width:1200px"/>-->
+                                            <p:chart type="bar" styleClass="stackbarChartOverview" model="#{dashboardManagedBean.stackBarModel}" style="height:350px; width:1200px"/>
+                                        </div>
+
+                                    </h:panelGrid>
 
 
                             </p:outputPanel>

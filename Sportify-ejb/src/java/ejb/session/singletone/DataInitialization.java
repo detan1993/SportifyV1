@@ -98,18 +98,45 @@ public class DataInitialization {
 
         Calendar cal = Calendar.getInstance();
         Date date = new Date();
+        Date date2 = new Date();
+        Date date3 = new Date();
+        Date date4 = new Date();
+
+        cal.set(2018, Calendar.JANUARY, 1); //Year, month and day of month
+        date = cal.getTime();
+        cal.set(2018, Calendar.FEBRUARY, 1);
+        date2 = cal.getTime();
+        cal.set(2018, Calendar.MARCH, 1);
+        date3 = cal.getTime();
+        cal.set(2018, Calendar.APRIL, 1);
+        date4 = cal.getTime();
 
         //Create new Customer . Date of birth format is DD-MM-YYYY
-        Customer newCustomer1 = new Customer("Jon", "Tan", "Address 1 Avenue 3", "123456", "30-01-2018", "Daviddetan93@gmail.com", "12345678", 0, date);
-        Customer newCustomer2 = new Customer("Paul", "Ang", " Address 2 Avenue 4", "546162", "30-02-2018", "paul80@gmail.com", "12345678", 0, date);
-        Customer newCustomer3 = new Customer("Alan", "Chua", "Address 3 avenue 21", "318282", "02-03-2018", "alan_chua@gmail.com", "12345678", 0, date);
-        Customer newCustomer4 = new Customer("Steven", "Lim", "AMK 21 ave 21", "310292", "04-03-2018", "setve@gmail.com", "12345678", 0, date);
+        Customer newCustomer1 = new Customer("Jon", "Tan", "Address 1 Avenue 3", "123456", "30-01-1988", "Daviddetan93@gmail.com", "12345678", 0, date);
+        Customer newCustomer2 = new Customer("Paul", "Ang", " Address 2 Avenue 4", "546162", "30-02-1990", "paul80@gmail.com", "12345678", 0, date);
+        Customer newCustomer3 = new Customer("Alan", "Chua", "Address 3 avenue 21", "318282", "02-03-1981", "alan_chua@gmail.com", "12345678", 0, date2);
+        Customer newCustomer4 = new Customer("Steven", "Lim", "AMK 21 ave 21", "310292", "04-03-1993", "setve@gmail.com", "12345678", 0, date2);
+        Customer newCustomer5 = new Customer("Liew Shan", "Wei", "Yishun Blk 22", "453121", "04-03-1993", "shanwLiew@gmail.com", "12345678", 0, date3);
+        Customer newCustomer6 = new Customer("Danny", "Poo", "AMK 21 ave 23", "310293", "04-03-1993", "danny@gmail.com", "12345678", 0, date4);
+        Customer newCustomer7 = new Customer("Dennis", "Ang", "Kovan 21 Street 1", "541213", "04-03-1980", "dennis@gmail.com", "12345678", 0, date4);
+        Customer newCustomer8 = new Customer("Derian", "Lim", "Punggo1 ave 51", "453123", "04-03-1991", "derian@gmail.com", "12345678", 0, date4);
+        Customer newCustomer9 = new Customer("Jason", "Ang", "Jurong East 45", "103021", "04-03-1976", "jason@gmail.com", "12345678", 0, date4);
+        Customer newCustomer10 = new Customer("Katie", "Perry", "Serangoo North ave 45", "323412", "04-03-1990", "katPer@gmail.com", "12345678", 0, date4);
+        Customer newCustomer11 = new Customer("Steve", "Tan", "Tampiness st 21 block 21", "100721", "04-03-1984", "steveTan@gmail.com", "12345678", 0, date4);
 
         try {
             newCustomer1 = customerControllerLocal.createNewCustomer(newCustomer1);
             newCustomer2 = customerControllerLocal.createNewCustomer(newCustomer2);
             newCustomer3 = customerControllerLocal.createNewCustomer(newCustomer3);
             newCustomer4 = customerControllerLocal.createNewCustomer(newCustomer4);
+            newCustomer5 = customerControllerLocal.createNewCustomer(newCustomer5);
+            newCustomer6 = customerControllerLocal.createNewCustomer(newCustomer6);
+            newCustomer7 = customerControllerLocal.createNewCustomer(newCustomer7);
+            newCustomer8 = customerControllerLocal.createNewCustomer(newCustomer8);
+            newCustomer9 = customerControllerLocal.createNewCustomer(newCustomer9);
+            newCustomer10 = customerControllerLocal.createNewCustomer(newCustomer10);
+            newCustomer11 = customerControllerLocal.createNewCustomer(newCustomer11);
+
 
         } catch (CustomerSignUpException ex) {
 

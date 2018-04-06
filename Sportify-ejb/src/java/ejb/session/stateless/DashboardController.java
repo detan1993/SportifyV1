@@ -21,6 +21,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import util.helperClass.CountrySales;
+import util.helperClass.PerformanceBoard;
 import util.helperClass.TopProductByCode;
 import util.helperClass.TopProductByTeam;
 
@@ -334,6 +335,47 @@ public class DashboardController implements DashboardControllerRemote, Dashboard
         
         return topTenProductByTeam;
     }
+     
+     
+    @Override
+     public List<PerformanceBoard> getPerformanceInformation(){
+         
+         List<PerformanceBoard> boards = new ArrayList<>();
+         int noOfBoard = 4;
+         
+         for(int i=0; i<noOfBoard; i++){
+             
+             
+             if(i ==0 )
+             {
+                boards.add(customerBoard());
+                 
+             }
+             
+             
+         }
+         
+         
+         return boards;
+         
+     }
+     private PerformanceBoard customerBoard(){
+      
+      PerformanceBoard customer = null;
+      try{
+           int totalCustomer = 0;
+         
+         Query query = em.createQuery("SELECT COUNT(c.id) FROM Customer c");
+         List<Integer> countCustomer = query.getResultList();
+         totalCustomer = countCustomer.get(0);
+         
+      //   query = em.createQuery("SELECT COUNT(*) FROM Customer c WHERE  ")
+          
+      }catch(Exception ex){
+          
+      }
+       return customer;
+     }
         
     
 //    private void getProductsSumBy

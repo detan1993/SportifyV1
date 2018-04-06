@@ -493,7 +493,7 @@ public class DashboardManagedBean implements Serializable {
 
         int sizeOfTeam = totalSalesByTeam.size();
         String defaultCountry = totalSalesByTeamFilter.get(teamIndex);  //need to change abit
-        System.out.println("********** COUNTRY IS " + defaultCountry); 
+        System.out.println("********** COUNTRY SELECTED IS " + defaultCountry); 
         for (int i = 0; i < sizeOfTeam; i++) {
 
             String[] teamInfo = totalSalesByTeam.get(i);
@@ -519,7 +519,9 @@ public class DashboardManagedBean implements Serializable {
         livePieModel.getData().put("Man United", random5);
         livePieModel.getData().put("Tottenham", random6);*/
         salesByTeamPieModel.setTitle("Sales($) By Clubs");
-        salesByTeamPieModel.setLegendPosition("se");
+        
+        salesByTeamPieModel.setLegendPosition("e");
+        salesByTeamPieModel.setExtender("pieExtender");
         //  livePieModel.
 
         return salesByTeamPieModel;
@@ -843,7 +845,7 @@ public class DashboardManagedBean implements Serializable {
             getCustomerProductPie().setLegendPosition("e");
             getCustomerProductPie().setFill(true);
             getCustomerProductPie().setShowDataLabels(true);
-            getCustomerProductPie().setDiameter(190);
+            getCustomerProductPie().setDiameter(195);
             getCustomerProductPie().setExtender("pieExtender");
         
             
@@ -972,9 +974,11 @@ public class DashboardManagedBean implements Serializable {
         System.out.println("************* SELECTED PIE VALUE " + selectedTotalSalesByTeamPieChart );
         for(int i =0; i<totalSalesByTeamFilter.size(); i++){
             
-            if(totalSalesByTeamFilter.contains(selectedTotalSalesByTeamPieChart)){
+            System.out.println("TOTAL COUNTRY " + totalSalesByTeamFilter.get(i));
+            if(totalSalesByTeamFilter.get(i).equals(selectedTotalSalesByTeamPieChart)){
                
                 getSalesByTeamPieChart(i);
+                break;
             }
         }
      
