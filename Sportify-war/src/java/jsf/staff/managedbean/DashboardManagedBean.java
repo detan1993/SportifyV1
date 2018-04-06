@@ -45,6 +45,7 @@ import javax.faces.application.FacesMessage;
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
 import org.primefaces.model.chart.BarChartModel;
+import util.helperClass.PerformanceBoard;
 import util.helperClass.TopCustomerProduct;
 import util.helperClass.TopProductByCode;
 import util.helperClass.TopProductByTeam;
@@ -106,6 +107,7 @@ public class DashboardManagedBean implements Serializable {
      private List<String[]> totalSalesByTeam;
     private List<List<CountrySales>> totalSalesByMonthsCountry;
     private String selectedTotalSalesByTeamPieChart;
+    private List<PerformanceBoard> boardsInformation ;
 
     public DashboardManagedBean() {
         salesByTeamPieModel = new PieChartModel();
@@ -124,6 +126,7 @@ public class DashboardManagedBean implements Serializable {
         topProductsTeam = new ArrayList<>();
         productGroupByType = "PC";
         selectFilterTopProduct = "TP";
+        boardsInformation = new ArrayList<>();
         
         //overview
 
@@ -135,6 +138,7 @@ public class DashboardManagedBean implements Serializable {
 
         try {
 
+            boardsInformation = dashboardControllerLocal.getPerformanceInformation();
             topProductsCode = dashboardControllerLocal.getProductsSumByQuantityPurchaseByProductCode();
             topProductsTeam = dashboardControllerLocal.getProductsSumByQuantityPurchaseByTeam();
           //  topProductsCode =  topProductsCode.subList(0, 10);
@@ -996,6 +1000,20 @@ public class DashboardManagedBean implements Serializable {
      */
     public void setSalesByTeamPieModel(PieChartModel salesByTeamPieModel) {
         this.salesByTeamPieModel = salesByTeamPieModel;
+    }
+
+    /**
+     * @return the boardsInformation
+     */
+    public List<PerformanceBoard> getBoardsInformation() {
+        return boardsInformation;
+    }
+
+    /**
+     * @param boardsInformation the boardsInformation to set
+     */
+    public void setBoardsInformation(List<PerformanceBoard> boardsInformation) {
+        this.boardsInformation = boardsInformation;
     }
   
 

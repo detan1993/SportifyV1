@@ -16,18 +16,18 @@ public class PerformanceBoard {
     private String totalValue;
     private String currentMonthInformation;
     private String figureInformation;
-    private String figurePercentage;
+    private String figureStatus;
 
     public PerformanceBoard() {
     }
 
-    public PerformanceBoard(String titleInformation, String totalInformation, String totalValue, String currentMonthInformation, String figureInformation, String figurePercentage) {
+    public PerformanceBoard(String titleInformation, String totalInformation, String totalValue, String currentMonthInformation, String figureInformation, String figureStatus) {
         this.titleInformation = titleInformation;
         this.totalInformation = totalInformation;
         this.totalValue = totalValue;
         this.currentMonthInformation = currentMonthInformation;
         this.figureInformation = figureInformation;
-        this.figurePercentage = figurePercentage;
+        this.figureStatus = figureStatus;
     }
 
     
@@ -105,17 +105,19 @@ public class PerformanceBoard {
     }
 
     /**
-     * @return the figurePercentage
+     * @return the figureStatus
      */
-    public String getFigurePercentage() {
-        return figurePercentage;
+    public String getFigureStatus() {
+        return figureStatus;
     }
 
     /**
-     * @param figurePercentage the figurePercentage to set
+     * @param figureStatus the figureStatus to set
      */
-    public void setFigurePercentage(String figurePercentage) {
-        this.figurePercentage = figurePercentage;
+    public void setFigureStatus(String figureStatus) {
+        this.figureStatus = figureStatus;
     }
+
+
 
 }

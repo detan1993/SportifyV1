@@ -346,10 +346,17 @@ public class DashboardController implements DashboardControllerRemote, Dashboard
          for(int i=0; i<noOfBoard; i++){
              
              
-             if(i ==0 )
-             {
-                boards.add(customerBoard());
-                 
+             if (i == 0) {
+                 System.out.println("****************** GETTONG CUSTOMER BOARD");
+                 boards.add(customerBoard());
+             } else if (i == 1) {
+                 System.out.println("****************** GETTONG SALES BOARD");
+                 boards.add(salesBoard());
+             } else if ( i== 2){
+                 boards.add(orderBoard());
+             }
+             else if( i ==3){
+                boards.add(salesBoard());  
              }
              
              
@@ -359,36 +366,207 @@ public class DashboardController implements DashboardControllerRemote, Dashboard
          return boards;
          
      }
+     
+     
      private PerformanceBoard customerBoard(){
       
+      System.out.println("******************CUSTOMER BOARD");
       PerformanceBoard customer = new PerformanceBoard();
       try{
-           int totalRegisteredCustomer = 0;
-           int totalRegisteredCustomer_CurrentMonth =0;
-           List<Integer> countCustomer  = new ArrayList<>();
+          DecimalFormat df = new DecimalFormat("#0.00");
+           long totalRegisteredCustomer = 0;
+           long totalRegisteredCustomer_CurrentMonth =0;
+           double percentage_increase = 0.0;
+           
+         List<Long> countCustomer  = new ArrayList<>();
          
          Query query = em.createQuery("SELECT COUNT(c.id) FROM Customer c");
          countCustomer = query.getResultList();
          totalRegisteredCustomer = countCustomer.get(0);
-         
-         query = em.createQuery("SELECT COUNT(*) FROM CUSTOMER c WHERE SUBSTRING(c.`DATEREGISTERED`,6,2) = '04'");
+       //  SELECT o FROM CustomerOrder o WHERE  SUBSTRING(o.datePaid , 1,4) =:year AND SUBSTRING(o.datePaid , 6,2) =:month  ORDER BY o.datePaid
+         query = em.createQuery("SELECT COUNT(c.id) FROM Customer c WHERE SUBSTRING(c.dateRegistered ,6,2) =:month");
+         query.setParameter("month", "04");
          countCustomer = query.getResultList();
+         
          totalRegisteredCustomer_CurrentMonth = countCustomer.get(0);
          
          customer.setTitleInformation("CUSTOMER INFORMATION");
          customer.setTotalInformation("TOTAL CUSTOMER");
-         System.out.println("****************** tota; customer " + String.valueOf((int)totalRegisteredCustomer));
-         customer.setTotalValue(String.valueOf((int)totalRegisteredCustomer));
-         customer.setCurrentMonthInformation(String.valueOf((int) totalRegisteredCustomer_CurrentMonth) + " NEW CUSTOMERS THIS MONTH");
-         
-                 
+         System.out.println("****************** tota; customer " + String.valueOf(totalRegisteredCustomer));
+         customer.setTotalValue(String.valueOf(totalRegisteredCustomer));
+         customer.setCurrentMonthInformation(String.valueOf(totalRegisteredCustomer_CurrentMonth) + " NEW CUSTOMERS THIS MONTH");
+         //
+         percentage_increase = ((double)totalRegisteredCustomer_CurrentMonth / totalRegisteredCustomer ) * 100 ; 
+         System.out.println("************** pecentage increase " + percentage_increase);
+        // customer.setFigurePercentage(figurePercentage + "%");
+        if(percentage_increase > 0){
+               customer.setFigureInformation(df.format(percentage_increase) + "% OF TOTAL CUSTOMER" );
+               //"CUSTOMER INCREASE BY " + 
+               customer.setFigureStatus("Increase");
+        }
+     
       }catch(Exception ex){
-          
+          ex.printStackTrace();
       }
        return customer;
      }
         
-    
-//    private void getProductsSumBy
-
+     
+     private PerformanceBoard salesBoard(){
+         
+      System.out.println("******************SALES BOARD");
+      PerformanceBoard sales = new PerformanceBoard();
+      try
+      {
+          DecimalFormat df = new DecimalFormat("#0.00");
+          double totalSales = 0;
+          double totalSales_CurrentMonth = 0;
+          double totalSales_PrevMonth = 0;
+          double percentage_increase = 0.0;
+          double percentage_diff = 0.0;
+           
+         List<Double> salesSum  = new ArrayList<>();
+         
+         Query query = em.createQuery("SELECT SUM(o.totalAmount) FROM CustomerOrder o");
+         salesSum = query.getResultList();
+         totalSales = salesSum.get(0);
+       //  SELECT o FROM CustomerOrder o WHERE  SUBSTRING(o.datePaid , 1,4) =:year AND SUBSTRING(o.datePaid , 6,2) =:month  ORDER BY o.datePaid
+         query = em.createQuery("SELECT SUM(o.totalAmount) FROM CustomerOrder o WHERE SUBSTRING(o.datePaid ,6,2) =:month");
+         query.setParameter("month", "04");
+         System.out.println("*********** QUERY IS " + query.getResultList());
+         salesSum = query.getResultList();
+         
+          if (salesSum.get(0) != null) {
+              totalSales_CurrentMonth = salesSum.get(0);
+          } else {
+              totalSales_CurrentMonth = 0;
+          }
+         
+         query = em.createQuery("SELECT SUM(o.totalAmount) FROM CustomerOrder o WHERE SUBSTRING(o.datePaid ,6,2) =:month");
+         query.setParameter("month", "03");
+         salesSum = query.getResultList();
+          if (salesSum.get(0) != null) {
+              totalSales_PrevMonth = salesSum.get(0);
+          }else{
+               totalSales_PrevMonth = 0;
+          }
+         
+         sales.setTitleInformation("SALES INFORMATION");
+         sales.setTotalInformation("TOTAL SALES");
+         System.out.println("****************** TOTAL SALES " + totalSales);
+         System.out.println("****************** Curent SALES " + totalSales_CurrentMonth);
+          System.out.println("****************** Prev SALES " + totalSales_PrevMonth);
+         sales.setTotalValue("$" + df.format(totalSales));
+         sales.setCurrentMonthInformation("$" + df.format(totalSales_CurrentMonth) + " SALES THIS MONTH");
+         //
+         percentage_diff = totalSales_PrevMonth - totalSales_CurrentMonth;
+         if(percentage_diff > 0 )
+         {
+           System.out.println("****************** SALES DECREASE BY  " + df.format(percentage_diff/totalSales_PrevMonth * 100));
+           sales.setFigureInformation(df.format(percentage_diff/totalSales_PrevMonth * 100) + "% VS LAST MONTH" );
+           //SALES DECREASE BY 
+           sales.setFigureStatus("Decrease");
+        }
+         else if(percentage_diff < 0 ){
+           System.out.println("****************** SALES INCREASE BY  " + df.format(percentage_diff/totalSales_PrevMonth * 100 * -1));
+           sales.setFigureInformation(df.format(percentage_diff/totalSales_PrevMonth * 100 * -1) + "% VS LAST MONTH" );
+           sales.setFigureStatus("Increase");
+         }
+     }
+      catch(Exception ex){
+          ex.printStackTrace();
+      }
+       return sales;
+     }
+     
+     private PerformanceBoard orderBoard(){
+         
+      System.out.println("******************ORDER BOARD");
+      PerformanceBoard order = new PerformanceBoard();
+      try
+      {
+          DecimalFormat df = new DecimalFormat("#0.00");
+          long totalOrder = 0;
+          long totalOrder_CurrentMonth = 0;
+          long totalOrder_PrevMonth = 0;
+          double percentage_diff = 0.0;
+          List<CustomerOrder > allOrders = new ArrayList<>();
+          List<CustomerOrder> currentMonthOrder = new ArrayList<>();
+          List<CustomerOrder> prevMonthOrder = new ArrayList<>();
+           
+         List<Double> salesSum  = new ArrayList<>();
+         
+         Query query = em.createQuery("SELECT o FROM CustomerOrder o");
+         allOrders = query.getResultList();
+         
+         if(!allOrders.isEmpty()){
+             
+             for(CustomerOrder o : allOrders){
+                 //SELECT SUM(p.qtyPurchase) FROM ProductPurchase p WHERE p.`ORDER_ID` = 8
+                 Query getQuantiyPurchase = em.createQuery("SELECT SUM(p.qtyPurchase) FROM ProductPurchase p WHERE  p.order.id = :customerOrderId ");
+                 getQuantiyPurchase.setParameter("customerOrderId", o.getId());
+                 List<Long> qtyPurchase = getQuantiyPurchase.getResultList();
+                 totalOrder  += qtyPurchase.get(0);
+                 
+             }
+         }
+         
+         query = em.createQuery("SELECT o FROM CustomerOrder o WHERE SUBSTRING(o.datePaid,6,2) =:cMonth");
+         query.setParameter("cMonth", "04");
+         currentMonthOrder = query.getResultList();
+         
+         if(!currentMonthOrder.isEmpty()){      
+             for(CustomerOrder o : currentMonthOrder){
+                 //SELECT SUM(p.qtyPurchase) FROM ProductPurchase p WHERE p.`ORDER_ID` = 8
+                 Query getQuantiyPurchase = em.createQuery("SELECT SUM(p.qtyPurchase) FROM ProductPurchase p WHERE  p.order.id = :customerOrderId ");
+                 getQuantiyPurchase.setParameter("customerOrderId", o.getId());
+                 List<Long> qtyPurchase = getQuantiyPurchase.getResultList();
+                 totalOrder_CurrentMonth  += qtyPurchase.get(0);
+                 
+             }
+         }
+         
+            
+         query = em.createQuery("SELECT o FROM CustomerOrder o WHERE SUBSTRING(o.datePaid,6,2) =:cMonth");
+         query.setParameter("cMonth", "03");
+         prevMonthOrder = query.getResultList();
+         
+         if(!prevMonthOrder.isEmpty()){      
+             for(CustomerOrder o : prevMonthOrder){
+                 //SELECT SUM(p.qtyPurchase) FROM ProductPurchase p WHERE p.`ORDER_ID` = 8
+                 Query getQuantiyPurchase = em.createQuery("SELECT SUM(p.qtyPurchase) FROM ProductPurchase p WHERE  p.order.id = :customerOrderId ");
+                 getQuantiyPurchase.setParameter("customerOrderId", o.getId());
+                 List<Long> qtyPurchase = getQuantiyPurchase.getResultList();
+                 totalOrder_PrevMonth  += qtyPurchase.get(0);
+                 
+             }
+         }
+                  
+         order.setTitleInformation("ORDER INFORMATION");
+         order.setTotalInformation("TOTAL ORDER");
+         System.out.println("****************** TOTAL ORDER" + totalOrder);
+         System.out.println("****************** Curent ORDER " + totalOrder_CurrentMonth);
+          System.out.println("****************** Prev ORDER " + totalOrder_PrevMonth);
+         order.setTotalValue(String.valueOf((int)totalOrder));
+         order.setCurrentMonthInformation(String.valueOf((int)totalOrder_CurrentMonth) + " ORDER THIS MONTH");
+         //
+         percentage_diff = totalOrder_PrevMonth - totalOrder_CurrentMonth;
+         if(percentage_diff > 0 )
+         {
+           System.out.println("****************** ORDER DECREASE BY  " + df.format(percentage_diff/totalOrder_PrevMonth * 100));
+           order.setFigureInformation(df.format(percentage_diff/totalOrder_PrevMonth * 100) + "% VS LAST MONTH" );
+           //SALES DECREASE BY 
+           order.setFigureStatus("Decrease");
+        }
+         else if(percentage_diff < 0 ){
+           System.out.println("****************** Order INCREASE BY  " + df.format(percentage_diff/totalOrder_PrevMonth * 100 * -1));
+           order.setFigureInformation(df.format(percentage_diff/totalOrder_PrevMonth * 100 * -1) + "% VS LAST MONTH" );
+           order.setFigureStatus("Increase");
+         }
+     }
+      catch(Exception ex){
+          ex.printStackTrace();
+      }
+       return order;
+     }
 }
