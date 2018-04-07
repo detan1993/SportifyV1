@@ -13,9 +13,12 @@ import entity.CustomerVoucher;
 import entity.Voucher;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
@@ -51,6 +54,8 @@ public class StaffVoucherManagedBean implements Serializable{
     
     private int totalVoucherAmount;
     private int currentVoucherAmount;
+    private int duration;
+    private double usesPerDay;
      
     public StaffVoucherManagedBean() {
         vouchers = new ArrayList<Voucher>();
@@ -84,6 +89,9 @@ public class StaffVoucherManagedBean implements Serializable{
     public void createNewVoucher(ActionEvent event){
         try
         {
+            System.out.println(" Selected month: " + selectedMonth);
+            Date now = new Date();
+            newVoucher.setDateCreated(now);
             voucherControllerLocal.createNewVoucher(newVoucher);
             List<Customer> customersToBeGivenVouchers = new ArrayList<Customer>();
             CustomerVoucher cv = new CustomerVoucher();
@@ -95,6 +103,7 @@ public class StaffVoucherManagedBean implements Serializable{
             }
             
             for(Customer c : customersToBeGivenVouchers){
+                System.out.println("Customer Voucher: " + c.getFirstName() + " " + c.getLastName());
                 cv.setCustomer(c);
                 cv.setVoucher(newVoucher);
                 for(int i=0;i<newVoucher.getQuantity();i++){
@@ -109,6 +118,33 @@ public class StaffVoucherManagedBean implements Serializable{
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred while creating the new voucher: " + ex.getMessage(), null));
         }
     }
+    public void populateVoucherDetail(){
+        System.out.println("Populate voucher details: " + selectedVoucher.getId());
+        List<CustomerVoucher> cvList = customerVoucherControllerLocal.retrieveCustomerVouchersByVoucherId(selectedVoucher.getId());
+        totalVoucherAmount = cvList.size();
+        currentVoucherAmount = customerVoucherControllerLocal.retrieveUnusedCustomerVouchersByVoucherId(selectedVoucher.getId()).size();
+        System.out.println(cvList.size() + " " + customerVoucherControllerLocal.retrieveUnusedCustomerVouchersByVoucherId(selectedVoucher.getId()).size());
+        Calendar dateCreated = Calendar.getInstance();
+        dateCreated.setTime(selectedVoucher.getDateCreated());
+        Calendar dateExpired = Calendar.getInstance();
+        dateExpired.setTime(selectedVoucher.getDateExpired());
+        
+        
+        Calendar dateCreatedDay = Calendar.getInstance();
+        dateCreatedDay.set(Calendar.YEAR, dateCreated.get(Calendar.YEAR));
+        dateCreatedDay.set(Calendar.MONTH, dateCreated.get(Calendar.MONTH));
+        dateCreatedDay.set(Calendar.DAY_OF_MONTH, dateCreated.get(Calendar.DAY_OF_MONTH));
+        
+        Calendar dateExpiredDay = Calendar.getInstance();
+        dateExpiredDay.set(Calendar.YEAR, dateExpired.get(Calendar.YEAR));
+        dateExpiredDay.set(Calendar.MONTH, dateExpired.get(Calendar.MONTH));
+        dateExpiredDay.set(Calendar.DAY_OF_MONTH, dateExpired.get(Calendar.DAY_OF_MONTH));
+        
+        
+        duration =  (int)TimeUnit.MILLISECONDS.toDays(Math.abs(dateExpiredDay.getTimeInMillis() - dateCreatedDay.getTimeInMillis()));
+        usesPerDay = (totalVoucherAmount - currentVoucherAmount)/duration;
+    }
+    
     
     public List<Voucher> getVouchers() {
         return vouchers;
@@ -150,7 +186,7 @@ public class StaffVoucherManagedBean implements Serializable{
         this.voucherControllerLocal = voucherControllerLocal;
     }
 
-    public boolean isIsSpecific() {
+    public boolean getIsSpecific() {
         return isSpecific;
     }
 
@@ -173,6 +209,39 @@ public class StaffVoucherManagedBean implements Serializable{
     public void setSelectedMonth(int selectedMonth) {
         this.selectedMonth = selectedMonth;
     }
+
+    public int getTotalVoucherAmount() {
+        return totalVoucherAmount;
+    }
+
+    public void setTotalVoucherAmount(int totalVoucherAmount) {
+        this.totalVoucherAmount = totalVoucherAmount;
+    }
+
+    public int getCurrentVoucherAmount() {
+        return currentVoucherAmount;
+    }
+
+    public void setCurrentVoucherAmount(int currentVoucherAmount) {
+        this.currentVoucherAmount = currentVoucherAmount;
+    }
+
+    public int getDuration() {
+        return duration;
+    }
+
+    public void setDuration(int duration) {
+        this.duration = duration;
+    }
+
+    public double getUsesPerDay() {
+        return usesPerDay;
+    }
+
+    public void setUsesPerDay(double usesPerDay) {
+        this.usesPerDay = usesPerDay;
+    }
+    
     
     
 }

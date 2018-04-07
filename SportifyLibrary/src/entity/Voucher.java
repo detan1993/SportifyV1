@@ -34,6 +34,9 @@ public class Voucher implements Serializable {
     private String type;
     
     @Temporal(TemporalType.TIMESTAMP)
+    private Date dateCreated;
+        
+    @Temporal(TemporalType.TIMESTAMP)
     private Date dateExpired;
     
     @OneToMany(mappedBy="voucher")
@@ -42,16 +45,15 @@ public class Voucher implements Serializable {
     public Voucher() {
     }
 
-    public Voucher(double voucherValue, int quantity, String voucherCode, String type, Date dateCreated, List<CustomerVoucher> customerVouchers) {
+    public Voucher(double voucherValue, int quantity, String voucherCode, String type,Date dateCreated, Date dateExpired, List<CustomerVoucher> customerVouchers) {
         this.voucherValue = voucherValue;
         this.quantity = quantity;
         this.voucherCode = voucherCode;
         this.type = type;
-        this.dateExpired = dateCreated;
+        this.dateCreated = dateCreated;
+        this.dateExpired = dateExpired;
         this.customerVouchers = customerVouchers;
     }
-
-
     
     public Long getId() {
         return id;
@@ -107,6 +109,14 @@ public class Voucher implements Serializable {
 
     public void setCustomerVouchers(List<CustomerVoucher> customerVouchers) {
         this.customerVouchers = customerVouchers;
+    }
+
+    public Date getDateCreated() {
+        return dateCreated;
+    }
+
+    public void setDateCreated(Date dateCreated) {
+        this.dateCreated = dateCreated;
     }
 
     

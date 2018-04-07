@@ -42,4 +42,18 @@ public class CustomerVoucherController implements CustomerVoucherControllerRemot
         Query query = em.createQuery("SELECT v FROM CustomerVoucher v");
         return query.getResultList();
     }
+    
+    @Override
+    public List<CustomerVoucher> retrieveCustomerVouchersByVoucherId(long voucherid){
+        Query query = em.createQuery("SELECT v FROM CustomerVoucher v WHERE v.voucher.id=:voucherid");
+        query.setParameter("voucherid", voucherid);
+        return  query.getResultList();
+    }
+    
+    @Override
+    public List<CustomerVoucher> retrieveUnusedCustomerVouchersByVoucherId(long voucherid){
+        Query query = em.createQuery("SELECT v FROM CustomerVoucher v WHERE v.voucher.id=:voucherid AND v.customerOrder IS NULL");
+        query.setParameter("voucherid", voucherid);
+        return  query.getResultList();
+    }
 }

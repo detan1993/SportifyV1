@@ -11,4 +11,6 @@ import java.util.List;
 public interface CustomerVoucherControllerLocal {
     public CustomerVoucher createNewCustomerVoucher(CustomerVoucher customerVoucher);
     public List<CustomerVoucher> retrieveAllCustomerVouchers();
+    public List<CustomerVoucher> retrieveCustomerVouchersByVoucherId(long voucherid);
+    public List<CustomerVoucher> retrieveUnusedCustomerVouchersByVoucherId(long voucherid);
 }
