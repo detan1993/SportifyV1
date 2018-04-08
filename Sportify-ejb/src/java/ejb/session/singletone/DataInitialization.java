@@ -617,7 +617,7 @@ public class DataInitialization {
             //Create and allocate voucher
             List<CustomerVoucher>cvlist = newCustomer1.getCustomerVouchers();
             Date voucherexpiry = new GregorianCalendar(2019, 5, 25).getTime();
-            Voucher voucher1 = new Voucher(20.00,5,"AXDA314A","Voucher",voucherexpiry,cvlist);
+            Voucher voucher1 = new Voucher(20.00,5,"AXDA314A","Voucher",new Date(),voucherexpiry,cvlist);
             voucherControllerLocal.createNewVoucher(voucher1);
             CustomerVoucher cv = customerVoucherControllerLocal.createNewCustomerVoucher(new CustomerVoucher(null,newCustomer1,voucher1));
             cv.setVoucher(voucher1);
