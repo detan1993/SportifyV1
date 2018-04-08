@@ -26,15 +26,17 @@
                             <p:calendar id="popup" value="#{staffVoucherManagedBean.newVoucher.dateExpired}" />
                         </p:panelGrid>
                         <p:selectBooleanCheckbox id="cb_voucher" value="#{staffVoucherManagedBean.isSpecific}">
-                            <p:ajax event="change" update="v_specificPanel" />
+                            <f:ajax event="change" render="v_specificPanel" execute="v_specificPanel" />
                         </p:selectBooleanCheckbox> 
                         &nbsp;&nbsp; Specific selection of Customers only<br />
-                        <p:panelGrid id="v_specificPanel" rendered="#{staffVoucherManagedBean.isSpecific}">
-                            <h:outputLabel value="Month of Birth: " />
-                            <p:selectOneMenu id="teamDropDown" value="#{staffVoucherManagedBean.selectedMonth}" style="width:150px">
-                                <f:selectItems value="#{staffVoucherManagedBean.monthList}" />
-                            </p:selectOneMenu>
-                        </p:panelGrid>
+                        <h:panelGroup id="v_specificPanel">
+                            <p:outputPanel rendered="#{staffVoucherManagedBean.isSpecific}">
+                                <h:outputLabel value="Month of Birth: " />
+                                <p:selectOneMenu id="teamDropDown" value="#{staffVoucherManagedBean.selectedMonth}" style="width:150px">
+                                    <f:selectItems value="#{staffVoucherManagedBean.monthList}" />
+                                </p:selectOneMenu>
+                            </p:outputPanel>
+                        </h:panelGroup>
                     </p:panel>
                 </h:form>
             </p:tab>
@@ -64,13 +66,19 @@
                                 <f:convertNumber type="currency" currencySymbol="$" maxIntegerDigits="5" maxFractionDigits="2"/>
                             </h:outputText>
                         </p:column>
-
-                        <p:column headerText="Voucher Type" sortBy="#{voucher.type}" filterBy="#{voucher.type}" filterMatchMode="contains">
-                            <h:outputText value="#{product.type}" />
+                        
+                        <p:column headerText="Date Created" sortBy="#{voucher.dateCreated}" filterBy="#{voucher.dateCreated}" filterMatchMode="contains">
+                            <h:outputText value="#{voucher.dateCreated}" >
+                                <f:convertDateTime type="date" pattern="dd.MM.yyyy"/>
+                            </h:outputText> 
                         </p:column>
-
+                        
+                        <p:column headerText="Last Day" sortBy="#{voucher.dateExpired}" filterBy="#{voucher.dateExpired}" filterMatchMode="contains">
+                            <h:outputText value="#{voucher.dateExpired}" />
+                        </p:column>
+                        
                         <p:column headerText="Action" >
-                            <p:commandButton oncomplete="PF('viewVoucherDialog').show()" icon="ui-icon-document" title="View" update=":form_viewVoucher:viewVoucherDialog">
+                            <p:commandButton action="#{staffVoucherManagedBean.populateVoucherDetail()}" oncomplete="PF('viewVoucherDialog').show()" icon="ui-icon-document" title="View" update=":form_viewVoucher:viewVoucherDialog">
                                 <f:setPropertyActionListener value="#{voucher}" target="#{staffVoucherManagedBean.selectedVoucher}" />
                             </p:commandButton>
                         </p:column>
@@ -83,15 +91,27 @@
          <h:form id="form_viewVoucher">
             <p:dialog id="viewVoucherDialog" showEffect="slide" widgetVar="viewVoucherDialog" resizable="false" draggable="false">
                 <p:panelGrid columns="4" >
-                    <h:outputLabel for="voucherCode" value="Voucher Code" />
-                    <p:inputText  value="#{staffVoucherManagedBean.selectedVoucher.voucherCode}" required="true"/>
-                    <h:outputLabel for="voucherValue" value="Voucher Value:" />
-                    <p:inputText  value="#{staffVoucherManagedBean.selectedVoucher.voucherValue}" required="true"/>
-                    <h:outputLabel for="voucherQuantity" value="Quantity per Customer: " />
-                    <p:inputText value="#{staffVoucherManagedBean.selectedVoucher.quantity}" required="true"/>
-                    <h:outputLabel for="expiryDate" value="Expiry Date: " />
-                    <p:calendar id="popup" value="#{staffVoucherManagedBean.selectedVoucher.dateExpired}" />
+                    <h:outputLabel value="Voucher Code" />
+                    <h:outputLabel value="#{staffVoucherManagedBean.selectedVoucher.voucherCode}" />
+                    <h:outputLabel value="Voucher Value:" />
+                    <h:outputLabel value="#{staffVoucherManagedBean.selectedVoucher.voucherValue}" />
                 </p:panelGrid>
+                <hr /><br/>
+                <p:panelGrid columns="6">
+                    <h:outputLabel value="Quantity per Customer: " />
+                    <h:outputLabel value="#{staffVoucherManagedBean.selectedVoucher.quantity}" />
+                    <h:outputLabel value="Total Vouchers given:" />
+                    <h:outputLabel value="#{staffVoucherManagedBean.totalVoucherAmount}" />
+                    <h:outputLabel value="Total unused vouchers " />
+                    <h:outputLabel value="#{staffVoucherManagedBean.currentVoucherAmount}" />
+                    <h:outputLabel value="Created Date: " />
+                    <h:outputLabel value="#{staffVoucherManagedBean.selectedVoucher.dateCreated}" />
+                    <h:outputLabel value="Expiry Date: " />
+                    <h:outputLabel value="#{staffVoucherManagedBean.selectedVoucher.dateExpired}" />
+                    <h:outputLabel value="Voucher Duration " />
+                    <h:outputLabel value="#{staffVoucherManagedBean.duration}" />
+                </p:panelGrid>
+                 
                 <br/><br/>
                 <p:panel>
                     

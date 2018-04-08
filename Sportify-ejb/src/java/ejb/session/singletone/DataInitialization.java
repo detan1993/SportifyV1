@@ -94,13 +94,9 @@ public class DataInitialization {
         try {
 
             System.out.println("post construct");
-            if (productControllerLocal.retrieveProduct().isEmpty()) {
-
-                initializeData();
-            }
-
+            initializeData();
         } catch (Exception ex) {
-
+            ex.printStackTrace();
         }
 
     }

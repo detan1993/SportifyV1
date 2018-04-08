@@ -69,7 +69,7 @@ public class CustomerController implements CustomerControllerRemote, CustomerCon
 
     @Override
     public List<Customer> retrieveCustomerByMonth(int month) {
-        Query query = em.createQuery("Select e FROM Customer e WHERE SUBSTRING(e.dateOfBirth,4,2) =:month");
+        Query query = em.createQuery("Select e FROM Customer e WHERE SUBSTRING(e.dateOfBirth,6,2) =:month");
         query.setParameter("month", month);
         return query.getResultList();
     }
