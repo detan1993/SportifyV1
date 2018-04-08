@@ -12,7 +12,7 @@ import javax.ws.rs.core.Application;
  *
  * @author David
  */
-@javax.ws.rs.ApplicationPath("webresources")
+@javax.ws.rs.ApplicationPath("Resources")
 public class ApplicationConfig extends Application {
 
     @Override
@@ -29,6 +29,7 @@ public class ApplicationConfig extends Application {
      * If required, comment out calling this method in getClasses().
      */
     private void addRestResourceClasses(Set<Class<?>> resources) {
+        resources.add(ws.AccountResource.class);
         resources.add(ws.SportifyResource.class);
     }
     

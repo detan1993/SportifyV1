@@ -6,9 +6,10 @@
 package ejb.session.stateless;
 
 import entity.CustomerOrder;
-import entity.Product;
 import entity.ProductPurchase;
+import java.text.DateFormat;
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -135,17 +136,18 @@ public class CustomerOrderController implements CustomerOrderControllerRemote, C
 
     private void getNonAgreegatedValue(List<TopTenCustomer> custInformation) {
 
+        DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
         for (int otherInformation = 0; otherInformation < custInformation.size(); otherInformation++) {
 
             System.out.println("************** Populate non agregate data");
-            Query nonAggregatedInformation = em.createQuery("SELECT c.firstName , c.lastName , c.loyaltyPoints , c.dateOfBirth FROM Customer c WHERE c.email = :cEmail");
+            Query nonAggregatedInformation = em.createQuery("SELECT c.firstName , c.lastName , c.loyaltyPoints , c.dateRegistered FROM Customer c WHERE c.email = :cEmail");
             nonAggregatedInformation.setParameter("cEmail", custInformation.get(otherInformation).getEmail());
             List<Object[]> otherRecord = nonAggregatedInformation.getResultList();
 
             System.out.println("************** data is " + (otherRecord.get(0)[0].toString()) + " " + (otherRecord.get(0)[1].toString()));
             custInformation.get(otherInformation).setFullName((otherRecord.get(0)[0].toString()) + " " + (otherRecord.get(0)[1].toString()));
             custInformation.get(otherInformation).setLoyaltyPoint(Integer.parseInt(otherRecord.get(0)[2].toString()));
-            custInformation.get(otherInformation).setAccountCreated(otherRecord.get(0)[3].toString());
+            custInformation.get(otherInformation).setAccountCreated(df.format(otherRecord.get(0)[3]));
         }
 
     }

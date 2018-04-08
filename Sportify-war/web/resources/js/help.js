@@ -76,6 +76,15 @@ function pieExtender(){
   // this.cfg.axes.yaxis.tickOptions  = { textColor: '#ffffff' , formatString: '%#.2f' };
 }
 
+function pieProfileExtender(){
+
+   this.cfg.grid = {background: '#DCDCDC' , borderColor: '#DCDCDC'};
+   this.cfg.animate = true;
+   //this.cfg.highlighter = {  show: true , formatString: '%.2f %'};
+   this.cfg.seriesDefaults.rendererOptions = { showDataLabels:true, dataLabelFormatString: '%.1f %' };
+  // this.cfg.axes.yaxis.tickOptions  = { textColor: '#ffffff' , formatString: '%#.2f' };
+}
+
 function barExtender(){
     //this.cfg.pointLabels = { show: true};
    

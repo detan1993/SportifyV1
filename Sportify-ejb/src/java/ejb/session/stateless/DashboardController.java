@@ -356,7 +356,7 @@ public class DashboardController implements DashboardControllerRemote, Dashboard
                  boards.add(orderBoard());
              }
              else if( i ==3){
-                boards.add(salesBoard());  
+                boards.add(customerSatisfactionBoard());  
              }
              
              
@@ -394,13 +394,13 @@ public class DashboardController implements DashboardControllerRemote, Dashboard
          customer.setTotalInformation("TOTAL CUSTOMER");
          System.out.println("****************** tota; customer " + String.valueOf(totalRegisteredCustomer));
          customer.setTotalValue(String.valueOf(totalRegisteredCustomer));
-         customer.setCurrentMonthInformation(String.valueOf(totalRegisteredCustomer_CurrentMonth) + " NEW CUSTOMERS THIS MONTH");
+         customer.setCurrentMonthInformation(String.valueOf(totalRegisteredCustomer_CurrentMonth) + " NEW CUSTOMER(S)");
          //
          percentage_increase = ((double)totalRegisteredCustomer_CurrentMonth / totalRegisteredCustomer ) * 100 ; 
          System.out.println("************** pecentage increase " + percentage_increase);
         // customer.setFigurePercentage(figurePercentage + "%");
         if(percentage_increase > 0){
-               customer.setFigureInformation(df.format(percentage_increase) + "% OF TOTAL CUSTOMER" );
+               customer.setFigureInformation(df.format(percentage_increase) + "% Of Total Customer" );
                //"CUSTOMER INCREASE BY " + 
                customer.setFigureStatus("Increase");
         }
@@ -463,13 +463,13 @@ public class DashboardController implements DashboardControllerRemote, Dashboard
          if(percentage_diff > 0 )
          {
            System.out.println("****************** SALES DECREASE BY  " + df.format(percentage_diff/totalSales_PrevMonth * 100));
-           sales.setFigureInformation(df.format(percentage_diff/totalSales_PrevMonth * 100) + "% VS LAST MONTH" );
+           sales.setFigureInformation(df.format(percentage_diff/totalSales_PrevMonth * 100) + "% VS Previous Month" );
            //SALES DECREASE BY 
            sales.setFigureStatus("Decrease");
         }
          else if(percentage_diff < 0 ){
            System.out.println("****************** SALES INCREASE BY  " + df.format(percentage_diff/totalSales_PrevMonth * 100 * -1));
-           sales.setFigureInformation(df.format(percentage_diff/totalSales_PrevMonth * 100 * -1) + "% VS LAST MONTH" );
+           sales.setFigureInformation(df.format(percentage_diff/totalSales_PrevMonth * 100 * -1) + "% VS Previous MOnth" );
            sales.setFigureStatus("Increase");
          }
      }
@@ -554,13 +554,13 @@ public class DashboardController implements DashboardControllerRemote, Dashboard
          if(percentage_diff > 0 )
          {
            System.out.println("****************** ORDER DECREASE BY  " + df.format(percentage_diff/totalOrder_PrevMonth * 100));
-           order.setFigureInformation(df.format(percentage_diff/totalOrder_PrevMonth * 100) + "% VS LAST MONTH" );
+           order.setFigureInformation(df.format(percentage_diff/totalOrder_PrevMonth * 100) + "% VS Previous Month" );
            //SALES DECREASE BY 
            order.setFigureStatus("Decrease");
         }
          else if(percentage_diff < 0 ){
            System.out.println("****************** Order INCREASE BY  " + df.format(percentage_diff/totalOrder_PrevMonth * 100 * -1));
-           order.setFigureInformation(df.format(percentage_diff/totalOrder_PrevMonth * 100 * -1) + "% VS LAST MONTH" );
+           order.setFigureInformation(df.format(percentage_diff/totalOrder_PrevMonth * 100 * -1) + "% VS Previous Month" );
            order.setFigureStatus("Increase");
          }
      }
@@ -569,4 +569,81 @@ public class DashboardController implements DashboardControllerRemote, Dashboard
       }
        return order;
      }
+     
+     private PerformanceBoard customerSatisfactionBoard(){
+         
+          System.out.println("******************Rating BOARD");
+      PerformanceBoard customerSatisfaction = new PerformanceBoard();
+      try
+      {
+          
+          //SELECT count(*) FROM productreview ;
+
+          DecimalFormat df = new DecimalFormat("#0.00");
+          long noOfRating = 0;
+          long noOfRating_aboveFour = 0;
+          long  noOfRating__belowFour = 0;
+          double percentage_diff = 0.0;
+          double aboveFour_Percentage = 0.0;
+
+           
+         List<Double> rating = new ArrayList<>();
+         List<Long> no_Rating = new ArrayList<>();
+         List<Long> no_RatingAboveFour = new ArrayList<>(); //include 4
+         List<Long> no_RatingBelowFour = new ArrayList<>();
+
+         double averageRating = 0;
+         
+         Query query = em.createQuery("SELECT AVG(p.rating) FROM ProductReview p");
+         rating = query.getResultList();
+          if (rating.get(0) != null) {
+               averageRating = rating.get(0);
+          } else {
+              averageRating = 0;
+          }
+     
+             query = em.createQuery("SELECT COUNT(p.id) FROM ProductReview p");
+             no_Rating = query.getResultList();
+             noOfRating = no_Rating.get(0);
+            
+             query = em.createQuery("SELECT COUNT(p.id) FROM ProductReview p WHERE p.rating >= 4 ");
+             no_RatingAboveFour = query.getResultList();
+             noOfRating_aboveFour = no_RatingAboveFour.get(0);
+             
+            query = em.createQuery("SELECT COUNT(p.id) FROM ProductReview p WHERE p.rating < 4 ");
+            no_RatingBelowFour = query.getResultList();
+            noOfRating__belowFour = no_RatingBelowFour.get(0);
+         
+                  
+         customerSatisfaction.setTitleInformation("CUSTOMER SATISFACTION");
+         customerSatisfaction.setTotalInformation("AVERAGE RATING");
+         customerSatisfaction.setTotalValue(df.format(averageRating));
+         System.out.println("**************** above four % " + noOfRating_aboveFour );
+         aboveFour_Percentage =  (double)noOfRating_aboveFour / noOfRating;
+   
+         customerSatisfaction.setCurrentMonthInformation( df.format((double)noOfRating_aboveFour/noOfRating *100) + "% RATE ABOVE 3");
+         customerSatisfaction.setFigureInformation("ADADDADDAF");
+         customerSatisfaction.setFigureStatus("Increase");
+         //
+       /*  percentage_diff = totalOrder_PrevMonth - totalOrder_CurrentMonth;
+         if(percentage_diff > 0 )
+         {
+           System.out.println("****************** ORDER DECREASE BY  " + df.format(percentage_diff/totalOrder_PrevMonth * 100));
+           order.setFigureInformation(df.format(percentage_diff/totalOrder_PrevMonth * 100) + "% VS Previous Month" );
+           //SALES DECREASE BY 
+           order.setFigureStatus("Decrease");
+        }
+         else if(percentage_diff < 0 ){
+           System.out.println("****************** Order INCREASE BY  " + df.format(percentage_diff/totalOrder_PrevMonth * 100 * -1));
+           order.setFigureInformation(df.format(percentage_diff/totalOrder_PrevMonth * 100 * -1) + "% VS Previous Month" );
+           order.setFigureStatus("Increase");
+         }*/
+     }
+      catch(Exception ex){
+          ex.printStackTrace();
+      }
+       return customerSatisfaction;
+
+     }
+     
 }

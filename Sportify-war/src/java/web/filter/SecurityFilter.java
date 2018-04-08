@@ -48,7 +48,7 @@ public class SecurityFilter implements Filter {
         Boolean staffIsLogin = false;
         Boolean customerIsLogin = false;
   
-        System.out.println("********** DO FILTER ");
+        System.out.println("********** DO FILTER and path is  " +  requestServletPath);
         
         
         if(requestServletPath.substring(1,6).equals("staff"))
@@ -60,6 +60,10 @@ public class SecurityFilter implements Filter {
              }
 
             staffIsLogin= (Boolean)httpSession.getAttribute("staffIsLogin");         
+        }
+        if(requestServletPath.substring(1).equals("Resources")){
+             System.out.println("******* RTYPE IS RESROUCE ");
+             userType = "resources";
         }
         else //not staff
         {
@@ -140,6 +144,9 @@ public class SecurityFilter implements Filter {
               {
                   chain.doFilter(request, response);
               }
+        }else if(userType.equals("resources")){
+            System.out.println("******* RESOURCE PATH ");
+            chain.doFilter(request, response);
         }
           
       

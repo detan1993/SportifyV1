@@ -5,9 +5,11 @@
  */
 package jsf.staff.managedbean;
 
+import ejb.session.stateless.CustomerControllerLocal;
 import ejb.session.stateless.CustomerOrderControllerRemote;
 import ejb.session.stateless.DashboardControllerLocal;
 import ejb.session.stateless.ProductControllerLocal;
+import entity.Customer;
 import entity.Product;
 import java.io.InputStream;
 import java.io.Serializable;
@@ -15,6 +17,7 @@ import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -45,6 +48,7 @@ import javax.faces.application.FacesMessage;
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
 import org.primefaces.model.chart.BarChartModel;
+import util.exception.CustomerSignUpException;
 import util.helperClass.PerformanceBoard;
 import util.helperClass.TopCustomerProduct;
 import util.helperClass.TopProductByCode;
@@ -57,6 +61,9 @@ import util.helperClass.TopProductByTeam;
 @Named(value = "dashboardManagedBean")
 @ViewScoped
 public class DashboardManagedBean implements Serializable {
+
+    @EJB(name = "CustomerControllerLocal")
+    private CustomerControllerLocal customerControllerLocal;
 
     @EJB(name = "CustomerOrderControllerLocal")
     private CustomerOrderControllerRemote customerOrderControllerLocal;
@@ -73,11 +80,9 @@ public class DashboardManagedBean implements Serializable {
     final String[] monthsArray = {"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
     ;
     private LineChartModel salesLineChart;
-  
+
     private HorizontalBarChartModel horizontalRating;
 
-
-   
     private Date salesDate;
     private Date currentDate;
     private DashboardModel dashboardPosition;
@@ -91,25 +96,24 @@ public class DashboardManagedBean implements Serializable {
     private Date customerFrom;
     private Date customerTo;
     private PieChartModel customerProductPie;
-    
+
     //Top product
     private StreamedContent productFile;
     private List<TopProductByCode> topProductsCode;
     private List<TopProductByTeam> topProductsTeam;
     private String productGroupByType;
     private String selectFilterTopProduct;
-    
+
     //overview
-    
     private List<String> totalSalesByTeamFilter;
     private BarChartModel stackBarModel;
     private PieChartModel salesByTeamPieModel;
-     private List<String[]> totalSalesByTeam;
+    private List<String[]> totalSalesByTeam;
     private List<List<CountrySales>> totalSalesByMonthsCountry;
     private String selectedTotalSalesByTeamPieChart;
-    private List<PerformanceBoard> boardsInformation ;
-      private int number;
- 
+    private List<PerformanceBoard> boardsInformation;
+    private int number;
+
     public DashboardManagedBean() {
         salesByTeamPieModel = new PieChartModel();
         totalSalesByMonthsCountry = new ArrayList<>();
@@ -128,10 +132,8 @@ public class DashboardManagedBean implements Serializable {
         productGroupByType = "PC";
         selectFilterTopProduct = "TP";
         boardsInformation = new ArrayList<>();
-        
+
         //overview
-
-
     }
 
     @PostConstruct
@@ -142,7 +144,7 @@ public class DashboardManagedBean implements Serializable {
             boardsInformation = dashboardControllerLocal.getPerformanceInformation();
             topProductsCode = dashboardControllerLocal.getProductsSumByQuantityPurchaseByProductCode();
             topProductsTeam = dashboardControllerLocal.getProductsSumByQuantityPurchaseByTeam();
-          //  topProductsCode =  topProductsCode.subList(0, 10);
+            //  topProductsCode =  topProductsCode.subList(0, 10);
             topCustomers = customerOrderControllerLocal.RetrieveTopTenCustomersByOrder();
             //  customerOrderControllerLocal.RetrieveAllCustomerOrder();
             totalSalesByMonthsCountry = dashboardControllerLocal.retrieveAllSalesByMonths();
@@ -171,124 +173,109 @@ public class DashboardManagedBean implements Serializable {
         }
 
     }
-    
 
-    
     private BarChartModel initCountrySalesStackBarModel() {
         BarChartModel model = new BarChartModel();
         int noOfCountry = totalSalesByTeamFilter.size();
         HashMap<String, ChartSeries> countrySeriesPair = new HashMap<>();
-        DecimalFormat df = new DecimalFormat("#0.00"); 
+        DecimalFormat df = new DecimalFormat("#0.00");
         ChartSeries countrySeries = new ChartSeries();
         List<ChartSeries> stackBarChartSeries = new ArrayList<>();
-        
-      
-      System.out.println("*************** INITIALIZING STACK BAR");
-      try{
-          
-     
-           for(int i=0; i<noOfCountry; i++){
-            
-              countrySeries = new ChartSeries();
-              String countryName = totalSalesByTeamFilter.get(i); 
-               System.out.println("*************** COUNRY Name " + countryName );
-              countrySeries.setLabel(countryName); //country Name
-              countrySeriesPair.put(countryName, countrySeries);
-                        
-        }
-        
-        for(int totalCountrySales = 0; totalCountrySales< totalSalesByMonthsCountry.size(); totalCountrySales++){
-            
-            int countrySize = totalSalesByMonthsCountry.get(totalCountrySales).size();
-            List<CountrySales> sales = totalSalesByMonthsCountry.get(totalCountrySales);
-           // System.out.println("*************** Inside the TOTALSALES BY COUNTRY. Size " + countrySize);
-            String countryNameFromSalesRecord = "";
-            String salesInString  = "";
-            String month = "";
-            List<String> countryHasSales = new ArrayList<>();
-            for(int i=0; i<countrySize; i++){
-                
-                   
-                 countryNameFromSalesRecord   = sales.get(i).getCountryName();
-                salesInString = sales.get(i).getSales().toString();
-                month = sales.get(i).getMonth();
-               // System.out.println("*************** COUNRY Name " + countryNameFromSalesRecord + " salesinString " + salesInString + " MONTH : " + month);
-                countrySeries = countrySeriesPair.get(countryNameFromSalesRecord);
-               // System.out.println("COUNTRY LABEL " + countrySeries.getLabel());
-                countrySeries.set(month,Double.parseDouble(salesInString));
-                countryHasSales.add(countryNameFromSalesRecord);
-                
-                countrySeriesPair.put(countryNameFromSalesRecord, countrySeries); //update chartSeries Value.
-                
-            }
-            
-            if(countrySize != noOfCountry){ //there are some country thats has no sales in that particular month
-                
-                for(int country=0; country<noOfCountry; country++){
-                    
-                    if(!countryHasSales.contains(totalSalesByTeamFilter.get(country))){
-                        
-                        
-                    //    System.out.println("********* Country " + totalSalesByTeamFilter.get(country) + " has no sales in Month " + month);
-                        countrySeries = countrySeriesPair.get(totalSalesByTeamFilter.get(country));
-                        countrySeries.set(month,0);
-                        countrySeriesPair.put(totalSalesByTeamFilter.get(country), countrySeries); 
-                    }
-                    
-                }
-                
-            }
-            
-            
-        }
 
-        //add value to model
-        for(int i=0; i<noOfCountry; i++ )
-        {
-             String countryName = totalSalesByTeamFilter.get(i); 
-             model.addSeries(countrySeriesPair.get(countryName));
-             /*System.out.println("COUNTRY LABEL " + countrySeriesPair.get(countryName).getLabel());
+        System.out.println("*************** INITIALIZING STACK BAR");
+        try {
+
+            for (int i = 0; i < noOfCountry; i++) {
+
+                countrySeries = new ChartSeries();
+                String countryName = totalSalesByTeamFilter.get(i);
+                System.out.println("*************** COUNRY Name " + countryName);
+                countrySeries.setLabel(countryName); //country Name
+                countrySeriesPair.put(countryName, countrySeries);
+
+            }
+
+            for (int totalCountrySales = 0; totalCountrySales < totalSalesByMonthsCountry.size(); totalCountrySales++) {
+
+                int countrySize = totalSalesByMonthsCountry.get(totalCountrySales).size();
+                List<CountrySales> sales = totalSalesByMonthsCountry.get(totalCountrySales);
+                // System.out.println("*************** Inside the TOTALSALES BY COUNTRY. Size " + countrySize);
+                String countryNameFromSalesRecord = "";
+                String salesInString = "";
+                String month = "";
+                List<String> countryHasSales = new ArrayList<>();
+                for (int i = 0; i < countrySize; i++) {
+
+                    countryNameFromSalesRecord = sales.get(i).getCountryName();
+                    salesInString = sales.get(i).getSales().toString();
+                    month = sales.get(i).getMonth();
+                    // System.out.println("*************** COUNRY Name " + countryNameFromSalesRecord + " salesinString " + salesInString + " MONTH : " + month);
+                    countrySeries = countrySeriesPair.get(countryNameFromSalesRecord);
+                    // System.out.println("COUNTRY LABEL " + countrySeries.getLabel());
+                    countrySeries.set(month, Double.parseDouble(salesInString));
+                    countryHasSales.add(countryNameFromSalesRecord);
+
+                    countrySeriesPair.put(countryNameFromSalesRecord, countrySeries); //update chartSeries Value.
+
+                }
+
+                if (countrySize != noOfCountry) { //there are some country thats has no sales in that particular month
+
+                    for (int country = 0; country < noOfCountry; country++) {
+
+                        if (!countryHasSales.contains(totalSalesByTeamFilter.get(country))) {
+
+                            //    System.out.println("********* Country " + totalSalesByTeamFilter.get(country) + " has no sales in Month " + month);
+                            countrySeries = countrySeriesPair.get(totalSalesByTeamFilter.get(country));
+                            countrySeries.set(month, 0);
+                            countrySeriesPair.put(totalSalesByTeamFilter.get(country), countrySeries);
+                        }
+
+                    }
+
+                }
+
+            }
+
+            //add value to model
+            for (int i = 0; i < noOfCountry; i++) {
+                String countryName = totalSalesByTeamFilter.get(i);
+                model.addSeries(countrySeriesPair.get(countryName));
+                /*System.out.println("COUNTRY LABEL " + countrySeriesPair.get(countryName).getLabel());
            System.out.println("COUNTRY DATA " + countrySeriesPair.get(countryName).getData().get("January"));
             System.out.println("COUNTRY DATA " + countrySeriesPair.get(countryName).getData().get("February"));
            System.out.println("COUNTRY DATA " + countrySeriesPair.get(countryName).getData().get("March"));*/
 
+            }
+
+            //model.addSeries(italy);
+            // model.addSeries(spain);
+            //  model.addSeries(england);
+            model.setStacked(true);
+            model.setExtender("barExtender");
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
-        
-      
-        //model.addSeries(italy);
-      // model.addSeries(spain);
-      //  model.addSeries(england);
-        model.setStacked(true);
-        model.setExtender("barExtender");
-          
-      }
-      
-      catch(Exception ex)
-      {
-          ex.printStackTrace();
-      }
-       
-        
-        
+
         return model;
     }
-    
-     private void createCountrySalesStackBarModel() {
+
+    private void createCountrySalesStackBarModel() {
         setBarModel(initCountrySalesStackBarModel());
-         
+
         getStackBarModel().setTitle("Sales By Country Per Month");
         getStackBarModel().setLegendPosition("se");
-         
+
         Axis xAxis = getStackBarModel().getAxis(AxisType.X);
         xAxis.setLabel("Month");
-         
+
         Axis yAxis = getStackBarModel().getAxis(AxisType.Y);
         yAxis.setLabel("Sales($)");
         yAxis.setMin(0);
-   
+
     }
-     
-    
+
     public void onRowSelect(SelectEvent event) {
         FacesMessage msg = new FacesMessage("Product Selected", ((Product) event.getObject()).getId().toString());
         FacesContext.getCurrentInstance().addMessage(null, msg);
@@ -498,7 +485,7 @@ public class DashboardManagedBean implements Serializable {
 
         int sizeOfTeam = totalSalesByTeam.size();
         String defaultCountry = totalSalesByTeamFilter.get(teamIndex);  //need to change abit
-        System.out.println("********** COUNTRY SELECTED IS " + defaultCountry); 
+        System.out.println("********** COUNTRY SELECTED IS " + defaultCountry);
         for (int i = 0; i < sizeOfTeam; i++) {
 
             String[] teamInfo = totalSalesByTeam.get(i);
@@ -524,7 +511,7 @@ public class DashboardManagedBean implements Serializable {
         livePieModel.getData().put("Man United", random5);
         livePieModel.getData().put("Tottenham", random6);*/
         salesByTeamPieModel.setTitle("Sales($) By Clubs");
-        
+
         salesByTeamPieModel.setLegendPosition("e");
         salesByTeamPieModel.setExtender("pieExtender");
         //  livePieModel.
@@ -589,6 +576,7 @@ public class DashboardManagedBean implements Serializable {
     public void setSalesLineChart(LineChartModel salesLineChart) {
         this.salesLineChart = salesLineChart;
     }
+
     /**
      * @return the horizontalRating
      */
@@ -746,35 +734,42 @@ public class DashboardManagedBean implements Serializable {
         }
 
     }
-    
-     public void onTopProductGroupBy() {
-        System.out.println("SELECTED GROUP VALUE IS " + productGroupByType + " SELECTED DDL IS " + selectFilterTopProduct );
 
-        if(productGroupByType.equals("PT")) //product code
+    public void onTopProductGroupBy() {
+        System.out.println("SELECTED GROUP VALUE IS " + productGroupByType + " SELECTED DDL IS " + selectFilterTopProduct);
+
+        if (productGroupByType.equals("PT")) //product code
         {
-            if(selectFilterTopProduct.equals("TP"))
+            if (selectFilterTopProduct.equals("TP")) {
                 Collections.sort(topProductsTeam, TopProductByTeam.BY_TOTAL_PURCHASE);
-            else if(selectFilterTopProduct.equals("TQTY")) //total qty
+            } else if (selectFilterTopProduct.equals("TQTY")) //total qty
+            {
                 Collections.sort(topProductsTeam, TopProductByTeam.BY_NO_PURCHASE);
-            else if(selectFilterTopProduct.equals("AP")){
+            } else if (selectFilterTopProduct.equals("AP")) {
                 Collections.sort(topProductsTeam, TopProductByTeam.BY_AVG_PURCHASE);
             }
-            
-        }else if(productGroupByType.equals("PC")){
-            if(selectFilterTopProduct.equals("TP"))
+
+            for (int reassignRank = 1; reassignRank <= topProductsTeam.size(); reassignRank++) {
+                topProductsTeam.get(reassignRank - 1).setRank(reassignRank);
+            }
+
+        } else if (productGroupByType.equals("PC")) {
+            if (selectFilterTopProduct.equals("TP")) {
                 Collections.sort(topProductsCode, TopProductByCode.BY_TOTAL_PURCHASE);
-            else if(selectFilterTopProduct.equals("TQTY")) //total qty
+            } else if (selectFilterTopProduct.equals("TQTY")) //total qty
+            {
                 Collections.sort(topProductsCode, TopProductByCode.BY_NO_PURCHASE);
-            else if(selectFilterTopProduct.equals("AP")){
+            } else if (selectFilterTopProduct.equals("AP")) {
                 Collections.sort(topProductsCode, TopProductByCode.BY_AVG_PURCHASE);
             }
-            
+
+            for (int reassignRank = 1; reassignRank <= topProductsCode.size(); reassignRank++) {
+                topProductsCode.get(reassignRank - 1).setRank(reassignRank);
+            }
+
         }
-    
+
     }
-     
-   
-         
 
     /**
      * @return the selectFilterTopCustomer
@@ -838,26 +833,25 @@ public class DashboardManagedBean implements Serializable {
         System.out.println("************************Populating Profile " + selectedCustomer.getFullName());
 
         setCustomerProductPie(new PieChartModel());
-        try{
-             List<TopCustomerProduct> custProducts = selectedCustomer.getTotalProducts();
+        try {
+            List<TopCustomerProduct> custProducts = selectedCustomer.getTotalProducts();
             System.out.println("************************PselectedCustomer.getTotalProducts() " + custProducts.size());
- 
-        for (TopCustomerProduct p : custProducts)
-            getCustomerProductPie().set(p.getTeamName(), p.getTotalQtyPurchase());
-            
+
+            for (TopCustomerProduct p : custProducts) {
+                getCustomerProductPie().set(p.getTeamName(), p.getTotalQtyPurchase());
+            }
 
             getCustomerProductPie().setTitle("Total No. of Purchase by Team");
             getCustomerProductPie().setLegendPosition("e");
             getCustomerProductPie().setFill(true);
             getCustomerProductPie().setShowDataLabels(true);
-            getCustomerProductPie().setDiameter(195);
-            getCustomerProductPie().setExtender("pieExtender");
-        
-            
-        }catch(Exception ex){
+            getCustomerProductPie().setDiameter(205);
+            getCustomerProductPie().setExtender("pieProfileExtender");
+
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
-       
+
     }
 
     /**
@@ -966,34 +960,55 @@ public class DashboardManagedBean implements Serializable {
     }
 
     /**
-     * @param selectedTotalSalesByTeamPieChart the selectedTotalSalesByTeamPieChart to set
+     * @param selectedTotalSalesByTeamPieChart the
+     * selectedTotalSalesByTeamPieChart to set
      */
     public void setSelectedTotalSalesByTeamPieChart(String selectedTotalSalesByTeamPieChart) {
         this.selectedTotalSalesByTeamPieChart = selectedTotalSalesByTeamPieChart;
     }
 
-    
-    public void onPieChartTeamSalesSelected(){
-        
+    public void onPieChartTeamSalesSelected() {
+
         salesByTeamPieModel = new PieChartModel();
-        System.out.println("************* SELECTED PIE VALUE " + selectedTotalSalesByTeamPieChart );
-        for(int i =0; i<totalSalesByTeamFilter.size(); i++){
-            
+        System.out.println("************* SELECTED PIE VALUE " + selectedTotalSalesByTeamPieChart);
+        for (int i = 0; i < totalSalesByTeamFilter.size(); i++) {
+
             System.out.println("TOTAL COUNTRY " + totalSalesByTeamFilter.get(i));
-            if(totalSalesByTeamFilter.get(i).equals(selectedTotalSalesByTeamPieChart)){
-               
+            if (totalSalesByTeamFilter.get(i).equals(selectedTotalSalesByTeamPieChart)) {
+
                 getSalesByTeamPieChart(i);
                 break;
             }
         }
-     
+
     }
 
-    public void timerUpdate(){
+    public void buttonOnAction(ActionEvent actionEvent) {
+
+        System.out.println("************ CREATE NEW CYSTOMER ");
+
+        try {
+         Calendar cal = Calendar.getInstance();
+         cal.set(1981, Calendar.MAY, 8);
+        Date bdaeDate5 =  cal.getTime() ;
+  
+        
+           Customer newCustomer12 = new Customer("TESTING", "Tan", "93119083", "Male", "Pasir Risk Park st 21", "310110", bdaeDate5, "dan132ya31@gmail.com", "12345678", 0, new Date());
+
+
+            customerControllerLocal.createNewCustomer(newCustomer12);
+        } catch (CustomerSignUpException ex) {
+            ex.printStackTrace();
+        }
+
+    }
+
+    public void timerUpdate() {
         boardsInformation = dashboardControllerLocal.getPerformanceInformation();
-        number++;
+        //  number++;
         System.out.println("*********** NUMBER " + number);
     }
+
     /**
      * @return the salesByTeamPieModel
      */
@@ -1012,6 +1027,7 @@ public class DashboardManagedBean implements Serializable {
      * @return the boardsInformation
      */
     public List<PerformanceBoard> getBoardsInformation() {
+        //  System.out.println("********* GETING VALUE");
         return boardsInformation;
     }
 
@@ -1035,6 +1051,5 @@ public class DashboardManagedBean implements Serializable {
     public void setNumber(int number) {
         this.number = number;
     }
-  
 
 }

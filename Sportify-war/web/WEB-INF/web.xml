@@ -9,7 +9,7 @@
         <param-value>midnight</param-value>
     </context-param>
     <context-param>
-         <param-name>alternatedocroot_1</param-name>
+        <param-name>alternatedocroot_1</param-name>
         <param-value>C:/Users/David/Downloads/Sportify/Sportify/glassfish-uploadedfiles/staffUploadedFiles</param-value>
     </context-param>
     <context-param>
@@ -38,4 +38,10 @@
         <error-code>404</error-code>
         <location>/error.xhtml</location>
     </error-page>
+    <ejb-local-ref>
+        <ejb-ref-name>CustomerControllerLocal</ejb-ref-name>
+        <ejb-ref-type>Session</ejb-ref-type>
+        <local>ejb.session.stateless.CustomerControllerLocal</local>
+        <ejb-link>Sportify-ejb.jar#CustomerController</ejb-link>
+    </ejb-local-ref>
 </web-app>
