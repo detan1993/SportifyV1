@@ -30,6 +30,8 @@ public class Customer implements Serializable {
 
     private String firstName;
     private String lastName;
+    private String phoneNum;
+    private String gender;
     private String address;
     private String zipCode;
     @Temporal(TemporalType.DATE)
@@ -48,9 +50,11 @@ public class Customer implements Serializable {
     public Customer() {
     }
 
-    public Customer(String firstName, String lastName, String address, String zipCode, Date dateOfBirth, String email, String password, int loyaltyPoints, Date dateRegistered) {
+    public Customer(String firstName, String lastName, String phoneNum, String gender, String address, String zipCode, Date dateOfBirth, String email, String password, int loyaltyPoints, Date dateRegistered) {
         this.firstName = firstName;
         this.lastName = lastName;
+        this.phoneNum = phoneNum;
+        this.gender = gender;
         this.address = address;
         this.zipCode = zipCode;
         this.dateOfBirth = dateOfBirth;
@@ -193,5 +197,21 @@ public class Customer implements Serializable {
 
     public void setDateOfBirth(Date dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
+    }
+
+    public String getPhoneNum() {
+        return phoneNum;
+    }
+
+    public void setPhoneNum(String phoneNum) {
+        this.phoneNum = phoneNum;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
     }
 }

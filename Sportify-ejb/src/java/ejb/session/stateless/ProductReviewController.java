@@ -21,38 +21,86 @@ import javax.persistence.Query;
  */
 @Stateless
 public class ProductReviewController implements ProductReviewControllerRemote, ProductReviewControllerLocal {
+
     @PersistenceContext(unitName = "Sportify-ejbPU")
     private EntityManager em;
-    
+
     public void persist(Object object) {
         em.persist(object);
     }
-    
+
     @EJB(name = "ProductControllerLocal")
     private ProductControllerLocal productControllerLocal;
-    
+
     @Override
-    public ProductReview CreateNewProductReview (ProductReview newProductReview)
-    {
+    public ProductReview CreateNewProductReview(ProductReview newProductReview) {
         em.persist(newProductReview);
         em.flush();
         em.refresh(newProductReview);
         return newProductReview;
     }
-    
+
     @Override
-    public List<ProductReview> retrieveProductReviewsByProductId (int productId){
+    public List<ProductReview> retrieveProductReviewsByProductId(int productId) {
         Product p = productControllerLocal.retrieveSingleProduct(productId);
         return p.getProductReviews();
     }
-    
+
     @Override
-    public ProductReview getProductReview (Product product, CustomerOrder customerOrder){
-        Query query = em.createQuery("SELECT p FROM ProductReview p WHERE p.product=:product AND p.customerOrder=:customerOrder");
-        query.setParameter("product", product);
-        query.setParameter("customerOrder", customerOrder);
-        return (ProductReview) query.getResultList().get(0);
+    public String retrieveCustomerOrderProductReview(long productId, long customerOrderId) {
+        Query query = em.createQuery("SELECT p FROM ProductReview p WHERE p.product.id=:productId AND p.customerOrder.id=:customerOrderId");
+        query.setParameter("productId", productId);
+        query.setParameter("customerOrderId", customerOrderId);
+        try {
+            ProductReview productReview = (ProductReview) query.getResultList().get(0);
+            if (productReview != null) {
+                return productReview.getReview();
+            }
+        } catch (Exception ex) {
+            System.err.print("NULL Reviews");
+        }
+
+        return null;
     }
     
-    
+    @Override
+    public int retrieveCustomerOrderProductRating(long productId, long customerOrderId) {
+        Query query = em.createQuery("SELECT p FROM ProductReview p WHERE p.product.id=:productId AND p.customerOrder.id=:customerOrderId");
+        query.setParameter("productId", productId);
+        query.setParameter("customerOrderId", customerOrderId);
+        try {
+            ProductReview productReview = (ProductReview) query.getResultList().get(0);
+            if (productReview != null) {
+                return productReview.getRating();
+            }
+        } catch (Exception ex) {
+            System.err.print("NULL rating");
+        }
+
+        return -1;
+    }
+
+    @Override
+    public int getAverageProductRating(long productId) {
+        Query query = em.createQuery("SELECT p FROM ProductReview p WHERE p.product.id=:productId");
+        query.setParameter("productId", productId);
+        int totalRating = 0;
+        int average = 0;
+        try {
+            List<ProductReview> productReviews = query.getResultList();
+
+            if (productReviews != null) {
+                for (ProductReview prodRev : productReviews) {
+                    totalRating += prodRev.getRating();
+                }
+
+                average = totalRating / productReviews.size();
+            }
+
+        } catch (Exception ex) {
+            System.err.print("NULL ProductReviews while getting average rating");
+            return -1;
+        }
+        return average;
+    }
 }

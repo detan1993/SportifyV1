@@ -4,7 +4,8 @@
                 template="./template/masterPage.xhtml"
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:f="http://xmlns.jcp.org/jsf/core"
-                xmlns:h="http://xmlns.jcp.org/jsf/html">
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
 
     <ui:define name="west">
         <p:panel style="margin-top:-4px">
@@ -51,9 +52,14 @@
                                 <f:param name="productId" value="#{product.id}" />
                             </h:link>
                             <br/>
-                            <h:outputText value="SGD#{product.price}" style="color:black; text-align: center" />
-                            <br />
-                            <p:rating readonly="true" value="4" />
+                            <p:panel style="text-align: center">
+                                <h:outputText value="SGD#{product.price}" style="font-size: 20px" />
+                                <br />
+
+                                <p:rating value="#{viewAllProductsManagedBean.calculateAverageRating(product.id)}" readonly="true" rendered="#{viewAllProductsManagedBean.calculateAverageRating(product.id) != -1}" />
+                                <h:outputText value="NO RATING" rendered="#{viewAllProductsManagedBean.calculateAverageRating(product.id) == -1}" />       
+                            </p:panel>
+
                         </p:panel>
 
                         <f:facet name="footer">

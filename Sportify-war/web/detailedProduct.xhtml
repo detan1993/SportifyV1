@@ -6,117 +6,116 @@
                 xmlns:f="http://xmlns.jcp.org/jsf/core"
                 xmlns:h="http://xmlns.jcp.org/jsf/html">
 
-   
+
     <ui:define name="west">
-         <h:outputStylesheet name="css/ui-override.css" />
+        <h:outputStylesheet name="css/ui-override.css" />
         <p:panel>
-                <p:panel style="text-align: center;">
-                    <f:facet name="header">
-                        PRODUCT DETAILS 
-                    </f:facet>
-                    <br />
-                    <h:panelGroup id="qtyOnChange">
-                        <h:outputText style="font-size: 60px" value="$#{viewDetailedManagedBean.priceOnChange} "></h:outputText>
-                    </h:panelGroup>
-                </p:panel>
-                <p:panel style="margin-top:-20px;">
-                    <h:form>
-                        <p:growl id="growl" life="2000"/> 
-                        <table cellspacing="5" style="width:250px">
-                            <tr>
-                                <td>
-                                    <span style="color:white;font-size:15px">Size :</span> 
-                                </td>
-                                <td>
-                                    <p:selectOneMenu id="prod_size" value="#{viewDetailedManagedBean.sizeSelected}" required="true" requiredMessage="Please select size.">
-                                        <f:selectItem itemLabel="Select Size" itemValue="" noSelectionOption="true" />
-                                        <f:selectItems value="#{viewDetailedManagedBean.sizeDropDown}" />
-                                    </p:selectOneMenu>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <span style="color:white;font-size:15px">Quantity :</span> 
-                                </td>
-                                <td>
-                                    <p:spinner id="quantity" value="#{viewDetailedManagedBean.quantity}" required="true" label="quantity" requiredMessage="Please enter quantity." size="4" min="1">
-                                        <p:ajax listener="#{viewDetailedManagedBean.qtyOnChange}" update="#{p:component('qtyOnChange')}" process="@this" />   
-                                    </p:spinner> 
-                                </td>
-                            </tr>
-                            <tr>
-                                
-                                <td colspan="2">
-                                    <br />
-                                    <span style="color:white;font-size:12px; text-align: justify;">Looking for an Arsenal shirt? In our Arsenal collection, you will all that a true Gunner desires. We have the newest Arsenal shirt, including printing of name and number. You will find both the home and away jersey, and a huge selection of different merchandise. No matter what you are looking for, Sportify offers it. We are the largest football shop!</span> 
-
-                                </td>
-                            </tr>
-                        </table>
-
-                        <div style="margin-top:10px;">
-                            <p:commandButton style="width: 300px;font-size: 20px;height: 40px;" value="Add to Cart" icon="fa fa-plus-circle" actionListener="#{viewDetailedManagedBean.addToCart}" update="growl #{p:component('notiNum')}" rendered="#{sessionScope['isLogin']}" /> 
-                            <p:commandButton style="width: 300px;font-size: 20px;height: 40px;" value="Add to Cart" icon="fa fa-plus-circle" actionListener="#{viewDetailedManagedBean.addToCart}" update="growl #{p:component('notiNumNoLogin')}" rendered="#{!sessionScope['isLogin']}" />
-                        </div>
-                        
-                    </h:form>
-                    
-                </p:panel>
-                
+            <p:panel style="text-align: center;">
+                <f:facet name="header">
+                    PRODUCT DETAILS 
+                </f:facet>
+                <br />
+                <h:panelGroup id="qtyOnChange">
+                    <h:outputText style="font-size: 60px" value="$#{viewDetailedManagedBean.priceOnChange} "></h:outputText>
+                </h:panelGroup>
             </p:panel>
-         
+            <p:panel style="margin-top:-20px;">
+                <h:form>
+                    <p:growl id="growl" life="2000"/> 
+                    <table cellspacing="5">
+                        <tr>
+                            <td>
+                                <span style="color:white;font-size:15px">Size :</span> 
+                            </td>
+                            <td>
+                                <p:selectOneMenu id="prod_size" value="#{viewDetailedManagedBean.sizeSelected}" required="true" requiredMessage="Please select size.">
+                                    <f:selectItem itemLabel="Select Size" itemValue="" noSelectionOption="true" />
+                                    <f:selectItems value="#{viewDetailedManagedBean.sizeDropDown}" />
+                                </p:selectOneMenu>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <span style="color:white;font-size:15px">Quantity :</span> 
+                            </td>
+                            <td>
+                                <p:spinner id="quantity" value="#{viewDetailedManagedBean.quantity}" required="true" label="quantity" requiredMessage="Please enter quantity." size="4" min="1">
+                                    <p:ajax listener="#{viewDetailedManagedBean.qtyOnChange}" update="#{p:component('qtyOnChange')}" process="@this" />   
+                                </p:spinner> 
+                            </td>
+                        </tr>
+                        <tr>
+
+                            <td colspan="2">
+                                <br />
+                                <span style="color:white;font-size:12px; text-align: justify; word-break: break-all">#{viewDetailedManagedBean.product.description}</span> 
+
+                            </td>
+                        </tr>
+                    </table>
+
+                    <div style="margin-top:10px;">
+                        <p:commandButton style="width: 300px;font-size: 20px;height: 40px;" value="Add to Cart" icon="fa fa-plus-circle" actionListener="#{viewDetailedManagedBean.addToCart}" update="growl #{p:component('notiNum')}" rendered="#{sessionScope['isLogin']}" /> 
+                        <p:commandButton style="width: 300px;font-size: 20px;height: 40px;" value="Add to Cart" icon="fa fa-plus-circle" actionListener="#{viewDetailedManagedBean.addToCart}" update="growl #{p:component('notiNumNoLogin')}" rendered="#{!sessionScope['isLogin']}" />
+                    </div>
+
+                </h:form>
+
+            </p:panel>
+
+        </p:panel>
+
     </ui:define>
 
     <ui:define name="center" >
-        <p:panel styleClass="center_width">
-                <h:form id="form">
-                    <p:panel style="text-align: center;font-size:18px">
-                        <f:facet name="header">
-                                #{viewDetailedManagedBean.product.productName}
-                            </f:facet>
-                        <p:galleria value="#{viewDetailedManagedBean.images}" var="image">
-                            
-                            <h:graphicImage name="#{image}" />
-                        </p:galleria>
-                    </p:panel>
-                </h:form>
-            </p:panel>
-                  
-    </ui:define>
-    
-    <ui:define name="east">
-        <p:panel style="margin-top: 10px;">
+        <p:panel style="margin-left: -10px">
+            <h:form id="form">
+                <p:panel style="text-align: center;font-size:18px">
                     <f:facet name="header">
-                        REVIEWS
+                        #{viewDetailedManagedBean.product.productName}
                     </f:facet>
-                <p:scrollPanel mode="native" style="width:500px;height:500px;margin-left: -20px;">
-                    <p:repeat value="#{viewAllProductsManagedBean.products}" var="reviewProd">
-                        <p:panelGrid columns="2" style="height:100px" >
-                            <p:row>
-                                <p:column rowspan="2">
-                                    <p:graphicImage name="images/avatar_review.png" width="100px" height="100px" />
-                                </p:column>
-                                
-                            </p:row>
+                    <p:galleria value="#{viewDetailedManagedBean.images}" var="image">
 
-                            <p:row>
-                                 <p:column style="text-align: center">
-                                   NAME
-                                </p:column>
-                                <p:column style="text-align: center">
-                                    <p:rating value="4" readonly="true" />
-                                </p:column>
-                               
-                                <br />
-                                <p:column>REVIEW REVIEW REVIEW REVIEW REVIEW REVIEW REVIEW REVIEW REVIEW REVIEW REVIEW REVIEW </p:column>
-                            </p:row>
+                        <h:graphicImage name="#{image}" />
+                    </p:galleria>
+                </p:panel>
+            </h:form>
+        </p:panel>
 
-                        </p:panelGrid>
-                        <br />
-                    </p:repeat>
-
-               </p:scrollPanel>
-            </p:panel>
     </ui:define>
-    
+
+    <ui:define name="east">
+        <p:panel style="margin-top: 13px; width: 450.5px; text-align: center">
+            <f:facet name="header">
+                REVIEWS
+            </f:facet>
+            <br />
+            <h:outputText value="THERE ARE NO REVIEWS FOR THIS PRODUCT" rendered="#{empty viewDetailedManagedBean.productReviews}" />
+            <p:scrollPanel mode="native" style="width:447px;height:500px;margin-left: -20px;" rendered="#{not empty viewDetailedManagedBean.productReviews}">
+                <p:repeat value="#{viewDetailedManagedBean.productReviews}" var="reviewProd">
+                    <p:panelGrid columns="2" style="height:100px" >
+                        <p:row>
+                            <p:column rowspan="2">
+                                <p:graphicImage name="images/avatar_review.png" width="100px" height="100px" />
+                            </p:column>
+
+                        </p:row>
+
+                        <p:row>
+                            <p:column style="text-align: center">
+                                #{reviewProd.customerOrder.customer.firstName} #{reviewProd.customerOrder.customer.lastName}
+                            </p:column>
+                            <p:column style="text-align: center">
+                                <p:rating value="#{reviewProd.rating}" readonly="true" />
+                            </p:column>
+
+                            <br />
+                            <p:column>#{reviewProd.review}</p:column>
+                        </p:row>
+                    </p:panelGrid>
+                    <br />
+                </p:repeat>
+            </p:scrollPanel>
+        </p:panel>
+    </ui:define>
 </ui:composition>

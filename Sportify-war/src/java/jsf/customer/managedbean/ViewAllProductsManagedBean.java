@@ -1,6 +1,7 @@
 package jsf.customer.managedbean;
 
 import ejb.session.stateless.ProductControllerLocal;
+import ejb.session.stateless.ProductReviewControllerLocal;
 import entity.Product;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -21,6 +22,9 @@ public class ViewAllProductsManagedBean implements Serializable {
 
     @EJB
     private ProductControllerLocal productController;
+
+    @EJB
+    private ProductReviewControllerLocal productReviewController;
 
     private List<Product> products;
     private Map<String, Map<String, String>> data = new HashMap<String, Map<String, String>>();
@@ -81,6 +85,11 @@ public class ViewAllProductsManagedBean implements Serializable {
 
         System.out.println(Collections.singletonList(data));
         System.out.println(Collections.singletonList(leagueCountries));
+    }
+
+    public int calculateAverageRating(long productId) {
+        int averageRating = productReviewController.getAverageProductRating(productId);
+        return averageRating;
     }
 
     public void filterByCountry() {

@@ -124,32 +124,32 @@ public class DataInitialization {
         
         Date bdaeDate2 = new Date();
         cal.set(1994, Calendar.MARCH, 13);
-        bdaeDate = cal.getTime();
+        bdaeDate2 = cal.getTime();
         
         Date bdaeDate3 = new Date();
         cal.set(1992, Calendar.DECEMBER, 1);
-        bdaeDate = cal.getTime();
+        bdaeDate3 = cal.getTime();
         
         Date bdaeDate4 = new Date();
         cal.set(1989, Calendar.JULY, 3);
-        bdaeDate = cal.getTime();
+        bdaeDate4 = cal.getTime();
         
         Date bdaeDate5 = new Date();
         cal.set(1981, Calendar.MAY, 8);
-        bdaeDate = cal.getTime();
+        bdaeDate5 = cal.getTime();
         
         //Create new Customer . Date of birth format is DD-MM-YYYY
-        Customer newCustomer1 = new Customer("Jon", "Tan", "Address 1 Avenue 3", "123456", bdaeDate, "Daviddetan93@gmail.com", "12345678", 0, date);
-        Customer newCustomer2 = new Customer("Paul", "Ang", " Address 2 Avenue 4", "546162", bdaeDate2, "paul80@gmail.com", "12345678", 0, date);
-        Customer newCustomer3 = new Customer("Alan", "Chua", "Address 3 avenue 21", "318282", bdaeDate3, "alan_chua@gmail.com", "12345678", 0, date2);
-        Customer newCustomer4 = new Customer("Steven", "Lim", "AMK 21 ave 21", "310292", bdaeDate4, "setve@gmail.com", "12345678", 0, date2);
-        Customer newCustomer5 = new Customer("Liew Shan", "Wei", "Yishun Blk 22", "453121", bdaeDate5, "shanwLiew@gmail.com", "12345678", 0, date3);
-        Customer newCustomer6 = new Customer("Danny", "Poo", "AMK 21 ave 23", "310293", bdaeDate3, "danny@gmail.com", "12345678", 0, date3);
-        Customer newCustomer7 = new Customer("Dennis", "Ang", "Kovan 21 Street 1", "541213", bdaeDate2, "dennis@gmail.com", "12345678", 0, date3);
-        Customer newCustomer8 = new Customer("Derian", "Lim", "Punggo1 ave 51", "453123", bdaeDate4, "derian@gmail.com", "12345678", 0, date3);
-        Customer newCustomer9 = new Customer("Jason", "Ang", "Jurong East 45", "103021", bdaeDate5, "jason@gmail.com", "12345678", 0, date3);
-        Customer newCustomer10 = new Customer("Katie", "Perry", "Serangoo North ave 45", "6262523", bdaeDate4, "katPer@gmail.com", "12345678", 0, date4);
-        Customer newCustomer11 = new Customer("Steve", "Tan", "Tampiness st 21 block 21", "372626", bdaeDate, "steveTan@gmail.com", "12345678", 0, date4);
+        Customer newCustomer1 = new Customer("Jon", "Tan", "8565656", "Male", "Address 1 Avenue 3", "123456", bdaeDate, "Daviddetan93@gmail.com", "12345678", 0, date);
+        Customer newCustomer2 = new Customer("Paul", "Ang", "6545454", "Male", " Address 2 Avenue 4", "546162", bdaeDate2, "paul80@gmail.com", "12345678", 0, date);
+        Customer newCustomer3 = new Customer("Alan", "Chua", "837373733", "Male", "Address 3 avenue 21", "318282", bdaeDate3, "alan_chua@gmail.com", "12345678", 0, date2);
+        Customer newCustomer4 = new Customer("Steven", "Lim", "454545", "Female", "AMK 21 ave 21", "310292", bdaeDate4, "setve@gmail.com", "12345678", 0, date2);
+        Customer newCustomer5 = new Customer("Liew Shan", "Wei", "83737453733", "Male", "Yishun Blk 22", "453121", bdaeDate5, "shanwLiew@gmail.com", "12345678", 0, date3);
+        Customer newCustomer6 = new Customer("Danny", "Poo", "837365573733", "Female", "AMK 21 ave 23", "310293", bdaeDate3, "danny@gmail.com", "12345678", 0, date3);
+        Customer newCustomer7 = new Customer("Dennis", "Ang", "837373733", "Male", "Kovan 21 Street 1", "541213", bdaeDate2, "dennis@gmail.com", "12345678", 0, date3);
+        Customer newCustomer8 = new Customer("Derian", "Lim", "fdff", "Female", "Punggo1 ave 51", "453123", bdaeDate4, "derian@gmail.com", "12345678", 0, date3);
+        Customer newCustomer9 = new Customer("Jason", "Ang", "837373733", "Male", "Jurong East 45", "103021", bdaeDate5, "jason@gmail.com", "12345678", 0, date3);
+        Customer newCustomer10 = new Customer("Katie", "Perry", "837373733", "Female", "Serangoo North ave 45", "6262523", bdaeDate4, "katPer@gmail.com", "12345678", 0, date4);
+        Customer newCustomer11 = new Customer("Steve", "Tan", "837373733", "Male", "Tampiness st 21 block 21", "372626", bdaeDate, "steveTan@gmail.com", "12345678", 0, date4);
 
         try {
             newCustomer1 = customerControllerLocal.createNewCustomer(newCustomer1);

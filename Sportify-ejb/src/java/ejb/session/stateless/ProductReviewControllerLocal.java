@@ -5,13 +5,13 @@
  */
 package ejb.session.stateless;
 
-import entity.CustomerOrder;
-import entity.Product;
 import entity.ProductReview;
 import java.util.List;
 
 public interface ProductReviewControllerLocal {
     public ProductReview CreateNewProductReview (ProductReview newProductReview);
     public List<ProductReview> retrieveProductReviewsByProductId (int productId);
-    public ProductReview getProductReview(Product product, CustomerOrder customerOrder);
+    public String retrieveCustomerOrderProductReview (long productId, long customerOrderId);
+    public int retrieveCustomerOrderProductRating(long productId, long customerOrderId);
+    public int getAverageProductRating(long productId);
 }

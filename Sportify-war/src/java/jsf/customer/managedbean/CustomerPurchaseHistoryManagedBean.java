@@ -1,7 +1,7 @@
 package jsf.customer.managedbean;
 
-import ejb.session.stateless.CustomerOrderControllerRemote;
-import ejb.session.stateless.ProductReviewControllerRemote;
+import ejb.session.stateless.CustomerOrderControllerLocal;
+import ejb.session.stateless.ProductReviewControllerLocal;
 import entity.Customer;
 import entity.CustomerOrder;
 import entity.Product;
@@ -22,10 +22,10 @@ import javax.faces.view.ViewScoped;
 public class CustomerPurchaseHistoryManagedBean implements Serializable {
 
     @EJB
-    private CustomerOrderControllerRemote customerOrderController;
+    private CustomerOrderControllerLocal customerOrderController;
     
     @EJB
-    private ProductReviewControllerRemote productReviewController;
+    private ProductReviewControllerLocal productReviewController;
 
     private List<CustomerOrder> getCustOrders;
     private Customer customer;
@@ -53,8 +53,24 @@ public class CustomerPurchaseHistoryManagedBean implements Serializable {
         //productReview = productReviewController.getProductReview();
     }
     
-    public ProductReview getProductReview (Product product, CustomerOrder customerOrder){
-        return productReview = productReviewController.getProductReview(product, customerOrder);
+    public String retrieveCustomerOrderProductReview (long productId, long customerOrderId){
+        String productReviewStr = productReviewController.retrieveCustomerOrderProductReview(productId, customerOrderId);
+        return productReviewStr;
+//        if (productReview == null){
+//            return "";
+//        }
+//        System.out.println("MY REVIEW: " + productReview.getReview());
+//        return productReview.getReview();
+    }
+    
+    public int retrieveCustomerOrderProductRating (long productId, long customerOrderId){
+        int productRatingInt = productReviewController.retrieveCustomerOrderProductRating(productId, customerOrderId);
+        return productRatingInt;
+//        if (productReview == null){
+//            return 0;
+//        }
+//        System.out.println("RATING: " + productReview.getRating());
+//        return productReview.getRating();
     }
 
     public String shopNowRedirect() {

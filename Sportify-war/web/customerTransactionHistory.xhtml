@@ -133,7 +133,7 @@
                             </f:facet>
                             <p:panelGrid>
                                 <!--looping each product for this order-->
-                                <c:forEach items="#{custOrder.value}" var="productDetails">
+                                <ui:repeat value="#{custOrder.value}" var="productDetails">
                                     <p:row>
                                         <p:column>
                                             <p:graphicImage name="#{productDetails.productPurchase.images[0].imagePath}"  />
@@ -148,20 +148,20 @@
                                             UNIT PRICE: SGD #{productDetails.productPurchase.price}
                                             <br />
                                             <br />
+                                           
+                                           
+                                            <h:outputText value="#{customerPurchaseHistoryManagedBean.retrieveCustomerOrderProductReview(productDetails.productPurchase.id, custOrder.key.id)}" rendered="#{not empty customerPurchaseHistoryManagedBean.retrieveCustomerOrderProductReview(productDetails.productPurchase.id, custOrder.key.id)}" />
 
-                                            <h:outputLabel value="MY REVIEW" rendered="#{customerPurchaseHistoryManagedBean.getProductReview(productDetails.productPurchase, custOrder) != null}"></h:outputLabel>
-                                            <h:outputLabel value="#{customerPurchaseHistoryManagedBean.productReview.review}" rendered="#{customerPurchaseHistoryManagedBean.getProductReview(productDetails.productPurchase, custOrder) != null}"></h:outputLabel>
-                                            <p:rating readonly="true" value="#{customerPurchaseHistoryManagedBean.productReview.rating}" rendered="#{customerPurchaseHistoryManagedBean.getProductReview(productDetails.productPurchase, custOrder) != null}"/>
                                             <br />
                                         </p:column>
                                     </p:row>
                                     <p:row>
                                         <p:column style="text-align:center">
-                                            <p:rating readonly="true" value="4"/>
+                                            <p:rating readonly="true" value="#{customerPurchaseHistoryManagedBean.retrieveCustomerOrderProductRating(productDetails.productPurchase.id, custOrder.key.id)}" rendered="#{customerPurchaseHistoryManagedBean.retrieveCustomerOrderProductRating(productDetails.productPurchase.id, custOrder.key.id) != -1}"/>
                                             <br /> 
                                         </p:column>
                                     </p:row>
-                                </c:forEach>
+                                </ui:repeat>
                             </p:panelGrid>
                         </p:panel>
                     </c:forEach>

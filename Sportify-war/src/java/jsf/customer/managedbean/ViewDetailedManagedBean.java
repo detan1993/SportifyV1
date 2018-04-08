@@ -3,6 +3,7 @@ package jsf.customer.managedbean;
 import ejb.session.stateless.ProductControllerLocal;
 import entity.Images;
 import entity.Product;
+import entity.ProductReview;
 import entity.ProductSize;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -34,16 +35,14 @@ public class ViewDetailedManagedBean implements Serializable {
     private Map<String, String> sizeDropDown = new HashMap<String, String>();
     private ArrayList<String[]> checkIfCartExist;
     private double priceOnChange;
+    private List<ProductReview> productReviews;
 
     @PostConstruct
     public void postConstruct() {
-        
-//         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("tempTeamName", null);
-//         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("tempCountry", null);
-//          FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("tempProductId", null);
 
         product = new Product();
         images = new ArrayList<>();
+        productReviews = new ArrayList<>();
 
         //sizesAvailable = new ArrayList<>();
         List<Images> getProdImages = new ArrayList<Images>();
@@ -85,7 +84,11 @@ public class ViewDetailedManagedBean implements Serializable {
                             skipFirstImage++;
                         }
                     }
+
+                    //get reviews for this product
+                    productReviews = product.getProductReviews();
                 }
+
             }
         } catch (Exception ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred while retrieving Product Id. " + ex.getMessage(), null));
@@ -243,5 +246,13 @@ public class ViewDetailedManagedBean implements Serializable {
 
     public void setPriceOnChange(double priceOnChange) {
         this.priceOnChange = priceOnChange;
+    }
+
+    public List<ProductReview> getProductReviews() {
+        return productReviews;
+    }
+
+    public void setProductReviews(List<ProductReview> productReviews) {
+        this.productReviews = productReviews;
     }
 }
