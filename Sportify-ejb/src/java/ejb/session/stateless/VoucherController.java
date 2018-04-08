@@ -6,6 +6,7 @@
 package ejb.session.stateless;
 
 import entity.Voucher;
+import java.util.Date;
 import java.util.List;
 import javax.ejb.Local;
 import javax.ejb.Remote;
@@ -42,4 +43,18 @@ public class VoucherController implements VoucherControllerRemote, VoucherContro
       Query query = em.createQuery("SELECT v FROM Voucher v");
       return query.getResultList();
     }
+    
+    @Override
+     public Voucher retrieveCustomerVoucher(String promocode, String customeremail){
+         Query q = em.createQuery("SELECT v FROM Voucher v JOIN v.customerVouchers cv JOIN cv.customer c WHERE c.email = :email AND v.voucherCode = :promocode AND v.dateExpired > :todaydate AND cv.customerOrder IS NULL");
+         q.setParameter("promocode", promocode);
+         q.setParameter("email", customeremail);
+         q.setParameter("todaydate", new Date());
+         Voucher v = new Voucher();
+         if (!q.getResultList().isEmpty()){
+             v = (Voucher)q.getResultList().get(0);
+             return v;
+         }
+         return v;
+     }
 }

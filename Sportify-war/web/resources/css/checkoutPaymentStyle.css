@@ -1,0 +1,39 @@
+.checkoutBtn{
+    border: none ;
+    color: white;
+    width: 200px ; 
+    background-color: #fa5400 !important;
+    height: 30px ;
+    font-family: 'TradeGothicW02-BoldCn20 675505',Arial,sans-serif !important;
+    font-size: 15px ;
+    font-weight: bold 
+}
+
+.ui-state-disabled, .ui-widget-content .ui-state-disabled, .ui-widget-header .ui-state-disabled{
+    opacity: .6;
+}
+
+.ui-accordion .ui-accordion-content {
+    overflow: visible !important;
+}
+
+.ui-accordion .ui-accordion-header{
+    padding:.7em .7em .7em 2.2em;
+    width:150px;
+}
+
+.ui-accordion .ui-accordion-header .ui-icon{
+    display:none;
+}
+
+.ui-state-active, .ui-widget-content .ui-state-active, .ui-widget-header .ui-state-active{
+    color:white !important;
+    font-weight: normal;
+    border: 1px solid #373740;
+}
+
+.ui-state-disabled, .ui-widget-content .ui-state-disabled, .ui-widget-header .ui-state-disabled{
+    opacity: 1 !important;
+    margin-bottom: 10px !important;
+    background-color: #191919 !important;
+}

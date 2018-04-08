@@ -11,21 +11,41 @@
             <h:outputStylesheet library="css" name="checkoutStyle.css" />
             <div id="left" align="left" style="margin-left: 100px">
                 <h:form>
-                    <p:dataScroller value="#{customerCheckOutManagedBean.a}" var="product" chunkSize="10">
+                    <p:dataGrid value="You have no items in your shopping cart!" rendered="#{empty customerCheckOutManagedBean.cartitems}">
                         <f:facet name="header">
                             Your Cart
                         </f:facet>
-                        <h:panelGrid columns="2" style="width:100%" columnClasses="logo,detail">
-                            <p:graphicImage name="images/logo.png"/>
+                        <p:outputPanel style="margin-top: 20px; width: 300px">
+                            <h:outputText value="You have no items in your shopping cart!" style="font-weight: bold;color: white; font-size: 25px"/>
+                        </p:outputPanel>    
+                      </p:dataGrid>
+                    <p:dataGrid value="#{customerCheckOutManagedBean.cartitems}" var="cartitem" columns="1" rendered="#{not empty customerCheckOutManagedBean.cartitems}">
+                        <f:facet name="header">
+                            Your Cart
+                        </f:facet>
+                        <h:panelGrid styleClass="panelGrid" columns="3" style="width:150%" columnClasses="logo,detail">
+                            <p:graphicImage style="height:125px; width: 125px" name="#{cartitem[6]}"/>
                             <p:outputPanel>
                                 <h:panelGrid columns="2" cellpadding="5">
-                                    <h:outputText value="#{product.productName}" style="font-weight: bold"></h:outputText>
-                                    <h:outputText value="#{product.sizes.get(0)}" style="font-weight: bold"></h:outputText>
-                                    <h:outputText value="$#{product.price}" style="font-weight: bold"></h:outputText>
+                                    <h:outputText value="Product:" style="font-weight: bold"/>
+                                    <h:outputText value="#{cartitem[3]}"></h:outputText>
+                                   
+                                    <h:outputText value="Size:" style="font-weight: bold"/>
+                                    <h:outputText value="#{cartitem[1]}"></h:outputText>
+                                   
+                                     <h:outputText value="Qty" style="font-weight: bold"/>
+                                       <h:outputText value="#{cartitem[2]}"></h:outputText>
+                                    
+                                    <h:outputText value="Product code:" style="font-weight: bold" />
+                                    <h:outputText value="#{cartitem[4]}"></h:outputText>
+                                    
+                                   <h:commandButton value="Remove"></h:commandButton>
                                 </h:panelGrid>
                             </p:outputPanel>
+                             <h:outputText value="$#{cartitem[5]}" style="font-weight: bold"></h:outputText>
                         </h:panelGrid>
-                    </p:dataScroller>
+                     
+                    </p:dataGrid>
                 </h:form> 
             </div>
 
@@ -33,18 +53,22 @@
                 <table class="table" align="center">
                     <tr><td class="rowspace"><h2 align="left">SUMMARY</h2></td></tr><br></br>
                     <tr><td class="rowSpaceFirst" colspan="2">
-                            <p:accordionPanel><p:tab title="DO YOU HAVE A PROMO CODE?">
+                            <p:accordionPanel activeIndex="null"><p:tab title="DO YOU HAVE A PROMO CODE?">
+                                    <h:form>
                                     <h:panelGrid class="ui-accordion-content" columns="2">
-                                        <p:inputText styleClass="ui-inputfield, .ui-widget-content .ui-inputfield, .ui-widget-header .ui-inputfield"/>
-                                        <h:button value="Apply" class="applyBtn"></h:button>
+                                        <p:inputText id="promofield" value="#{customerCheckOutManagedBean.promoCode}" styleClass="ui-inputfield, .ui-widget-content .ui-inputfield, .ui-widget-header .ui-inputfield"/>
+                                        <p:growl id="promogrowl" showDetail="true" />  
+                                        <p:commandButton value="Apply" update="promogrowl,lbl1,lbl2" actionListener="#{customerCheckOutManagedBean.checkPromoCode}" styleClass="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only applyBtn"></p:commandButton>
                                     </h:panelGrid>
-                                </p:tab></p:accordionPanel>
+                                        </h:form>
+                                </p:tab>
+                            </p:accordionPanel>
                         </td></tr>            
-                    <tr><td class="rowSpace">SUBTOTAL</td><td class="rowSpace" align="right">$100</td></tr>        
-                    <tr><td class="rowSpace">ESTIMATED SHIPPING COST</td><td class="rowSpace" align="right">$20</td></tr>       
+                    <tr><td class="rowSpace">SUBTOTAL</td><td class="rowSpace" align="right"><h:outputLabel id="lbl1" value="$#{customerCheckOutManagedBean.subtotaldisplay}"></h:outputLabel></td></tr>        
+                    <tr><td class="rowSpace">ESTIMATED SHIPPING COST</td><td class="rowSpace" align="right">$5</td></tr>       
                     <tr><td class="rowSpace">STANDARD FREE</td><td class="rowSpace" align="right">Arrives in 2 - 3 days</td></tr>             
-                    <tr><td class="rowSpace">TOTAL</td><td class="rowSpace" align="right">$120</td></tr>
-                    <tr><td class="rowSpaceLast" colspan="3" align="center"> <h:button value="Checkout" styleClass="ui-widget input ui-widget select ui-widget textarea ui-widget button" class="checkoutBtn"></h:button></td></tr>
+                    <tr><td class="rowSpace">TOTAL</td><td class="rowSpace" align="right"><h:outputLabel id="lbl2" value="$#{customerCheckOutManagedBean.totaldisplay}"></h:outputLabel></td></tr>
+                    <tr><td class="rowSpaceLast" colspan="3" align="center"> <h:button value="Checkout" outcome="customerCheckoutPayment" styleClass="ui-widget input ui-widget select ui-widget textarea ui-widget button" class="checkoutBtn"></h:button></td></tr>
                 </table>
             </div>
             <div class="needHelp">

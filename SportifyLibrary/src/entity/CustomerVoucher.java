@@ -35,9 +35,10 @@ public class CustomerVoucher implements Serializable {
     public CustomerVoucher() {
     }
 
-    public CustomerVoucher(CustomerOrder customerOrder, Customer customer) {
+    public CustomerVoucher(CustomerOrder customerOrder, Customer customer, Voucher voucher) {
         this.customerOrder = customerOrder;
         this.customer = customer;
+        this.voucher = voucher;
     }
 
     

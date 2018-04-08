@@ -41,6 +41,12 @@ public class CustomerController implements CustomerControllerRemote, CustomerCon
 
         return newCustomer;
     }
+    
+    @Override
+     public Customer updateCustomer(Customer c){
+         em.merge(c);
+         return c;
+     }
 
     @Override
     public List<Customer> retrieveCustomer() {

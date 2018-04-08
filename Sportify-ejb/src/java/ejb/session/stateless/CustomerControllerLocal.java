@@ -19,4 +19,5 @@ public interface CustomerControllerLocal {
 
     List<Customer> retrieveCustomerByMonth(int month);
     public boolean checkEmailAlreadyExist(String email);
+    public Customer updateCustomer(Customer c);
 }

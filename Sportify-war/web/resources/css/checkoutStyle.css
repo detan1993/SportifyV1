@@ -61,15 +61,15 @@ and open the template in the editor.
     font-weight: bold !important;
 }
 
-.applyBtn{
-    border: none ;
+.ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only applyBtn{
+    border: none !important;
     color: black ;
     font-family: 'TradeGothicW02-BoldCn20 675505',Arial,sans-serif;
-    font-size: 12px;
-    float: left;
-    background-color: #F7F7F7;
-    margin-left: 5px;
-    height: 25px;
+    font-size: 12px !important;
+    float: left !important;
+    background-color: #F7F7F7 !important;
+    margin-left: 5px !important;
+    height: 25px !important;
 }
 
 .needHelp{
@@ -107,5 +107,17 @@ and open the template in the editor.
 
 .ui-inputfield, .ui-widget-content .ui-inputfield, .ui-widget-header .ui-inputfield{
     background-color: white !important;
-    color:white;
+    color:black !important; 
+}
+
+.panelGrid{
+    background-color: white !important;
+}
+
+.mastercard{
+    background-image: url("images/master.png")
+}
+
+.visa{
+    background-image: url("images/visa.png");
 }

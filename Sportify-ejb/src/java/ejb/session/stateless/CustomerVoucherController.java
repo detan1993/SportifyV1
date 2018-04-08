@@ -5,7 +5,10 @@
  */
 package ejb.session.stateless;
 
+import entity.Customer;
+import entity.CustomerOrder;
 import entity.CustomerVoucher;
+import entity.Voucher;
 import java.util.List;
 import javax.ejb.Local;
 import javax.ejb.Remote;
@@ -42,4 +45,22 @@ public class CustomerVoucherController implements CustomerVoucherControllerRemot
         Query query = em.createQuery("SELECT v FROM CustomerVoucher v");
         return query.getResultList();
     }
+    
+    @Override
+     public CustomerVoucher retrieveCustomerVoucher(Customer c, Voucher v){
+         Query q = em.createQuery("SELECT cv FROM CustomerVoucher cv WHERE cv.customer.id =:cid AND cv.voucher.id =:vid");
+         q.setParameter("cid", c.getId());
+         q.setParameter("vid", v.getId());
+         return (CustomerVoucher)q.getSingleResult();
+     }
+     
+     @Override 
+     public void useCustomerVoucher(CustomerOrder co, Voucher v, CustomerVoucher cv){
+         v.setQuantity(v.getQuantity() - 1);
+         co.setCustomerVoucher(cv);
+         cv.setCustomerOrder(co);
+         em.merge(co);
+         em.merge(cv);
+         em.merge(v);
+     }
 }

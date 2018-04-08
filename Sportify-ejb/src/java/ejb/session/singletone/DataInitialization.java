@@ -7,23 +7,28 @@ package ejb.session.singletone;
 
 import ejb.session.stateless.CustomerControllerLocal;
 import ejb.session.stateless.CustomerOrderControllerRemote;
+import ejb.session.stateless.CustomerVoucherControllerLocal;
 import ejb.session.stateless.ImageControllerLocal;
 import ejb.session.stateless.ProductControllerLocal;
 import ejb.session.stateless.ProductPurchaseControllerLocal;
 import ejb.session.stateless.ProductReviewControllerRemote;
 import ejb.session.stateless.ProductSizeControllerLocal;
 import ejb.session.stateless.StaffControllerLocal;
+import ejb.session.stateless.VoucherControllerLocal;
 import entity.Customer;
 import entity.CustomerOrder;
+import entity.CustomerVoucher;
 import entity.Images;
 import entity.Product;
 import entity.ProductPurchase;
 import entity.ProductReview;
 import entity.ProductSize;
 import entity.Staff;
+import entity.Voucher;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -66,6 +71,12 @@ public class DataInitialization {
 
     @EJB(name = "ImageControllerLocal")
     private ImageControllerLocal imageControllerLocal;
+    
+    @EJB(name = "VoucherControllerLocal")
+    private VoucherControllerLocal voucherControllerLocal;
+    
+    @EJB(name = "CustomerVoucherControllerLocal")
+    private CustomerVoucherControllerLocal customerVoucherControllerLocal;
 
     @PersistenceContext(unitName = "Sportify-ejbPU")
     private EntityManager em;
@@ -161,7 +172,8 @@ public class DataInitialization {
         } catch (CustomerSignUpException ex) {
 
         }
-
+        
+     
         //create new Staff 
         Staff newStaff = new Staff("David", "Tan", "E0002311@u.nus.edu", "12345678", "Manager");
         staffControllerLocal.createStaff(newStaff);
@@ -605,6 +617,16 @@ public class DataInitialization {
             
             cust1OrderFeb.getProductReviews().add(prodReview1);
             cust1OrderFeb.getProductReviews().add(prodReview2);
+            
+            //Create and allocate voucher
+            List<CustomerVoucher>cvlist = newCustomer1.getCustomerVouchers();
+            Date voucherexpiry = new GregorianCalendar(2019, 5, 25).getTime();
+            Voucher voucher1 = new Voucher(20.00,5,"AXDA314A","Voucher",voucherexpiry,cvlist);
+            voucherControllerLocal.createNewVoucher(voucher1);
+            CustomerVoucher cv = customerVoucherControllerLocal.createNewCustomerVoucher(new CustomerVoucher(null,newCustomer1,voucher1));
+            cv.setVoucher(voucher1);
+            cvlist.add(cv);
+       
 
             CustomerOrder cust2OrderJan = new CustomerOrder(352.35, 20, dateJan, "Delivered", newCustomer2);
             cust2OrderJan = customerOrderControllerLocal.CreateNewCustomerOrder(cust2OrderJan);
