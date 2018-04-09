@@ -110,7 +110,10 @@ public class StaffVoucherManagedBean implements Serializable{
                       customerVoucherControllerLocal.createNewCustomerVoucher(cv);
                 }
             }
-
+          
+            vouchers.add(newVoucher);
+            newVoucher = new Voucher();
+            
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New voucher created successfully (Voucher ID: " + newVoucher.getId() + ")", null));
         }
         catch(Exception ex)

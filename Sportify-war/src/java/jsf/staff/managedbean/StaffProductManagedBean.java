@@ -45,14 +45,12 @@ public class StaffProductManagedBean  implements Serializable{
     private Product selectedProductsToUpdate;
     private Product selectedProductToDelete;
     private List<Product> filteredProducts;
-    private List<Product> filteredLowStockProducts; //this might not be needed. 
     
     public StaffProductManagedBean() {
         products = new ArrayList<>();
         lowStockProducts = new ArrayList<>();
         newProduct = new Product();
         filteredProducts = new ArrayList<>();
-        filteredLowStockProducts = new ArrayList<>();
     }
     
     
@@ -61,6 +59,7 @@ public class StaffProductManagedBean  implements Serializable{
         
         //retrieve list of products
         products = productControllerLocal.retrieveProductIncludingInactive();
+        System.out.println("PRoducts retrieved: " + products.size());
         newProduct = new Product();
         ProductSize s = new ProductSize("",0);
         newProduct.getSizes().add(s);
@@ -70,8 +69,6 @@ public class StaffProductManagedBean  implements Serializable{
         //put the products into the filter list . This is for the facelet view 
         filteredProducts = products;
         lowStockProducts = productControllerLocal.retrieveProductsRunningLow();
-        filteredLowStockProducts =  lowStockProducts;
-        
     }
     
     public void createNewProduct(ActionEvent event){
@@ -85,8 +82,10 @@ public class StaffProductManagedBean  implements Serializable{
             products.add(newProductRecord);
             filteredProducts.add(newProductRecord);
             
+            
+            products.add(newProduct);
             newProduct = new Product();
-
+            
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New product created successfully (Product ID: " + newProductRecord.getId() + ")", null));
         }
         catch(Exception ex)
@@ -101,7 +100,9 @@ public class StaffProductManagedBean  implements Serializable{
             for(ProductSize ps : selectedProductsToView.getSizes()){
                 productSizeControllerLocal.updateSizeForProduct(ps);
             }
-             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Product updated successfully (Product ID: " + selectedProductsToView.getId() + ")", null));
+            
+            products = productControllerLocal.retrieveProductIncludingInactive();
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Product updated successfully (Product ID: " + selectedProductsToView.getId() + ")", null));
             
         }catch(Exception ex){
               FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred while updating the product: " + ex.getMessage(), null));
@@ -351,20 +352,6 @@ public class StaffProductManagedBean  implements Serializable{
      */
     public void setLowStockProducts(List<Product> lowStockProducts) {
         this.lowStockProducts = lowStockProducts;
-    }
-
-    /**
-     * @return the filteredLowStockProducts
-     */
-    public List<Product> getFilteredLowStockProducts() {
-        return filteredLowStockProducts;
-    }
-
-    /**
-     * @param filteredLowStockProducts the filteredLowStockProducts to set
-     */
-    public void setFilteredLowStockProducts(List<Product> filteredLowStockProducts) {
-        this.filteredLowStockProducts = filteredLowStockProducts;
     }
     
 }

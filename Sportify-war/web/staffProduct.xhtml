@@ -146,7 +146,7 @@
         </p:tabView>
         
         <h:form id="form_viewProduct">
-            <p:dialog id="viewProductDialog" header="View Product Id:#{staffProductManagedBean.selectedProductsToView.id}" showEffect="slide" widgetVar="viewProductDialog" resizable="false" draggable="true">
+            <p:dialog id="viewProductDialog" header="View Product Id:#{staffProductManagedBean.selectedProductsToView.id}" showEffect="slide" widgetVar="viewProductDialog" resizable="false" draggable="true" style="margin-top:-200px;">
                 <f:facet name="header" class="dialog_header">
                     <p:commandButton value="Update button"  action="#{staffProductManagedBean.updateProduct}" />
                 </f:facet>
@@ -175,14 +175,9 @@
                         </p:panelGrid>
                     </p:tab>
                     <p:tab title="Product Images">
-                        <p:contentFlow value="#{staffProductManagedBean.selectedProductsToView.images}" var="image">
-                            <p:graphicImage value="#{image.imagePath}" styleClass="content" />
-                            <div class="caption">#{image}</div>
-                        </p:contentFlow>
-                        
                         <p:panelGrid id="pg_productImages">
-                            <p:galleria value="#{staffProductManagedBean.selectedProductsToView.images}" var="image" panelWidth="350" panelHeight="200" autoPlay="false">
-                                <p:graphicImage name="#{image.imagePath}"/>
+                            <p:galleria value="#{staffProductManagedBean.selectedProductsToView.images}" var="image" autoPlay="false">
+                                <h:graphicImage name="#{image.imagePath}"/>
                             </p:galleria>
                             <br/>
                             <p:fileUpload fileUploadListener="#{staffProductManagedBean.handleFileUpload}" mode="advanced" dragDropSupport="false"
