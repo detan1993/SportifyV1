@@ -41,11 +41,11 @@
                 border: 0 !important;
                 border-radius: 0px !important;
             }
-            
+
             .ui-panelgrid .ui-panelgrid-cell{
                 border-style:none !important;
             }
-            
+
             .ui-state-active a, .ui-state-active a:link, .ui-state-active a:visited{
                 color:greenyellow !important;
             }
@@ -73,7 +73,7 @@
                 <div class="home_links">
                     <table style="border:none !important;">
                         <tr>
-                             <td style="padding-right:20px;padding-left: 5px">
+                            <td style="padding-right:20px;padding-left: 5px">
                                 <p:link style="font-weight: normal; text-decoration: none" value="MY ACCOUNT" outcome="customerTransactionHistory" rendered="#{sessionScope['isLogin']}" />
                             </td>
                             <td>
@@ -99,16 +99,10 @@
                 <ui:insert name="east">east</ui:insert>
             </p:layoutUnit>
 
-            <p:layoutUnit position="south"  gutter="0">
-                <p:panelGrid style="width: 100%; border-style: none;">
-                    <p:row style="border-style: none;">
-                        <p:column style="text-align: left; border-style: none;"><h6>&copy; 2018 Sportify, All Rights Reserved. No portion of this site may be reproduced or duplicated without the express permission of Sportify.</h6></p:column>
-                    </p:row>
-                </p:panelGrid>
+            <p:layoutUnit position="south"  gutter="0" style="height:5px">
+              
+                <h6 style="text-align: center">&copy; 2018 Sportify, All Rights Reserved. No portion of this site may be reproduced or duplicated without the express permission of Sportify.</h6>
             </p:layoutUnit>
-
         </p:layout>
-
     </h:body>
-
 </html>

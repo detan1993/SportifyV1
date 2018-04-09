@@ -114,13 +114,11 @@ public class ViewDetailedManagedBean implements Serializable {
     }
 
     public void qtyOnChange() {
-        System.out.println("Inside method...");
         if (quantity != null && !quantity.equals("")) {
             int qty = Integer.parseInt(quantity);
             priceOnChange = qty * product.getPrice();
-            System.out.println("Inside if...");
+            priceOnChange = Math.round(priceOnChange*100.0)/100.0;
         }
-
     }
 
     public void addToCart() {

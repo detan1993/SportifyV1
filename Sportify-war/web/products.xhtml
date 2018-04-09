@@ -7,6 +7,14 @@
                 xmlns:h="http://xmlns.jcp.org/jsf/html"
                 xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
 
+    <head>
+        <style>
+            .ui-panel-content .ui-widget-content{
+                background-color:white !important;
+            }
+        </style>
+    </head>
+
     <ui:define name="west">
         <p:panel style="margin-top:-4px">
             <f:facet name="header">
@@ -18,6 +26,7 @@
                 <p:selectOneMenu id="country" value="#{viewAllProductsManagedBean.countrySelected}" style="width:150px">
                     <p:ajax listener="#{viewAllProductsManagedBean.filterByCountry}" update=":teamForm:teamDropDown :form:productGrid" />
                     <f:selectItem itemLabel="Select Country" itemValue="" noSelectionOption="true" />
+                    <f:selectItem itemLabel="View All Countries" itemValue="viewAll" noSelectionOption="true"/>
                     <f:selectItems value="#{viewAllProductsManagedBean.countries}" />
                 </p:selectOneMenu>
             </h:form>
@@ -27,6 +36,7 @@
                 <p:selectOneMenu id="teamDropDown" value="#{viewAllProductsManagedBean.teamSelected}" style="width:150px">
                     <p:ajax listener="#{viewAllProductsManagedBean.filterByTeam}" update=":form:productGrid" />
                     <f:selectItem itemLabel="Select Team" itemValue="" noSelectionOption="true" />
+                    <f:selectItem itemLabel="View All Clubs" itemValue="viewAll" noSelectionOption="true"/>
                     <f:selectItems value="#{viewAllProductsManagedBean.teams}" />
                 </p:selectOneMenu>
             </h:form>
@@ -38,17 +48,18 @@
         <h:outputStylesheet name="css/page_style.css"/>
         <!--       <link rel="stylesheet" href="resources/css/page_style.css" />-->
         <h:form id="form">            
-            <p:dataGrid styleClass="productsGrid" var="product" value="#{viewAllProductsManagedBean.products}" columns="4" layout="grid"
-                        rows="12" paginator="true" id="productGrid"
+            <p:dataGrid styleClass="productsGrid" var="product" value="#{viewAllProductsManagedBean.products}" columns="3" layout="tabular"
+                        paginator="true" id="productGrid"
                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                        rowsPerPageTemplate="6,12,16">
+                        rowsPerPageTemplate="6,12,18">
 
-                <p:panel header="#{product.productName}" style="text-align:center;">
-                    <h:panelGrid columns="1" style="width:100%">
 
-                        <p:panel style=" background-color: white;">
+                <h:panelGrid style="width:100%;">
+                    <div style="background-color:white">
+                    <p:panel header="#{product.productName}" style="text-align:center;">
+                        <p:panel>
                             <h:link outcome="detailedProduct">
-                                <p:graphicImage name="#{product.images[0].imagePath}" styleClass="products_img_display" />
+                                <p:graphicImage name="#{product.images[0].imagePath}" styleClass="products_img_display" style="border:20px solid white;" />
                                 <f:param name="productId" value="#{product.id}" />
                             </h:link>
                             <br/>
@@ -62,12 +73,13 @@
 
                         </p:panel>
 
-                        <f:facet name="footer">
-                            <p:commandButton value="Explore" action="#{viewAllProductsManagedBean.exploreRedirect(product.id)}" icon="fa fa-binoculars" styleClass="explore_div" />
-                        </f:facet>  
 
-                    </h:panelGrid>
-                </p:panel>
+                        <p:commandButton value="Explore" action="#{viewAllProductsManagedBean.exploreRedirect(product.id)}" icon="fa fa-binoculars" styleClass="explore_div" />
+
+                    </p:panel>
+                        </div>
+                </h:panelGrid>
+
             </p:dataGrid>
         </h:form>
     </ui:define>

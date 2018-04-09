@@ -71,10 +71,10 @@ public class DataInitialization {
 
     @EJB(name = "ImageControllerLocal")
     private ImageControllerLocal imageControllerLocal;
-    
+
     @EJB(name = "VoucherControllerLocal")
     private VoucherControllerLocal voucherControllerLocal;
-    
+
     @EJB(name = "CustomerVoucherControllerLocal")
     private CustomerVoucherControllerLocal customerVoucherControllerLocal;
 
@@ -117,27 +117,27 @@ public class DataInitialization {
         date3 = cal.getTime();
         cal.set(2018, Calendar.APRIL, 1);
         date4 = cal.getTime();
-        
+
         Date bdaeDate = new Date();
         cal.set(1993, Calendar.MAY, 13);
         bdaeDate = cal.getTime();
-        
+
         Date bdaeDate2 = new Date();
         cal.set(1994, Calendar.MARCH, 13);
         bdaeDate2 = cal.getTime();
-        
+
         Date bdaeDate3 = new Date();
         cal.set(1992, Calendar.DECEMBER, 1);
         bdaeDate3 = cal.getTime();
-        
+
         Date bdaeDate4 = new Date();
         cal.set(1989, Calendar.JULY, 3);
         bdaeDate4 = cal.getTime();
-        
+
         Date bdaeDate5 = new Date();
         cal.set(1981, Calendar.MAY, 8);
         bdaeDate5 = cal.getTime();
-        
+
         //Create new Customer . Date of birth format is DD-MM-YYYY
         Customer newCustomer1 = new Customer("Jon", "Tan", "8565656", "Male", "Address 1 Avenue 3", "123456", bdaeDate, "Daviddetan93@gmail.com", "12345678", 0, date);
         Customer newCustomer2 = new Customer("Paul", "Ang", "6545454", "Male", " Address 2 Avenue 4", "546162", bdaeDate2, "paul80@gmail.com", "12345678", 0, date);
@@ -164,12 +164,10 @@ public class DataInitialization {
             newCustomer10 = customerControllerLocal.createNewCustomer(newCustomer10);
             newCustomer11 = customerControllerLocal.createNewCustomer(newCustomer11);
 
-
         } catch (CustomerSignUpException ex) {
 
         }
-        
-     
+
         //create new Staff 
         Staff newStaff = new Staff("David", "Tan", "E0002311@u.nus.edu", "12345678", "Manager");
         staffControllerLocal.createStaff(newStaff);
@@ -603,26 +601,29 @@ public class DataInitialization {
 
             // create product reviews for customer 1
             ProductReview prodReview1 = new ProductReview(3, "I like it just like that!", dateFeb, ChelseaAwayProduct, cust1OrderFeb);
-            ProductReview prodReview2 = new ProductReview(4, "I don't like the design of the shirt!", dateFeb, RmAwayProduct, cust1OrderFeb);
+            ProductReview prodReview2 = new ProductReview(4, "I don't like the design of the shirt!", dateMar, RmAwayProduct, cust1OrderMar);
+            ProductReview prodReview6 = new ProductReview(4, "Atleti GO GOGO!", dateMar, atlMadridHomeProduct, cust1OrderMar);
 
-             prodReview1 =  productReviewControllerLocal.CreateNewProductReview(prodReview1);
-            prodReview2 =  productReviewControllerLocal.CreateNewProductReview(prodReview2);
-            
+            prodReview1 = productReviewControllerLocal.CreateNewProductReview(prodReview1);
+            prodReview2 = productReviewControllerLocal.CreateNewProductReview(prodReview2);
+            prodReview6 = productReviewControllerLocal.CreateNewProductReview(prodReview6);
+
             ChelseaAwayProduct.getProductReviews().add(prodReview1);
             RmAwayProduct.getProductReviews().add(prodReview2);
-            
+            atlMadridHomeProduct.getProductReviews().add(prodReview6);
+
             cust1OrderFeb.getProductReviews().add(prodReview1);
-            cust1OrderFeb.getProductReviews().add(prodReview2);
-            
+            cust1OrderMar.getProductReviews().add(prodReview2);
+            cust1OrderMar.getProductReviews().add(prodReview6);
+
             //Create and allocate voucher
-            List<CustomerVoucher>cvlist = newCustomer1.getCustomerVouchers();
+            List<CustomerVoucher> cvlist = newCustomer1.getCustomerVouchers();
             Date voucherexpiry = new GregorianCalendar(2019, 5, 25).getTime();
-            Voucher voucher1 = new Voucher(20.00,5,"AXDA314A","Voucher",new Date(),voucherexpiry,cvlist);
+            Voucher voucher1 = new Voucher(20.00, 5, "AXDA314A", "Voucher", new Date(), voucherexpiry, cvlist);
             voucherControllerLocal.createNewVoucher(voucher1);
-            CustomerVoucher cv = customerVoucherControllerLocal.createNewCustomerVoucher(new CustomerVoucher(null,newCustomer1,voucher1));
+            CustomerVoucher cv = customerVoucherControllerLocal.createNewCustomerVoucher(new CustomerVoucher(null, newCustomer1, voucher1));
             cv.setVoucher(voucher1);
             cvlist.add(cv);
-       
 
             CustomerOrder cust2OrderJan = new CustomerOrder(352.35, 20, dateJan, "Delivered", newCustomer2);
             cust2OrderJan = customerOrderControllerLocal.CreateNewCustomerOrder(cust2OrderJan);
@@ -644,20 +645,20 @@ public class DataInitialization {
             dateFeb = cal.getTime();
             cal.set(2018, Calendar.MARCH, 14);
             dateMar = cal.getTime();
-            
+
             // create product reviews for customer 2
             ProductReview prodReview3 = new ProductReview(5, "Awesome product!", dateFeb, ChelseaAwayProduct, cust2OrderJan);
             ProductReview prodReview4 = new ProductReview(2, "Real Madrid sucks!", dateFeb, RmAwayProduct, cust2OrderJan);
 
-           prodReview3 = productReviewControllerLocal.CreateNewProductReview(prodReview3);
-           prodReview4 = productReviewControllerLocal.CreateNewProductReview(prodReview4);
-            
+            prodReview3 = productReviewControllerLocal.CreateNewProductReview(prodReview3);
+            prodReview4 = productReviewControllerLocal.CreateNewProductReview(prodReview4);
+
             ChelseaAwayProduct.getProductReviews().add(prodReview3);
             RmAwayProduct.getProductReviews().add(prodReview4);
-            
+
             cust2OrderJan.getProductReviews().add(prodReview3);
             cust2OrderJan.getProductReviews().add(prodReview4);
-            
+
             CustomerOrder cust3OrderFeb = new CustomerOrder(719.60, 100, dateFeb, "Delivered", newCustomer3);
             cust3OrderFeb = customerOrderControllerLocal.CreateNewCustomerOrder(cust3OrderFeb);
             customerOrderControllerLocal.addProductPurchase(cust3OrderFeb.getId(), productPurchaseControllerLocal.createProductPurchase(new ProductPurchase(359.80, 2, cust3OrderFeb, atlMadridHomeProduct)));
@@ -676,8 +677,6 @@ public class DataInitialization {
             cust4OrderApril = customerOrderControllerLocal.CreateNewCustomerOrder(cust4OrderApril);
             customerOrderControllerLocal.addProductPurchase(cust4OrderApril.getId(), productPurchaseControllerLocal.createProductPurchase(new ProductPurchase(129.90, 1, cust4OrderApril, ChelseaHomeProduct)));
 
-            
-            
         } catch (Exception ex) {
             ex.printStackTrace();
         }
