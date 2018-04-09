@@ -8,28 +8,30 @@
                 xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
   
         <ui:define name="center">
+             
             <p:tabView>
             <p:tab title="Create Product">
                 <h:form id="form_createProduct" enctype="multipart/form-data">
-                     <p:commandButton value="Create new Product" actionListener="#{staffProductManagedBean.createNewProduct}" update="@form" style="float:right"/>
-                     <br/><br/>
+                    <p:messages id="messages_create" closable="true" />
+                    <p:commandButton value="Create new Product" actionListener="#{staffProductManagedBean.createNewProduct}" update="@form" style="float:right"/>
+                    <br/><br/>
                     <p:panel header="Details">
                         <p:panelGrid columns="2">
                             <p:panelGrid columns="4">
                                 <h:outputLabel for="productName" value="Product Name:" />
-                                <p:inputText  value="#{staffProductManagedBean.newProduct.productName}" required="true"/>
+                                <p:inputText  value="#{staffProductManagedBean.newProduct.productName}" required="true" requiredMessage="Please enter Product Name"/>
                                 <h:outputLabel for="productCode" value="Product Code:" />
-                                <p:inputText  value="#{staffProductManagedBean.newProduct.productCode}" required="true"/>
+                                <p:inputText  value="#{staffProductManagedBean.newProduct.productCode}" required="true" requiredMessage="Please enter Product Code"/>
                                 <h:outputLabel for="country" value="Country: " />
-                                <p:inputText value="#{staffProductManagedBean.newProduct.country}" required="true"/>
+                                <p:inputText value="#{staffProductManagedBean.newProduct.country}" required="true" requiredMessage="Please enter Country"/>
                                 <h:outputLabel for="team" value="Team: " />
-                                <p:inputText value="#{staffProductManagedBean.newProduct.team}" required="true"/>
+                                <p:inputText value="#{staffProductManagedBean.newProduct.team}" required="true" requiredMessage="Please enter Team"/>
                             </p:panelGrid>
                             <p:panelGrid columns="2">
                                 <h:outputLabel for="price" value="Price: $" />
-                                <p:inputText  value="#{staffProductManagedBean.newProduct.price}"  required="true"/>
+                                <p:inputNumber   value="#{staffProductManagedBean.newProduct.price}"  required="true" requiredMessage="Please enter Price" decimalPlaces="2" converterMessage="Please enter Valid currency" />
                                 <h:outputLabel for="description" value="Description:"/>
-                                <h:inputTextarea cols="60" rows="2" value="#{staffProductManagedBean.newProduct.description}" required="true" style="resize:none;"/>
+                                <h:inputTextarea cols="60" rows="2" value="#{staffProductManagedBean.newProduct.description}" required="true" requiredMessage="Please enter Description." style="resize:none;"/>
                             </p:panelGrid>
                         </p:panelGrid>
                     </p:panel>
@@ -48,7 +50,7 @@
                                     <br />
                                     <ui:repeat value="#{staffProductManagedBean.newProduct.sizes}" var="size" varStatus="sizeStatus">
                                         <h:outputLabel value="Size: " />
-                                        <p:inputText value="#{size.size}" />&nbsp;&nbsp;&nbsp;
+                                        <p:inputText value="#{size.size}"/>&nbsp;&nbsp;&nbsp;
                                         <h:outputLabel value="Quantity: " />
                                         <p:inputText value="#{size.qty}" />&nbsp;&nbsp;&nbsp;
                                         <p:commandButton icon="ui-icon-trash" action="#{staffProductManagedBean.removeProductSize_create(sizeStatus.index)}" update="#{p:component('pg_createProductSize')}" process="#{p:component('pg_createProductSize')} @this" />
@@ -154,29 +156,32 @@
                 <f:facet name="header" class="dialog_header">
                     <p:commandButton value="Update button"  action="#{staffProductManagedBean.updateProduct}" />
                 </f:facet>
-                <p:growl id="growl_viewProduct" showDetail="true" />
+               
                 <p:tabView>
                     <p:tab title="Product Details"> 
+                        <p:growl for="messages_update" id="messages_update" />
                         <p:panelGrid id="pg_productDetails" columns="4">
                             <h:outputLabel for="productName" value="Product Name:" />
-                            <p:inputText  value="#{staffProductManagedBean.selectedProductsToView.productName}" required="true"/>
+                            <p:inputText  value="#{staffProductManagedBean.selectedProductsToView.productName}" required="true" requiredMessage="Please enter Product Name."/>
                             
                             <h:outputLabel for="productCode" value="Product Code:" />
-                            <p:inputText  value="#{staffProductManagedBean.selectedProductsToView.productCode}" required="true"/>
+                            <p:inputText  value="#{staffProductManagedBean.selectedProductsToView.productCode}" required="true" requiredMessage="Please enter Product Code."/>
 
                             <h:outputLabel for="price" value="Price: $" />
-                            <p:inputText  value="#{staffProductManagedBean.selectedProductsToView.price}"  required="true"/>
+                            <p:inputText  value="#{staffProductManagedBean.selectedProductsToView.price}"  required="true" requiredMessage="Please enter Price" converterMessage="Please enter Valid currency">
+                                <f:convertNumber type="currency"/>
+                            </p:inputText>
                              
                             <h:outputLabel for="country" value="Country: " />
-                            <p:inputText value="#{staffProductManagedBean.selectedProductsToView.country}" required="true"/>
+                            <p:inputText value="#{staffProductManagedBean.selectedProductsToView.country}" required="true" requiredMessage="Please enter Country"/>
 
                             <h:outputLabel for="team" value="Team: " />
-                            <p:inputText value="#{staffProductManagedBean.selectedProductsToView.team}" required="true"/>
+                            <p:inputText value="#{staffProductManagedBean.selectedProductsToView.team}" required="true" requiredMessage="Please enter Team"/>
                             
                         </p:panelGrid>
                         <p:panelGrid columns="4">
                             <h:outputLabel for="description" value="Description:" style="vertical-align: top;"/>&nbsp;
-                            <h:inputTextarea cols="60" rows="3" value="#{staffProductManagedBean.selectedProductsToView.description}" required="true"/>
+                            <h:inputTextarea cols="60" rows="3" value="#{staffProductManagedBean.selectedProductsToView.description}" required="true" requiredMessage="Please enter Description."/>
                         </p:panelGrid>
                     </p:tab>
                     <p:tab title="Product Images">
@@ -195,9 +200,9 @@
                              <br />
                              <ui:repeat value="#{staffProductManagedBean.selectedProductsToView.sizes}" var="size" varStatus="sizeStatus">
                                  <h:outputLabel value="Size: " />
-                                 <p:inputText value="#{size.size}" />&nbsp;&nbsp;&nbsp;
-                                 <h:outputLabel value="Quantity: " />
-                                 <p:inputText value="#{size.qty}" />
+                                    <p:inputText value="#{size.size}"/>&nbsp;&nbsp;&nbsp;
+                                    <h:outputLabel value="Quantity: " />
+                                    <p:inputText value="#{size.qty}" />&nbsp;&nbsp;&nbsp;
                                   <p:commandButton icon="ui-icon-trash" action="#{staffProductManagedBean.removeProductSize_update(sizeStatus.index)}" update="#{p:component('pg_productSizes')}" process="#{p:component('pg_productSizes')} @this" />
                                  <br/>
                              </ui:repeat>
