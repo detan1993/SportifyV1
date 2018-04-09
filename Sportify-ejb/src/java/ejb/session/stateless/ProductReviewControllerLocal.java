@@ -14,4 +14,6 @@ public interface ProductReviewControllerLocal {
     public String retrieveCustomerOrderProductReview (long productId, long customerOrderId);
     public int retrieveCustomerOrderProductRating(long productId, long customerOrderId);
     public int getAverageProductRating(long productId);
+    public ProductReview getCustomerOrderProductReview (long productId, long customerOrderId);
+    public void updateProductReview(ProductReview productreview); 
 }

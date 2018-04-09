@@ -49,6 +49,7 @@ public class CustomerOrderController implements CustomerOrderControllerRemote, C
         query.setParameter("customerId", customerId);
         return query.getResultList();
     }
+    
 
     @Override
     public List<CustomerOrder> RetrieveAllCustomerOrder() {

@@ -1,13 +1,19 @@
 package jsf.customer.managedbean;
 
+import ejb.session.stateless.CustomerOrderControllerLocal;
 import ejb.session.stateless.ProductControllerLocal;
+import ejb.session.stateless.ProductReviewControllerLocal;
+import entity.Customer;
+import entity.CustomerOrder;
 import entity.Images;
 import entity.Product;
+import entity.ProductPurchase;
 import entity.ProductReview;
 import entity.ProductSize;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -16,9 +22,11 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.faces.application.FacesMessage;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.servlet.http.HttpServletRequest;
+import org.primefaces.context.RequestContext;
 
 @Named(value = "viewDetailedManagedBean")
 @ViewScoped
@@ -26,7 +34,10 @@ public class ViewDetailedManagedBean implements Serializable {
 
     @EJB
     private ProductControllerLocal productController;
-
+    @EJB
+    private ProductReviewControllerLocal productreviewcontroller;
+    @EJB 
+    private CustomerOrderControllerLocal customerordercontroller;
     private Product product;
     private List<String> images;
     private String selectedImage;
@@ -36,6 +47,8 @@ public class ViewDetailedManagedBean implements Serializable {
     private ArrayList<String[]> checkIfCartExist;
     private double priceOnChange;
     private List<ProductReview> productReviews;
+    private Integer productrating;
+    private String productreview;
 
     @PostConstruct
     public void postConstruct() {
@@ -177,6 +190,53 @@ public class ViewDetailedManagedBean implements Serializable {
         return cartItems;
     }
 
+    public void checkLoggedIn(){
+       FacesContext context = FacesContext.getCurrentInstance();   
+       RequestContext reqcontext = RequestContext.getCurrentInstance();
+       ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+       Map<String, Object> sessionMap = externalContext.getSessionMap();
+       Customer c = (Customer)sessionMap.get("currentCustomer");   
+       if (c==null){
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error", "Please log in to write a review") );
+       }
+       else {
+           //popup dialog
+           reqcontext.execute("PF('writeReviewDialog').show()");
+       }
+    }
+    
+    public void createReview(){
+       FacesContext context = FacesContext.getCurrentInstance();   
+       ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+       Map<String, Object> sessionMap = externalContext.getSessionMap();
+       Customer c = (Customer)sessionMap.get("currentCustomer");   
+       List<CustomerOrder> colist = c.getCustomerOrders();
+       String hasreview = productreviewcontroller.retrieveCustomerOrderProductReview(product.getId(), c.getId());
+       if (hasreview != null){
+           //existing review
+           ProductReview pr = productreviewcontroller.getCustomerOrderProductReview(product.getId(), c.getId());
+           pr.setRating(productrating);
+           pr.setReview(productreview);
+           productreviewcontroller.updateProductReview(pr);
+           return;
+       }
+       else {
+         //get customer order that contains the product
+         for (int i = 0; i < colist.size(); i++){
+             List<ProductPurchase> pp = colist.get(i).getProductPurchase();
+             for (int j = 0; j < pp.size(); j++){
+                 if (pp.get(j).getProductPurchase().getId() == product.getId()){
+                      productreviewcontroller.CreateNewProductReview(new ProductReview(productrating,productreview,new Date(),product,colist.get(i))); 
+                      return;
+                 }
+             }
+         }
+       }
+     
+    }
+    
+    
+    
     public String checkOutRedirect() {
         return "customerCheckout?faces-redirect=true";
     }
@@ -254,5 +314,33 @@ public class ViewDetailedManagedBean implements Serializable {
 
     public void setProductReviews(List<ProductReview> productReviews) {
         this.productReviews = productReviews;
+    }
+
+    /**
+     * @return the productrating
+     */
+    public Integer getProductrating() {
+        return productrating;
+    }
+
+    /**
+     * @param productrating the productrating to set
+     */
+    public void setProductrating(Integer productrating) {
+        this.productrating = productrating;
+    }
+
+    /**
+     * @return the productreview
+     */
+    public String getProductreview() {
+        return productreview;
+    }
+
+    /**
+     * @param productreview the productreview to set
+     */
+    public void setProductreview(String productreview) {
+        this.productreview = productreview;
     }
 }
