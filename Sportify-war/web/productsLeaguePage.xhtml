@@ -16,10 +16,9 @@
         <p:panel style="margin-left:100px">
             <p:panelGrid>
                 <p:dataGrid styleClass="leagueGrid" value="#{viewAllProductsManagedBean.leagueCountries}" var="leagueCountry" columns="3" layout="grid">
-                    
                     <p:panel rendered="#{leagueCountry.equalsIgnoreCase('Spain')}">
                           <h:link outcome="products">
-                            <p:graphicImage name="images/products/spain_league_kit.jpg" styleClass="imagePanel1" width="305px">
+                            <p:graphicImage name="images/products/spain_league_kit.jpg" styleClass="imagePanel1" width="281px">
                             </p:graphicImage> 
                             <f:param name="country" value="#{leagueCountry}" />
                         </h:link>
@@ -28,7 +27,7 @@
                     
                       <p:panel rendered="#{leagueCountry.equalsIgnoreCase('England')}">
                          <h:link outcome="products">
-                             <p:graphicImage name="images/products/eng_league_kit.jpg" styleClass="imagePanel1" width="305px">
+                             <p:graphicImage name="images/products/eng_league_kit.jpg" styleClass="imagePanel1" width="281px">
                                 </p:graphicImage> 
                                 <f:param name="country" value="#{leagueCountry}" />
                             </h:link>
@@ -37,7 +36,7 @@
                     
                     <p:panel rendered="#{leagueCountry.equalsIgnoreCase('Italy')}">
                         <h:link outcome="products">
-                            <p:graphicImage name="images/products/italy_league_kit.jpg" styleClass="imagePanel1" width="305px">
+                            <p:graphicImage name="images/products/italy_league_kit.jpg" styleClass="imagePanel1" width="281px">
                             </p:graphicImage> 
                             <f:param name="country" value="#{leagueCountry}" />
                         </h:link>

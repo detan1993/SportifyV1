@@ -8,9 +8,9 @@
                 xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
 
     <ui:define name="west">
-        <p:panel style="overflow: hidden">
+        
             <p:graphicImage name="images/toby_model.jpg" width="311px" />
-        </p:panel>
+        
 
     </ui:define>
 
@@ -69,35 +69,37 @@
                                 <br />
                                 DELIVERY STATUS: <h:outputText style="color:greenyellow" value="#{custOrderOnHold.key.deliveryStatus}"></h:outputText>
                             </f:facet>
-                            <p:panelGrid>
-
+                              <p:panelGrid>
                                 <!--looping each product for this order-->
-                                <c:forEach items="#{custOrderOnHold.value}" var="productDetailsOnHold">
+                                <ui:repeat value="#{custOrderOnHold.value}" var="productDetailsOnHold">
                                     <p:row>
                                         <p:column>
                                             <p:graphicImage name="#{productDetailsOnHold.productPurchase.images[0].imagePath}"  />
+
                                         </p:column>
 
                                         <p:column>
                                             PRODUCT NAME: #{productDetailsOnHold.productPurchase.productName}  
                                             <br />
-                                            QUANTITY: #{productDetails.qtyPurchase}
+                                            QUANTITY: #{productDetailsOnHold.qtyPurchase} 
                                             <br />
                                             UNIT PRICE: SGD #{productDetailsOnHold.productPurchase.price}
                                             <br />
                                             <br />
+                                           
+                                           
+                                            <h:outputText value="#{customerPurchaseHistoryManagedBean.retrieveCustomerOrderProductReview(productDetailsOnHold.productPurchase.id, custOrderOnHold.key.id)}" rendered="#{not empty customerPurchaseHistoryManagedBean.retrieveCustomerOrderProductReview(productDetailsOnHold.productPurchase.id, custOrderOnHold.key.id)}" />
 
-                                            <h:outputLabel value="MY REVIEW:REVIEW"></h:outputLabel>
-
+                                            <br />
                                         </p:column>
                                     </p:row>
                                     <p:row>
                                         <p:column style="text-align:center">
-                                            <p:rating readonly="true" value="4"/>
+                                            <p:rating readonly="true" value="#{customerPurchaseHistoryManagedBean.retrieveCustomerOrderProductRating(productDetailsOnHold.productPurchase.id, custOrderOnHold.key.id)}" rendered="#{customerPurchaseHistoryManagedBean.retrieveCustomerOrderProductRating(productDetailsOnHold.productPurchase.id, custOrderOnHold.key.id) != -1}"/>
                                             <br /> 
                                         </p:column>
                                     </p:row>
-                                </c:forEach>
+                                </ui:repeat>
                             </p:panelGrid>
                         </p:panel>
                     </c:forEach>
@@ -149,7 +151,8 @@
                                             <br />
                                             <br />
                                            
-                                           
+                                           <h:outputText value="MY REVIEW:" rendered="#{not empty customerPurchaseHistoryManagedBean.retrieveCustomerOrderProductReview(productDetails.productPurchase.id, custOrder.key.id)}" />
+                                           <br />
                                             <h:outputText value="#{customerPurchaseHistoryManagedBean.retrieveCustomerOrderProductReview(productDetails.productPurchase.id, custOrder.key.id)}" rendered="#{not empty customerPurchaseHistoryManagedBean.retrieveCustomerOrderProductReview(productDetails.productPurchase.id, custOrder.key.id)}" />
 
                                             <br />
@@ -172,7 +175,7 @@
 
     <ui:define name="east">
         <p:panel style="float:right">
-            <p:graphicImage name="images/beckham_model.jpg" width="300px" />
+            <p:graphicImage name="images/beckham_model.jpg" width="292px" />
         </p:panel>
     </ui:define>
 

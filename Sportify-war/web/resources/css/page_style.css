@@ -14,8 +14,9 @@
 
     z-index: 2 !important;
 }
+
 .explore_div{
-    margin-left: 80px;
+    margin-left: 5px;
 }
 
 .ui-widget{
@@ -32,7 +33,7 @@
     opacity: 0.4;
     transition: 0.3s ease;
     cursor: pointer;
-   
+
 }
 .imagePanel1:hover
 {
@@ -50,16 +51,7 @@
 }*/
 
 .textLeague1{
-   position: absolute;
-    margin-top: 250px;
-    margin-left: -287px;
-    font-size: 30px;
-    font-weight: 1000;
-    word-break: break-word;
-    cursor: pointer;
-}
-.textLeague2{
-   position: absolute;
+    position: absolute;
     margin-top: 250px;
     margin-left: -274px;
     font-size: 30px;
@@ -67,11 +59,20 @@
     word-break: break-word;
     cursor: pointer;
 }
+.textLeague2{
+    position: absolute;
+    margin-top: 250px;
+    margin-left: -265px;
+    font-size: 30px;
+    font-weight: 1000;
+    word-break: break-word;
+    cursor: pointer;
+}
 
 .textLeague3{
-   position: absolute;
+    position: absolute;
     margin-top: 250px;
-    margin-left: -280px;
+    margin-left: -270px;
     font-size: 30px;
     font-weight: 1000;
     word-break: break-word;

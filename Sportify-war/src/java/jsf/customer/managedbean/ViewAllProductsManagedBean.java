@@ -42,10 +42,6 @@ public class ViewAllProductsManagedBean implements Serializable {
 
     @PostConstruct
     public void postConstruct() {
-        //clear existing sessions
-//         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("tempTeamName", null);
-//         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("tempCountry", null);
-//          FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("tempProductId", null);
 
         HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
         String teamName = request.getParameter("teamName");
@@ -89,13 +85,18 @@ public class ViewAllProductsManagedBean implements Serializable {
 
     public int calculateAverageRating(long productId) {
         int averageRating = productReviewController.getAverageProductRating(productId);
+        System.out.println("Cb here " + averageRating);
         return averageRating;
     }
 
     public void filterByCountry() {
         if (countrySelected != null && !countrySelected.equals("")) {
-            teams = getData().get(countrySelected);
-            products = productController.retrieveProductsByCountry(countrySelected);
+            if (countrySelected.equals("viewAll")) {
+                products = productController.getAllProducts();
+            } else {
+                teams = getData().get(countrySelected);
+                products = productController.retrieveProductsByCountry(countrySelected);
+            }
 
         } else {
             teams = new HashMap<String, String>();
@@ -109,7 +110,13 @@ public class ViewAllProductsManagedBean implements Serializable {
     public void filterByTeam() {
         System.out.println(teamSelected);
         if (teamSelected != null && !teamSelected.equals("")) {
-            products = productController.retrieveProductsByTeam(teamSelected);
+
+            if (teamSelected.equals("viewAll")) {
+                products = productController.getAllProducts();
+            } else {
+                products = productController.retrieveProductsByTeam(teamSelected);
+            }
+
         } else {
             if (countrySelected != null && !countrySelected.equals("")) {
                 products = productController.retrieveProductsByCountry(countrySelected);
