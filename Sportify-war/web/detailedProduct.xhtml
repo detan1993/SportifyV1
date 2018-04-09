@@ -85,13 +85,21 @@
     </ui:define>
 
     <ui:define name="east">
-        <p:panel style="margin-top: 13px; width: 450.5px; text-align: center">
+        <p:panel id="reviewpanel" style="margin-top: 13px; width: 450.5px; text-align: center">
           
             <p:panel toggleable="true" header="Description">
                  <span style="color:white;font-size:12px; text-align: justify; word-break: break-all">#{viewDetailedManagedBean.product.description}</span> 
             </p:panel>
-            <h:outputText value="THERE ARE NO REVIEWS FOR THIS PRODUCT" rendered="#{empty viewDetailedManagedBean.productReviews}" />
-            <p:panel header="Reviews" toggleable="true">
+            <p:panel toggleable="true">
+                <f:facet name="header">             
+                    <h:column><h:outputText value="Reviews (#{viewDetailedManagedBean.productReviews.size()})"/></h:column>               
+                    <h:column><p:rating value="#{viewAllProductsManagedBean.calculateAverageRating(viewDetailedManagedBean.product.id)}" readonly="true" rendered="#{viewAllProductsManagedBean.calculateAverageRating(viewDetailedManagedBean.product.id) != -1}" /></h:column>
+                </f:facet>             
+                  <h:outputText value="THERE ARE NO REVIEWS FOR THIS PRODUCT" rendered="#{empty viewDetailedManagedBean.productReviews}" />
+                <h:form id="reviewlinkform">
+                    <p:commandLink update="reviewform:reviewgrowl" action="#{viewDetailedManagedBean.checkLoggedIn}" id="ajax" value="#{viewDetailedManagedBean.writeReviewVal}">
+        </p:commandLink>
+                    </h:form>
             <p:scrollPanel mode="native" style="width:400px;height:400px;margin-left: -20px;" rendered="#{not empty viewDetailedManagedBean.productReviews}">
                 <p:repeat value="#{viewDetailedManagedBean.productReviews}" var="reviewProd">
                     <p:panelGrid columns="2" style="height:100px" >
@@ -119,5 +127,23 @@
             </p:scrollPanel>
                 </p:panel>
         </p:panel>
+        <h:form id="reviewform"> 
+            <p:dialog height="350px" width="500px" id="writeReviewDialog" showEffect="explode" widgetVar="writeReviewDialog" resizable="false" draggable="false">
+        <p:fieldset legend="Write a review">
+            <h3 style="font-size: 12px">Please share your experience</h3>
+        <h:panelGrid columns="2" cellpadding="5">
+            <h:outputText style="color:white" value="Product Rating:" />
+            <p:rating required="true" requiredMessage="Please select a rating!" value="#{viewDetailedManagedBean.productrating}" />
+            
+            <h:outputText style="color:white" value="Product Review:"/>
+            <p:inputTextarea required="true" value="#{viewDetailedManagedBean.productreview}" requiredMessage="Please enter your review!" rows="5" cols="30" counter="display" maxlength="150" counterTemplate="{0} characters remaining." autoResize="false" />
+            <h:outputText style="color: white" id="display" />
+            
+            <p:commandButton update="reviewgrowl,reviewpanel,reviewlinkform:ajax" action="#{viewDetailedManagedBean.createReview}" value="Submit Review"></p:commandButton>
+        </h:panelGrid>
+            <p:growl showDetail="true" id="reviewgrowl"></p:growl>
+              </p:fieldset>
+                </p:dialog>
+        </h:form>
     </ui:define>
 </ui:composition>

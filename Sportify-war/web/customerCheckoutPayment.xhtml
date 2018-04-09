@@ -9,20 +9,20 @@
         <h:outputStylesheet library="css" name="checkoutPaymentStyle.css" />
         <h1 style="text-align: center; color: white; font-size: 30px">Checkout</h1>
         <div id="left" align="left" style="margin-left: 150px">
-            <h:form style="background-color: #191919" id="editForm">
+            <h:form prependId="false" style="background-color: #191919" id="editForm">
                 <p:growl id="msgs" showDetail="true" />
                 <p:accordionPanel>
                     <p:tab disabled="true" title="1. Shipping Address">
 
                         <p:panelGrid  layout="grid" columns="1">
                          
-                            <p:commandLink id="ajaxoutput" process="@this" update="paymentform:paymentAccordion,ajaxoutput,confirm,edit,proceedpayment" action="#{customerCheckOutManagedBean.confirmAddress}">
+                            <p:commandLink id="ajaxoutput" process="@form" update="paymentform:paymentAccordion,ajaxoutput,confirm,edit,proceedpayment" action="#{customerCheckOutManagedBean.confirmAddress}">
                             <h:outputText style="color:aqua;width:200px;white-space: nowrap" value="#{customerCheckOutManagedBean.addrbtnval}" /></p:commandLink> 
                         <p:panel toggleable="true" id="edit" visible="#{customerCheckOutManagedBean.displayedit}">
                             <table style="font-size: 15px; border-collapse: seperate; border-spacing: 1em">
                                 <tr><td><p:inputText  value="#{customerCheckOutManagedBean.loggedincustomer.firstName}" id="firstname" requiredMessage="Please enter your first name!" required="true" style="height:30px" placeholder="First Name"/></td><td> <p:inputText value="#{customerCheckOutManagedBean.loggedincustomer.lastName}" id="lastname" requiredMessage="Please enter your last name!" required="true" style="height:30px" placeholder="Last Name"/></td></tr>
                                 <tr><td colspan="2"><p:inputText value="#{customerCheckOutManagedBean.loggedincustomer.address}" id="address" requiredMessage="Please enter an address!" required="true" style="width:380px ;height:30px" placeholder="Address"/></td></tr>           
-                                <tr><td><p:inputText id="postalcode" value="#{customerCheckOutManagedBean.loggedincustomer.zipCode}" requiredMessage="Please enter your postal code" required="true" style="height:30px" placeholder="Postal Code"/></td><td><p:inputText id="phone" value="" requiredMessage="Please enter your phone number!" required="true" style="height:30px" placeholder="Phone Number"/></td></tr>
+                                <tr><td><p:inputText id="postalcode" value="#{customerCheckOutManagedBean.loggedincustomer.zipCode}" requiredMessage="Please enter your postal code" required="true" style="height:30px" placeholder="Postal Code"/></td><td><p:inputText id="phone" value="#{customerCheckOutManagedBean.loggedincustomer.phoneNum}" requiredMessage="Please enter your phone number!" required="true" style="height:30px" placeholder="Phone Number"/></td></tr>
                                 <tr><td><p:inputText readonly="true" value="#{customerCheckOutManagedBean.loggedincustomer.email}" id="email" requiredMessage="Please enter your email!" required="true" style="height:30px; opacity: .7" placeholder="Email"/></td></tr>       
                             </table>               
                         </p:panel>
@@ -33,7 +33,7 @@
                                 <tr><td><h:outputLabel style="font-weight: bolder" value="Last Name:"/></td><td> <h:outputLabel value="#{customerCheckOutManagedBean.loggedincustomer.lastName}" id="lastnameoutput" style="height:30px; margin-left: 20px"/></td></tr>
                                 <tr><td><h:outputLabel style="font-weight: bolder" value="Address: "/></td><td colspan="2"><h:outputLabel value="#{customerCheckOutManagedBean.loggedincustomer.address}" id="addressoutput" style="width: 367px; height:30px;  margin-left: 20px"/></td></tr>           
                                 <tr><td><h:outputLabel style="font-weight: bolder" value="Postal code: "/></td><td><h:outputLabel id="postalcodeoutput" value="#{customerCheckOutManagedBean.loggedincustomer.zipCode}" style="height:30px;  margin-left: 20px"/></td></tr>
-                                <tr><td><h:outputLabel style="font-weight: bolder" value="Contact No:"/></td><td><h:outputLabel id="phoneoutput"  value="312421" style="height:30px;  margin-left: 20px"/></td></tr>
+                                <tr><td><h:outputLabel style="font-weight: bolder" value="Contact No:"/></td><td><h:outputLabel id="phoneoutput"  value="#{customerCheckOutManagedBean.loggedincustomer.phoneNum}" style="height:30px;  margin-left: 20px"/></td></tr>
                                 <tr><td><h:outputLabel style="font-weight: bolder" value="Email: "/></td><td><h:outputLabel value="#{customerCheckOutManagedBean.loggedincustomer.email}" id="emailoutput" style="height:30px; margin-left: 20px"/></td></tr>
                                 <tr><td></td></tr>
                             </table>
@@ -143,10 +143,7 @@
                 </p:dataGrid>
             </p:fieldset>
         </div>
-<p:dialog header="Order Succes!" widgetVar="dlg3" showEffect="explode" hideEffect="none" height="100">
-    <h:outputText value="Thank you for your puchase! Your order has been completed!" />
-</p:dialog>
-
+        
     </ui:define>
 </ui:composition>
 

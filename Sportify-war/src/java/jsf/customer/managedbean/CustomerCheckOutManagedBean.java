@@ -10,12 +10,14 @@ import ejb.session.stateless.CustomerOrderControllerLocal;
 import ejb.session.stateless.CustomerVoucherControllerLocal;
 import ejb.session.stateless.ProductControllerLocal;
 import ejb.session.stateless.ProductPurchaseControllerLocal;
+import ejb.session.stateless.ProductSizeControllerLocal;
 import ejb.session.stateless.VoucherControllerLocal;
 import entity.Customer;
 import entity.CustomerOrder;
 import entity.CustomerVoucher;
 import entity.Product;
 import entity.ProductPurchase;
+import entity.ProductSize;
 import entity.Voucher;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -40,7 +42,6 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
 import org.primefaces.context.RequestContext;
-import org.primefaces.event.CloseEvent;
 
 /**
  *
@@ -63,7 +64,8 @@ public class CustomerCheckOutManagedBean implements Serializable{
     private CustomerControllerLocal customercontroller;
     @EJB
     private ProductPurchaseControllerLocal productpurchasecontroller;
-    
+    @EJB
+    private ProductSizeControllerLocal productsizecontroller;
     private String subtotaldisplay;
     private String totaldisplay;
     private Customer loggedincustomer;
@@ -124,16 +126,17 @@ public class CustomerCheckOutManagedBean implements Serializable{
         
         if (cartitems!=null){
         for (int i = 0; i < cartitems.size(); i++){
-          String [] sessioncartitem = new String [7];
+          String [] sessioncartitem = new String [8];
           Product p = productcontroller.retrieveSingleProduct(Long.parseLong(cartitems.get(i)[0]));
+          sessioncartitem[7] = cartitems.get(i)[1];
+          ProductSize ps = productsizecontroller.retrieveSingleProductSize(Long.parseLong(cartitems.get(i)[1]));
           sessioncartitem[0] = cartitems.get(i)[0];
-          sessioncartitem[1] = cartitems.get(i)[1];
+          sessioncartitem[1] = ps.getSize();
           sessioncartitem[2] = cartitems.get(i)[2];
           sessioncartitem[3] = p.getProductName();
           sessioncartitem[4] = p.getProductCode();
           sessioncartitem[5] = String.valueOf(p.getPrice());
           sessioncartitem[6] = p.getImages().get(0).getImagePath();
-         
           shoppingCartItems.add(sessioncartitem);
           subtotal = subtotal + Double.parseDouble(sessioncartitem[5])*Integer.parseInt(sessioncartitem[2]);
           total = subtotal + 5.00;
@@ -166,27 +169,31 @@ public class CustomerCheckOutManagedBean implements Serializable{
           for (int i = 0; i <cartitems.size();i++){
              String [] cartitem = new String[7]; 
              cartitem = cartitems.get(i);
+             ProductSize ps = productsizecontroller.retrieveSingleProductSize(Long.parseLong(cartitem[7]));
              double pricepurchase = Double.parseDouble(cartitem[5]);
              int qtypurchase = Integer.parseInt(cartitem[2]);
+             ps.setQty(ps.getQty() - qtypurchase);
+             productsizecontroller.updateSizeForProduct(ps);
              Product p = productcontroller.retrieveSingleProduct(Long.parseLong(cartitem[0]));
-             ProductPurchase productpurchase = productpurchasecontroller.createProductPurchase(new ProductPurchase(pricepurchase,qtypurchase,customerorder,p));   
+             ProductPurchase productpurchase = productpurchasecontroller.createProductPurchase(new ProductPurchase(pricepurchase,qtypurchase,customerorder,p));
+             
           }
           if (appliedvoucher!=null){  
              CustomerVoucher cv = customervouchercontroller.retrieveCustomerVoucher(c, appliedvoucher);
              customervouchercontroller.useCustomerVoucher(customerorder,appliedvoucher,cv);
           }
-          RequestContext context = RequestContext.getCurrentInstance();
-          context.execute("PF('dlg3').show();");
+           try {
           Flash flash = FacesContext.getCurrentInstance().getExternalContext().getFlash();
           flash.put("tab", 1);
-          try {
           FacesContext.getCurrentInstance().getExternalContext().redirect("customerTransactionHistory.xhtml");
           //Display msg in home page and clear session
+          
           }
           catch (Exception ex){
               
           }
     } 
+    
     
     public void removeCartItem(String [] cartitem){
         for(int i = 0; i < cartitems.size(); i ++){
@@ -209,17 +216,13 @@ public class CustomerCheckOutManagedBean implements Serializable{
             setDisplayconfirm(false);
             setActivetab(1); 
         }
-        else {
+        else { 
             //If confirm button is pressed
-             HttpServletRequest request = (HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest();
-             String firstname = request.getParameter("editForm:edit:firstname");
-             String lastname = request.getParameter("editForm:edit:lastname");
-             String address = request.getParameter("j_idt72:address");
-             String postal = request.getParameter("j_idt72:postalcode");
-             loggedincustomer.setFirstName(firstname);
-             loggedincustomer.setLastName(lastname);
-             loggedincustomer.setAddress(address);
-             loggedincustomer.setZipCode(postal);
+             loggedincustomer.setFirstName(loggedincustomer.getFirstName());
+             loggedincustomer.setLastName(loggedincustomer.getLastName());
+             loggedincustomer.setAddress(loggedincustomer.getAddress());
+             loggedincustomer.setZipCode(loggedincustomer.getZipCode());
+             loggedincustomer.setPhoneNum(loggedincustomer.getPhoneNum());
              customercontroller.updateCustomer(loggedincustomer);
              ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
              Map<String, Object> sessionMap = externalContext.getSessionMap();
@@ -497,7 +500,6 @@ public class CustomerCheckOutManagedBean implements Serializable{
     }
 
    
-
     /**
      * @return the subtotal
      */

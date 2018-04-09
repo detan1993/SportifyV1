@@ -51,6 +51,8 @@ public class ViewDetailedManagedBean implements Serializable {
     private String productreview;
     private String writeReviewVal;
     private boolean hasOwnReview;
+    
+    private Customer editShippingCustomer;
 
     @PostConstruct
     public void postConstruct() {
@@ -430,4 +432,6 @@ public class ViewDetailedManagedBean implements Serializable {
     public void setWriteReviewVal(String writeReviewVal) {
         this.writeReviewVal = writeReviewVal;
     }
+
+    
 }

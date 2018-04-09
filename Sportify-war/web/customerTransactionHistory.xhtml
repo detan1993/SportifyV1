@@ -16,7 +16,7 @@
 
     <ui:define name="center">
         <p:panel style="text-align:center;font-size:20px; margin-top: -5px">
-            <p:tabView style="text-align:left;font-size:15px">
+            <p:tabView activeIndex="#{customerPurchaseHistoryManagedBean.tabindex}" style="text-align:left;font-size:15px">
                 <p:tab title="MY PROFILE">
                     <p:panelGrid columns="2" style="margin-left:-22px">
 
@@ -168,6 +168,9 @@
                 </p:tab>
             </p:tabView>
         </p:panel>
+        <p:dialog visible="#{customerPurchaseHistoryManagedBean.dialogVisible}" header="Order Succes!" id="dlg3" widgetVar="dlg3" showEffect="explode" hideEffect="none" width="450" height="100">
+    <h:outputText value="Thank you for your puchase! Your order has been completed! You can now review your order in the current transactions tab." />
+</p:dialog>   
     </ui:define>
 
     <ui:define name="east">
@@ -175,5 +178,6 @@
             <p:graphicImage name="images/beckham_model.jpg" width="300px" />
         </p:panel>
     </ui:define>
-
+    
+        
 </ui:composition>

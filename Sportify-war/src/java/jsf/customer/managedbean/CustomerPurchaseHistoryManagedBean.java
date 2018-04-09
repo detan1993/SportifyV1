@@ -13,9 +13,11 @@ import java.util.List;
 import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
+import org.primefaces.context.RequestContext;
 
 @Named(value = "customerPurchaseHistoryManagedBean")
 @ViewScoped
@@ -33,10 +35,13 @@ public class CustomerPurchaseHistoryManagedBean implements Serializable {
     private Map<CustomerOrder, List<ProductPurchase>> productsOnHold = new HashMap();
     private Product product;
     private ProductReview productReview;
-
+    private int tabindex;
+    private boolean dialogVisible;
+    
     @PostConstruct
     public void postConstruct() {
-
+        setDialogVisible(false);
+        setTabindex(0);
         customer = (Customer) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("currentCustomer");
         getCustOrders = customerOrderController.GetCustomerOrder(customer.getId());
 
@@ -51,8 +56,20 @@ public class CustomerPurchaseHistoryManagedBean implements Serializable {
             }  
         }
         //productReview = productReviewController.getProductReview();
-        int tab = (Integer)FacesContext.getCurrentInstance().getExternalContext().getFlash().get("tab");
+        try {
+            int tab = (Integer)FacesContext.getCurrentInstance().getExternalContext().getFlash().get("tab");
+            setTabindex(1);        
+            dialogVisible = true;
+            ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+            Map<String, Object> sessionMap = externalContext.getSessionMap();
+            sessionMap.remove("currentItemCart");
+        }
+        catch (Exception ex){
+            
+        }
+        
     }
+    
     
     public String retrieveCustomerOrderProductReview (long productId, long customerOrderId){
         String productReviewStr = productReviewController.retrieveCustomerOrderProductReview(productId, customerOrderId);
@@ -77,8 +94,9 @@ public class CustomerPurchaseHistoryManagedBean implements Serializable {
     public String shopNowRedirect() {
         return "products?faces-redirect=true";
     }
-
+    
     public CustomerPurchaseHistoryManagedBean() {
+          
     }
 
     public List<CustomerOrder> getGetCustOrders() {
@@ -127,5 +145,33 @@ public class CustomerPurchaseHistoryManagedBean implements Serializable {
 
     public void setProductReview(ProductReview productReview) {
         this.productReview = productReview;
+    }
+
+    /**
+     * @return the tabindex
+     */
+    public int getTabindex() {
+        return tabindex;
+    }
+
+    /**
+     * @param tabindex the tabindex to set
+     */
+    public void setTabindex(int tabindex) {
+        this.tabindex = tabindex;
+    }
+
+    /**
+     * @return the dialogVisible
+     */
+    public boolean isDialogVisible() {
+        return dialogVisible;
+    }
+
+    /**
+     * @param dialogVisible the dialogVisible to set
+     */
+    public void setDialogVisible(boolean dialogVisible) {
+        this.dialogVisible = dialogVisible;
     }
 }
