@@ -48,9 +48,10 @@ public class CustomerPurchaseHistoryManagedBean implements Serializable {
                 productOrderDetails.put(order, productPurchaseDetails);
             } else {
                 productsOnHold.put(order, productPurchaseDetails);
-            }
+            }  
         }
         //productReview = productReviewController.getProductReview();
+        int tab = (Integer)FacesContext.getCurrentInstance().getExternalContext().getFlash().get("tab");
     }
     
     public String retrieveCustomerOrderProductReview (long productId, long customerOrderId){

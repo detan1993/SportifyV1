@@ -49,6 +49,8 @@ public class ViewDetailedManagedBean implements Serializable {
     private List<ProductReview> productReviews;
     private Integer productrating;
     private String productreview;
+    private String writeReviewVal;
+    private boolean hasOwnReview;
 
     @PostConstruct
     public void postConstruct() {
@@ -97,9 +99,10 @@ public class ViewDetailedManagedBean implements Serializable {
                             skipFirstImage++;
                         }
                     }
-
+                    writeReviewVal = "Write a review";
                     //get reviews for this product
-                    productReviews = product.getProductReviews();
+                    productReviews = productreviewcontroller.retrieveProductReviewsByProductId(product.getId());
+                    defaultUserReview();
                 }
 
             }
@@ -197,7 +200,7 @@ public class ViewDetailedManagedBean implements Serializable {
        Map<String, Object> sessionMap = externalContext.getSessionMap();
        Customer c = (Customer)sessionMap.get("currentCustomer");   
        if (c==null){
-            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error", "Please log in to write a review") );
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error", "Plesae log in to write a review!"));
        }
        else {
            //popup dialog
@@ -205,28 +208,84 @@ public class ViewDetailedManagedBean implements Serializable {
        }
     }
     
+    public void defaultUserReview(){
+       ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+       Map<String, Object> sessionMap = externalContext.getSessionMap();
+       Customer c = (Customer)sessionMap.get("currentCustomer");  
+       if (c==null){
+           return;
+       }
+       List<CustomerOrder> colist = customerordercontroller.GetCustomerOrder(c.getId());
+       long coid = 0;
+       for (int i=0; i <colist.size(); i++){
+            List<ProductPurchase> pp = colist.get(i).getProductPurchase();
+             for (int j = 0; j < pp.size(); j++){
+                 if (pp.get(j).getProductPurchase().getId() == product.getId()){
+                     coid = colist.get(i).getId();
+                     ProductReview pr = productreviewcontroller.getCustomerOrderProductReview(product.getId(), coid);
+                     if (pr==null){
+                         return;
+                     }
+                     productreview = pr.getReview();
+                     productrating = pr.getRating();
+                     writeReviewVal = "Edit my review";
+                     return;
+             }
+             }         
+    }
+    }
+    
+    
     public void createReview(){
        FacesContext context = FacesContext.getCurrentInstance();   
+       RequestContext reqcontext = RequestContext.getCurrentInstance();
        ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
        Map<String, Object> sessionMap = externalContext.getSessionMap();
        Customer c = (Customer)sessionMap.get("currentCustomer");   
-       List<CustomerOrder> colist = c.getCustomerOrders();
-       String hasreview = productreviewcontroller.retrieveCustomerOrderProductReview(product.getId(), c.getId());
+       List<CustomerOrder> colist = customerordercontroller.GetCustomerOrder(c.getId());
+       long coid = 0;
+       for (int i=0; i <colist.size(); i++){
+            List<ProductPurchase> pp = colist.get(i).getProductPurchase();
+             for (int j = 0; j < pp.size(); j++){
+                 if (pp.get(j).getProductPurchase().getId() == product.getId()){
+                     coid = colist.get(i).getId();
+                     break;
+             }
+             }
+       }
+       if (coid == 0){
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error", "You can only review products you have purchased!"));
+            reqcontext.execute("PF('writeReviewDialog').hide();");
+            return;
+       }
+       String hasreview = productreviewcontroller.retrieveCustomerOrderProductReview(product.getId(), coid);
        if (hasreview != null){
            //existing review
-           ProductReview pr = productreviewcontroller.getCustomerOrderProductReview(product.getId(), c.getId());
+           ProductReview pr = productreviewcontroller.getCustomerOrderProductReview(product.getId(), coid);
            pr.setRating(productrating);
            pr.setReview(productreview);
            productreviewcontroller.updateProductReview(pr);
-           return;
-       }
+           for (int i = 0; i < productReviews.size(); i++){
+               if (productReviews.get(i).getId() == pr.getId()){
+                   productReviews.remove(i);
+                   productReviews.add(i,pr);
+                    reqcontext.execute("PF('writeReviewDialog').hide();");
+                   return;
+               }
+           }
+           
+       } 
        else {
          //get customer order that contains the product
          for (int i = 0; i < colist.size(); i++){
              List<ProductPurchase> pp = colist.get(i).getProductPurchase();
              for (int j = 0; j < pp.size(); j++){
                  if (pp.get(j).getProductPurchase().getId() == product.getId()){
-                      productreviewcontroller.CreateNewProductReview(new ProductReview(productrating,productreview,new Date(),product,colist.get(i))); 
+                     ProductReview pr = productreviewcontroller.CreateNewProductReview(new ProductReview(productrating,productreview,new Date(),product,colist.get(i))); 
+                      productReviews.add(pr);
+                      productreviewcontroller.updateProductReview(pr);
+                      writeReviewVal = "Edit my review";
+                      reqcontext.execute("PF('writeReviewDialog').hide();");
                       return;
                  }
              }
@@ -342,5 +401,33 @@ public class ViewDetailedManagedBean implements Serializable {
      */
     public void setProductreview(String productreview) {
         this.productreview = productreview;
+    }
+
+    /**
+     * @return the hasOwnReview
+     */
+    public boolean isHasOwnReview() {
+        return hasOwnReview;
+    }
+
+    /**
+     * @param hasOwnReview the hasOwnReview to set
+     */
+    public void setHasOwnReview(boolean hasOwnReview) {
+        this.hasOwnReview = hasOwnReview;
+    }
+
+    /**
+     * @return the writeReviewVal
+     */
+    public String getWriteReviewVal() {
+        return writeReviewVal;
+    }
+
+    /**
+     * @param writeReviewVal the writeReviewVal to set
+     */
+    public void setWriteReviewVal(String writeReviewVal) {
+        this.writeReviewVal = writeReviewVal;
     }
 }

@@ -178,9 +178,9 @@ public class CustomerCheckOutManagedBean implements Serializable{
           RequestContext context = RequestContext.getCurrentInstance();
           context.execute("PF('dlg3').show();");
           Flash flash = FacesContext.getCurrentInstance().getExternalContext().getFlash();
-          flash.put("Message", "Hhihi");
+          flash.put("tab", 1);
           try {
-          FacesContext.getCurrentInstance().getExternalContext().redirect("home.xhtml");
+          FacesContext.getCurrentInstance().getExternalContext().redirect("customerTransactionHistory.xhtml");
           //Display msg in home page and clear session
           }
           catch (Exception ex){
@@ -207,13 +207,13 @@ public class CustomerCheckOutManagedBean implements Serializable{
             setAddrbtnval("Save and continue");
             setDisplayedit(true);
             setDisplayconfirm(false);
-            setActivetab(1);
+            setActivetab(1); 
         }
         else {
             //If confirm button is pressed
              HttpServletRequest request = (HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest();
-             String firstname = request.getParameter("j_idt72:firstname");
-             String lastname = request.getParameter("j_idt72:lastname");
+             String firstname = request.getParameter("editForm:edit:firstname");
+             String lastname = request.getParameter("editForm:edit:lastname");
              String address = request.getParameter("j_idt72:address");
              String postal = request.getParameter("j_idt72:postalcode");
              loggedincustomer.setFirstName(firstname);

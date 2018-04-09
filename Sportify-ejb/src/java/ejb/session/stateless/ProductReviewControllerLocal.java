@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface ProductReviewControllerLocal {
     public ProductReview CreateNewProductReview (ProductReview newProductReview);
-    public List<ProductReview> retrieveProductReviewsByProductId (int productId);
+    public List<ProductReview> retrieveProductReviewsByProductId (long productId);
     public String retrieveCustomerOrderProductReview (long productId, long customerOrderId);
     public int retrieveCustomerOrderProductRating(long productId, long customerOrderId);
     public int getAverageProductRating(long productId);

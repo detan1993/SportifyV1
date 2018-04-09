@@ -42,9 +42,11 @@ public class ProductReviewController implements ProductReviewControllerRemote, P
     
 
     @Override
-    public List<ProductReview> retrieveProductReviewsByProductId(int productId) {
-        Product p = productControllerLocal.retrieveSingleProduct(productId);
-        return p.getProductReviews();
+    public List<ProductReview> retrieveProductReviewsByProductId (long productId) {
+        //Product p = productControllerLocal.retrieveSingleProduct(productId);
+        Query q = em.createQuery("SELECT pr FROM ProductReview pr WHERE pr.product.id=:prodid");
+        q.setParameter("prodid", productId);
+        return q.getResultList();
     }
     
     @Override
@@ -72,7 +74,7 @@ public class ProductReviewController implements ProductReviewControllerRemote, P
     @Override
     public String retrieveCustomerOrderProductReview(long productId, long customerOrderId) {
         Query query = em.createQuery("SELECT p FROM ProductReview p WHERE p.product.id=:productId AND p.customerOrder.id=:customerOrderId");
-        query.setParameter("productId", productId);
+        query.setParameter("productId", productId); 
         query.setParameter("customerOrderId", customerOrderId);
         try {
             ProductReview productReview = (ProductReview) query.getResultList().get(0);
