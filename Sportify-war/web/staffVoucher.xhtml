@@ -9,10 +9,10 @@
 
     
     <ui:define name="center">
-        <p:tabView>
+        <p:tabView id="tv">
             <p:tab title="Create Voucher">
                  <h:form id="form_createVoucher">
-                    <p:commandButton value="Create new Voucher" actionListener="#{staffVoucherManagedBean.createNewVoucher}" update="@form"/>
+                    <p:commandButton value="Create new Voucher" actionListener="#{staffVoucherManagedBean.createNewVoucher}" update="tv:form_allVouchers:dt_allVouchers" />
                     <br/><br/>
                     <p:panel header="Details">
                         <p:panelGrid columns="4" >
@@ -69,12 +69,14 @@
                         
                         <p:column headerText="Date Created" sortBy="#{voucher.dateCreated}" filterBy="#{voucher.dateCreated}" filterMatchMode="contains">
                             <h:outputText value="#{voucher.dateCreated}" >
-                                <f:convertDateTime type="date" pattern="dd.MM.yyyy"/>
+                                 <f:convertDateTime pattern="dd MMM yyyy" />
                             </h:outputText> 
                         </p:column>
                         
                         <p:column headerText="Last Day" sortBy="#{voucher.dateExpired}" filterBy="#{voucher.dateExpired}" filterMatchMode="contains">
-                            <h:outputText value="#{voucher.dateExpired}" />
+                            <h:outputText value="#{voucher.dateExpired}">
+                                 <f:convertDateTime pattern="dd MMM yyyy" />
+                            </h:outputText>
                         </p:column>
                         
                         <p:column headerText="Action" >
@@ -105,9 +107,13 @@
                     <h:outputLabel value="Total unused vouchers " />
                     <h:outputLabel value="#{staffVoucherManagedBean.currentVoucherAmount}" />
                     <h:outputLabel value="Created Date: " />
-                    <h:outputLabel value="#{staffVoucherManagedBean.selectedVoucher.dateCreated}" />
+                    <h:outputLabel value="#{staffVoucherManagedBean.selectedVoucher.dateCreated}">
+                         <f:convertDateTime pattern="dd MMM yyyy" />
+                    </h:outputLabel>
                     <h:outputLabel value="Expiry Date: " />
-                    <h:outputLabel value="#{staffVoucherManagedBean.selectedVoucher.dateExpired}" />
+                    <h:outputLabel value="#{staffVoucherManagedBean.selectedVoucher.dateExpired}">
+                         <f:convertDateTime pattern="dd MMM yyyy" />
+                    </h:outputLabel>
                     <h:outputLabel value="Voucher Duration " />
                     <h:outputLabel value="#{staffVoucherManagedBean.duration}" />
                 </p:panelGrid>

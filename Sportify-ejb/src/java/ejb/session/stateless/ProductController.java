@@ -53,6 +53,7 @@ public class ProductController implements ProductControllerRemote, ProductContro
     @Override
     public List<Product> retrieveProductIncludingInactive() {
         Query query = em.createQuery("SELECT p FROM Product p");
+        System.out.println("Product controlelr retrieve: " + query.getResultList().size());
         return query.getResultList();
     }
 
@@ -166,6 +167,7 @@ public class ProductController implements ProductControllerRemote, ProductContro
     @Override
     public List<Product> getAllProducts() {
         Query query = em.createQuery("SELECT p FROM Product p WHERE p.status='A' ORDER BY p.team");
+          System.out.println("Product Controller getAllPRoducts retrieve: " + query.getResultList().size());
         return query.getResultList();
     }
 

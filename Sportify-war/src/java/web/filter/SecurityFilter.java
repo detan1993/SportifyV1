@@ -61,7 +61,7 @@ public class SecurityFilter implements Filter {
 
             staffIsLogin= (Boolean)httpSession.getAttribute("staffIsLogin");         
         }
-        if(requestServletPath.substring(1).equals("Resources")){
+        else if(requestServletPath.substring(1).equals("Resources")){
              System.out.println("******* RTYPE IS RESROUCE ");
              userType = "resources";
         }
