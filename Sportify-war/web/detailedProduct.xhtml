@@ -48,7 +48,7 @@
 
                             <td colspan="2">
                                 <br />
-                                <span style="color:white;font-size:12px; text-align: justify; word-break: break-all">#{viewDetailedManagedBean.product.description}</span> 
+                               
 
                             </td>
                         </tr>
@@ -86,12 +86,13 @@
 
     <ui:define name="east">
         <p:panel style="margin-top: 13px; width: 450.5px; text-align: center">
-            <f:facet name="header">
-                REVIEWS
-            </f:facet>
-            <br />
+          
+            <p:panel toggleable="true" header="Description">
+                 <span style="color:white;font-size:12px; text-align: justify; word-break: break-all">#{viewDetailedManagedBean.product.description}</span> 
+            </p:panel>
             <h:outputText value="THERE ARE NO REVIEWS FOR THIS PRODUCT" rendered="#{empty viewDetailedManagedBean.productReviews}" />
-            <p:scrollPanel mode="native" style="width:447px;height:500px;margin-left: -20px;" rendered="#{not empty viewDetailedManagedBean.productReviews}">
+            <p:panel header="Reviews" toggleable="true">
+            <p:scrollPanel mode="native" style="width:400px;height:400px;margin-left: -20px;" rendered="#{not empty viewDetailedManagedBean.productReviews}">
                 <p:repeat value="#{viewDetailedManagedBean.productReviews}" var="reviewProd">
                     <p:panelGrid columns="2" style="height:100px" >
                         <p:row>
@@ -116,6 +117,7 @@
                     <br />
                 </p:repeat>
             </p:scrollPanel>
+                </p:panel>
         </p:panel>
     </ui:define>
 </ui:composition>

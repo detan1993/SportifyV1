@@ -61,15 +61,14 @@ and open the template in the editor.
     font-weight: bold !important;
 }
 
-.ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only applyBtn{
+.applyBtn{
     border: none !important;
-    color: black ;
     font-family: 'TradeGothicW02-BoldCn20 675505',Arial,sans-serif;
     font-size: 12px !important;
-    float: left !important;
     background-color: #F7F7F7 !important;
     margin-left: 5px !important;
     height: 25px !important;
+    margin-top: -27px !important;
 }
 
 .needHelp{
@@ -120,4 +119,21 @@ and open the template in the editor.
 
 .visa{
     background-image: url("images/visa.png");
+}
+
+.cartRemove{
+    border: none ;
+    color: white;
+    width: 200px ; 
+    background-color: #fa5400 !important;
+    height: 30px ;
+    font-family: 'TradeGothicW02-BoldCn20 675505',Arial,sans-serif !important;
+    font-size: 15px ;
+    font-weight: bold 
+}
+
+.ui-button-text-only{
+    border: 1px !important;
+  color: black !important;
+  background-color: #fa5400 !important;
 }

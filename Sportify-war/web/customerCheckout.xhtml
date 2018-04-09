@@ -19,14 +19,14 @@
                             <h:outputText value="You have no items in your shopping cart!" style="font-weight: bold;color: white; font-size: 25px"/>
                         </p:outputPanel>    
                       </p:dataGrid>
-                    <p:dataGrid value="#{customerCheckOutManagedBean.cartitems}" var="cartitem" columns="1" rendered="#{not empty customerCheckOutManagedBean.cartitems}">
+                    <p:dataGrid id="cartitemsgrid" value="#{customerCheckOutManagedBean.cartitems}" var="cartitem" columns="1" rendered="#{not empty customerCheckOutManagedBean.cartitems}">
                         <f:facet name="header">
                             Your Cart
                         </f:facet>
-                        <h:panelGrid styleClass="panelGrid" columns="3" style="width:150%" columnClasses="logo,detail">
+                        <h:panelGrid id="cartitempanel" styleClass="panelGrid" columns="3" style="width:150%" columnClasses="logo,detail">
                             <p:graphicImage style="height:125px; width: 125px" name="#{cartitem[6]}"/>
                             <p:outputPanel>
-                                <h:panelGrid columns="2" cellpadding="5">
+                                <h:panelGrid id="item" columns="2" cellpadding="5">
                                     <h:outputText value="Product:" style="font-weight: bold"/>
                                     <h:outputText value="#{cartitem[3]}"></h:outputText>
                                    
@@ -38,8 +38,10 @@
                                     
                                     <h:outputText value="Product code:" style="font-weight: bold" />
                                     <h:outputText value="#{cartitem[4]}"></h:outputText>
-                                    
-                                   <h:commandButton value="Remove"></h:commandButton>
+                          
+                                      <p:commandButton value="Remove">
+                                           <f:ajax event="click" execute="@all" listener="#{customerCheckOutManagedBean.removeCartItem(cartitem)}" render="@form" />
+                                      </p:commandButton>
                                 </h:panelGrid>
                             </p:outputPanel>
                              <h:outputText value="$#{cartitem[5]}" style="font-weight: bold"></h:outputText>
@@ -48,7 +50,6 @@
                     </p:dataGrid>
                 </h:form> 
             </div>
-
             <div style="background-color: #191919; width: 350px; margin-right: 150px; float:right; text-align: center;">
                 <table class="table" align="center">
                     <tr><td class="rowspace"><h2 align="left">SUMMARY</h2></td></tr><br></br>
@@ -56,9 +57,10 @@
                             <p:accordionPanel activeIndex="null"><p:tab title="DO YOU HAVE A PROMO CODE?">
                                     <h:form>
                                     <h:panelGrid class="ui-accordion-content" columns="2">
-                                        <p:inputText id="promofield" value="#{customerCheckOutManagedBean.promoCode}" styleClass="ui-inputfield, .ui-widget-content .ui-inputfield, .ui-widget-header .ui-inputfield"/>
+                                        <p:inputText id="promofield" value="#{customerCheckOutManagedBean.promoCode}"/>
                                         <p:growl id="promogrowl" showDetail="true" />  
-                                        <p:commandButton value="Apply" update="promogrowl,lbl1,lbl2" actionListener="#{customerCheckOutManagedBean.checkPromoCode}" styleClass="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only applyBtn"></p:commandButton>
+                                         <p:remoteCommand name="rc" update="promogrowl,lbl1,lbl2" actionListener="#{customerCheckOutManagedBean.checkPromoCode}"/>
+                                        <h:commandButton type="button" value="Apply" onclick="rc()" class="applyBtn"></h:commandButton>
                                     </h:panelGrid>
                                         </h:form>
                                 </p:tab>

@@ -28,6 +28,7 @@ import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.faces.context.Flash;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import javax.mail.Message;
@@ -38,6 +39,8 @@ import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
+import org.primefaces.context.RequestContext;
+import org.primefaces.event.CloseEvent;
 
 /**
  *
@@ -172,11 +175,31 @@ public class CustomerCheckOutManagedBean implements Serializable{
              CustomerVoucher cv = customervouchercontroller.retrieveCustomerVoucher(c, appliedvoucher);
              customervouchercontroller.useCustomerVoucher(customerorder,appliedvoucher,cv);
           }
-          
-    }
- 
-
+          RequestContext context = RequestContext.getCurrentInstance();
+          context.execute("PF('dlg3').show();");
+          Flash flash = FacesContext.getCurrentInstance().getExternalContext().getFlash();
+          flash.put("Message", "Hhihi");
+          try {
+          FacesContext.getCurrentInstance().getExternalContext().redirect("home.xhtml");
+          //Display msg in home page and clear session
+          }
+          catch (Exception ex){
+              
+          }
+    } 
     
+    public void removeCartItem(String [] cartitem){
+        for(int i = 0; i < cartitems.size(); i ++){
+            if (cartitem[0].equals(cartitems.get(i)[0])){
+                //If in current list remove it
+                cartitems.remove(i);
+                ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+                Map<String, Object> sessionMap = externalContext.getSessionMap();
+                sessionMap.put("currentItemCart", cartitems);
+            }
+         }
+    }
+  
     public void confirmAddress(){
         //If edit button is pressed
         if (addrbtnval.equals("Edit")){
@@ -224,12 +247,22 @@ public class CustomerCheckOutManagedBean implements Serializable{
     public void proceedPayment(){ 
          setActivetab(0);
          setDisplayconfirm(false);
-         //RequestContext.getCurrentInstance().scrollTo("paymentform:myMessage");
+         RequestContext.getCurrentInstance().scrollTo("paymentform:paymentAccordion");
     }
     
     public void checkPromoCode(){
         FacesContext context = FacesContext.getCurrentInstance();
-        String email = loggedincustomer.getEmail();
+        String email ="";
+        try {
+             email = loggedincustomer.getEmail();
+        }
+        catch (Exception ex){
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error", "Plesae log in to apply promo codes!"));
+            return;
+        }
+        try {     
+        
+        if (Double.parseDouble(subtotaldisplay) > 0){
         Voucher v = vouchercontroller.retrieveCustomerVoucher(promoCode, email);
         if (v.getId() != null){
         appliedvoucher = v;
@@ -249,6 +282,12 @@ public class CustomerCheckOutManagedBean implements Serializable{
         }
         else {        
              context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error", "Invalid Promo code!"));
+        }
+        }
+        }
+        catch (Exception ex){
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error", "You do not have any products in your shopping cart!"));
+            return;
         }
     }
     

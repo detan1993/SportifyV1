@@ -40,11 +40,10 @@
                         </p:panel>
                           
                         </p:panelGrid>
-                       
-                       
+                                            
                         <p:panel id="proceedpayment" visible="#{customerCheckOutManagedBean.displayconfirm}">
                             <p:remoteCommand name="rc" process="@this" update="paymentform:paymentAccordion,proceedpayment" actionListener="#{customerCheckOutManagedBean.proceedPayment}"/>
-                            <h:commandButton type="button" onclick="rc()" value="Proceed to payment" class="checkoutBtn"></h:commandButton>       
+                            <h:commandButton type="button" onclick="rc()" value="Proceed to payment" class="checkoutBtn"></h:commandButton>
                         </p:panel>                    
 
                     </p:tab> 
@@ -53,7 +52,7 @@
             <h:form style="margin-top: 20px; background-color: #191919" id="paymentform">
                 <p:accordionPanel id="paymentAccordion"  activeIndex="#{customerCheckOutManagedBean.activetab}">
                     <p:tab disabled="true" title="2. Payment Details">        
-                        <p:panel>
+                        <p:panel id="paymetinfo">
                             <table style="border-collapse: seperate; border-spacing: 1em">
                                 <tr><h1 style="color: white; width: 400px">We accept: </h1></tr>
                                 <tr><td><h:graphicImage height="50px" width="50px" name="images/master.png" /></td>
@@ -108,13 +107,13 @@
             <p:fieldset legend="Summary" style="margin-bottom:20px; background-color: #191919;font-size: 20px">
                 <h:panelGrid columns="2" cellpadding="5" style="font-size: 15px;">
                     <h:outputText value="Subtotal: " style="font-weight: bold"/>
-                    <h:outputText value="#{customerCheckOutManagedBean.subtotaldisplay}"/>
+                    <h:outputText value="$#{customerCheckOutManagedBean.subtotaldisplay}"/>
 
                     <h:outputText value="Estimated shipping: " style="font-weight: bold"/>
                     <h:outputText value="$5"/>
 
                     <h:outputText value="Total: " style="font-weight: bold"/>
-                    <h:outputText value="#{customerCheckOutManagedBean.totaldisplay}"/>
+                    <h:outputText value="$#{customerCheckOutManagedBean.totaldisplay}"/>
                 </h:panelGrid>
             </p:fieldset>
 
@@ -144,7 +143,9 @@
                 </p:dataGrid>
             </p:fieldset>
         </div>
-
+<p:dialog header="Order Succes!" widgetVar="dlg3" showEffect="explode" hideEffect="none" height="100">
+    <h:outputText value="Thank you for your puchase! Your order has been completed!" />
+</p:dialog>
 
     </ui:define>
 </ui:composition>
