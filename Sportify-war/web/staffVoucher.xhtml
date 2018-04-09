@@ -53,27 +53,27 @@
                             </p:outputPanel>
                         </f:facet>
 
-                        <p:column headerText="Voucher ID" sortBy="#{voucher.id}" filterBy="#{voucher.id}" filterMatchMode="contains">
+                        <p:column headerText="Voucher ID" sortBy="#{voucher.id}">
                             <h:outputText value="#{voucher.id}" />
                         </p:column>
 
-                        <p:column headerText="Voucher Code" sortBy="#{voucher.voucherCode}" filterBy="#{voucher.voucherCode}" filterMatchMode="contains">
+                        <p:column headerText="Voucher Code" sortBy="#{voucher.voucherCode}">
                             <h:outputText value="#{voucher.voucherCode}" />
                         </p:column>
 
-                        <p:column headerText="Voucher Value" sortBy="#{voucher.voucherValue}" filterBy="#{voucher.voucherValue}" filterMatchMode="contains">
+                        <p:column headerText="Voucher Value" sortBy="#{voucher.voucherValue}">
                             <h:outputText value="#{voucher.voucherValue}">
                                 <f:convertNumber type="currency" currencySymbol="$" maxIntegerDigits="5" maxFractionDigits="2"/>
                             </h:outputText>
                         </p:column>
                         
-                        <p:column headerText="Date Created" sortBy="#{voucher.dateCreated}" filterBy="#{voucher.dateCreated}" filterMatchMode="contains">
+                        <p:column headerText="Date Created" sortBy="#{voucher.dateCreated}" >
                             <h:outputText value="#{voucher.dateCreated}" >
                                  <f:convertDateTime pattern="dd MMM yyyy" />
                             </h:outputText> 
                         </p:column>
                         
-                        <p:column headerText="Last Day" sortBy="#{voucher.dateExpired}" filterBy="#{voucher.dateExpired}" filterMatchMode="contains">
+                        <p:column headerText="Last Day" sortBy="#{voucher.dateExpired}" >
                             <h:outputText value="#{voucher.dateExpired}">
                                  <f:convertDateTime pattern="dd MMM yyyy" />
                             </h:outputText>
