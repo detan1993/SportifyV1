@@ -24,6 +24,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.view.ViewScoped;
 import org.primefaces.event.FileUploadEvent;
+import org.primefaces.model.UploadedFile;
 
 /**
  *
@@ -47,11 +48,14 @@ public class StaffProductManagedBean  implements Serializable{
     private Product selectedProductToDelete;
     private List<Product> filteredProducts;
     
+    private List<UploadedFile> create_imageList;
+    
     public StaffProductManagedBean() {
         products = new ArrayList<>();
         lowStockProducts = new ArrayList<>();
         newProduct = new Product();
         filteredProducts = new ArrayList<>();
+        create_imageList = new ArrayList<UploadedFile>();
     }
     
     
@@ -70,24 +74,29 @@ public class StaffProductManagedBean  implements Serializable{
         //put the products into the filter list . This is for the facelet view 
         filteredProducts = products;
         lowStockProducts = productControllerLocal.retrieveProductsRunningLow();
+        create_imageList = new ArrayList<UploadedFile>();
     }
     
     public void createNewProduct(ActionEvent event){
         try
         {
-            for(ProductSize ps : newProduct.getSizes()){
-                productSizeControllerLocal.createSizeForProduct(ps);
+            System.out.println("Create product starting");
+            if(validateProduct(newProduct)){
+                for(ProductSize ps : newProduct.getSizes()){
+                    productSizeControllerLocal.createSizeForProduct(ps);
+                }
+            
+                Product newProductRecord = productControllerLocal.CreateNewProduct(newProduct);
+                products.add(newProductRecord);
+                filteredProducts.add(newProductRecord);
+
+                products.add(newProduct);
+                newProduct = new Product();
+
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New product created successfully (Product ID: " + newProductRecord.getId() + ")", null));
+            }else{
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Please enter Valid Product Size ", null));
             }
-            
-            Product newProductRecord = productControllerLocal.CreateNewProduct(newProduct);
-            products.add(newProductRecord);
-            filteredProducts.add(newProductRecord);
-            
-            
-            products.add(newProduct);
-            newProduct = new Product();
-            
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New product created successfully (Product ID: " + newProductRecord.getId() + ")", null));
         }
         catch(Exception ex)
         {
@@ -96,17 +105,23 @@ public class StaffProductManagedBean  implements Serializable{
     }
     public void updateProduct(){
         try{
-            
-            productControllerLocal.updateProduct(selectedProductsToView);
-            for(ProductSize ps : selectedProductsToView.getSizes()){
-                productSizeControllerLocal.updateSizeForProduct(ps);
+            System.out.println("Update product started");
+            if(validateProduct(selectedProductsToView)){
+                productControllerLocal.updateProduct(selectedProductsToView);
+                for(ProductSize ps : selectedProductsToView.getSizes()){
+                    productSizeControllerLocal.updateSizeForProduct(ps);
+                }
+
+                products = productControllerLocal.retrieveProductIncludingInactive();
+                FacesContext.getCurrentInstance().addMessage("update_messages", new FacesMessage(FacesMessage.SEVERITY_INFO, "Product updated successfully (Product ID: " + selectedProductsToView.getId() + ")", null));
+            }else{
+                System.out.println("Update validation failed");
+                  FacesContext.getCurrentInstance().addMessage("update_messages", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Please enter Valid Product Size ",null));
             }
-            
-            products = productControllerLocal.retrieveProductIncludingInactive();
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Product updated successfully (Product ID: " + selectedProductsToView.getId() + ")", null));
+           
             
         }catch(Exception ex){
-              FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred while updating the product: " + ex.getMessage(), null));
+              FacesContext.getCurrentInstance().addMessage("update_messages", new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred while updating the product: " + ex.getMessage(), null));
         }
     }  
     public void handleFileUpload(FileUploadEvent event) {
@@ -218,7 +233,7 @@ public class StaffProductManagedBean  implements Serializable{
             fileOutputStream.close();
             inputStream.close();
             
-             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,  "File uploaded successfully", ""));
+            create_imageList.add(event.getFile());
         }catch(Exception ex){
             ex.printStackTrace();
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,  "File upload error: " + ex.getMessage(), ""));
@@ -262,7 +277,6 @@ public class StaffProductManagedBean  implements Serializable{
         return String.valueOf(averageRating);
     }
     
-    
     public void addProductSize_create(ActionEvent event){
         System.out.println("Total Sizes: " + newProduct.getSizes().size());
         newProduct.getSizes().add(new ProductSize());
@@ -276,6 +290,18 @@ public class StaffProductManagedBean  implements Serializable{
     }
     public void removeProductSize_update(int index){
         selectedProductsToView.getSizes().remove(index);
+    }
+    
+    public boolean validateProduct(Product p){
+        boolean isValidSize = true;
+        for(ProductSize s : p.getSizes()){
+            System.out.println("Size: " + s.getSize());
+            if(s.getSize().length() <=0){
+                isValidSize = false;
+                break;
+            }
+        }
+        return isValidSize;
     }
     
     
@@ -378,5 +404,15 @@ public class StaffProductManagedBean  implements Serializable{
     public void setLowStockProducts(List<Product> lowStockProducts) {
         this.lowStockProducts = lowStockProducts;
     }
+
+    public List<UploadedFile> getCreate_imageList() {
+        return create_imageList;
+    }
+
+    public void setCreate_imageList(List<UploadedFile> create_imageList) {
+        this.create_imageList = create_imageList;
+    }
+    
+    
     
 }

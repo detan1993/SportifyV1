@@ -140,6 +140,14 @@ public class ProductController implements ProductControllerRemote, ProductContro
                 }
             }
         }
+        
+        Iterator<Product> i2 = allProductList.iterator();
+        while(i2.hasNext()){
+            Product p = i2.next();
+            if(p.getSizes().size() <=0){
+                i2.remove();
+            }
+        }
 
         return allProductList;
     }
