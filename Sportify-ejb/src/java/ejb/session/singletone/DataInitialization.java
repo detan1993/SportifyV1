@@ -193,9 +193,9 @@ public class DataInitialization {
         manuHome.add(imageControllerLocal.createNewImage(manuProductHome_Sub3));
 
         List<ProductSize> manuHomeSize = new ArrayList<>();
-        manuHomeSize.add(productSizeControllerLocal.createSizeForProduct(new ProductSize("XL", 10)));
-        manuHomeSize.add(productSizeControllerLocal.createSizeForProduct(new ProductSize("L", 10)));
-        manuHomeSize.add(productSizeControllerLocal.createSizeForProduct(new ProductSize("M", 10)));
+        manuHomeSize.add(productSizeControllerLocal.createSizeForProduct(new ProductSize("XL", 153)));
+        manuHomeSize.add(productSizeControllerLocal.createSizeForProduct(new ProductSize("L", 68)));
+        manuHomeSize.add(productSizeControllerLocal.createSizeForProduct(new ProductSize("M", 45)));
 
         cal.set(2018, Calendar.JANUARY, 23); //Year, month and day of month
         date = cal.getTime();
@@ -206,17 +206,17 @@ public class DataInitialization {
         List<Images> sevillaHome = new ArrayList<>();
         Images sevillaProductHome_Main = new Images("images/products/sevilla_home.jpg");
         sevillaHome.add(imageControllerLocal.createNewImage(sevillaProductHome_Main));
-        Images sevillaProductHome_Sub1 = new Images("TeamName_Sub1");
+        Images sevillaProductHome_Sub1 = new Images("images/products/toby_model.jpg");
         sevillaHome.add(imageControllerLocal.createNewImage(sevillaProductHome_Sub1));
-        Images sevillaProductHome_Sub2 = new Images("TeamName_Sub2");
+        Images sevillaProductHome_Sub2 = new Images("images/products/spain_league_kit.jpg");
         sevillaHome.add(imageControllerLocal.createNewImage(sevillaProductHome_Sub2));
-        Images sevillaProductHome_Sub3 = new Images("TeamName_Sub2");
+        Images sevillaProductHome_Sub3 = new Images("images/products/ars_home1.jpg");
         sevillaHome.add(imageControllerLocal.createNewImage(sevillaProductHome_Sub3));
 
         List<ProductSize> sevillaHomeSize = new ArrayList<>();
-        sevillaHomeSize.add(productSizeControllerLocal.createSizeForProduct(new ProductSize("XL", 10)));
-        sevillaHomeSize.add(productSizeControllerLocal.createSizeForProduct(new ProductSize("L", 10)));
-        sevillaHomeSize.add(productSizeControllerLocal.createSizeForProduct(new ProductSize("M", 10)));
+        sevillaHomeSize.add(productSizeControllerLocal.createSizeForProduct(new ProductSize("XL", 55)));
+        sevillaHomeSize.add(productSizeControllerLocal.createSizeForProduct(new ProductSize("L", 28)));
+        sevillaHomeSize.add(productSizeControllerLocal.createSizeForProduct(new ProductSize("M", 2)));
 
         cal.set(2018, Calendar.JANUARY, 23); //Year, month and day of month
         date = cal.getTime();
@@ -235,9 +235,9 @@ public class DataInitialization {
         liverpoolHome.add(imageControllerLocal.createNewImage(liverpoolroductHome_Sub3));
 
         List<ProductSize> liverpoolHomeSize = new ArrayList<>();
-        liverpoolHomeSize.add(productSizeControllerLocal.createSizeForProduct(new ProductSize("XL", 10)));
-        liverpoolHomeSize.add(productSizeControllerLocal.createSizeForProduct(new ProductSize("L", 10)));
-        liverpoolHomeSize.add(productSizeControllerLocal.createSizeForProduct(new ProductSize("M", 10)));
+        liverpoolHomeSize.add(productSizeControllerLocal.createSizeForProduct(new ProductSize("XL", 5)));
+        liverpoolHomeSize.add(productSizeControllerLocal.createSizeForProduct(new ProductSize("L", 24)));
+        liverpoolHomeSize.add(productSizeControllerLocal.createSizeForProduct(new ProductSize("M", 12)));
 
         cal.set(2018, Calendar.FEBRUARY, 23); //Year, month and day of month
         date = cal.getTime();
@@ -256,9 +256,9 @@ public class DataInitialization {
         atlMadridHome.add(imageControllerLocal.createNewImage(atlMadridProductHome_Sub3));
 
         List<ProductSize> atlMadridHomeSize = new ArrayList<>();
-        atlMadridHomeSize.add(productSizeControllerLocal.createSizeForProduct(new ProductSize("XL", 10)));
-        atlMadridHomeSize.add(productSizeControllerLocal.createSizeForProduct(new ProductSize("L", 10)));
-        atlMadridHomeSize.add(productSizeControllerLocal.createSizeForProduct(new ProductSize("M", 10)));
+        atlMadridHomeSize.add(productSizeControllerLocal.createSizeForProduct(new ProductSize("XL", 2)));
+        atlMadridHomeSize.add(productSizeControllerLocal.createSizeForProduct(new ProductSize("L", 9)));
+        atlMadridHomeSize.add(productSizeControllerLocal.createSizeForProduct(new ProductSize("M", 27)));
 
         cal.set(2018, Calendar.FEBRUARY, 23); //Year, month and day of month
         date = cal.getTime();
@@ -278,9 +278,9 @@ public class DataInitialization {
         arsenalHome.add(imageControllerLocal.createNewImage(ArsenalProductHome_Sub3));
 
         List<ProductSize> arsenalHomeSize = new ArrayList<>();
-        arsenalHomeSize.add(productSizeControllerLocal.createSizeForProduct(new ProductSize("XL", 10)));
-        arsenalHomeSize.add(productSizeControllerLocal.createSizeForProduct(new ProductSize("L", 10)));
-        arsenalHomeSize.add(productSizeControllerLocal.createSizeForProduct(new ProductSize("M", 10)));
+        arsenalHomeSize.add(productSizeControllerLocal.createSizeForProduct(new ProductSize("XL", 100)));
+        arsenalHomeSize.add(productSizeControllerLocal.createSizeForProduct(new ProductSize("L", 22)));
+        arsenalHomeSize.add(productSizeControllerLocal.createSizeForProduct(new ProductSize("M", 113)));
 
         cal.set(2018, Calendar.MARCH, 14); //Year, month and day of month
         date = cal.getTime();
@@ -300,9 +300,9 @@ public class DataInitialization {
         arsenalAway.add(imageControllerLocal.createNewImage(ArsenalProductAway_Sub3));
 
         List<ProductSize> arsenalAwaySize = new ArrayList<>();
-        arsenalAwaySize.add(productSizeControllerLocal.createSizeForProduct(new ProductSize("XL", 10)));
-        arsenalAwaySize.add(productSizeControllerLocal.createSizeForProduct(new ProductSize("L", 15)));
-        arsenalAwaySize.add(productSizeControllerLocal.createSizeForProduct(new ProductSize("M", 5)));
+        arsenalAwaySize.add(productSizeControllerLocal.createSizeForProduct(new ProductSize("XL", 13)));
+        arsenalAwaySize.add(productSizeControllerLocal.createSizeForProduct(new ProductSize("L", 19)));
+        arsenalAwaySize.add(productSizeControllerLocal.createSizeForProduct(new ProductSize("M", 54)));
 
         cal.set(2018, Calendar.FEBRUARY, 1); //Year, month and day of month
         date = cal.getTime();
@@ -321,9 +321,9 @@ public class DataInitialization {
         barcaHome.add(imageControllerLocal.createNewImage(BarcaProductHome_Sub3));
 
         List<ProductSize> barcaHomeSize = new ArrayList<>();
-        barcaHomeSize.add(productSizeControllerLocal.createSizeForProduct(new ProductSize("XL", 10)));
-        barcaHomeSize.add(productSizeControllerLocal.createSizeForProduct(new ProductSize("L", 10)));
-        barcaHomeSize.add(productSizeControllerLocal.createSizeForProduct(new ProductSize("M", 10)));
+        barcaHomeSize.add(productSizeControllerLocal.createSizeForProduct(new ProductSize("XL", 36)));
+        barcaHomeSize.add(productSizeControllerLocal.createSizeForProduct(new ProductSize("L", 38)));
+        barcaHomeSize.add(productSizeControllerLocal.createSizeForProduct(new ProductSize("M", 58)));
 
         cal.set(2018, Calendar.APRIL, 1); //Year, month and day of month
         date = cal.getTime();
@@ -343,8 +343,8 @@ public class DataInitialization {
         barcaAway.add(imageControllerLocal.createNewImage(Barca_ProductAway_Sub3));
 
         List<ProductSize> barcaAwaySize = new ArrayList<>();
-        barcaAwaySize.add(productSizeControllerLocal.createSizeForProduct(new ProductSize("XL", 10)));
-        barcaAwaySize.add(productSizeControllerLocal.createSizeForProduct(new ProductSize("L", 10)));
+        barcaAwaySize.add(productSizeControllerLocal.createSizeForProduct(new ProductSize("XL", 4)));
+        barcaAwaySize.add(productSizeControllerLocal.createSizeForProduct(new ProductSize("L", 11)));
         barcaAwaySize.add(productSizeControllerLocal.createSizeForProduct(new ProductSize("M", 10)));
 
         cal.set(2018, Calendar.APRIL, 20); //Year, month and day of month
@@ -366,8 +366,8 @@ public class DataInitialization {
 
         List<ProductSize> chelseaHomeSize = new ArrayList<>();
         chelseaHomeSize.add(productSizeControllerLocal.createSizeForProduct(new ProductSize("XL", 10)));
-        chelseaHomeSize.add(productSizeControllerLocal.createSizeForProduct(new ProductSize("L", 10)));
-        chelseaHomeSize.add(productSizeControllerLocal.createSizeForProduct(new ProductSize("M", 10)));
+        chelseaHomeSize.add(productSizeControllerLocal.createSizeForProduct(new ProductSize("L", 12)));
+        chelseaHomeSize.add(productSizeControllerLocal.createSizeForProduct(new ProductSize("M", 24)));
 
         cal.set(2018, Calendar.MARCH, 14); //Year, month and day of month
         date = cal.getTime();
@@ -387,9 +387,9 @@ public class DataInitialization {
         chelseaAway.add(imageControllerLocal.createNewImage(ChealseaProductAway_Sub3));
 
         List<ProductSize> chelseaAwaySize = new ArrayList<>();
-        chelseaAwaySize.add(productSizeControllerLocal.createSizeForProduct(new ProductSize("XL", 20)));
-        chelseaAwaySize.add(productSizeControllerLocal.createSizeForProduct(new ProductSize("S", 10)));
-        chelseaAwaySize.add(productSizeControllerLocal.createSizeForProduct(new ProductSize("M", 15)));
+        chelseaAwaySize.add(productSizeControllerLocal.createSizeForProduct(new ProductSize("XL", 27)));
+        chelseaAwaySize.add(productSizeControllerLocal.createSizeForProduct(new ProductSize("S", 13)));
+        chelseaAwaySize.add(productSizeControllerLocal.createSizeForProduct(new ProductSize("M", 17)));
 
         cal.set(2018, Calendar.FEBRUARY, 28); //Year, month and day of month
         date = cal.getTime();
@@ -410,8 +410,8 @@ public class DataInitialization {
 
         List<ProductSize> rmHomeSize = new ArrayList<>();
         rmHomeSize.add(productSizeControllerLocal.createSizeForProduct(new ProductSize("XL", 10)));
-        rmHomeSize.add(productSizeControllerLocal.createSizeForProduct(new ProductSize("L", 10)));
-        rmHomeSize.add(productSizeControllerLocal.createSizeForProduct(new ProductSize("M", 10)));
+        rmHomeSize.add(productSizeControllerLocal.createSizeForProduct(new ProductSize("L", 13)));
+        rmHomeSize.add(productSizeControllerLocal.createSizeForProduct(new ProductSize("M", 5)));
 
         cal.set(2018, Calendar.FEBRUARY, 12); //Year, month and day of month
         date = cal.getTime();
@@ -431,9 +431,9 @@ public class DataInitialization {
         rmAway.add(imageControllerLocal.createNewImage(Rm_ProductAway_Sub3));
 
         List<ProductSize> rmAwaySize = new ArrayList<>();
-        rmAwaySize.add(productSizeControllerLocal.createSizeForProduct(new ProductSize("XL", 10)));
-        rmAwaySize.add(productSizeControllerLocal.createSizeForProduct(new ProductSize("L", 10)));
-        rmAwaySize.add(productSizeControllerLocal.createSizeForProduct(new ProductSize("M", 10)));
+        rmAwaySize.add(productSizeControllerLocal.createSizeForProduct(new ProductSize("XL", 1)));
+        rmAwaySize.add(productSizeControllerLocal.createSizeForProduct(new ProductSize("L", 16)));
+        rmAwaySize.add(productSizeControllerLocal.createSizeForProduct(new ProductSize("M", 13)));
 
         cal.set(2018, Calendar.MARCH, 1); //Year, month and day of month
         date = cal.getTime();

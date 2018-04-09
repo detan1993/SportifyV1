@@ -73,33 +73,37 @@
                                 </p:outputPanel>
                             </f:facet>
 
-                            <p:column headerText="Product ID" sortBy="#{product.id}" filterBy="#{product.id}" filterMatchMode="contains">
+                            <p:column headerText="Product ID" sortBy="#{product.id}">
                                 <h:outputText value="#{product.id}" />
                             </p:column>
 
-                            <p:column headerText="Product Code" sortBy="#{product.productCode}" filterBy="#{product.productCode}" filterMatchMode="contains">
+                            <p:column headerText="Product Code" sortBy="#{product.productCode}">
                                 <h:outputText value="#{product.productCode}" />
                             </p:column>
 
-                            <p:column headerText="Name" sortBy="#{product.productName}" filterBy="#{product.productName}" filterMatchMode="contains">
+                            <p:column headerText="Name" sortBy="#{product.productName}">
                                 <h:outputText value="#{product.productName}" />
                             </p:column>
 
-                            <p:column headerText="Unit Price" sortBy="#{product.price}" filterBy="#{product.price}" filterMatchMode="contains">
+                            <p:column headerText="Unit Price" sortBy="#{product.price}">
                                 <h:outputText value="#{product.price}">
                                     <f:convertNumber type="currency" currencySymbol="$" maxIntegerDigits="5" maxFractionDigits="2"/>
                                 </h:outputText>
                             </p:column>
 
-                            <p:column headerText="Country" sortBy="#{product.country}" filterBy="#{product.country}" filterMatchMode="contains">
+                            <p:column headerText="Country" sortBy="#{product.country}">
                                 <h:outputText value="#{product.country}" />
                             </p:column>
 
-                            <p:column headerText="Team" sortBy="#{product.team}" filterBy="#{product.team}" filterMatchMode="contains">
+                            <p:column headerText="Team" sortBy="#{product.team}">
                                 <h:outputText value="#{product.team}" />
                             </p:column>
 
-                            <p:column headerText="Status" sortBy="#{product.status}" filterBy="#{product.status}" filterMatchMode="contains">
+                            <p:column headerText="Average Rating" sortBy="#{staffProductManagedBean.calculateAverageRating(product)}">
+                                <h:outputText value="#{staffProductManagedBean.calculateAverageRating(product)}" />
+                            </p:column>
+                            
+                            <p:column headerText="Status" sortBy="#{product.status}">
                                 <h:outputText value="#{product.status}" />
                             </p:column>
                             
@@ -162,12 +166,13 @@
 
                             <h:outputLabel for="price" value="Price: $" />
                             <p:inputText  value="#{staffProductManagedBean.selectedProductsToView.price}"  required="true"/>
-
+                             
                             <h:outputLabel for="country" value="Country: " />
                             <p:inputText value="#{staffProductManagedBean.selectedProductsToView.country}" required="true"/>
 
                             <h:outputLabel for="team" value="Team: " />
                             <p:inputText value="#{staffProductManagedBean.selectedProductsToView.team}" required="true"/>
+                            
                         </p:panelGrid>
                         <p:panelGrid columns="4">
                             <h:outputLabel for="description" value="Description:" style="vertical-align: top;"/>&nbsp;
@@ -201,15 +206,12 @@
                     <p:tab title="Product Reviews">
                          <p:panelGrid id="pg_productReviews">
                             <p:repeat value="#{staffProductManagedBean.selectedProductsToView.productReviews}" var="review">
-                                <h:outputLabel value="#{review.reviewDate} ">
-                                <f:convertDateTime pattern="dd-MM-yyyy" />
-                                </h:outputLabel>
-                                <h:outputLabel value="#{review.reviewDate} ">
-                                <f:convertDateTime pattern="HH:mm" />
-                                </h:outputLabel>
-                                <br/>
+                                <h:outputText value="#{review.reviewDate}">
+                                    <f:convertDateTime pattern="dd MMM yyyy HH:mm" />
+                                </h:outputText>
+                                <p:rating value="#{review.rating}" readonly="true" />
                                 <h:outputLabel value="#{review.review}"/>
-                                <br />
+                                <br /><br/>
                             </p:repeat>
                         </p:panelGrid>
                     </p:tab>

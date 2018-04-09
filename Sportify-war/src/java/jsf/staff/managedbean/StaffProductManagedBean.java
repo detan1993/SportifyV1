@@ -8,6 +8,7 @@ package jsf.staff.managedbean;
 import ejb.session.stateless.ProductControllerLocal;
 import ejb.session.stateless.ProductSizeControllerLocal;
 import entity.Product;
+import entity.ProductReview;
 import entity.ProductSize;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -235,6 +236,30 @@ public class StaffProductManagedBean  implements Serializable{
         }catch(Exception ex){
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred while deleting the product: " + ex.getMessage(), null));
         }
+    }
+    
+    public String calculateAverageRating(Product p){
+        System.out.println("Start calculating");
+        double averageRating = 0;
+        double totalRating =0;
+        double totalReviews =0;
+        for(ProductReview r : p.getProductReviews()){
+            System.out.println("Review: " + r.getRating());
+            totalRating +=r.getRating();
+            totalReviews++;
+        }
+        
+        
+        averageRating = totalRating/totalReviews;
+        System.out.println("Total Rating: " + totalRating ); 
+        System.out.println("Total Review: " + totalReviews); 
+        System.out.println("Average Rating: " + averageRating ); 
+        
+        if(totalRating ==0){
+            return "Nil";
+        }
+        
+        return String.valueOf(averageRating);
     }
     
     

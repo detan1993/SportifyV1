@@ -51,9 +51,14 @@ public class ProductController implements ProductControllerRemote, ProductContro
     }
 
     @Override
-    public List<Product> retrieveProductIncludingInactive() {
+    public List<Product> retrieveProductIncludingInactive(){
         Query query = em.createQuery("SELECT p FROM Product p");
-        System.out.println("Product controlelr retrieve: " + query.getResultList().size());
+        return query.getResultList();
+    }
+    
+    @Override
+    public List<Product> retrieveActiveProductOrderById(){
+        Query query = em.createQuery("SELECT p FROM Product p WHERE p.status='A'");
         return query.getResultList();
     }
 
@@ -115,7 +120,7 @@ public class ProductController implements ProductControllerRemote, ProductContro
     // Gets a list of products with sizes quantity <=10 , does not return sizes with >10
     @Override
     public List<Product> retrieveProductsRunningLow() {
-        List<Product> allProductList = retrieveProduct();
+        List<Product> allProductList = retrieveActiveProductOrderById();
 
         //Using iterator as forloop cannot remove sizes while looping through it
         System.out.println("******************************************Begin retrieve products running low");
