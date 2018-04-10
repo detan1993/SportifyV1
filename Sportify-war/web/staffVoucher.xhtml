@@ -12,18 +12,19 @@
         <p:tabView id="tv">
             <p:tab title="Create Voucher">
                  <h:form id="form_createVoucher">
+                    <p:messages id="messages_create" closable="true" />
                     <p:commandButton value="Create new Voucher" actionListener="#{staffVoucherManagedBean.createNewVoucher}" update="tv:form_allVouchers:dt_allVouchers" />
                     <br/><br/>
                     <p:panel header="Details">
                         <p:panelGrid columns="4" >
                             <h:outputLabel for="voucherCode" value="Voucher Code" />
-                            <p:inputText  value="#{staffVoucherManagedBean.newVoucher.voucherCode}" required="true"/>
+                            <p:inputText  value="#{staffVoucherManagedBean.newVoucher.voucherCode}" required="true" requiredMessage="Please enter Voucher Code"/>
                             <h:outputLabel for="voucherValue" value="Voucher Value:" />
-                            <p:inputText  value="#{staffVoucherManagedBean.newVoucher.voucherValue}" required="true"/>
+                            <p:inputText  value="#{staffVoucherManagedBean.newVoucher.voucherValue}" required="true" requiredMessage="Please enter Voucher value"/>
                             <h:outputLabel for="voucherQuantity" value="Quantity per Customer: " />
-                            <p:inputText value="#{staffVoucherManagedBean.newVoucher.quantity}" required="true"/>
+                            <p:inputText value="#{staffVoucherManagedBean.newVoucher.quantity}" required="true" requiredMessage="Please enter Voucher Quantity"/>
                             <h:outputLabel for="expiryDate" value="Expiry Date: " />
-                            <p:calendar id="popup" value="#{staffVoucherManagedBean.newVoucher.dateExpired}" />
+                            <p:calendar id="popup" value="#{staffVoucherManagedBean.newVoucher.dateExpired}" requiredMessage="Please enter Voucher Expiry date"/>
                         </p:panelGrid>
                         <p:selectBooleanCheckbox id="cb_voucher" value="#{staffVoucherManagedBean.isSpecific}">
                             <f:ajax event="change" render="v_specificPanel" execute="v_specificPanel" />

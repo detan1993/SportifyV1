@@ -56,7 +56,6 @@ public class CustomerVoucherController implements CustomerVoucherControllerRemot
      
      @Override 
      public void useCustomerVoucher(CustomerOrder co, Voucher v, CustomerVoucher cv){
-         v.setQuantity(v.getQuantity() - 1);
          co.setCustomerVoucher(cv);
          cv.setCustomerOrder(co);
          em.merge(co);
