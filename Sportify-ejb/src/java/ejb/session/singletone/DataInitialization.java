@@ -181,13 +181,13 @@ public class DataInitialization {
          For each country we show 6 teams. Each team we display 2 jersey (home and away). Hence for each country we have in total 12 products.
          */
         List<Images> manuHome = new ArrayList<>();
-        Images manuProductHome_Main = new Images("images/products/manu_home.jpg");
+        Images manuProductHome_Main = new Images("images/products/eng_manu_main.jpg");
         manuHome.add(imageControllerLocal.createNewImage(manuProductHome_Main));
-        Images manuProductHome_Sub1 = new Images("TeamName_Sub1");
+        Images manuProductHome_Sub1 = new Images("images/products/eng_manu_1.jpg");
         manuHome.add(imageControllerLocal.createNewImage(manuProductHome_Sub1));
-        Images manuProductHome_Sub2 = new Images("TeamName_Sub2");
+        Images manuProductHome_Sub2 = new Images("images/products/eng_manu_2.jpg");
         manuHome.add(imageControllerLocal.createNewImage(manuProductHome_Sub2));
-        Images manuProductHome_Sub3 = new Images("TeamName_Sub2");
+        Images manuProductHome_Sub3 = new Images("images/products/eng_manu_3.jpg");
         manuHome.add(imageControllerLocal.createNewImage(manuProductHome_Sub3));
 
         List<ProductSize> manuHomeSize = new ArrayList<>();
@@ -198,18 +198,22 @@ public class DataInitialization {
         cal.set(2018, Calendar.JANUARY, 23); //Year, month and day of month
         date = cal.getTime();
 
-        Product manuHomeProduct = new Product("Manu001", "Man United Home 2017/18", "Description", 249.90, "Man United", "Male", "England", date, null, manuHome, manuHomeSize);
+        Product manuHomeProduct = new Product("Manu001", "Man United Home 2017/18", "Manchester United is one of the biggest clubs in the world, and they have surely made some interesting signings this season. The legacy from Ferguson has been hard to deal with, but maybe this is the season when things change. In our Manchester United collection, you will find the newest shirts - both home and away. You know what’s interesting? You can also choose your own customized printing on the back!", 249.90, "Manchester United", "Male", "England", date, null, manuHome, manuHomeSize);
         manuHomeProduct = productControllerLocal.CreateNewProduct(manuHomeProduct);
 
         List<Images> sevillaHome = new ArrayList<>();
-        Images sevillaProductHome_Main = new Images("images/products/sevilla_home.jpg");
+        Images sevillaProductHome_Main = new Images("images/products/spain_sevilla_main.jpg");
         sevillaHome.add(imageControllerLocal.createNewImage(sevillaProductHome_Main));
-        Images sevillaProductHome_Sub1 = new Images("images/products/toby_model.jpg");
+        Images sevillaProductHome_Sub1 = new Images("images/products/spain_sevilla_1.jpg");
         sevillaHome.add(imageControllerLocal.createNewImage(sevillaProductHome_Sub1));
-        Images sevillaProductHome_Sub2 = new Images("images/products/spain_league_kit.jpg");
+        Images sevillaProductHome_Sub2 = new Images("images/products/spain_sevilla_2.jpg");
         sevillaHome.add(imageControllerLocal.createNewImage(sevillaProductHome_Sub2));
-        Images sevillaProductHome_Sub3 = new Images("images/products/ars_home1.jpg");
+        Images sevillaProductHome_Sub3 = new Images("images/products/spain_sevilla_3.jpg");
         sevillaHome.add(imageControllerLocal.createNewImage(sevillaProductHome_Sub3));
+        Images sevillaProductHome_Sub4 = new Images("images/products/spain_sevilla_4.jpg");
+        sevillaHome.add(imageControllerLocal.createNewImage(sevillaProductHome_Sub4));
+        Images sevillaProductHome_Sub5 = new Images("images/products/spain_sevilla_5.jpg");
+        sevillaHome.add(imageControllerLocal.createNewImage(sevillaProductHome_Sub5));
 
         List<ProductSize> sevillaHomeSize = new ArrayList<>();
         sevillaHomeSize.add(productSizeControllerLocal.createSizeForProduct(new ProductSize("XL", 55)));
@@ -219,18 +223,20 @@ public class DataInitialization {
         cal.set(2018, Calendar.JANUARY, 23); //Year, month and day of month
         date = cal.getTime();
 
-        Product sevillaHomeProduct = new Product("Sevilla001", "Sevilla Home 2017/18", "Description", 79.90, "Sevilla", "Male", "Spain", date, null, sevillaHome, sevillaHomeSize);
+        Product sevillaHomeProduct = new Product("Sevilla001", "Sevilla Home 2017/18", "Sevilla’s style of playing football have always been exciting. We give you the opportunity to get this shirt right here at Sportify. All you have to do is choose your size favourite player on the shirt or print your own name and number. We offer fast delivery, which means that you get your Sevilla shirt within a week after your ordered it.", 79.90, "Sevilla", "Male", "Spain", date, null, sevillaHome, sevillaHomeSize);
         sevillaHomeProduct = productControllerLocal.CreateNewProduct(sevillaHomeProduct);
 
         List<Images> liverpoolHome = new ArrayList<>();
-        Images liverpoolProductHome_Main = new Images("images/products/liverpool_home.jpg");
+        Images liverpoolProductHome_Main = new Images("images/products/eng_liv_main.jpg");
         liverpoolHome.add(imageControllerLocal.createNewImage(liverpoolProductHome_Main));
-        Images liverpoolProductHome_Sub1 = new Images("TeamName_Sub1");
+        Images liverpoolProductHome_Sub1 = new Images("images/products/eng_liv_1.jpg");
         liverpoolHome.add(imageControllerLocal.createNewImage(liverpoolProductHome_Sub1));
-        Images liverpoolProductHome_Sub2 = new Images("TeamName_Sub2");
+        Images liverpoolProductHome_Sub2 = new Images("images/products/eng_liv_2.jpg");
         liverpoolHome.add(imageControllerLocal.createNewImage(liverpoolProductHome_Sub2));
-        Images liverpoolroductHome_Sub3 = new Images("TeamName_Sub2");
+        Images liverpoolroductHome_Sub3 = new Images("images/products/eng_liv_3.jpg");
         liverpoolHome.add(imageControllerLocal.createNewImage(liverpoolroductHome_Sub3));
+        Images liverpoolroductHome_Sub4 = new Images("images/products/eng_liv_4.jpg");
+        liverpoolHome.add(imageControllerLocal.createNewImage(liverpoolroductHome_Sub4));
 
         List<ProductSize> liverpoolHomeSize = new ArrayList<>();
         liverpoolHomeSize.add(productSizeControllerLocal.createSizeForProduct(new ProductSize("XL", 5)));
@@ -240,18 +246,20 @@ public class DataInitialization {
         cal.set(2018, Calendar.FEBRUARY, 23); //Year, month and day of month
         date = cal.getTime();
 
-        Product liverpoolHomeProduct = new Product("Liverpool001", "Liverpool Home 2017/18", "Description", 349.90, "Liverpool", "Male", "England", date, null, liverpoolHome, liverpoolHomeSize);
+        Product liverpoolHomeProduct = new Product("Liverpool001", "Liverpool Home 2017/18", "Liverpool FC is one of the most famous English clubs. They are on the way to the semi-finals of the champions league this season. If you want to support Liverpool, you can find home shirt and away jersey right here at Sportify. We offer the newest shirt in different sizes. So, no matter what your heart desire, Sportify offers it. Find your new Liverpool shirt right here!", 349.90, "Liverpool", "Male", "England", date, null, liverpoolHome, liverpoolHomeSize);
         liverpoolHomeProduct = productControllerLocal.CreateNewProduct(liverpoolHomeProduct);
 
         List<Images> atlMadridHome = new ArrayList<>();
-        Images atlMadridroductHome_Main = new Images("images/products/altl_home.jpg");
+        Images atlMadridroductHome_Main = new Images("images/products/spain_atleti_main.jpg");
         atlMadridHome.add(imageControllerLocal.createNewImage(atlMadridroductHome_Main));
-        Images atlMadridProductHome_Sub1 = new Images("TeamName_Sub1");
+        Images atlMadridProductHome_Sub1 = new Images("images/products/spain_atleti_1.jpg");
         atlMadridHome.add(imageControllerLocal.createNewImage(atlMadridProductHome_Sub1));
-        Images atlMadridProductHome_Sub2 = new Images("TeamName_Sub2");
+        Images atlMadridProductHome_Sub2 = new Images("images/products/spain_atleti_2.jpg");
         atlMadridHome.add(imageControllerLocal.createNewImage(atlMadridProductHome_Sub2));
-        Images atlMadridProductHome_Sub3 = new Images("TeamName_Sub2");
+        Images atlMadridProductHome_Sub3 = new Images("images/products/spain_atleti_3.jpg");
         atlMadridHome.add(imageControllerLocal.createNewImage(atlMadridProductHome_Sub3));
+        Images atlMadridProductHome_Sub4 = new Images("images/products/spain_atleti_4.jpg");
+        atlMadridHome.add(imageControllerLocal.createNewImage(atlMadridProductHome_Sub4));
 
         List<ProductSize> atlMadridHomeSize = new ArrayList<>();
         atlMadridHomeSize.add(productSizeControllerLocal.createSizeForProduct(new ProductSize("XL", 2)));
@@ -261,19 +269,21 @@ public class DataInitialization {
         cal.set(2018, Calendar.FEBRUARY, 23); //Year, month and day of month
         date = cal.getTime();
 
-        Product atlMadridHomeProduct = new Product("AtleticoMadrid001", "Atletico Madrid Home 2017/18", "Description", 599.90, "Atletico Madrid", "Male", "Spain", date, null, atlMadridHome, atlMadridHomeSize);
+        Product atlMadridHomeProduct = new Product("AtleticoMadrid001", "Atletico Madrid Home 2017/18", "Atletico Madrid is one of the regular contenders for the Spanish Football throne. With one league title and two Champions League finals within three years, it is one of the most respectable clubs. Their head coach Diego Simeone is a big part of the success. Explore our selection of Atletico Madrid home shirt and away jersey!", 599.90, "Atletico Madrid", "Male", "Spain", date, null, atlMadridHome, atlMadridHomeSize);
         atlMadridHomeProduct = productControllerLocal.CreateNewProduct(atlMadridHomeProduct);
 
         //Arsenal home
         List<Images> arsenalHome = new ArrayList<>();
-        Images ArsenalProductHome_Main = new Images("images/products/ars_home.jpg");
+        Images ArsenalProductHome_Main = new Images("images/products/eng_ars_main.jpg");
         arsenalHome.add(imageControllerLocal.createNewImage(ArsenalProductHome_Main));
-        Images ArsenalProductHome_Sub1 = new Images("images/products/ars_home_1.jpg");
+        Images ArsenalProductHome_Sub1 = new Images("images/products/eng_ars_1.jpg");
         arsenalHome.add(imageControllerLocal.createNewImage(ArsenalProductHome_Sub1));
-        Images ArsenalProductHome_Sub2 = new Images("images/products/ars_home_2.jpg");
+        Images ArsenalProductHome_Sub2 = new Images("images/products/eng_ars_2.jpg");
         arsenalHome.add(imageControllerLocal.createNewImage(ArsenalProductHome_Sub2));
-        Images ArsenalProductHome_Sub3 = new Images("images/products/ars_home_3.jpg");
+        Images ArsenalProductHome_Sub3 = new Images("images/products/eng_ars_3.jpg");
         arsenalHome.add(imageControllerLocal.createNewImage(ArsenalProductHome_Sub3));
+        Images ArsenalProductHome_Sub4 = new Images("images/products/eng_ars_4.jpg");
+        arsenalHome.add(imageControllerLocal.createNewImage(ArsenalProductHome_Sub4));
 
         List<ProductSize> arsenalHomeSize = new ArrayList<>();
         arsenalHomeSize.add(productSizeControllerLocal.createSizeForProduct(new ProductSize("XL", 100)));
@@ -283,19 +293,21 @@ public class DataInitialization {
         cal.set(2018, Calendar.MARCH, 14); //Year, month and day of month
         date = cal.getTime();
 
-        Product ArsenalHomeProduct = new Product("ARS0001", "Arsenal Home 2017/18", "Description", 159.90, "Arsenal", "Male", "England", date, null, arsenalHome, arsenalHomeSize);
+        Product ArsenalHomeProduct = new Product("ARS0001", "Arsenal Home 2017/18", "Looking for an Arsenal shirt? Are you a true Gunner? Good news! We have the latest Arsenal shirt, including printing of name and number. You will find both the home and away jersey. No matter what you are looking for, Sportify offers it!", 159.90, "Arsenal", "Male", "England", date, null, arsenalHome, arsenalHomeSize);
         ArsenalHomeProduct = productControllerLocal.CreateNewProduct(ArsenalHomeProduct);
 
         //Arsenal Away
         List<Images> arsenalAway = new ArrayList<>();
-        Images ArsenalProductAway_Main = new Images("images/products/ars_away.jpg");
+        Images ArsenalProductAway_Main = new Images("images/products/eng_ars_away_main.jpg");
         arsenalAway.add(imageControllerLocal.createNewImage(ArsenalProductAway_Main));
-        Images ArsenalProductAway_Sub1 = new Images("images/products/ars_away_2.jpg");
+        Images ArsenalProductAway_Sub1 = new Images("images/products/eng_ars_away_1.jpg");
         arsenalAway.add(imageControllerLocal.createNewImage(ArsenalProductAway_Sub1));
-        Images ArsenalProductAway_Sub2 = new Images("TeamName_Sub2");
+        Images ArsenalProductAway_Sub2 = new Images("images/products/eng_ars_away_2.jpg");
         arsenalAway.add(imageControllerLocal.createNewImage(ArsenalProductAway_Sub2));
-        Images ArsenalProductAway_Sub3 = new Images("TeamName_Sub2");
+        Images ArsenalProductAway_Sub3 = new Images("images/products/eng_ars_away_3.jpg");
         arsenalAway.add(imageControllerLocal.createNewImage(ArsenalProductAway_Sub3));
+        Images ArsenalProductAway_Sub4 = new Images("images/products/eng_ars_away_4.jpg");
+        arsenalAway.add(imageControllerLocal.createNewImage(ArsenalProductAway_Sub4));
 
         List<ProductSize> arsenalAwaySize = new ArrayList<>();
         arsenalAwaySize.add(productSizeControllerLocal.createSizeForProduct(new ProductSize("XL", 13)));
@@ -305,17 +317,17 @@ public class DataInitialization {
         cal.set(2018, Calendar.FEBRUARY, 1); //Year, month and day of month
         date = cal.getTime();
 
-        Product ArsenalAwayProduct = new Product("ARS0002", "Arsenal Away 2017/18", "Description", 149.50, "Arsenal", "Male", "England", date, null, arsenalAway, arsenalAwaySize);
+        Product ArsenalAwayProduct = new Product("ARS0002", "Arsenal Away 2017/18", "Looking for an Arsenal shirt? Are you a true Gunner? Good news! We have the latest Arsenal shirt, including printing of name and number. You will find both the home and away jersey. No matter what you are looking for, Sportify offers it!", 149.50, "Arsenal", "Male", "England", date, null, arsenalAway, arsenalAwaySize);
         ArsenalAwayProduct = productControllerLocal.CreateNewProduct(ArsenalAwayProduct);
 
         List<Images> barcaHome = new ArrayList<>();
-        Images BarcaProductHome_Main = new Images("images/products/barca_home.jpg");
+        Images BarcaProductHome_Main = new Images("images/products/spain_barca_main.jpg");
         barcaHome.add(imageControllerLocal.createNewImage(BarcaProductHome_Main));
-        Images BarcaProductHome_Sub1 = new Images("TeamName_Sub1");
+        Images BarcaProductHome_Sub1 = new Images("images/products/spain_barca_1.jpg");
         barcaHome.add(imageControllerLocal.createNewImage(BarcaProductHome_Sub1));
-        Images BarcaProductHome_Sub2 = new Images("TeamName_Sub2");
+        Images BarcaProductHome_Sub2 = new Images("images/products/spain_barca_2.jpg");
         barcaHome.add(imageControllerLocal.createNewImage(BarcaProductHome_Sub2));
-        Images BarcaProductHome_Sub3 = new Images("TeamName_Sub2");
+        Images BarcaProductHome_Sub3 = new Images("images/products/spain_barca_3.jpg");
         barcaHome.add(imageControllerLocal.createNewImage(BarcaProductHome_Sub3));
 
         List<ProductSize> barcaHomeSize = new ArrayList<>();
@@ -326,19 +338,21 @@ public class DataInitialization {
         cal.set(2018, Calendar.APRIL, 1); //Year, month and day of month
         date = cal.getTime();
 
-        Product BarcaHomeProduct = new Product("Barca0001", "Barcelona Home 2017/18", "Description", 200.90, "Barcelona", "Male", "Spain", date, null, barcaHome, barcaHomeSize);
+        Product BarcaHomeProduct = new Product("Barca0001", "Barcelona Home 2017/18", "FC Barcelona, or the Blaugrana, is one of the world's biggest football clubs in the world. With stars like Messi, Neymar and Suarez in the team, they are always expected to win titles and trophies. Buy your Barcelona Football Jersey here at Sportify with fast delivery! And don't forget that you can customize your name and number on the back too!", 200.90, "Barcelona", "Male", "Spain", date, null, barcaHome, barcaHomeSize);
         BarcaHomeProduct = productControllerLocal.CreateNewProduct(BarcaHomeProduct);
 
         //Barca Away
         List<Images> barcaAway = new ArrayList<>();
-        Images BarcaProductAway_Main = new Images("images/products/barca_away.jpg");
+        Images BarcaProductAway_Main = new Images("images/products/spain_barca_away_main.jpg");
         barcaAway.add(imageControllerLocal.createNewImage(BarcaProductAway_Main));
-        Images Barca_ProductAway_Sub1 = new Images("TeamName_Sub1");
+        Images Barca_ProductAway_Sub1 = new Images("images/products/spain_barca_away_1.jpg");
         barcaHome.add(imageControllerLocal.createNewImage(Barca_ProductAway_Sub1));
-        Images Barca_ProductAway_Sub2 = new Images("TeamName_Sub2");
+        Images Barca_ProductAway_Sub2 = new Images("images/products/spain_barca_away_2.jpg");
         barcaAway.add(imageControllerLocal.createNewImage(Barca_ProductAway_Sub2));
-        Images Barca_ProductAway_Sub3 = new Images("TeamName_Sub2");
+        Images Barca_ProductAway_Sub3 = new Images("images/products/spain_barca_away_3.jpg");
         barcaAway.add(imageControllerLocal.createNewImage(Barca_ProductAway_Sub3));
+        Images Barca_ProductAway_Sub4 = new Images("images/products/spain_barca_away_4.jpg");
+        barcaAway.add(imageControllerLocal.createNewImage(Barca_ProductAway_Sub4));
 
         List<ProductSize> barcaAwaySize = new ArrayList<>();
         barcaAwaySize.add(productSizeControllerLocal.createSizeForProduct(new ProductSize("XL", 4)));
@@ -348,18 +362,18 @@ public class DataInitialization {
         cal.set(2018, Calendar.APRIL, 20); //Year, month and day of month
         date = cal.getTime();
 
-        Product BarcaAwayProduct = new Product("BAR0002", "Barcelona Away 2017/18", "Description", 111.80, "Barcelona", "Male", "Spain", date, null, barcaAway, barcaAwaySize);
+        Product BarcaAwayProduct = new Product("BAR0002", "Barcelona Away 2017/18", "FC Barcelona, or the Blaugrana, is one of the world's biggest football clubs in the world. With stars like Messi, Neymar and Suarez in the team, they are always expected to win titles and trophies. Buy your Barcelona Football Jersey here at Sportify with fast delivery! And don't forget that you can customize your name and number on the back too!", 111.80, "Barcelona", "Male", "Spain", date, null, barcaAway, barcaAwaySize);
         BarcaAwayProduct = productControllerLocal.CreateNewProduct(BarcaAwayProduct);
 
         //Chelsea Home
         List<Images> chelseaHome = new ArrayList<>();
-        Images ChealseaProductHome_Main = new Images("images/products/chel_home.jpg");
+        Images ChealseaProductHome_Main = new Images("images/products/eng_chels_main.jpg");
         chelseaHome.add(imageControllerLocal.createNewImage(ChealseaProductHome_Main));
-        Images ChealseaProductHome_Sub1 = new Images("TeamName_Sub1");
+        Images ChealseaProductHome_Sub1 = new Images("images/products/eng_chels_1.jpg");
         chelseaHome.add(imageControllerLocal.createNewImage(ChealseaProductHome_Sub1));
-        Images ChealseaProductHome_Sub2 = new Images("TeamName_Sub2");
+        Images ChealseaProductHome_Sub2 = new Images("images/products/eng_chels_2.jpg");
         chelseaHome.add(imageControllerLocal.createNewImage(ChealseaProductHome_Sub2));
-        Images ChealseaProductHome_Sub3 = new Images("TeamName_Sub2");
+        Images ChealseaProductHome_Sub3 = new Images("images/products/eng_chels_3.jpg");
         chelseaHome.add(imageControllerLocal.createNewImage(ChealseaProductHome_Sub3));
 
         List<ProductSize> chelseaHomeSize = new ArrayList<>();
@@ -370,19 +384,21 @@ public class DataInitialization {
         cal.set(2018, Calendar.MARCH, 14); //Year, month and day of month
         date = cal.getTime();
 
-        Product ChelseaHomeProduct = new Product("CHL0001", "Chelsea Home 2017/18", "Description", 129.90, "Chelsea", "Male", "England", date, null, chelseaHome, chelseaHomeSize);
+        Product ChelseaHomeProduct = new Product("CHL0001", "Chelsea Home 2017/18", "Chelsea is one of the most successful clubs in England. Year after year, they continue to be involved in the fight for top spot. In our Chelsea collection you can find both the Chelsea home shirt and the Chelsea away jersey - so you can support your team. Get them now on Sportify!", 129.90, "Chelsea", "Male", "England", date, null, chelseaHome, chelseaHomeSize);
         ChelseaHomeProduct = productControllerLocal.CreateNewProduct(ChelseaHomeProduct);
 
         //Chelsea Away
         List<Images> chelseaAway = new ArrayList<>();
-        Images ChealseaProductAway_Main = new Images("images/products/chel_away.jpg");
+        Images ChealseaProductAway_Main = new Images("images/products/eng_chels_away_main.jpg");
         chelseaAway.add(imageControllerLocal.createNewImage(ChealseaProductAway_Main));
-        Images ChealseaProductAway_Sub1 = new Images("TeamName_Sub1");
+        Images ChealseaProductAway_Sub1 = new Images("images/products/eng_chels_away_1.jpg");
         chelseaAway.add(imageControllerLocal.createNewImage(ChealseaProductAway_Sub1));
-        Images ChealseaProductAway_Sub2 = new Images("TeamName_Sub2");
+        Images ChealseaProductAway_Sub2 = new Images("images/products/eng_chels_away_2.jpg");
         chelseaAway.add(imageControllerLocal.createNewImage(ChealseaProductAway_Sub2));
-        Images ChealseaProductAway_Sub3 = new Images("TeamName_Sub2");
+        Images ChealseaProductAway_Sub3 = new Images("images/products/eng_chels_away_3.jpg");
         chelseaAway.add(imageControllerLocal.createNewImage(ChealseaProductAway_Sub3));
+        Images ChealseaProductAway_Sub4 = new Images("images/products/eng_chels_away_4.jpg");
+        chelseaAway.add(imageControllerLocal.createNewImage(ChealseaProductAway_Sub4));
 
         List<ProductSize> chelseaAwaySize = new ArrayList<>();
         chelseaAwaySize.add(productSizeControllerLocal.createSizeForProduct(new ProductSize("XL", 27)));
@@ -392,19 +408,21 @@ public class DataInitialization {
         cal.set(2018, Calendar.FEBRUARY, 28); //Year, month and day of month
         date = cal.getTime();
 
-        Product ChelseaAwayProduct = new Product("CHL0002", "Chelsea Away 2017/18", "Description", 100, "Chelsea", "Male", "England", date, null, chelseaAway, chelseaAwaySize);
+        Product ChelseaAwayProduct = new Product("CHL0002", "Chelsea Away 2017/18", "Chelsea is one of the most successful clubs in England. Year after year, they continue to be involved in the fight for top spot. In our Chelsea collection you can find both the Chelsea home shirt and the Chelsea away jersey - so you can support your team. Get them now on Sportify!", 100, "Chelsea", "Male", "England", date, null, chelseaAway, chelseaAwaySize);
         ChelseaAwayProduct = productControllerLocal.CreateNewProduct(ChelseaAwayProduct);
 
         //Real Madrid Home
         List<Images> rmHome = new ArrayList<>();
-        Images RmProductHome_Main = new Images("images/products/rm_home.jpg");
+        Images RmProductHome_Main = new Images("images/products/spain_rm_main.jpg");
         rmHome.add(imageControllerLocal.createNewImage(RmProductHome_Main));
-        Images Rm_ProductHome_Sub1 = new Images("TeamName_Sub1");
+        Images Rm_ProductHome_Sub1 = new Images("images/products/spain_rm_1.jpg");
         rmHome.add(imageControllerLocal.createNewImage(Rm_ProductHome_Sub1));
-        Images Rm_ProductHome_Sub2 = new Images("TeamName_Sub2");
+        Images Rm_ProductHome_Sub2 = new Images("images/products/spain_rm_2.jpg");
         rmHome.add(imageControllerLocal.createNewImage(Rm_ProductHome_Sub2));
-        Images Rm_ProductHome_Sub3 = new Images("TeamName_Sub2");
+        Images Rm_ProductHome_Sub3 = new Images("images/products/spain_rm_3.jpg");
         rmHome.add(imageControllerLocal.createNewImage(Rm_ProductHome_Sub3));
+        Images Rm_ProductHome_Sub4 = new Images("images/products/spain_rm_4.jpg");
+        rmHome.add(imageControllerLocal.createNewImage(Rm_ProductHome_Sub4));
 
         List<ProductSize> rmHomeSize = new ArrayList<>();
         rmHomeSize.add(productSizeControllerLocal.createSizeForProduct(new ProductSize("XL", 10)));
@@ -414,19 +432,21 @@ public class DataInitialization {
         cal.set(2018, Calendar.FEBRUARY, 12); //Year, month and day of month
         date = cal.getTime();
 
-        Product RmHomeProduct = new Product("RM0001", "Real Madrid Home 2017/18", "Description", 59.90, "Real Madrid", "Male", "Spain", date, null, rmHome, rmHomeSize);
+        Product RmHomeProduct = new Product("RM0001", "Real Madrid Home 2017/18", "Los Merengues, Los Blancos, Los Galácticos ... Real Madrid go by many nicknames. But what they are most known for is their fantastic football. Club Legend, Zinedine Zidane is now steering the team from the dugout and off the field, managing big stars like Cristiano Ronaldo and Gareth Bale. Sportify have the latest jerseys and you can choose to add a name and number on the back of your new shirt. Shop today with fast delivery!", 59.90, "Real Madrid", "Male", "Spain", date, null, rmHome, rmHomeSize);
         RmHomeProduct = productControllerLocal.CreateNewProduct(RmHomeProduct);
 
         //Real Madrid Away
         List<Images> rmAway = new ArrayList<>();
-        Images RmProductAway_Main = new Images("images/products/rm_away.jpg");
+        Images RmProductAway_Main = new Images("images/products/spain_rm_away_main.jpg");
         rmAway.add(imageControllerLocal.createNewImage(RmProductAway_Main));
-        Images Rm_ProductAway_Sub1 = new Images("TeamName_Sub1");
+        Images Rm_ProductAway_Sub1 = new Images("images/products/spain_rm_away_1.jpg");
         rmAway.add(imageControllerLocal.createNewImage(Rm_ProductAway_Sub1));
-        Images Rm_ProductAway_Sub2 = new Images("TeamName_Sub2");
+        Images Rm_ProductAway_Sub2 = new Images("images/products/spain_rm_away_2.jpg");
         rmAway.add(imageControllerLocal.createNewImage(Rm_ProductAway_Sub2));
-        Images Rm_ProductAway_Sub3 = new Images("TeamName_Sub2");
+        Images Rm_ProductAway_Sub3 = new Images("images/products/spain_rm_away_3.jpg");
         rmAway.add(imageControllerLocal.createNewImage(Rm_ProductAway_Sub3));
+        Images Rm_ProductAway_Sub4 = new Images("images/products/spain_rm_away_4.jpg");
+        rmAway.add(imageControllerLocal.createNewImage(Rm_ProductAway_Sub4));
 
         List<ProductSize> rmAwaySize = new ArrayList<>();
         rmAwaySize.add(productSizeControllerLocal.createSizeForProduct(new ProductSize("XL", 1)));
@@ -436,19 +456,21 @@ public class DataInitialization {
         cal.set(2018, Calendar.MARCH, 1); //Year, month and day of month
         date = cal.getTime();
 
-        Product RmAwayProduct = new Product("RM0002", "Real Madrid Away 2017/18", "Description", 59.90, "Real Madrid", "Male", "Spain", date, null, rmAway, rmAwaySize);
+        Product RmAwayProduct = new Product("RM0002", "Real Madrid Away 2017/18", "Los Merengues, Los Blancos, Los Galácticos ... Real Madrid go by many nicknames. But what they are most known for is their fantastic football. Club Legend, Zinedine Zidane is now steering the team from the dugout and off the field, managing big stars like Cristiano Ronaldo and Gareth Bale. Sportify have the latest jerseys and you can choose to add a name and number on the back of your new shirt. Shop today with fast delivery!", 59.90, "Real Madrid", "Male", "Spain", date, null, rmAway, rmAwaySize);
         RmAwayProduct = productControllerLocal.CreateNewProduct(RmAwayProduct);
 
         //AC Milan Home
         List<Images> acMilanHome = new ArrayList<>();
-        Images acMilanProductHome_Main = new Images("images/products/acmilan_home.jpg");
+        Images acMilanProductHome_Main = new Images("images/products/italy_acmilan_main.jpg");
         acMilanHome.add(imageControllerLocal.createNewImage(acMilanProductHome_Main));
-        Images acMilan_ProductHome_Sub1 = new Images("TeamName_Sub1");
+        Images acMilan_ProductHome_Sub1 = new Images("images/products/italy_acmilan_1.jpg");
         acMilanHome.add(imageControllerLocal.createNewImage(acMilan_ProductHome_Sub1));
-        Images acMilan_ProductHome_Sub2 = new Images("TeamName_Sub2");
+        Images acMilan_ProductHome_Sub2 = new Images("images/products/italy_acmilan_2.jpg");
         acMilanHome.add(imageControllerLocal.createNewImage(acMilan_ProductHome_Sub2));
-        Images acMilan_ProductHome_Sub3 = new Images("TeamName_Sub2");
+        Images acMilan_ProductHome_Sub3 = new Images("images/products/italy_acmilan_3.jpg");
         acMilanHome.add(imageControllerLocal.createNewImage(acMilan_ProductHome_Sub3));
+        Images acMilan_ProductHome_Sub4 = new Images("images/products/italy_acmilan_4.jpg");
+        acMilanHome.add(imageControllerLocal.createNewImage(acMilan_ProductHome_Sub4));
 
         List<ProductSize> acMilanHomeSize = new ArrayList<>();
         acMilanHomeSize.add(productSizeControllerLocal.createSizeForProduct(new ProductSize("XL", 5)));
@@ -458,7 +480,7 @@ public class DataInitialization {
         cal.set(2018, Calendar.MARCH, 26); //Year, month and day of month
         date = cal.getTime();
 
-        Product AcMilanHomeProduct = new Product("ACM0001", "AC Milan Home 2017/18", "Description", 59.90, "AC Milan", "Male", "Italy", date, null, acMilanHome, acMilanHomeSize);
+        Product AcMilanHomeProduct = new Product("ACM0001", "AC Milan Home 2017/18", "AC Milan is an Italian football club with fantastic history. During the early 90s, the club was dominating European football with an incredibly strong defensive line. The AC Milan football shirt carries a great legacy and has been worn by many fantastic players over the years. If you are looking to get your hands on the AC Milan football shirt then you can naturally do so here on Sportify. Get them now!", 59.90, "AC Milan", "Male", "Italy", date, null, acMilanHome, acMilanHomeSize);
         AcMilanHomeProduct = productControllerLocal.CreateNewProduct(AcMilanHomeProduct);
 
         //Chealse Home
