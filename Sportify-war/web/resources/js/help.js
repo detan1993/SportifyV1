@@ -67,7 +67,9 @@ function chartExtender() {
 
 
 function pieExtender(){
-      this.cfg.animate = true ;
+    
+  //  this.cfg.axesDefaults.tickOptions = {dataLabelFormatString:'%.2f'};
+    this.cfg.animate = true ;
     this.cfg.animateReplot = true;
    this.cfg.grid = {background: '#DCDCDC' , borderColor: '#DCDCDC'};
    this.cfg.animate = true;
@@ -87,12 +89,11 @@ function pieProfileExtender(){
 
 function barExtender(){
     //this.cfg.pointLabels = { show: true};
-   
-    this.cfg.animate = true ;
+     this.cfg.animate = true ;
     this.cfg.animateReplot = true;
         // Will animate plot on calls to plot1.replot({resetAxes:true})
    // this.cfg.seriesDefaults = { pointLabels: { show:true } };
-    this.cfg.seriesDefaults.rendererOptions = {   barWidth: 60 ,animation: { speed: 1000  }   };
+    this.cfg.seriesDefaults.rendererOptions = {   barWidth: 60 ,animation: { speed: 1000  }  };
     
     this.cfg.axes.yaxis.tickOptions  = { textColor: '#ffffff' , formatString: '%#.2f' };
     this.cfg.axes.yaxis.labelOptions = {fontSize: '13pt', textColor: '#ffffff' , fontFamily: 'Trajan Pro'}; 

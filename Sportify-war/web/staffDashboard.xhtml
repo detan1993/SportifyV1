@@ -25,14 +25,15 @@
                 <p:tab title="Overview">
 
                     <div style="margin-top: 25px;">
-                        <h:form id="selectDateForm">
-                            <p:growl id="msgs" showDetail="true" />
+                        <h:form id="salesSelectDateForm">
+                            <p:growl id="chartsmsgs" showDetail="true" />
                             <h:panelGrid columns="5" cellpadding="5">
                                 <p:outputLabel style="color:white;" for="fromDate" value="From" />
-                                <p:calendar id="fromDate" value="#{dashboardManagedBean.salesDate}"  maxdate="#{dashboardManagedBean.currentDate}" />
+                                <p:calendar id="fromDate" value="#{dashboardManagedBean.salesDateFrom}"  beforeShowDay="disableFromDays"  pattern="dd/MMM/yyyy" maxdate="#{dashboardManagedBean.currentDate}" />
                                 <p:outputLabel style="color:white;" for="toDate" value="To" />
-                                <p:calendar id="toDate"  value="#{dashboardManagedBean.salesDate}"  maxdate="#{dashboardManagedBean.currentDate}" />
-                                <p:commandButton  update="msgs" actionListener="#{dashboardManagedBean.click}" icon="ui-icon-search" />
+                                <p:calendar id="toDate"  value="#{dashboardManagedBean.salesDateTo}"   beforeShowDay="disableToDays"  pattern="dd/MMM/yyyy"   maxdate="#{dashboardManagedBean.currentDate}" />
+                                <p:commandButton  update="chartsmsgs #{p:component('stackBarCountrySales')} #{p:component('teamSalesPieChartForm')}" process="salesSelectDateForm"   actionListener="#{dashboardManagedBean.searchSalesForAllCharts}" icon="ui-icon-search" />
+
                             </h:panelGrid>
 
                         </h:form>
@@ -52,11 +53,8 @@
 
                                     <br/>
                                     <h:panelGrid >
-
-
                                         <div >
-<!--                                              <p:chart type="line"  model="#{dashboardManagedBean.salesLineChart}" responsive="true" style="height:350px; width:1200px"/>-->
-                                            <p:chart type="bar" styleClass="stackbarChartOverview" model="#{dashboardManagedBean.stackBarModel}" style="height:350px; width:1200px"/>
+                                            <p:chart type="bar" id="stackBarCountrySales" styleClass="stackbarChartOverview" model="#{dashboardManagedBean.stackBarModel}" style="height:350px; width:1200px"/>
                                         </div>
 
                                     </h:panelGrid>
@@ -90,9 +88,9 @@
                                 </p:panel>
 
                               
-                                <p:panel id="pn2" header="Sportify Perfomance" style="border-color:lightgrey !important; width: 600px;" toggleable="true"  toggleSpeed="500">
+                                <p:panel id="pn2" header="Sportify Current Perfomance" style="border-color:lightgrey !important; width: 600px;" toggleable="true"  toggleSpeed="500">
                                     <h:form id="performanceForm" >
-                                    <p:poll interval="20"  process="@this"  listener="#{dashboardManagedBean.timerUpdate}" update="boardInformation" />
+                                    <p:poll interval="2000"  process="@this"  listener="#{dashboardManagedBean.timerUpdate}" update="boardInformation" />
                                     <p:dataGrid var="board" value="#{dashboardManagedBean.boardsInformation}" columns="2" layout="grid" id="boardInformation">
                                         
                                         <h:panelGrid  columns="1" style="width:100%;background-color: white!important; text-align: center;">
@@ -122,20 +120,7 @@
 
                                     </p:dataGrid>
                                     </h:form>
-<!--                                    <div> 
-                                        <h:panelGrid columns="2" cellpadding="5">
-                                            <p:outputLabel for="countTest" style="color:white;" value="Country: " />
-                                            <p:selectOneMenu id="countTest" value="haha" style="width:150px">
-                                                <p:ajax listener="#{dropdownView.onCountryChange}" update="city" />
-                                                <f:selectItem itemLabel="Select Country" itemValue="" noSelectionOption="true" />
-                                                <f:selectItems value="#{dashboardManagedBean.totalSalesByTeamFilter}" />
-                                            </p:selectOneMenu>
-                                        </h:panelGrid>
-                                    </div>
 
-                                    <div style="margin-top:15px">
-                                        <p:chart type="bar" model="#{dashboardManagedBean.horizontalRating}" style="width:500x; height:365px"/>
-                                    </div>-->
 
                                 </p:panel>
 

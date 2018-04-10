@@ -11,7 +11,9 @@ import entity.ProductPurchase;
 import java.text.DateFormatSymbols;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import javax.ejb.Local;
@@ -129,6 +131,96 @@ public class DashboardController implements DashboardControllerRemote, Dashboard
         }
         return countrySalesByMonths;
     }
+    
+    @Override
+     public List<List<CountrySales>> retrieveAllSalesByMonthsByRange(String dateFrom, String dateTo) {
+
+        List<List<CountrySales>> countrySalesByMonths = new ArrayList<>();
+        try {
+
+            System.out.println("START " + dateFrom + " End " +  dateTo);
+            Query getMonths = em.createQuery("SELECT DISTINCT(SUBSTRING(o.datePaid, 6,2)) FROM CustomerOrder o WHERE SUBSTRING(o.datePaid,1,10) BETWEEN :start AND :end ORDER BY o.datePaid" );
+            getMonths.setParameter("start", dateFrom);
+            getMonths.setParameter("end", dateTo);
+            
+            List<String> salesMonths = getMonths.getResultList();
+          //  System.out.println("********* sales months is " + salesMonths.size() );
+            
+            for(int i =0; i<salesMonths.size(); i++){
+                
+                List<CountrySales> salesByCountry = new ArrayList<>();
+                String month = salesMonths.get(i);
+     
+                System.out.println("************ MONTH IS " + month);
+                
+             Query getCountrySalesByMonth = em.createQuery("SELECT o FROM CustomerOrder o WHERE  SUBSTRING(o.datePaid , 1,4) =:year AND SUBSTRING(o.datePaid , 6,2) =:month  ORDER BY o.datePaid");
+             getCountrySalesByMonth.setParameter("year", "2018");
+             getCountrySalesByMonth.setParameter("month", month);
+             List<CustomerOrder> orders = getCountrySalesByMonth.getResultList();
+     
+            System.out.println("******** sales records is " + orders.size());
+             HashMap<String,Double> countrySalesPair = new HashMap<>();
+             List<String> teamCountry = new ArrayList<>();
+             
+           
+             for (int j = 0; j < orders.size(); j++) {
+             List<ProductPurchase> products = orders.get(j).getProductPurchase();
+                   
+             for(ProductPurchase product : products ){
+                  
+                  System.out.println("**************** Product Purchase name " + product.getProductPurchase().getProductName() );
+                 
+                       String countryName =  product.getProductPurchase().getCountry();
+                       double purchaseAmount = product.getPricePurchase();
+                       
+                       if(countrySalesPair.get(countryName) ==  null){
+                           System.out.println("*******************Country is : " + countryName + " team name is " + product.getProductPurchase().getTeam()  + " amount Purchase " + purchaseAmount);
+                           teamCountry.add(countryName); //add new country of the team
+                           countrySalesPair.put(countryName, purchaseAmount);
+                       }else if(countrySalesPair.get(countryName) !=  null) //previously added to hashmap
+                       {
+                           
+                          System.out.println("*******************NOT NULL Country is : " + countryName + " team name is " + product.getProductPurchase().getTeam()  + " amount Purchase " + purchaseAmount);
+                           countrySalesPair.put(countryName, countrySalesPair.get(countryName) + purchaseAmount );
+                       }
+                      
+              }
+                       
+             }
+             
+             
+             for(int countryName=0; countryName<teamCountry.size(); countryName++){
+                 
+                 String monthsInWords = salesMonths.get(i);
+                 int monthInt  = 0;
+                  if(monthsInWords.substring(0,1).equals("0"))
+                  {
+                   monthInt = Integer.parseInt(monthsInWords.substring(1));
+                   monthsInWords = new DateFormatSymbols().getMonths()[monthInt-1];
+                  //salesMonths.get(i).substring(1);
+                  }
+                  else 
+                  {
+                      monthInt = Integer.parseInt(monthsInWords.substring(0));
+                      monthsInWords = new DateFormatSymbols().getMonths()[monthInt-1];
+                  }
+                   
+                 System.out.println("$$$$$$$$$$$$$$$$$$$ country name : " +  teamCountry.get(countryName)  + " sales($) " + countrySalesPair.get(teamCountry.get(countryName)) + " Months " + monthsInWords );
+                 salesByCountry.add(new CountrySales(teamCountry.get(countryName) , countrySalesPair.get(teamCountry.get(countryName)) , monthsInWords ));
+                   
+             }
+             
+             
+             countrySalesByMonths.add(salesByCountry);
+
+            }
+            
+        }catch(Exception ex){
+            
+        }
+        return countrySalesByMonths;
+    }
+
 
     
     @Override
@@ -150,6 +242,55 @@ public class DashboardController implements DashboardControllerRemote, Dashboard
             
              Query q = em.createQuery("SELECT  p.productPurchase.team  , p.productPurchase.country , SUM(p.pricePurchase * p.qtyPurchase)    FROM ProductPurchase p  GROUP BY p.productPurchase.country, p.productPurchase.team ");
              
+             List<Object[]> salesRecords = q.getResultList();
+
+            for (int i = 0; i < salesRecords.size(); i++) {
+                 
+                System.out.println("******** TOTAL PURCAHSE FROM  " +  (String)salesRecords.get(i)[0] + " is " + (Double)salesRecords.get(i)[2] ) ;
+              
+    
+                String[] record = new String[3];
+                record[0] = (String) salesRecords.get(i)[0];
+                System.out.println("record[0]" + record[0]);
+                record[1] = (String) salesRecords.get(i)[1];
+                System.out.println("record[1]" + record[1]);
+                totalSales = (Double) salesRecords.get(i)[2];            
+                record[2] = totalSales.toString();
+                System.out.println("record[2]" + record[2]);
+                teamSales.add(record);
+            }
+            
+             return teamSales;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        
+        return null;
+
+    }
+    
+    @Override
+     public List<String[]> retrieveSalesByTeamAndCountryByRange(String dateFrom , String dateTo) {
+
+        Double totalSales = 0.0;
+        System.out.println("retrieveSalesByTeamAndCountryByRange START " + dateFrom + " End " +  dateTo);
+         
+        try {
+
+            List<String[]> teamSales = new ArrayList<>();
+            //Query query = em.createQuery("SELECT p.team, p.country , SUM(p.price)  FROM Product p WHERE SUBSTRING(p.dateCreated,1,4) = :sYear GROUP BY p.country, p.team");
+            //query.setParameter("sYear", "2018");
+            
+            Query query = em.createQuery("SELECT p FROM Product p ORDER BY p.country");
+            List<Product> products = query.getResultList();
+            HashMap<String, Double> teamSalesPair = new HashMap<>();
+            List<String> team = new ArrayList<>();
+            List<String> country = new ArrayList<>();
+            System.err.println("profuct Size " + products.size());
+            
+             Query q = em.createQuery("SELECT  p.productPurchase.team  , p.productPurchase.country , SUM(p.pricePurchase * p.qtyPurchase) FROM ProductPurchase p WHERE SUBSTRING(p.order.datePaid , 1,10) BETWEEN :start AND :end  GROUP BY p.productPurchase.country, p.productPurchase.team ");
+             q.setParameter("start", dateFrom);
+             q.setParameter("end", dateTo);
              List<Object[]> salesRecords = q.getResultList();
 
             for (int i = 0; i < salesRecords.size(); i++) {
@@ -378,6 +519,16 @@ public class DashboardController implements DashboardControllerRemote, Dashboard
            long totalRegisteredCustomer_CurrentMonth =0;
            double percentage_increase = 0.0;
            
+          Date today = new Date(); 
+          Calendar cal = Calendar.getInstance(); 
+          cal.setTime(today); 
+          int currentMonth = cal.get(Calendar.MONTH) + 1;
+          String currentMonthInString = String.valueOf(currentMonth);
+          if(currentMonth <10){
+              currentMonthInString = "0" + currentMonthInString;
+          }
+       
+           
          List<Long> countCustomer  = new ArrayList<>();
          
          Query query = em.createQuery("SELECT COUNT(c.id) FROM Customer c");
@@ -385,7 +536,7 @@ public class DashboardController implements DashboardControllerRemote, Dashboard
          totalRegisteredCustomer = countCustomer.get(0);
        //  SELECT o FROM CustomerOrder o WHERE  SUBSTRING(o.datePaid , 1,4) =:year AND SUBSTRING(o.datePaid , 6,2) =:month  ORDER BY o.datePaid
          query = em.createQuery("SELECT COUNT(c.id) FROM Customer c WHERE SUBSTRING(c.dateRegistered ,6,2) =:month");
-         query.setParameter("month", "04");
+         query.setParameter("month", currentMonthInString);
          countCustomer = query.getResultList();
          
          totalRegisteredCustomer_CurrentMonth = countCustomer.get(0);
@@ -424,7 +575,25 @@ public class DashboardController implements DashboardControllerRemote, Dashboard
           double totalSales_PrevMonth = 0;
           double percentage_increase = 0.0;
           double percentage_diff = 0.0;
-           
+          Date today = new Date(); 
+          Calendar cal = Calendar.getInstance(); 
+          cal.setTime(today); 
+          int currentMonth = cal.get(Calendar.MONTH) + 1;
+          int prevMonth = currentMonth - 1;
+          if(prevMonth ==0){
+            prevMonth = 12; //last month is december   
+          }
+          
+          String currentMonthInString = String.valueOf(currentMonth);
+          String prevMonthInString = String.valueOf(prevMonth);
+          if(currentMonth <10){
+              currentMonthInString = "0" + currentMonthInString;
+          }
+          if(prevMonth < 10){
+                prevMonthInString = "0" + prevMonthInString;
+          }
+
+         System.out.println("******Current month is " + currentMonthInString + " PREV  is " + prevMonthInString);
          List<Double> salesSum  = new ArrayList<>();
          
          Query query = em.createQuery("SELECT SUM(o.totalAmount) FROM CustomerOrder o");
@@ -432,7 +601,7 @@ public class DashboardController implements DashboardControllerRemote, Dashboard
          totalSales = salesSum.get(0);
        //  SELECT o FROM CustomerOrder o WHERE  SUBSTRING(o.datePaid , 1,4) =:year AND SUBSTRING(o.datePaid , 6,2) =:month  ORDER BY o.datePaid
          query = em.createQuery("SELECT SUM(o.totalAmount) FROM CustomerOrder o WHERE SUBSTRING(o.datePaid ,6,2) =:month");
-         query.setParameter("month", "04");
+         query.setParameter("month", currentMonthInString);
          System.out.println("*********** QUERY IS " + query.getResultList());
          salesSum = query.getResultList();
          
@@ -443,7 +612,7 @@ public class DashboardController implements DashboardControllerRemote, Dashboard
           }
          
          query = em.createQuery("SELECT SUM(o.totalAmount) FROM CustomerOrder o WHERE SUBSTRING(o.datePaid ,6,2) =:month");
-         query.setParameter("month", "03");
+         query.setParameter("month", prevMonthInString);
          salesSum = query.getResultList();
           if (salesSum.get(0) != null) {
               totalSales_PrevMonth = salesSum.get(0);
@@ -490,6 +659,25 @@ public class DashboardController implements DashboardControllerRemote, Dashboard
           long totalOrder_CurrentMonth = 0;
           long totalOrder_PrevMonth = 0;
           double percentage_diff = 0.0;
+          
+          Date today = new Date(); 
+          Calendar cal = Calendar.getInstance(); 
+          cal.setTime(today); 
+          int currentMonth = cal.get(Calendar.MONTH) + 1;
+          int prevMonth = currentMonth - 1;
+          if(prevMonth ==0){
+            prevMonth = 12; //last month is december   
+          }
+          
+          String currentMonthInString = String.valueOf(currentMonth);
+          String prevMonthInString = String.valueOf(prevMonth);
+          if(currentMonth <10){
+              currentMonthInString = "0" + currentMonthInString;
+          }
+          if(prevMonth < 10){
+                prevMonthInString = "0" + prevMonthInString;
+          }
+          
           List<CustomerOrder > allOrders = new ArrayList<>();
           List<CustomerOrder> currentMonthOrder = new ArrayList<>();
           List<CustomerOrder> prevMonthOrder = new ArrayList<>();
@@ -512,7 +700,7 @@ public class DashboardController implements DashboardControllerRemote, Dashboard
          }
          
          query = em.createQuery("SELECT o FROM CustomerOrder o WHERE SUBSTRING(o.datePaid,6,2) =:cMonth");
-         query.setParameter("cMonth", "04");
+         query.setParameter("cMonth", currentMonthInString);
          currentMonthOrder = query.getResultList();
          
          if(!currentMonthOrder.isEmpty()){      
@@ -528,7 +716,7 @@ public class DashboardController implements DashboardControllerRemote, Dashboard
          
             
          query = em.createQuery("SELECT o FROM CustomerOrder o WHERE SUBSTRING(o.datePaid,6,2) =:cMonth");
-         query.setParameter("cMonth", "03");
+         query.setParameter("cMonth", prevMonthInString);
          prevMonthOrder = query.getResultList();
          
          if(!prevMonthOrder.isEmpty()){      
@@ -548,7 +736,7 @@ public class DashboardController implements DashboardControllerRemote, Dashboard
          System.out.println("****************** Curent ORDER " + totalOrder_CurrentMonth);
           System.out.println("****************** Prev ORDER " + totalOrder_PrevMonth);
          order.setTotalValue(String.valueOf((int)totalOrder));
-         order.setCurrentMonthInformation(String.valueOf((int)totalOrder_CurrentMonth) + " ORDER THIS MONTH");
+         order.setCurrentMonthInformation(String.valueOf((int)totalOrder_CurrentMonth) + " ORDER(S) THIS MONTH");
          //
          percentage_diff = totalOrder_PrevMonth - totalOrder_CurrentMonth;
          if(percentage_diff > 0 )
@@ -579,12 +767,30 @@ public class DashboardController implements DashboardControllerRemote, Dashboard
           
           //SELECT count(*) FROM productreview ;
 
-          DecimalFormat df = new DecimalFormat("#0.00");
+          DecimalFormat df = new DecimalFormat("#0.0");
           long noOfRating = 0;
           long noOfRating_aboveFour = 0;
           long  noOfRating__belowFour = 0;
           double percentage_diff = 0.0;
           double aboveFour_Percentage = 0.0;
+          
+          Date today = new Date(); 
+          Calendar cal = Calendar.getInstance(); 
+          cal.setTime(today); 
+          int currentMonth = cal.get(Calendar.MONTH) + 1;
+          int prevMonth = currentMonth - 1;
+          if(prevMonth ==0){
+            prevMonth = 12; //last month is december   
+          }
+          
+          String currentMonthInString = String.valueOf(currentMonth);
+          String prevMonthInString = String.valueOf(prevMonth);
+          if(currentMonth <10){
+              currentMonthInString = "0" + currentMonthInString;
+          }
+          if(prevMonth < 10){
+                prevMonthInString = "0" + prevMonthInString;
+          }
 
            
          List<Double> rating = new ArrayList<>();
@@ -622,7 +828,7 @@ public class DashboardController implements DashboardControllerRemote, Dashboard
          aboveFour_Percentage =  (double)noOfRating_aboveFour / noOfRating;
    
          customerSatisfaction.setCurrentMonthInformation( df.format((double)noOfRating_aboveFour/noOfRating *100) + "% RATE ABOVE 3");
-         customerSatisfaction.setFigureInformation("ADADDADDAF");
+         customerSatisfaction.setFigureInformation("Need to Clarify");
          customerSatisfaction.setFigureStatus("Increase");
          //
        /*  percentage_diff = totalOrder_PrevMonth - totalOrder_CurrentMonth;

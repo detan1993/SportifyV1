@@ -83,7 +83,8 @@ public class DashboardManagedBean implements Serializable {
 
     private HorizontalBarChartModel horizontalRating;
 
-    private Date salesDate;
+    private Date salesDateFrom;
+    private Date salesDateTo;
     private Date currentDate;
     private DashboardModel dashboardPosition;
     private List<Product> products;
@@ -296,6 +297,27 @@ public class DashboardManagedBean implements Serializable {
         }
 
     }
+    
+      public void searchSalesForAllCharts(ActionEvent actionEvent) {
+
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        if (salesDateFrom == null || salesDateTo == null) {
+            addMessage("From and To Date is required for searching");
+        } else {
+
+            System.out.println("Date selected from " + df.format(salesDateFrom));
+            System.out.println("Date selected to " + df.format(salesDateTo));
+            totalSalesByMonthsCountry =  dashboardControllerLocal.retrieveAllSalesByMonthsByRange(df.format(salesDateFrom), df.format(salesDateTo));
+            createCountrySalesStackBarModel();
+            dashboardControllerLocal.retrieveSalesByTeamAndCountryByRange(df.format(salesDateFrom), df.format(salesDateTo));
+          
+          //  topCustomers = customerOrderControllerLocal.RetrieveTopTenCustomerByOrderByRanger(df.format(customerFrom), df.format(customerTo));
+            //call session bean here.
+
+        }
+
+    }
+
 
     public void addMessage(String summary) {
         FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, summary, null);
@@ -591,20 +613,7 @@ public class DashboardManagedBean implements Serializable {
         this.horizontalRating = horizontalRating;
     }
 
-    /**
-     * @return the salesDate
-     */
-    public Date getSalesDate() {
-        return salesDate;
-    }
-
-    /**
-     * @param salesDate the salesDate to set
-     */
-    public void setSalesDate(Date salesDate) {
-        this.salesDate = salesDate;
-    }
-
+   
     /**
      * @return the currentDate
      */
@@ -1050,6 +1059,34 @@ public class DashboardManagedBean implements Serializable {
      */
     public void setNumber(int number) {
         this.number = number;
+    }
+
+    /**
+     * @return the salesDateFrom
+     */
+    public Date getSalesDateFrom() {
+        return salesDateFrom;
+    }
+
+    /**
+     * @param salesDateFrom the salesDateFrom to set
+     */
+    public void setSalesDateFrom(Date salesDateFrom) {
+        this.salesDateFrom = salesDateFrom;
+    }
+
+    /**
+     * @return the salesDateTo
+     */
+    public Date getSalesDateTo() {
+        return salesDateTo;
+    }
+
+    /**
+     * @param salesDateTo the salesDateTo to set
+     */
+    public void setSalesDateTo(Date salesDateTo) {
+        this.salesDateTo = salesDateTo;
     }
 
 }

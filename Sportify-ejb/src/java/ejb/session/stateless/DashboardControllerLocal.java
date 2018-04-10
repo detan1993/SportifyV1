@@ -22,4 +22,6 @@ public interface DashboardControllerLocal {
       public List<TopProductByTeam> getProductsSumByQuantityPurchaseByTeam();
       
     public List<PerformanceBoard> getPerformanceInformation();
+       public List<List<CountrySales>> retrieveAllSalesByMonthsByRange(String dateFrom, String dateTo);
+        public List<String[]> retrieveSalesByTeamAndCountryByRange(String dateFrom, String dateTo);
 }
