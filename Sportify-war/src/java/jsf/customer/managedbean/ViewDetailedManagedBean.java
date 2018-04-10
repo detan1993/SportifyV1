@@ -101,7 +101,7 @@ public class ViewDetailedManagedBean implements Serializable {
                             skipFirstImage++;
                         }
                     }
-                    writeReviewVal = "Write a review";
+                    writeReviewVal = "Click here to write a review!";
                     //get reviews for this product
                     productReviews = productreviewcontroller.retrieveProductReviewsByProductId(product.getId());
                     defaultUserReview();

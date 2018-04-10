@@ -16,31 +16,37 @@
         <p:panel style="margin-left:100px">
             <p:panelGrid>
                 <p:dataGrid styleClass="leagueGrid" value="#{viewAllProductsManagedBean.leagueCountries}" var="leagueCountry" columns="3" layout="grid">
-                    <p:panel rendered="#{leagueCountry.equalsIgnoreCase('Spain')}">
+                    <p:panel rendered="#{leagueCountry.equalsIgnoreCase('Spain')}" styleClass="fade-in three">
                           <h:link outcome="products">
                             <p:graphicImage name="images/products/spain_league_kit.jpg" styleClass="imagePanel1" width="281px">
                             </p:graphicImage> 
                             <f:param name="country" value="#{leagueCountry}" />
                         </h:link>
+                        <h:link outcome="products">
                         <h:outputText styleClass="textLeague3" value="SPANISH TEAMS"></h:outputText>
+                        </h:link>
                     </p:panel>
                     
-                      <p:panel rendered="#{leagueCountry.equalsIgnoreCase('England')}">
+                      <p:panel rendered="#{leagueCountry.equalsIgnoreCase('England')}" styleClass="fade-in one">
                          <h:link outcome="products">
                              <p:graphicImage name="images/products/eng_league_kit.jpg" styleClass="imagePanel1" width="281px">
                                 </p:graphicImage> 
                                 <f:param name="country" value="#{leagueCountry}" />
                             </h:link>
+                          <h:link outcome="products">
                             <h:outputText styleClass="textLeague1" value="ENGLISH TEAMS"></h:outputText>
+                          </h:link>
                     </p:panel>
                     
-                    <p:panel rendered="#{leagueCountry.equalsIgnoreCase('Italy')}">
+                    <p:panel rendered="#{leagueCountry.equalsIgnoreCase('Italy')}" styleClass="fade-in two">
                         <h:link outcome="products">
                             <p:graphicImage name="images/products/italy_league_kit.jpg" styleClass="imagePanel1" width="281px">
                             </p:graphicImage> 
                             <f:param name="country" value="#{leagueCountry}" />
                         </h:link>
+                        <h:link outcome="products">
                         <h:outputText styleClass="textLeague2" value="ITALIAN TEAMS"></h:outputText>
+                        </h:link>
                     </p:panel>
                 </p:dataGrid>
             </p:panelGrid>

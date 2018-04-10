@@ -6,19 +6,12 @@
                 xmlns:f="http://xmlns.jcp.org/jsf/core"
                 xmlns:h="http://xmlns.jcp.org/jsf/html"
                 xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
-
-    <head>
-        <style>
-            .ui-panel-content .ui-widget-content{
-                background-color:white !important;
-            }
-        </style>
-    </head>
+    
 
     <ui:define name="west">
         <p:panel style="margin-top:-4px">
             <f:facet name="header">
-                FILTER
+               FILTER
             </f:facet>
 
             <h3>Country:</h3>
@@ -47,7 +40,7 @@
     <ui:define name="center">
         <h:outputStylesheet name="css/page_style.css"/>
         <!--       <link rel="stylesheet" href="resources/css/page_style.css" />-->
-        <h:form id="form">            
+        <h:form id="form">  
             <p:dataGrid styleClass="productsGrid" var="product" value="#{viewAllProductsManagedBean.products}" columns="3" layout="tabular"
                         paginator="true" id="productGrid"
                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"

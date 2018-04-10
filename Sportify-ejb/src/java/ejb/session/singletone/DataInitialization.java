@@ -180,6 +180,8 @@ public class DataInitialization {
 
          For each country we show 6 teams. Each team we display 2 jersey (home and away). Hence for each country we have in total 12 products.
          */
+        
+        //manu home
         List<Images> manuHome = new ArrayList<>();
         Images manuProductHome_Main = new Images("images/products/eng_manu_main.jpg");
         manuHome.add(imageControllerLocal.createNewImage(manuProductHome_Main));
@@ -200,6 +202,50 @@ public class DataInitialization {
 
         Product manuHomeProduct = new Product("Manu001", "Man United Home 2017/18", "Manchester United is one of the biggest clubs in the world, and they have surely made some interesting signings this season. The legacy from Ferguson has been hard to deal with, but maybe this is the season when things change. In our Manchester United collection, you will find the newest shirts - both home and away. You know what’s interesting? You can also choose your own customized printing on the back!", 249.90, "Manchester United", "Male", "England", date, null, manuHome, manuHomeSize);
         manuHomeProduct = productControllerLocal.CreateNewProduct(manuHomeProduct);
+        
+         //manu away
+        List<Images> manuAway = new ArrayList<>();
+        Images manuProductAway_Main = new Images("images/products/eng_manu_away_main.jpg");
+        manuAway.add(imageControllerLocal.createNewImage(manuProductAway_Main));
+        Images manuProductAway_Sub1 = new Images("images/products/eng_manu_away_1.jpg");
+        manuAway.add(imageControllerLocal.createNewImage(manuProductAway_Sub1));
+        Images manuProductAway_Sub2 = new Images("images/products/eng_manu_away_2.jpg");
+        manuAway.add(imageControllerLocal.createNewImage(manuProductAway_Sub2));
+        Images manuProductAway_Sub3 = new Images("images/products/eng_manu_away_3.jpg");
+        manuAway.add(imageControllerLocal.createNewImage(manuProductAway_Sub3));
+
+        List<ProductSize> manuAwaySize = new ArrayList<>();
+        manuAwaySize.add(productSizeControllerLocal.createSizeForProduct(new ProductSize("XL", 153)));
+        manuAwaySize.add(productSizeControllerLocal.createSizeForProduct(new ProductSize("S", 68)));
+        manuAwaySize.add(productSizeControllerLocal.createSizeForProduct(new ProductSize("M", 45)));
+        
+        cal.set(2018, Calendar.JANUARY, 5); //Year, month and day of month
+        date = cal.getTime();
+
+        Product manuAwayProduct = new Product("Manu002", "Man United Away 2017/18", "Manchester United is one of the biggest clubs in the world, and they have surely made some interesting signings this season. The legacy from Ferguson has been hard to deal with, but maybe this is the season when things change. In our Manchester United collection, you will find the newest shirts - both home and away. You know what’s interesting? You can also choose your own customized printing on the back!", 50.50, "Manchester United", "Male", "England", date, null, manuAway, manuAwaySize);
+        manuAwayProduct = productControllerLocal.CreateNewProduct(manuAwayProduct);
+        
+        //manu alt
+        List<Images> manuAlt = new ArrayList<>();
+        Images manuProductAlt_Main = new Images("images/products/eng_manu_alt_main.jpg");
+        manuAlt.add(imageControllerLocal.createNewImage(manuProductAlt_Main));
+        Images manuProductAlt_Sub1 = new Images("images/products/eng_manu_alt_1.jpg");
+        manuAlt.add(imageControllerLocal.createNewImage(manuProductAlt_Sub1));
+        Images manuProductAlt_Sub2 = new Images("images/products/eng_manu_alt_2.jpg");
+        manuAlt.add(imageControllerLocal.createNewImage(manuProductAlt_Sub2));
+        Images manuProductAlt_Sub3 = new Images("images/products/eng_manu_alt_3.jpg");
+        manuAlt.add(imageControllerLocal.createNewImage(manuProductAlt_Sub3));
+
+        List<ProductSize> manuAltSize = new ArrayList<>();
+        manuAltSize.add(productSizeControllerLocal.createSizeForProduct(new ProductSize("XL", 13)));
+        manuAltSize.add(productSizeControllerLocal.createSizeForProduct(new ProductSize("S", 70)));
+        manuAltSize.add(productSizeControllerLocal.createSizeForProduct(new ProductSize("M", 45)));
+
+        cal.set(2018, Calendar.MARCH, 1); //Year, month and day of month
+        date = cal.getTime();
+
+        Product manuAltProduct = new Product("Manu003", "Man United Alt Kit 2017/18", "Manchester United is one of the biggest clubs in the world, and they have surely made some interesting signings this season. The legacy from Ferguson has been hard to deal with, but maybe this is the season when things change. In our Manchester United collection, you will find the newest shirts - both home and away. You know what’s interesting? You can also choose your own customized printing on the back!", 119.90, "Manchester United", "Male", "England", date, null, manuAlt, manuAltSize);
+        manuAltProduct = productControllerLocal.CreateNewProduct(manuAltProduct);
 
         List<Images> sevillaHome = new ArrayList<>();
         Images sevillaProductHome_Main = new Images("images/products/spain_sevilla_main.jpg");
@@ -226,6 +272,7 @@ public class DataInitialization {
         Product sevillaHomeProduct = new Product("Sevilla001", "Sevilla Home 2017/18", "Sevilla’s style of playing football have always been exciting. We give you the opportunity to get this shirt right here at Sportify. All you have to do is choose your size favourite player on the shirt or print your own name and number. We offer fast delivery, which means that you get your Sevilla shirt within a week after your ordered it.", 79.90, "Sevilla", "Male", "Spain", date, null, sevillaHome, sevillaHomeSize);
         sevillaHomeProduct = productControllerLocal.CreateNewProduct(sevillaHomeProduct);
 
+        //liverpool home
         List<Images> liverpoolHome = new ArrayList<>();
         Images liverpoolProductHome_Main = new Images("images/products/eng_liv_main.jpg");
         liverpoolHome.add(imageControllerLocal.createNewImage(liverpoolProductHome_Main));
@@ -248,7 +295,57 @@ public class DataInitialization {
 
         Product liverpoolHomeProduct = new Product("Liverpool001", "Liverpool Home 2017/18", "Liverpool FC is one of the most famous English clubs. They are on the way to the semi-finals of the champions league this season. If you want to support Liverpool, you can find home shirt and away jersey right here at Sportify. We offer the newest shirt in different sizes. So, no matter what your heart desire, Sportify offers it. Find your new Liverpool shirt right here!", 349.90, "Liverpool", "Male", "England", date, null, liverpoolHome, liverpoolHomeSize);
         liverpoolHomeProduct = productControllerLocal.CreateNewProduct(liverpoolHomeProduct);
+        
+         //liverpool away
+        List<Images> liverpoolAway = new ArrayList<>();
+        Images liverpoolProductAway_Main = new Images("images/products/eng_liv_away_main.jpg");
+        liverpoolAway.add(imageControllerLocal.createNewImage(liverpoolProductAway_Main));
+        Images liverpoolProductAway_Sub1 = new Images("images/products/eng_liv_away_1.jpg");
+        liverpoolAway.add(imageControllerLocal.createNewImage(liverpoolProductAway_Sub1));
+        Images liverpoolProductAway_Sub2 = new Images("images/products/eng_liv_away_2.jpg");
+        liverpoolAway.add(imageControllerLocal.createNewImage(liverpoolProductAway_Sub2));
+        Images liverpoolroductAway_Sub3 = new Images("images/products/eng_liv_away_3.jpg");
+        liverpoolAway.add(imageControllerLocal.createNewImage(liverpoolroductAway_Sub3));
+        Images liverpoolroductAway_Sub4 = new Images("images/products/eng_liv_away_4.jpg");
+        liverpoolAway.add(imageControllerLocal.createNewImage(liverpoolroductAway_Sub4));
 
+        List<ProductSize> liverpoolAwaySize = new ArrayList<>();
+        liverpoolAwaySize.add(productSizeControllerLocal.createSizeForProduct(new ProductSize("XL", 5)));
+        liverpoolAwaySize.add(productSizeControllerLocal.createSizeForProduct(new ProductSize("L", 24)));
+        liverpoolAwaySize.add(productSizeControllerLocal.createSizeForProduct(new ProductSize("M", 12)));
+
+        cal.set(2018, Calendar.APRIL, 21); //Year, month and day of month
+        date = cal.getTime();
+
+        Product liverpoolAwayProduct = new Product("Liverpool002", "Liverpool Away 2017/18", "Liverpool FC is one of the most famous English clubs. They are on the way to the semi-finals of the champions league this season. If you want to support Liverpool, you can find home shirt and away jersey right here at Sportify. We offer the newest shirt in different sizes. So, no matter what your heart desire, Sportify offers it. Find your new Liverpool shirt right here!", 319.90, "Liverpool", "Male", "England", date, null, liverpoolAway, liverpoolAwaySize);
+        liverpoolAwayProduct = productControllerLocal.CreateNewProduct(liverpoolAwayProduct);
+        
+         //liverpool alt kit
+        List<Images> liverpoolAlt = new ArrayList<>();
+        Images liverpoolProductAlt_Main = new Images("images/products/eng_liv_alt_main.jpg");
+        liverpoolAlt.add(imageControllerLocal.createNewImage(liverpoolProductAlt_Main));
+        Images liverpoolProductAlt_Sub1 = new Images("images/products/eng_liv_alt_1.jpg");
+        liverpoolAlt.add(imageControllerLocal.createNewImage(liverpoolProductAlt_Sub1));
+        Images liverpoolProductAlt_Sub2 = new Images("images/products/eng_liv_alt_2.jpg");
+        liverpoolAlt.add(imageControllerLocal.createNewImage(liverpoolProductAlt_Sub2));
+        Images liverpoolroductAlt_Sub3 = new Images("images/products/eng_liv_alt_3.jpg");
+        liverpoolAlt.add(imageControllerLocal.createNewImage(liverpoolroductAlt_Sub3));
+        Images liverpoolroductAlt_Sub4 = new Images("images/products/eng_liv_alt_4.jpg");
+        liverpoolAlt.add(imageControllerLocal.createNewImage(liverpoolroductAlt_Sub4));
+
+        List<ProductSize> liverpoolAltSize = new ArrayList<>();
+        liverpoolAltSize.add(productSizeControllerLocal.createSizeForProduct(new ProductSize("XL", 5)));
+        liverpoolAltSize.add(productSizeControllerLocal.createSizeForProduct(new ProductSize("L", 2)));
+        liverpoolAltSize.add(productSizeControllerLocal.createSizeForProduct(new ProductSize("M", 10)));
+
+        cal.set(2018, Calendar.JANUARY, 21); //Year, month and day of month
+        date = cal.getTime();
+
+        Product liverpoolAltProduct = new Product("Liverpool003", "Liverpool Alt Kit 2017/18", "Liverpool FC is one of the most famous English clubs. They are on the way to the semi-finals of the champions league this season. If you want to support Liverpool, you can find home shirt and away jersey right here at Sportify. We offer the newest shirt in different sizes. So, no matter what your heart desire, Sportify offers it. Find your new Liverpool shirt right here!", 119.90, "Liverpool", "Male", "England", date, null, liverpoolAlt, liverpoolAltSize);
+        liverpoolAltProduct = productControllerLocal.CreateNewProduct(liverpoolAltProduct);
+        
+        
+        //alt home
         List<Images> atlMadridHome = new ArrayList<>();
         Images atlMadridroductHome_Main = new Images("images/products/spain_atleti_main.jpg");
         atlMadridHome.add(imageControllerLocal.createNewImage(atlMadridroductHome_Main));
@@ -319,6 +416,31 @@ public class DataInitialization {
 
         Product ArsenalAwayProduct = new Product("ARS0002", "Arsenal Away 2017/18", "Looking for an Arsenal shirt? Are you a true Gunner? Good news! We have the latest Arsenal shirt, including printing of name and number. You will find both the home and away jersey. No matter what you are looking for, Sportify offers it!", 149.50, "Arsenal", "Male", "England", date, null, arsenalAway, arsenalAwaySize);
         ArsenalAwayProduct = productControllerLocal.CreateNewProduct(ArsenalAwayProduct);
+        
+        //Arsenal Alternate kit
+        List<Images> arsenalAlt = new ArrayList<>();
+        Images ArsenalProductAlt_Main = new Images("images/products/eng_ars_alt_main.jpg");
+        arsenalAlt.add(imageControllerLocal.createNewImage(ArsenalProductAlt_Main));
+        Images ArsenalProductAlt_Sub1 = new Images("images/products/eng_ars_alt_1.jpg");
+        arsenalAlt.add(imageControllerLocal.createNewImage(ArsenalProductAlt_Sub1));
+        Images ArsenalProductAlt_Sub2 = new Images("images/products/eng_ars_alt_2.jpg");
+        arsenalAlt.add(imageControllerLocal.createNewImage(ArsenalProductAlt_Sub2));
+        Images ArsenalProductAlt_Sub3 = new Images("images/products/eng_ars_alt_3.jpg");
+        arsenalAlt.add(imageControllerLocal.createNewImage(ArsenalProductAlt_Sub3));
+        Images ArsenalProductAlt_Sub4 = new Images("images/products/eng_ars_alt_4.jpg");
+        arsenalAlt.add(imageControllerLocal.createNewImage(ArsenalProductAlt_Sub4));
+
+        List<ProductSize> arsenalAltSize = new ArrayList<>();
+        arsenalAltSize.add(productSizeControllerLocal.createSizeForProduct(new ProductSize("XL", 13)));
+        arsenalAltSize.add(productSizeControllerLocal.createSizeForProduct(new ProductSize("L", 19)));
+        arsenalAltSize.add(productSizeControllerLocal.createSizeForProduct(new ProductSize("M", 54)));
+
+        cal.set(2018, Calendar.FEBRUARY, 5); //Year, month and day of month
+        date = cal.getTime();
+
+        Product ArsenalAltProduct = new Product("ARS0003", "Arsenal Alt Kit 2017/18", "Looking for an Arsenal shirt? Are you a true Gunner? Good news! We have the latest Arsenal shirt, including printing of name and number. You will find both the home and away jersey. No matter what you are looking for, Sportify offers it!", 149.50, "Arsenal", "Male", "England", date, null, arsenalAlt, arsenalAltSize);
+        ArsenalAltProduct = productControllerLocal.CreateNewProduct(ArsenalAltProduct);   
+        
 
         List<Images> barcaHome = new ArrayList<>();
         Images BarcaProductHome_Main = new Images("images/products/spain_barca_main.jpg");
@@ -329,7 +451,7 @@ public class DataInitialization {
         barcaHome.add(imageControllerLocal.createNewImage(BarcaProductHome_Sub2));
         Images BarcaProductHome_Sub3 = new Images("images/products/spain_barca_3.jpg");
         barcaHome.add(imageControllerLocal.createNewImage(BarcaProductHome_Sub3));
-
+        
         List<ProductSize> barcaHomeSize = new ArrayList<>();
         barcaHomeSize.add(productSizeControllerLocal.createSizeForProduct(new ProductSize("XL", 36)));
         barcaHomeSize.add(productSizeControllerLocal.createSizeForProduct(new ProductSize("L", 38)));
@@ -410,6 +532,30 @@ public class DataInitialization {
 
         Product ChelseaAwayProduct = new Product("CHL0002", "Chelsea Away 2017/18", "Chelsea is one of the most successful clubs in England. Year after year, they continue to be involved in the fight for top spot. In our Chelsea collection you can find both the Chelsea home shirt and the Chelsea away jersey - so you can support your team. Get them now on Sportify!", 100, "Chelsea", "Male", "England", date, null, chelseaAway, chelseaAwaySize);
         ChelseaAwayProduct = productControllerLocal.CreateNewProduct(ChelseaAwayProduct);
+        
+        //Chelsea Alt
+        List<Images> chelseaAlt = new ArrayList<>();
+        Images ChealseaProductAlt_Main = new Images("images/products/eng_chels_alt_main.jpg");
+        chelseaAlt.add(imageControllerLocal.createNewImage(ChealseaProductAlt_Main));
+        Images ChealseaProductAlt_Sub1 = new Images("images/products/eng_chels_alt_1.jpg");
+        chelseaAlt.add(imageControllerLocal.createNewImage(ChealseaProductAlt_Sub1));
+        Images ChealseaProductAlt_Sub2 = new Images("images/products/eng_chels_alt_2.jpg");
+        chelseaAlt.add(imageControllerLocal.createNewImage(ChealseaProductAlt_Sub2));
+        Images ChealseaProductAlt_Sub3 = new Images("images/products/eng_chels_alt_3.jpg");
+        chelseaAlt.add(imageControllerLocal.createNewImage(ChealseaProductAlt_Sub3));
+        Images ChealseaProductAlt_Sub4 = new Images("images/products/eng_chels_alt_4.jpg");
+        chelseaAlt.add(imageControllerLocal.createNewImage(ChealseaProductAlt_Sub4));
+
+        List<ProductSize> chelseaAltSize = new ArrayList<>();
+        chelseaAltSize.add(productSizeControllerLocal.createSizeForProduct(new ProductSize("XL", 27)));
+        chelseaAltSize.add(productSizeControllerLocal.createSizeForProduct(new ProductSize("S", 13)));
+        chelseaAltSize.add(productSizeControllerLocal.createSizeForProduct(new ProductSize("M", 17)));
+
+        cal.set(2018, Calendar.FEBRUARY, 5); //Year, month and day of month
+        date = cal.getTime();
+
+        Product ChelseaAltProduct = new Product("CHL0003", "Chelsea Alt Kit 2017/18", "Chelsea is one of the most successful clubs in England. Year after year, they continue to be involved in the fight for top spot. In our Chelsea collection you can find both the Chelsea home shirt and the Chelsea away jersey - so you can support your team. Get them now on Sportify!", 125, "Chelsea", "Male", "England", date, null, chelseaAlt, chelseaAltSize);
+        ChelseaAltProduct = productControllerLocal.CreateNewProduct(ChelseaAltProduct);
 
         //Real Madrid Home
         List<Images> rmHome = new ArrayList<>();

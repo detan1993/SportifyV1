@@ -9,7 +9,7 @@
 
     <ui:define name="west">
         <h:outputStylesheet name="css/ui-override.css" />
-        <p:panel>
+        <p:panel style="margin-left:20px; margin-top:-10px">
             <p:panel style="text-align: center;">
                 <f:facet name="header">
                     PRODUCT DETAILS 
@@ -67,28 +67,23 @@
 
     </ui:define>
 
-    <ui:define name="center" >
-        <p:panel style="margin-left: -10px">
-            <h:form id="form">
-                <p:panel style="text-align: center;font-size:18px">
-                    <f:facet name="header">
-                        #{viewDetailedManagedBean.product.productName}
-                    </f:facet>
-                    <p:galleria value="#{viewDetailedManagedBean.images}" var="image">
+    <ui:define name="center">
+           
+        <p:panel header=" #{viewDetailedManagedBean.product.productName}" style="text-align: center; margin-left: -5px;">
+                    
+                    <p:galleria value="#{viewDetailedManagedBean.images}" var="image" panelHeight="350">
 
-                        <h:graphicImage name="#{image}" />
+                        <h:graphicImage name="#{image}" style="margin-left:60px" width="450px" />
                     </p:galleria>
                 </p:panel>
-            </h:form>
-        </p:panel>
-
+           
     </ui:define>
 
     <ui:define name="east">
-        <p:panel id="reviewpanel" style="margin-top: 13px; width: 450.5px; text-align: center">
+        <p:panel id="reviewpanel" style="width: 435px; text-align: center; margin-top: -10px">
           
-            <p:panel toggleable="true" header="Description">
-                 <span style="color:white;font-size:12px; text-align: justify; word-break: break-all">#{viewDetailedManagedBean.product.description}</span> 
+            <p:panel toggleable="true" header="Description" style="text-align: left">
+                 <span style="color:white;font-size:12px; text-align: left;">#{viewDetailedManagedBean.product.description}</span> 
             </p:panel>
             <p:panel toggleable="true">
                 <f:facet name="header">             
@@ -100,9 +95,9 @@
                     <p:commandLink update="reviewform:reviewgrowl" action="#{viewDetailedManagedBean.checkLoggedIn}" id="ajax" value="#{viewDetailedManagedBean.writeReviewVal}">
         </p:commandLink>
                     </h:form>
-            <p:scrollPanel mode="native" style="width:400px;height:400px;margin-left: -20px;" rendered="#{not empty viewDetailedManagedBean.productReviews}">
+            <p:scrollPanel mode="native" style="width:400px;margin-left: -20px;" rendered="#{not empty viewDetailedManagedBean.productReviews}">
                 <p:repeat value="#{viewDetailedManagedBean.productReviews}" var="reviewProd">
-                    <p:panelGrid columns="2" style="height:100px" >
+                    <p:panelGrid columns="2">
                         <p:row>
                             <p:column rowspan="2">
                                 <p:graphicImage name="images/avatar_review.png" width="100px" height="100px" />
@@ -122,7 +117,7 @@
                             <p:column>#{reviewProd.review}</p:column>
                         </p:row>
                     </p:panelGrid>
-                    <br />
+                    <p:separator />
                 </p:repeat>
             </p:scrollPanel>
                 </p:panel>
