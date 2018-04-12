@@ -51,9 +51,14 @@ and open the template in the editor.
     background-color: #fa5400;
     height: 30px;
     font-family: 'TradeGothicW02-BoldCn20 675505',Arial,sans-serif;
-    font-size: 17px !important;
+    font-size: 14px !important;
     font-weight: bold
 }
+
+.ui-layout-pane {
+    border: none !important;
+}
+
 
 /*.ui-widget input, .ui-widget select, .ui-widget textarea, .ui-widget button {
     font-family: 'TradeGothicW02-BoldCn20 675505',Arial,sans-serif !important;

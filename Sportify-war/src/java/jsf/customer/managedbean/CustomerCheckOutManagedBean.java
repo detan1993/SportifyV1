@@ -19,6 +19,7 @@ import entity.Product;
 import entity.ProductPurchase;
 import entity.ProductSize;
 import entity.Voucher;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
@@ -49,9 +50,8 @@ import org.primefaces.context.RequestContext;
  */
 @Named(value = "customerCheckOutManagedBean")
 @ViewScoped
-public class CustomerCheckOutManagedBean implements Serializable{
+public class CustomerCheckOutManagedBean implements Serializable {
 
-    
     @EJB
     private ProductControllerLocal productcontroller;
     @EJB
@@ -70,29 +70,28 @@ public class CustomerCheckOutManagedBean implements Serializable{
     private String totaldisplay;
     private Customer loggedincustomer;
     private String promoCode;
-   
+
     //For viewing of the address
     private String addrbtnval;
     private boolean displayedit;
     private boolean displayconfirm;
     private int activetab;
-    
+
     //If customer has applied available voucher
     private Voucher appliedvoucher;
-    
+
     //Billing address
     private boolean samebillingaddr;
     private boolean showsamebillingaddr;
-    
+
     private List<String[]> cartitems;
-    
-    public CustomerCheckOutManagedBean(){
-       
+
+    public CustomerCheckOutManagedBean() {
+
     }
-    
+
     @PostConstruct
-    public void postConstruct()
-    {
+    public void postConstruct() {
         setCartitems(loadShoppingCartItems());
         setLoggedincustomer(loadCustomer());
         setAddrbtnval("Edit");
@@ -103,228 +102,243 @@ public class CustomerCheckOutManagedBean implements Serializable{
         ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
         Map<String, Object> sessionMap = externalContext.getSessionMap();
         try {
-           String promosub = (String)sessionMap.get("promosubtotal");
-           if (Double.parseDouble(promosub)> 0){
-               subtotaldisplay = promosub;
-               totaldisplay = (String)sessionMap.get("promototal");
-               appliedvoucher = (Voucher)sessionMap.get("appliedvoucher");
-           }
-        
-        }
-        catch (Exception ex){
-            
+            String promosub = (String) sessionMap.get("promosubtotal");
+            if (Double.parseDouble(promosub) > 0) {
+                subtotaldisplay = promosub;
+                totaldisplay = (String) sessionMap.get("promototal");
+                appliedvoucher = (Voucher) sessionMap.get("appliedvoucher");
+            }
+
+        } catch (Exception ex) {
+
         }
     }
-    
-    public List<String[]> loadShoppingCartItems(){
+
+    public List<String[]> loadShoppingCartItems() {
         double subtotal = 0.0;
         double total = 0.0;
-        List<String[]>shoppingCartItems = new ArrayList<>();
+        List<String[]> shoppingCartItems = new ArrayList<>();
         ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
         Map<String, Object> sessionMap = externalContext.getSessionMap();
-        ArrayList<String[]> cartitems = (ArrayList<String[]>)sessionMap.get("currentItemCart");
-        
-        if (cartitems!=null){
-        for (int i = 0; i < cartitems.size(); i++){
-          String [] sessioncartitem = new String [8];
-          Product p = productcontroller.retrieveSingleProduct(Long.parseLong(cartitems.get(i)[0]));
-          sessioncartitem[7] = cartitems.get(i)[1];
-          ProductSize ps = productsizecontroller.retrieveSingleProductSize(Long.parseLong(cartitems.get(i)[1]));
-          sessioncartitem[0] = cartitems.get(i)[0];
-          sessioncartitem[1] = ps.getSize();
-          sessioncartitem[2] = cartitems.get(i)[2];
-          sessioncartitem[3] = p.getProductName();
-          sessioncartitem[4] = p.getProductCode();
-          sessioncartitem[5] = String.valueOf(p.getPrice());
-          sessioncartitem[6] = p.getImages().get(0).getImagePath();
-          shoppingCartItems.add(sessioncartitem);
-          subtotal = subtotal + Double.parseDouble(sessioncartitem[5])*Integer.parseInt(sessioncartitem[2]);
-          total = subtotal + 5.00;
-          setSubtotaldisplay(String.format("%.2f", subtotal));
-          setTotaldisplay(String.format("%.2f", total));          
+        ArrayList<String[]> cartitems = (ArrayList<String[]>) sessionMap.get("currentItemCart");
+
+        if (cartitems != null) {
+            for (int i = 0; i < cartitems.size(); i++) {
+                String[] sessioncartitem = new String[8];
+                Product p = productcontroller.retrieveSingleProduct(Long.parseLong(cartitems.get(i)[0]));
+                sessioncartitem[7] = cartitems.get(i)[1];
+                ProductSize ps = productsizecontroller.retrieveSingleProductSize(Long.parseLong(cartitems.get(i)[1]));
+                sessioncartitem[0] = cartitems.get(i)[0];
+                sessioncartitem[1] = ps.getSize();
+                sessioncartitem[2] = cartitems.get(i)[2];
+                sessioncartitem[3] = p.getProductName();
+                sessioncartitem[4] = p.getProductCode();
+                sessioncartitem[5] = String.valueOf(p.getPrice());
+                sessioncartitem[6] = p.getImages().get(0).getImagePath();
+                shoppingCartItems.add(sessioncartitem);
+                subtotal = subtotal + Double.parseDouble(sessioncartitem[5]) * Integer.parseInt(sessioncartitem[2]);
+                total = subtotal + 5.00;
+                setSubtotaldisplay(String.format("%.2f", subtotal));
+                setTotaldisplay(String.format("%.2f", total));
+            }
         }
-        }
-      
-        return shoppingCartItems;    
+
+        return shoppingCartItems;
     }
-    
+
     //Load shipping address details
-    public Customer loadCustomer(){
-         ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
-         Map<String, Object> sessionMap = externalContext.getSessionMap();
-         Customer c = (Customer)sessionMap.get("currentCustomer");       
-         return c;
+    public Customer loadCustomer() {
+        ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+        Map<String, Object> sessionMap = externalContext.getSessionMap();
+        Customer c = (Customer) sessionMap.get("currentCustomer");
+        return c;
     }
-    
+
     //Make order when confirm order is pressed
-    public void makeOrder(){
-          double total = Double.parseDouble(getTotaldisplay());
-          double pointsawarded = 0.10 * total;
-          Date datepaid = new Date();
-          ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
-          Map<String, Object> sessionMap = externalContext.getSessionMap();
-          Customer c = (Customer)sessionMap.get("currentCustomer");      
-          CustomerOrder customerorder = customerordercontroller.CreateNewCustomerOrder(new CustomerOrder(total,pointsawarded,datepaid,"Pending",c));
-          //Loop and insert product purchase for each item in shopping cart
-          for (int i = 0; i <cartitems.size();i++){
-             String [] cartitem = new String[7]; 
-             cartitem = cartitems.get(i);
-             ProductSize ps = productsizecontroller.retrieveSingleProductSize(Long.parseLong(cartitem[7]));
-             double pricepurchase = Double.parseDouble(cartitem[5]);
-             int qtypurchase = Integer.parseInt(cartitem[2]);
-             ps.setQty(ps.getQty() - qtypurchase);
-             productsizecontroller.updateSizeForProduct(ps);
-             Product p = productcontroller.retrieveSingleProduct(Long.parseLong(cartitem[0]));
-             ProductPurchase productpurchase = productpurchasecontroller.createProductPurchase(new ProductPurchase(pricepurchase,qtypurchase,customerorder,p));
-             
-          }
-          if (appliedvoucher!=null){  
-             CustomerVoucher cv = customervouchercontroller.retrieveCustomerVoucher(c, appliedvoucher);
-             customervouchercontroller.useCustomerVoucher(customerorder,appliedvoucher,cv);
-          }
-           try {
-          Flash flash = FacesContext.getCurrentInstance().getExternalContext().getFlash();
-          flash.put("tab", 1);
-          FacesContext.getCurrentInstance().getExternalContext().redirect("customerTransactionHistory.xhtml");
-          //Display msg in home page and clear session
-          
-          }
-          catch (Exception ex){
-              
-          }
-    } 
-    
-    
-    public void removeCartItem(String [] cartitem){
-        for(int i = 0; i < cartitems.size(); i ++){
-            if (cartitem[0].equals(cartitems.get(i)[0])){
+    public void makeOrder() {
+        double total = Double.parseDouble(getTotaldisplay());
+        double pointsawarded = 0.10 * total;
+        Date datepaid = new Date();
+        ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+        Map<String, Object> sessionMap = externalContext.getSessionMap();
+        Customer c = (Customer) sessionMap.get("currentCustomer");
+        CustomerOrder customerorder = customerordercontroller.CreateNewCustomerOrder(new CustomerOrder(total, pointsawarded, datepaid, "Pending", c));
+        //Loop and insert product purchase for each item in shopping cart
+        for (int i = 0; i < cartitems.size(); i++) {
+            String[] cartitem = new String[7];
+            cartitem = cartitems.get(i);
+            ProductSize ps = productsizecontroller.retrieveSingleProductSize(Long.parseLong(cartitem[7]));
+            double pricepurchase = Double.parseDouble(cartitem[5]);
+            int qtypurchase = Integer.parseInt(cartitem[2]);
+            ps.setQty(ps.getQty() - qtypurchase);
+            productsizecontroller.updateSizeForProduct(ps);
+            Product p = productcontroller.retrieveSingleProduct(Long.parseLong(cartitem[0]));
+            ProductPurchase productpurchase = productpurchasecontroller.createProductPurchase(new ProductPurchase(pricepurchase, qtypurchase, customerorder, p));
+
+        }
+        if (appliedvoucher != null) {
+            CustomerVoucher cv = customervouchercontroller.retrieveCustomerVoucher(c, appliedvoucher);
+            customervouchercontroller.useCustomerVoucher(customerorder, appliedvoucher, cv);
+        }
+        try {
+            Flash flash = FacesContext.getCurrentInstance().getExternalContext().getFlash();
+            flash.put("tab", 1);
+            FacesContext.getCurrentInstance().getExternalContext().redirect("customerTransactionHistory.xhtml");
+            //Display msg in home page and clear session
+
+        } catch (Exception ex) {
+
+        }
+    }
+
+    public void removeCartItem(String[] cartitem) {
+        for (int i = 0; i < cartitems.size(); i++) {
+            if (cartitem[0].equals(cartitems.get(i)[0])) {
                 //If in current list remove it
                 cartitems.remove(i);
                 ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
                 Map<String, Object> sessionMap = externalContext.getSessionMap();
                 sessionMap.put("currentItemCart", cartitems);
             }
-         }
+        }
     }
-  
-    public void confirmAddress(){
+
+    public void confirmAddress() {
         //If edit button is pressed
-        if (addrbtnval.equals("Edit")){
+        if (addrbtnval.equals("Edit")) {
             //edit function, update customer values
             setAddrbtnval("Save and continue");
             setDisplayedit(true);
             setDisplayconfirm(false);
-            setActivetab(1); 
-        }
-        else { 
+            setActivetab(1);
+        } else {
             //If confirm button is pressed
-             loggedincustomer.setFirstName(loggedincustomer.getFirstName());
-             loggedincustomer.setLastName(loggedincustomer.getLastName());
-             loggedincustomer.setAddress(loggedincustomer.getAddress());
-             loggedincustomer.setZipCode(loggedincustomer.getZipCode());
-             loggedincustomer.setPhoneNum(loggedincustomer.getPhoneNum());
-             customercontroller.updateCustomer(loggedincustomer);
-             ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
-             Map<String, Object> sessionMap = externalContext.getSessionMap();
-             sessionMap.put("loggedincustomer", loggedincustomer);
-             setAddrbtnval("Edit");
-             setDisplayedit(false);
-             setDisplayconfirm(true);
-             
+            loggedincustomer.setFirstName(loggedincustomer.getFirstName());
+            loggedincustomer.setLastName(loggedincustomer.getLastName());
+            loggedincustomer.setAddress(loggedincustomer.getAddress());
+            loggedincustomer.setZipCode(loggedincustomer.getZipCode());
+            loggedincustomer.setPhoneNum(loggedincustomer.getPhoneNum());
+            customercontroller.updateCustomer(loggedincustomer);
+            ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+            Map<String, Object> sessionMap = externalContext.getSessionMap();
+            sessionMap.put("loggedincustomer", loggedincustomer);
+            setAddrbtnval("Edit");
+            setDisplayedit(false);
+            setDisplayconfirm(true);
+
         }
-       
+
     }
-    
-    public void toggleBillingAddress(){
-        if (samebillingaddr==true){
+
+    public void toggleBillingAddress() {
+        if (samebillingaddr == true) {
             //Let user fill in new billing address
             samebillingaddr = true;
             showsamebillingaddr = false;
-        }
-        else {
+        } else {
             samebillingaddr = false;
             showsamebillingaddr = true;
         }
     }
-    
-    public void proceedPayment(){ 
-         setActivetab(0);
-         setDisplayconfirm(false);
-         RequestContext.getCurrentInstance().scrollTo("paymentform:paymentAccordion");
+
+    public void proceedPayment() {
+        setActivetab(0);
+        setDisplayconfirm(false);
+        RequestContext.getCurrentInstance().scrollTo("paymentform:paymentAccordion");
     }
-    
-    public void checkPromoCode(){
+
+    public void checkPromoCode() {
         FacesContext context = FacesContext.getCurrentInstance();
-        String email ="";
+        String email = "";
         try {
-             email = loggedincustomer.getEmail();
-        }
-        catch (Exception ex){
-            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error", "Plesae log in to apply promo codes!"));
+            email = loggedincustomer.getEmail();
+        } catch (Exception ex) {
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Plesae log in to apply promo codes!"));
             return;
         }
-        try {     
-        
-        if (Double.parseDouble(subtotaldisplay) > 0){
-        Voucher v = vouchercontroller.retrieveCustomerVoucher(promoCode, email);
-        if (v.getId() != null){
-        appliedvoucher = v;
-        double promovalue = v.getVoucherValue();
-        double discountsubtotal = ((100 - promovalue)/100) * Double.parseDouble(this.subtotaldisplay);
-        double discounttotal = ((100 - promovalue)/100) * Double.parseDouble(this.totaldisplay);
-        this.setSubtotaldisplay(String.format("%.2f", discountsubtotal));
-        this.setTotaldisplay(String.format("%.2f", discounttotal));
-        subtotaldisplay = String.format("%.2f", discountsubtotal);
-        totaldisplay = String.format("%.2f", discounttotal) ;
-        ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
-        Map<String, Object> sessionMap = externalContext.getSessionMap();
-        sessionMap.put("promosubtotal", subtotaldisplay);
-        sessionMap.put("promototal", totaldisplay);
-        sessionMap.put("appliedvoucher", appliedvoucher);
-        context.addMessage(null, new FacesMessage("Successful",  "Your Promo of " + v.getVoucherValue()  + "% has been applied!"));
-        }
-        else {        
-             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error", "Invalid Promo code!"));
-        }
-        }
-        }
-        catch (Exception ex){
-            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error", "You do not have any products in your shopping cart!"));
+        try {
+
+            if (Double.parseDouble(subtotaldisplay) > 0) {
+                Voucher v = vouchercontroller.retrieveCustomerVoucher(promoCode, email);
+                if (v.getId() != null) {
+                    appliedvoucher = v;
+                    double promovalue = v.getVoucherValue();
+                    double discountsubtotal = ((100 - promovalue) / 100) * Double.parseDouble(this.subtotaldisplay);
+                    double discounttotal = ((100 - promovalue) / 100) * Double.parseDouble(this.totaldisplay);
+                    this.setSubtotaldisplay(String.format("%.2f", discountsubtotal));
+                    this.setTotaldisplay(String.format("%.2f", discounttotal));
+                    subtotaldisplay = String.format("%.2f", discountsubtotal);
+                    totaldisplay = String.format("%.2f", discounttotal);
+                    ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+                    Map<String, Object> sessionMap = externalContext.getSessionMap();
+                    sessionMap.put("promosubtotal", subtotaldisplay);
+                    sessionMap.put("promototal", totaldisplay);
+                    sessionMap.put("appliedvoucher", appliedvoucher);
+                    context.addMessage(null, new FacesMessage("Successful", "Your Promo of " + v.getVoucherValue() + "% has been applied!"));
+                } else {
+                    context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Invalid Promo code!"));
+                }
+            }
+        } catch (Exception ex) {
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "You do not have any products in your shopping cart!"));
             return;
         }
     }
-    
-    public void sendEmail(){
-        HttpServletRequest request = (HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest();
+
+    public void sendEmail() {
+        HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
         String email = request.getParameter("myForm:email");
         String to = email;
         String from = "smurfalt1202@gmail.com";
         Properties props = new Properties();
-	props.put("mail.smtp.auth", "true");
-	props.put("mail.smtp.starttls.enable", "true");
-	props.put("mail.smtp.host", "smtp.gmail.com");
-	props.put("mail.smtp.port", "587");
-       Session session = Session.getInstance(props,
-		  new javax.mail.Authenticator() {
-			protected PasswordAuthentication getPasswordAuthentication() {
-				return new PasswordAuthentication("smurfalt1202@gmail.com", "hearthstone");
-                	}
-		  });
-                try {
-			Message message = new MimeMessage(session);
-			message.setFrom(new InternetAddress(from));
-			message.setRecipients(Message.RecipientType.TO,
-				InternetAddress.parse(to));
-			message.setSubject("Testing Subject");
-			message.setContent("<h1>Test</h1>","text/html");
-			Transport.send(message);
-                        System.out.println("msg sent");
+        props.put("mail.smtp.auth", "true");
+        props.put("mail.smtp.starttls.enable", "true");
+        props.put("mail.smtp.host", "smtp.gmail.com");
+        props.put("mail.smtp.port", "587");
+        Session session = Session.getInstance(props,
+                new javax.mail.Authenticator() {
+            protected PasswordAuthentication getPasswordAuthentication() {
+                return new PasswordAuthentication("smurfalt1202@gmail.com", "hearthstone");
+            }
+        });
+        try {
+            Message message = new MimeMessage(session);
+            message.setFrom(new InternetAddress(from));
+            message.setRecipients(Message.RecipientType.TO,
+                    InternetAddress.parse(to));
+            message.setSubject("Testing Subject");
+            message.setContent("<h1>Test</h1>", "text/html");
+            Transport.send(message);
+            System.out.println("msg sent");
 
-		} catch (MessagingException e) {
-			throw new RuntimeException(e);
-		}
+        } catch (MessagingException e) {
+            throw new RuntimeException(e);
+        }
     }
-    
+
+    public void checkIfCustomerIsLogin() throws IOException {
+        Customer customer = (Customer) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("currentCustomer");
+        ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+        Map<String, Object> sessionMap = externalContext.getSessionMap();
+        ArrayList<String[]> cartitems = (ArrayList<String[]>) sessionMap.get("currentItemCart");
+
+        if (customer == null) {
+            System.out.println("Customer null");
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Note!", "Please login before proceeding for payment."));
+            RequestContext context = RequestContext.getCurrentInstance();
+            context.execute("PF('loginDialog').show();");
+            //context.execute("loginDialog.show();");
+        } 
+        else if (cartitems == null){
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Shop Now!", "Add some items to your cart!"));
+            RequestContext context = RequestContext.getCurrentInstance();
+        }
+        else {
+            System.out.println("Customer not null");
+            FacesContext.getCurrentInstance().getExternalContext().redirect("customerCheckoutPayment.xhtml");
+        }
+    }
+
     /**
      * @return the cartitems
      */
@@ -381,7 +395,6 @@ public class CustomerCheckOutManagedBean implements Serializable{
         this.loggedincustomer = loggedincustomer;
     }
 
-
     /**
      * @return the promoCode
      */
@@ -399,8 +412,6 @@ public class CustomerCheckOutManagedBean implements Serializable{
     /**
      * @return the editPressed
      */
-    
-
     /**
      * @return the addrbtnval
      */
@@ -499,10 +510,7 @@ public class CustomerCheckOutManagedBean implements Serializable{
         this.appliedvoucher = appliedvoucher;
     }
 
-   
     /**
      * @return the subtotal
      */
-    
-   
 }
