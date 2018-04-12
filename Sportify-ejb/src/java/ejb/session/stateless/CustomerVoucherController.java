@@ -74,4 +74,11 @@ public class CustomerVoucherController implements CustomerVoucherControllerRemot
         query.setParameter("voucherid", voucherid);
         return  query.getResultList();
     }
+    
+    @Override
+    public List<Voucher> Ws_retrieveUnusedCustomerVouchersByCustomerId(long customerId){
+        Query query = em.createQuery("SELECT v FROM CustomerVoucher cv JOIN Voucher v WHERE cv.customer.id=:customerId AND cv.customerOrder IS NULL");
+        query.setParameter("customerId", customerId);
+        return  query.getResultList();
+    }
 }

@@ -7,7 +7,6 @@ package ws;
 
 import ejb.session.stateless.ProductControllerLocal;
 import entity.Product;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
