@@ -50,7 +50,7 @@ public class VoucherResource {
             if(voucherList == null)
                 return Response.status(Response.Status.BAD_REQUEST).build();
  
-             System.out.println("********** voucherList IS NOT NULL");
+             System.out.println("********** voucherList IS NOT NULL: has-> " + voucherList.size());
             return Response.status(Response.Status.OK).entity(new RetrieveCustomerVoucherRsp(voucherList)).build();
  
         }

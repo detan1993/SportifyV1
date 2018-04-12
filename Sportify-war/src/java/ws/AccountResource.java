@@ -62,8 +62,8 @@ public class AccountResource {
             if(information == null)
                 return Response.status(Response.Status.BAD_REQUEST).build();
  
-             System.out.println("********** INFORMAITION IS NOT NULL");
-            return Response.status(Response.Status.OK).entity(new RetrieveCustomerAccountRsp(information.getFirstName() + " " + information.getLastName() ,information.getEmail(), information.getAddress(), information.getLoyaltyPoints())).build();
+             System.out.println("********** INFORMAITION IS NOT NULL: " + information.getId());
+            return Response.status(Response.Status.OK).entity(new RetrieveCustomerAccountRsp( information.getId(), information.getFirstName() + " " + information.getLastName() ,information.getEmail(), information.getAddress(), information.getLoyaltyPoints())).build();
  
         }
          catch(InvalidLoginCredentialException ex)

@@ -15,7 +15,7 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlRootElement
 @XmlType(name = "retrieveCustomerAccountRsp", propOrder = {
-    "fullname" , "email" , "address" , "loyaltyPoint"
+   "id", "fullname" , "email" , "address" , "loyaltyPoint"
 })
 
 public class RetrieveCustomerAccountRsp implements Serializable {
@@ -23,13 +23,14 @@ public class RetrieveCustomerAccountRsp implements Serializable {
      
     private static final long serialVersionUID = 1L;
     
-
+    private long id;
     private String fullname;
     private String email;
     private String address;
     private int loyaltyPoint;
 
-    public RetrieveCustomerAccountRsp(String fullname, String email, String address, int loyaltyPoint) {
+    public RetrieveCustomerAccountRsp(long id, String fullname, String email, String address, int loyaltyPoint) {
+        this.id = id;
         this.fullname = fullname;
         this.email = email;
         this.address = address;
@@ -37,9 +38,20 @@ public class RetrieveCustomerAccountRsp implements Serializable {
     }
 
 
+
     public RetrieveCustomerAccountRsp() {
     }
 
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    
+    
    
     /**
      * @return the fullname
