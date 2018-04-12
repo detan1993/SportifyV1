@@ -168,8 +168,7 @@ public class CustomerOrderController implements CustomerOrderControllerRemote, C
               List<CustomerOrder> orders = productPurchaseQuery.getResultList();
               System.out.println("**************** Customer Order size " + orders.size());
               
-              for(CustomerOrder order : orders ){
-                  
+              for(CustomerOrder order : orders ){                
                   List<ProductPurchase> proPurchase = order.getProductPurchase();
                //   List<Product> proPurchase = order.getProducts();
                   System.out.println("**************** Product Purchaase  size " + proPurchase.size());

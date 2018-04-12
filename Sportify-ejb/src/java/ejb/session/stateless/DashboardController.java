@@ -380,7 +380,7 @@ public class DashboardController implements DashboardControllerRemote, Dashboard
             
         }
         
-        System.out.println("***************** POPULATE BACK THE DATA TO TOP PRODUCY BY CODE");
+        System.out.println("***************** POPULATE BACK THE DATA TO TOP PRODUCY BY CODE. Size is " +  productCodes.size());
         
         for(int i=0; i<productCodes.size(); i++){
             
@@ -797,16 +797,30 @@ public class DashboardController implements DashboardControllerRemote, Dashboard
          List<Long> no_Rating = new ArrayList<>();
          List<Long> no_RatingAboveFour = new ArrayList<>(); //include 4
          List<Long> no_RatingBelowFour = new ArrayList<>();
-
+         String ratingMessage = "";
+         boolean hasRating = false;
          double averageRating = 0;
          
          Query query = em.createQuery("SELECT AVG(p.rating) FROM ProductReview p");
+         String custSatisfaction = "";
          rating = query.getResultList();
           if (rating.get(0) != null) {
                averageRating = rating.get(0);
+               hasRating = true;
           } else {
               averageRating = 0;
+              ratingMessage = "No Rating From Customer!";
           }
+          
+         
+         if(averageRating  >= 3 && averageRating <4 ){
+             ratingMessage = "Customer Satisfaction Level Is Good";
+         }else if(averageRating >=4){
+             ratingMessage = "Customer Satisfaction Level Is Excellent";
+         }
+         else if(averageRating < 3 && hasRating){
+             ratingMessage = "Customer Satisfaction Level Is Bad";
+         }
      
              query = em.createQuery("SELECT COUNT(p.id) FROM ProductReview p");
              no_Rating = query.getResultList();
@@ -826,10 +840,11 @@ public class DashboardController implements DashboardControllerRemote, Dashboard
          customerSatisfaction.setTotalValue(df.format(averageRating));
          System.out.println("**************** above four % " + noOfRating_aboveFour );
          aboveFour_Percentage =  (double)noOfRating_aboveFour / noOfRating;
-   
+         double ratingAbove4_Perc = (double)noOfRating_aboveFour/noOfRating *100;
+        
          customerSatisfaction.setCurrentMonthInformation( df.format((double)noOfRating_aboveFour/noOfRating *100) + "% RATE ABOVE 3");
-         customerSatisfaction.setFigureInformation("Need to Clarify");
-         customerSatisfaction.setFigureStatus("Increase");
+         customerSatisfaction.setFigureInformation(ratingMessage );
+         customerSatisfaction.setFigureStatus("na");
          //
        /*  percentage_diff = totalOrder_PrevMonth - totalOrder_CurrentMonth;
          if(percentage_diff > 0 )

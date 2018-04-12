@@ -48,6 +48,8 @@ import javax.faces.application.FacesMessage;
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
 import org.primefaces.model.chart.BarChartModel;
+import org.primefaces.model.chart.BarChartSeries;
+import org.primefaces.model.chart.LinearAxis;
 import util.exception.CustomerSignUpException;
 import util.helperClass.PerformanceBoard;
 import util.helperClass.TopCustomerProduct;
@@ -78,7 +80,7 @@ public class DashboardManagedBean implements Serializable {
      * Creates a new instance of DashboardManagedBean
      */
     final String[] monthsArray = {"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
-    ;
+    
     private LineChartModel salesLineChart;
 
     private HorizontalBarChartModel horizontalRating;
@@ -114,6 +116,7 @@ public class DashboardManagedBean implements Serializable {
     private String selectedTotalSalesByTeamPieChart;
     private List<PerformanceBoard> boardsInformation;
     private int number;
+    private LineChartModel customerSpendingModel;
 
     public DashboardManagedBean() {
         salesByTeamPieModel = new PieChartModel();
@@ -145,7 +148,18 @@ public class DashboardManagedBean implements Serializable {
             boardsInformation = dashboardControllerLocal.getPerformanceInformation();
             topProductsCode = dashboardControllerLocal.getProductsSumByQuantityPurchaseByProductCode();
             topProductsTeam = dashboardControllerLocal.getProductsSumByQuantityPurchaseByTeam();
-            //  topProductsCode =  topProductsCode.subList(0, 10);
+             System.out.println("ProductSize  = " + topProductsCode.size()  );
+            
+            if(topProductsCode.size() > 10 ){
+                topProductsCode =  topProductsCode.subList(0, 10);
+                System.out.println("*********BIGGER");
+            }
+                 
+            //topProductsTeam = topProductsTeam.subList(0, 10);
+            if(topProductsTeam.size() > 10){
+                topProductsTeam = topProductsTeam.subList(0, 10);
+            }
+            
             topCustomers = customerOrderControllerLocal.RetrieveTopTenCustomersByOrder();
             //  customerOrderControllerLocal.RetrieveAllCustomerOrder();
             totalSalesByMonthsCountry = dashboardControllerLocal.retrieveAllSalesByMonths();
@@ -168,6 +182,7 @@ public class DashboardManagedBean implements Serializable {
             createRatingBarModels();
             salesByTeamPieModel = getSalesByTeamPieChart(0);
             createCountrySalesStackBarModel();
+            createCustomerSpendingModel();
 
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -175,6 +190,53 @@ public class DashboardManagedBean implements Serializable {
 
     }
 
+    
+      private void createCustomerSpendingModel() {
+        customerSpendingModel = new LineChartModel();
+ 
+        BarChartSeries boys = new BarChartSeries();
+        boys.setLabel("Boys");
+ 
+        boys.set("2004", 120);
+        boys.set("2005", 100);
+        boys.set("2006", 44);
+        boys.set("2007", 150);
+        boys.set("2008", 25);
+ 
+        LineChartSeries girls = new LineChartSeries();
+        girls.setLabel("Girls");
+        girls.setXaxis(AxisType.X2);
+        girls.setYaxis(AxisType.Y2);
+         
+        girls.set("2004", 1152);
+        girls.set("2005", 1160);
+        girls.set("2006", 2110);
+        girls.set("2007", 2135);
+        girls.set("2008", 4120);
+ 
+        customerSpendingModel.addSeries(boys);
+        customerSpendingModel.addSeries(girls);
+         
+        customerSpendingModel.setTitle("Multi Axis Chart");
+        customerSpendingModel.setMouseoverHighlight(false);
+        customerSpendingModel.setLegendPosition("s");
+         
+        customerSpendingModel.getAxes().put(AxisType.X, new CategoryAxis("Years"));
+        customerSpendingModel.getAxes().put(AxisType.X2, new CategoryAxis("Period"));
+         
+        Axis yAxis = customerSpendingModel.getAxis(AxisType.Y);
+        yAxis.setLabel("No Of Customer");
+        yAxis.setMin(0);
+        yAxis.setMax(200);
+                 
+        Axis y2Axis = new LinearAxis("Customer Spending(Sales)");
+        y2Axis.setMin(0);
+        y2Axis.setMax(5000);
+         
+        customerSpendingModel.setExtender("lineBarChartExtender");
+        customerSpendingModel.getAxes().put(AxisType.Y2, y2Axis);
+    }
+      
     private BarChartModel initCountrySalesStackBarModel() {
         BarChartModel model = new BarChartModel();
         int noOfCountry = totalSalesByTeamFilter.size();
@@ -309,8 +371,9 @@ public class DashboardManagedBean implements Serializable {
             System.out.println("Date selected to " + df.format(salesDateTo));
             totalSalesByMonthsCountry =  dashboardControllerLocal.retrieveAllSalesByMonthsByRange(df.format(salesDateFrom), df.format(salesDateTo));
             createCountrySalesStackBarModel();
-            dashboardControllerLocal.retrieveSalesByTeamAndCountryByRange(df.format(salesDateFrom), df.format(salesDateTo));
-          
+            totalSalesByTeam = dashboardControllerLocal.retrieveSalesByTeamAndCountryByRange(df.format(salesDateFrom), df.format(salesDateTo));
+            salesByTeamPieModel = new PieChartModel();
+            salesByTeamPieModel = getSalesByTeamPieChart(0);
           //  topCustomers = customerOrderControllerLocal.RetrieveTopTenCustomerByOrderByRanger(df.format(customerFrom), df.format(customerTo));
             //call session bean here.
 
@@ -506,17 +569,25 @@ public class DashboardManagedBean implements Serializable {
     public PieChartModel getSalesByTeamPieChart(int teamIndex) {
 
         int sizeOfTeam = totalSalesByTeam.size();
+        boolean teamHasRecord = false;
         String defaultCountry = totalSalesByTeamFilter.get(teamIndex);  //need to change abit
-        System.out.println("********** COUNTRY SELECTED IS " + defaultCountry);
+        System.out.println("********** COUNTRY default country is " + defaultCountry + " Countrt size is " + sizeOfTeam);
         for (int i = 0; i < sizeOfTeam; i++) {
 
             String[] teamInfo = totalSalesByTeam.get(i);
             if (teamInfo[1].equals(defaultCountry)) //default country means the first row from the database query
             {
+                System.out.println("*******teamInfo[1].equals(defaultCountry");
+                teamHasRecord = true;
                 salesByTeamPieModel.getData().put(teamInfo[0], Double.parseDouble(teamInfo[2]));
 
             }
+            
 
+        }
+        
+        if(!teamHasRecord){
+               salesByTeamPieModel.getData().put("No Record", 0);
         }
 
         /*   int random1 = (int) (Math.random() * 1000);
@@ -982,9 +1053,10 @@ public class DashboardManagedBean implements Serializable {
         System.out.println("************* SELECTED PIE VALUE " + selectedTotalSalesByTeamPieChart);
         for (int i = 0; i < totalSalesByTeamFilter.size(); i++) {
 
-            System.out.println("TOTAL COUNTRY " + totalSalesByTeamFilter.get(i));
+            System.out.println("COUNTRY " + totalSalesByTeamFilter.get(i));
             if (totalSalesByTeamFilter.get(i).equals(selectedTotalSalesByTeamPieChart)) {
 
+                System.out.println("*********Country  MATCHES, getSalesByTeamPieChart()");
                 getSalesByTeamPieChart(i);
                 break;
             }
@@ -1087,6 +1159,20 @@ public class DashboardManagedBean implements Serializable {
      */
     public void setSalesDateTo(Date salesDateTo) {
         this.salesDateTo = salesDateTo;
+    }
+
+    /**
+     * @return the customerSpendingModel
+     */
+    public LineChartModel getCustomerSpendingModel() {
+        return customerSpendingModel;
+    }
+
+    /**
+     * @param customerSpendingModel the customerSpendingModel to set
+     */
+    public void setCustomerSpendingModel(LineChartModel customerSpendingModel) {
+        this.customerSpendingModel = customerSpendingModel;
     }
 
 }

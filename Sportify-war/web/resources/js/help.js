@@ -87,6 +87,24 @@ function pieProfileExtender(){
   // this.cfg.axes.yaxis.tickOptions  = { textColor: '#ffffff' , formatString: '%#.2f' };
 }
 
+function lineBarChartExtender(){
+    
+    this.cfg.animate = true ;
+    this.cfg.animateReplot = true;
+        // Will animate plot on calls to plot1.replot({resetAxes:true})
+   // this.cfg.seriesDefaults = { pointLabels: { show:true } };
+    this.cfg.seriesDefaults.rendererOptions = {   barWidth: 80 ,animation: { speed: 1000  }  };
+    this.cfg.axes.y2axis.tickOptions = {textColor: '#ffffff' , formatString: '%#.2f'};
+    this.cfg.axes.y2axis.labelOptions = {fontSize: '13pt', textColor: '#ffffff' , fontFamily: 'Trajan Pro'}; 
+    this.cfg.axes.x2axis.tickOptions = {textColor: '#ffffff' , formatString: '%#.2f'};
+    this.cfg.axes.x2axis.labelOptions = {fontSize: '13pt', textColor: '#ffffff' , fontFamily: 'Trajan Pro'}; 
+    this.cfg.axes.yaxis.tickOptions  = { textColor: '#ffffff' , formatString: '%#.2f' };
+    this.cfg.axes.yaxis.labelOptions = {fontSize: '13pt', textColor: '#ffffff' , fontFamily: 'Trajan Pro'}; 
+     this.cfg.axes.xaxis.tickOptions  = { textColor: '#ffffff' ,  showGridline: false };
+      this.cfg.axes.xaxis.labelOptions = {fontSize: '13pt'  , textColor: '#ffffff' , fontFamily: 'Trajan Pro' }; 
+    
+}
+
 function barExtender(){
     //this.cfg.pointLabels = { show: true};
      this.cfg.animate = true ;
