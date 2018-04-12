@@ -6,11 +6,12 @@
 package ejb.session.stateless;
 
 import entity.Product;
+import entity.ProductPurchase;
+import entity.ProductReview;
 import entity.ProductSize;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import javax.ejb.EJB;
 import javax.ejb.Local;
 import javax.ejb.Remote;
 import javax.ejb.Stateless;
@@ -60,6 +61,20 @@ public class ProductController implements ProductControllerRemote, ProductContro
     public List<Product> retrieveActiveProductOrderById(){
         Query query = em.createQuery("SELECT p FROM Product p WHERE p.status='A'");
         return query.getResultList();
+    }
+    
+    
+    //Avoid infinite json loop for web service call
+    @Override
+    public List<Product> Ws_retrieveActiveProductOrderById(){
+        Query query = em.createQuery("SELECT p FROM Product p WHERE p.status='A'");
+        List<Product> ps = query.getResultList();
+        for(Product p : ps){
+            p.setProductReviews(new ArrayList<ProductReview>());
+            p.setProductsPurchase(new ArrayList<ProductPurchase>());
+        }
+        
+        return ps;
     }
 
     @Override

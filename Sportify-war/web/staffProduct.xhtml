@@ -31,7 +31,7 @@
                                 <h:outputLabel for="price" value="Price: $" />
                                 <p:inputNumber   value="#{staffProductManagedBean.newProduct.price}"  required="true" requiredMessage="Please enter Price" decimalPlaces="2" converterMessage="Please enter Valid currency" />
                                 <h:outputLabel for="description" value="Description:"/>
-                                <h:inputTextarea cols="60" rows="2" value="#{staffProductManagedBean.newProduct.description}" required="true" requiredMessage="Please enter Description." style="resize:none;"/>
+                                <h:inputTextarea cols="60" rows="8" value="#{staffProductManagedBean.newProduct.description}" required="true" requiredMessage="Please enter Description." style="resize:none;"/>
                             </p:panelGrid>
                         </p:panelGrid>
                     </p:panel>
@@ -187,7 +187,7 @@
                     <p:tab title="Product Images">
                         <p:panelGrid id="pg_productImages">
                             <p:galleria value="#{staffProductManagedBean.selectedProductsToView.images}" var="image" autoPlay="false">
-                                <h:graphicImage name="#{image.imagePath}"/>
+                                <h:graphicImage name="#{image.imagePath}" />
                             </p:galleria>
                             <br/>
                             <p:fileUpload fileUploadListener="#{staffProductManagedBean.handleFileUpload}" mode="advanced" dragDropSupport="false"

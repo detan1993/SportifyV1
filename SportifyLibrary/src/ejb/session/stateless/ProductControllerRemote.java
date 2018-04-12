@@ -13,6 +13,7 @@ public interface ProductControllerRemote {
     public List<Product> retrieveProduct();
     public List<Product> retrieveProductIncludingInactive();
     public List<Product> retrieveActiveProductOrderById();
+    public List<Product> Ws_retrieveActiveProductOrderById();
     public Product retrieveSingleProduct(long productId);
     public List<Product> retrieveProductsByTeam(String team);
     public List<Product> retrieveProductsByCountry(String country);
