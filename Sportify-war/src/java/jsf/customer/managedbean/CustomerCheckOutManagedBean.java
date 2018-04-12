@@ -128,15 +128,15 @@ public class CustomerCheckOutManagedBean implements Serializable{
         for (int i = 0; i < cartitems.size(); i++){
           String [] sessioncartitem = new String [8];
           Product p = productcontroller.retrieveSingleProduct(Long.parseLong(cartitems.get(i)[0]));
-          sessioncartitem[7] = cartitems.get(i)[1];
-          ProductSize ps = productsizecontroller.retrieveSingleProductSize(Long.parseLong(cartitems.get(i)[1]));
+          ProductSize ps = productsizecontroller.retrieveSingleProductSize(Long.parseLong(cartitems.get(i)[1])); //[1] is size id, [1] becomes size
           sessioncartitem[0] = cartitems.get(i)[0];
-          sessioncartitem[1] = ps.getSize();
+          sessioncartitem[1] = cartitems.get(i)[1];
           sessioncartitem[2] = cartitems.get(i)[2];
           sessioncartitem[3] = p.getProductName();
           sessioncartitem[4] = p.getProductCode();
           sessioncartitem[5] = String.valueOf(p.getPrice());
           sessioncartitem[6] = p.getImages().get(0).getImagePath();
+          sessioncartitem[7] = ps.getSize();
           shoppingCartItems.add(sessioncartitem);
           subtotal = subtotal + Double.parseDouble(sessioncartitem[5])*Integer.parseInt(sessioncartitem[2]);
           total = subtotal + 5.00;
@@ -178,6 +178,7 @@ public class CustomerCheckOutManagedBean implements Serializable{
              ProductPurchase productpurchase = productpurchasecontroller.createProductPurchase(new ProductPurchase(pricepurchase,qtypurchase,customerorder,p));
              
           }
+          sendEmail();
           if (appliedvoucher!=null){  
              CustomerVoucher cv = customervouchercontroller.retrieveCustomerVoucher(c, appliedvoucher);
              customervouchercontroller.useCustomerVoucher(customerorder,appliedvoucher,cv);
@@ -295,32 +296,37 @@ public class CustomerCheckOutManagedBean implements Serializable{
     }
     
     public void sendEmail(){
-        HttpServletRequest request = (HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest();
-        String email = request.getParameter("myForm:email");
-        String to = email;
-        String from = "smurfalt1202@gmail.com";
-        Properties props = new Properties();
-	props.put("mail.smtp.auth", "true");
-	props.put("mail.smtp.starttls.enable", "true");
-	props.put("mail.smtp.host", "smtp.gmail.com");
-	props.put("mail.smtp.port", "587");
-       Session session = Session.getInstance(props,
+        final String username = "smurfalt1202@gmail.com";
+		final String password = "hearthstone";
+
+		Properties props = new Properties();
+		props.put("mail.smtp.auth", "true");
+		props.put("mail.smtp.starttls.enable", "true");
+		props.put("mail.smtp.ssl.trust", "smtp.gmail.com");
+		props.put("mail.smtp.port", "587");
+
+		Session session = Session.getInstance(props,
 		  new javax.mail.Authenticator() {
 			protected PasswordAuthentication getPasswordAuthentication() {
-				return new PasswordAuthentication("smurfalt1202@gmail.com", "hearthstone");
-                	}
+				return new PasswordAuthentication(username, password);
+			}
 		  });
-                try {
-			Message message = new MimeMessage(session);
-			message.setFrom(new InternetAddress(from));
-			message.setRecipients(Message.RecipientType.TO,
-				InternetAddress.parse(to));
-			message.setSubject("Testing Subject");
-			message.setContent("<h1>Test</h1>","text/html");
-			Transport.send(message);
-                        System.out.println("msg sent");
 
-		} catch (MessagingException e) {
+		try {
+
+			Message message = new MimeMessage(session);
+			message.setFrom(new InternetAddress("smurfalt1202@gmail.com"));
+			message.setRecipients(Message.RecipientType.TO,
+				InternetAddress.parse("joankhor1202@hotmail.com"));
+			message.setSubject("Your order has been confirmed!");
+			message.setText("Dear " + loggedincustomer.getFirstName() + ","
+				+ "\n\n We have received your order");
+
+			Transport.send(message);
+
+			System.out.println("Done");
+
+		}  catch (MessagingException e) {
 			throw new RuntimeException(e);
 		}
     }
