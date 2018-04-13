@@ -168,7 +168,7 @@ public class CustomerCheckOutManagedBean implements Serializable {
           for (int i = 0; i <cartitems.size();i++){
              String [] cartitem = new String[7]; 
              cartitem = cartitems.get(i);
-             ProductSize ps = productsizecontroller.retrieveSingleProductSize(Long.parseLong(cartitem[7]));
+             ProductSize ps = productsizecontroller.retrieveSingleProductSize(Long.parseLong(cartitem[1]));
              double pricepurchase = Double.parseDouble(cartitem[5]);
              int qtypurchase = Integer.parseInt(cartitem[2]);
              ps.setQty(ps.getQty() - qtypurchase);
@@ -177,7 +177,7 @@ public class CustomerCheckOutManagedBean implements Serializable {
              ProductPurchase productpurchase = productpurchasecontroller.createProductPurchase(new ProductPurchase(pricepurchase,qtypurchase,customerorder,p));
              
           }
-          sendEmail();
+         // sendEmail();
           if (appliedvoucher!=null){  
              CustomerVoucher cv = customervouchercontroller.retrieveCustomerVoucher(c, appliedvoucher);
              customervouchercontroller.useCustomerVoucher(customerorder,appliedvoucher,cv);

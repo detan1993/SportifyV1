@@ -42,14 +42,14 @@
                                 <h:outputText value="Size:" style="font-weight: bold"/>
                                 <h:outputText value="#{cartitem[7]}"></h:outputText>
 
-                                <h:outputText value="Qty" style="font-weight: bold"/>
+                                <h:outputText value="Qty:" style="font-weight: bold"/>
                                 <h:outputText value="#{cartitem[2]}"></h:outputText>
 
                                 <h:outputText value="Product code:" style="font-weight: bold" />
                                 <h:outputText value="#{cartitem[4]}"></h:outputText>
 
                                 <p:commandButton value="Remove" icon="fa fa-remove">
-                                    <f:ajax event="click" execute="@all" listener="#{customerCheckOutManagedBean.removeCartItem(cartitem)}" render="@form" />
+                                    <f:ajax event="click" execute="@all" listener="#{customerCheckOutManagedBean.removeCartItem(cartitem)}" render="@all" />
                                 </p:commandButton>
 
 
@@ -62,7 +62,6 @@
 
             </p:panel>
         </h:form> 
-
 
 
     </ui:define>
@@ -132,5 +131,6 @@
                         </div>
                     </div>-->
         </p:panel>
+
     </ui:define>
 </ui:composition>
