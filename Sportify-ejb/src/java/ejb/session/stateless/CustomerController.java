@@ -55,6 +55,13 @@ public class CustomerController implements CustomerControllerRemote, CustomerCon
     }
 
     @Override
+    public Customer retrieveCustomer(long id){
+        Query query = em.createQuery("Select e FROM Customer e WHERE e.id =:id");
+        query.setParameter("id", id);
+        return (Customer) query.getSingleResult();
+    }
+    
+    @Override
     public Customer retrieveCustomer(String email) throws CustomerNotFoundException {
         Query query = em.createQuery("Select e FROM Customer e WHERE e.email =:email");
         query.setParameter("email", email);

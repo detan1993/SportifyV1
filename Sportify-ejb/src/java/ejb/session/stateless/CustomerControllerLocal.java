@@ -14,9 +14,9 @@ import util.exception.InvalidLoginCredentialException;
 public interface CustomerControllerLocal {
     public Customer createNewCustomer(Customer newCustomer) throws CustomerSignUpException;
     public List<Customer> retrieveCustomer();
-      public Customer login(String email, String password) throws InvalidLoginCredentialException;
-       public Customer retrieveCustomer(String email) throws CustomerNotFoundException;
-
+    public Customer login(String email, String password) throws InvalidLoginCredentialException;
+    public Customer retrieveCustomer(String email) throws CustomerNotFoundException;
+    public Customer retrieveCustomer(long id);
     List<Customer> retrieveCustomerByMonth(int month);
     public boolean checkEmailAlreadyExist(String email);
     public Customer updateCustomer(Customer c);

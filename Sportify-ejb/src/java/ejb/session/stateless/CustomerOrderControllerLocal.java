@@ -5,8 +5,11 @@
  */
 package ejb.session.stateless;
 
+import entity.Customer;
 import entity.CustomerOrder;
+import entity.CustomerVoucher;
 import entity.ProductPurchase;
+import java.util.Date;
 import java.util.List;
 import util.helperClass.TopTenCustomer;
 
@@ -15,10 +18,11 @@ import util.helperClass.TopTenCustomer;
  * @author shanw
  */
 public interface CustomerOrderControllerLocal {
-     public CustomerOrder CreateNewCustomerOrder(CustomerOrder newCustomerOrder);
-     public List<CustomerOrder> GetCustomerOrder (long customerId);
-     public List<CustomerOrder> RetrieveAllCustomerOrder();
-     public List<TopTenCustomer> RetrieveTopTenCustomersByOrder();
-     public List<TopTenCustomer> RetrieveTopTenCustomerByOrderByRanger(String dateFron, String dateTo);
- public void addProductPurchase(long newOrderId, ProductPurchase newProductPurchase);
+    public CustomerOrder CreateNewCustomerOrder(CustomerOrder newCustomerOrder);
+    public List<CustomerOrder> GetCustomerOrder (long customerId);
+    public List<CustomerOrder> RetrieveAllCustomerOrder();
+    public List<TopTenCustomer> RetrieveTopTenCustomersByOrder();
+    public List<TopTenCustomer> RetrieveTopTenCustomerByOrderByRanger(String dateFron, String dateTo);
+    public void addProductPurchase(long newOrderId, ProductPurchase newProductPurchase);
+    public boolean CreateNewCustomerOrder(Customer customer, CustomerVoucher cv, double totalAmount,Date datePaid, List<ProductPurchase> productPurchases);
 }

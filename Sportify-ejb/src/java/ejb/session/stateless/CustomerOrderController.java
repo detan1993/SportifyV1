@@ -5,12 +5,15 @@
  */
 package ejb.session.stateless;
 
+import entity.Customer;
 import entity.CustomerOrder;
+import entity.CustomerVoucher;
 import entity.ProductPurchase;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import javax.ejb.Stateless;
@@ -42,6 +45,27 @@ public class CustomerOrderController implements CustomerOrderControllerRemote, C
         em.refresh(newCustomerOrder);
         return newCustomerOrder;
     }
+    
+    @Override
+    public boolean CreateNewCustomerOrder(Customer customer, CustomerVoucher cv, double totalAmount,Date datePaid, List<ProductPurchase> productPurchases){
+        try{
+            CustomerOrder newCustomerOrder = new CustomerOrder();
+            newCustomerOrder.setCustomer(customer);
+            newCustomerOrder.setCustomerVoucher(cv);
+            newCustomerOrder.setTotalAmount(totalAmount);
+            newCustomerOrder.setDatePaid(datePaid);
+            newCustomerOrder.setDeliveryStatus("Pending");
+            newCustomerOrder.setProductPurchase(productPurchases);
+
+            em.persist(newCustomerOrder);
+            em.flush();
+            em.refresh(newCustomerOrder);
+            return true;
+        }catch(Exception ex){
+            ex.printStackTrace();
+            return false;
+        }
+    }   
     
     @Override
     public List<CustomerOrder> GetCustomerOrder (long customerId){

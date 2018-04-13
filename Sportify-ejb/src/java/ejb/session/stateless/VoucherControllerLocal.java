@@ -11,5 +11,6 @@ import java.util.List;
 public interface VoucherControllerLocal {
     public Voucher createNewVoucher(Voucher newVoucher);
     public List<Voucher> retrieveVouchers();
+    public Voucher retrieveVoucher(String voucherCode);
     public Voucher retrieveCustomerVoucher(String promocode, String customeremail);
 }

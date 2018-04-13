@@ -48,7 +48,7 @@ public class CustomerVoucherController implements CustomerVoucherControllerRemot
     
     @Override
      public CustomerVoucher retrieveCustomerVoucher(Customer c, Voucher v){
-         Query q = em.createQuery("SELECT cv FROM CustomerVoucher cv WHERE cv.customer.id =:cid AND cv.voucher.id =:vid");
+         Query q = em.createQuery("SELECT cv FROM CustomerVoucher cv WHERE cv.customer.id =:cid AND cv.voucher.id =:vid AND cv.customerOrder IS NOT NULL");
          q.setParameter("cid", c.getId());
          q.setParameter("vid", v.getId());
          return (CustomerVoucher)q.getSingleResult();
