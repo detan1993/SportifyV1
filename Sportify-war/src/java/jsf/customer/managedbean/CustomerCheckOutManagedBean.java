@@ -130,7 +130,7 @@ public class CustomerCheckOutManagedBean implements Serializable {
                 sessioncartitem[7] = cartitems.get(i)[1];
                 ProductSize ps = productsizecontroller.retrieveSingleProductSize(Long.parseLong(cartitems.get(i)[1]));
                 sessioncartitem[0] = cartitems.get(i)[0];
-                sessioncartitem[1] = ps.getSize();
+                sessioncartitem[1] = ps.getSize(); 
                 sessioncartitem[2] = cartitems.get(i)[2];
                 sessioncartitem[3] = p.getProductName();
                 sessioncartitem[4] = p.getProductCode();
