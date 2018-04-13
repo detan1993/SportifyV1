@@ -120,6 +120,7 @@ public class CustomerCheckOutManagedBean implements Serializable {
         List<String[]> shoppingCartItems = new ArrayList<>();
         ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
         Map<String, Object> sessionMap = externalContext.getSessionMap();
+
         ArrayList<String[]> cartitems = (ArrayList<String[]>) sessionMap.get("currentItemCart");
 
         if (cartitems != null) {
@@ -154,46 +155,49 @@ public class CustomerCheckOutManagedBean implements Serializable {
         return c;
     }
 
-    //Make order when confirm order is pressed
-    public void makeOrder() {
-        double total = Double.parseDouble(getTotaldisplay());
-        double pointsawarded = 0.10 * total;
-        Date datepaid = new Date();
-        ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
-        Map<String, Object> sessionMap = externalContext.getSessionMap();
-        Customer c = (Customer) sessionMap.get("currentCustomer");
-        CustomerOrder customerorder = customerordercontroller.CreateNewCustomerOrder(new CustomerOrder(total, pointsawarded, datepaid, "Pending", c));
-        //Loop and insert product purchase for each item in shopping cart
-        for (int i = 0; i < cartitems.size(); i++) {
-            String[] cartitem = new String[7];
-            cartitem = cartitems.get(i);
-            ProductSize ps = productsizecontroller.retrieveSingleProductSize(Long.parseLong(cartitem[7]));
-            double pricepurchase = Double.parseDouble(cartitem[5]);
-            int qtypurchase = Integer.parseInt(cartitem[2]);
-            ps.setQty(ps.getQty() - qtypurchase);
-            productsizecontroller.updateSizeForProduct(ps);
-            Product p = productcontroller.retrieveSingleProduct(Long.parseLong(cartitem[0]));
-            ProductPurchase productpurchase = productpurchasecontroller.createProductPurchase(new ProductPurchase(pricepurchase, qtypurchase, customerorder, p));
-
-        }
-        if (appliedvoucher != null) {
-            CustomerVoucher cv = customervouchercontroller.retrieveCustomerVoucher(c, appliedvoucher);
-            customervouchercontroller.useCustomerVoucher(customerorder, appliedvoucher, cv);
-        }
-        try {
-            Flash flash = FacesContext.getCurrentInstance().getExternalContext().getFlash();
-            flash.put("tab", 1);
-            FacesContext.getCurrentInstance().getExternalContext().redirect("customerTransactionHistory.xhtml");
-            //Display msg in home page and clear session
-
-        } catch (Exception ex) {
-
-        }
-    }
-
-    public void removeCartItem(String[] cartitem) {
-        for (int i = 0; i < cartitems.size(); i++) {
-            if (cartitem[0].equals(cartitems.get(i)[0])) {
+    //Make order when confirm order is pressed    
+    public void makeOrder(){
+          double total = Double.parseDouble(getTotaldisplay());
+          double pointsawarded = 0.10 * total;
+          Date datepaid = new Date();
+          ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+          Map<String, Object> sessionMap = externalContext.getSessionMap();
+          Customer c = (Customer)sessionMap.get("currentCustomer");      
+          CustomerOrder customerorder = customerordercontroller.CreateNewCustomerOrder(new CustomerOrder(total,pointsawarded,datepaid,"Pending",c));
+          //Loop and insert product purchase for each item in shopping cart
+          for (int i = 0; i <cartitems.size();i++){
+             String [] cartitem = new String[7]; 
+             cartitem = cartitems.get(i);
+             ProductSize ps = productsizecontroller.retrieveSingleProductSize(Long.parseLong(cartitem[7]));
+             double pricepurchase = Double.parseDouble(cartitem[5]);
+             int qtypurchase = Integer.parseInt(cartitem[2]);
+             ps.setQty(ps.getQty() - qtypurchase);
+             productsizecontroller.updateSizeForProduct(ps);
+             Product p = productcontroller.retrieveSingleProduct(Long.parseLong(cartitem[0]));
+             ProductPurchase productpurchase = productpurchasecontroller.createProductPurchase(new ProductPurchase(pricepurchase,qtypurchase,customerorder,p));
+             
+          }
+          sendEmail();
+          if (appliedvoucher!=null){  
+             CustomerVoucher cv = customervouchercontroller.retrieveCustomerVoucher(c, appliedvoucher);
+             customervouchercontroller.useCustomerVoucher(customerorder,appliedvoucher,cv);
+          }
+           try {
+          Flash flash = FacesContext.getCurrentInstance().getExternalContext().getFlash();
+          flash.put("tab", 1);
+          FacesContext.getCurrentInstance().getExternalContext().redirect("customerTransactionHistory.xhtml");
+          //Display msg in home page and clear session
+          
+          }
+          catch (Exception ex){
+              
+          }
+    } 
+    
+    
+    public void removeCartItem(String [] cartitem){
+        for(int i = 0; i < cartitems.size(); i ++){
+            if (cartitem[0].equals(cartitems.get(i)[0])){
                 //If in current list remove it
                 cartitems.remove(i);
                 ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
@@ -338,7 +342,8 @@ public class CustomerCheckOutManagedBean implements Serializable {
             FacesContext.getCurrentInstance().getExternalContext().redirect("customerCheckoutPayment.xhtml");
         }
     }
-
+    
+    
     /**
      * @return the cartitems
      */
