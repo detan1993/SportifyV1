@@ -127,15 +127,15 @@ public class CustomerCheckOutManagedBean implements Serializable {
             for (int i = 0; i < cartitems.size(); i++) {
                 String[] sessioncartitem = new String[8];
                 Product p = productcontroller.retrieveSingleProduct(Long.parseLong(cartitems.get(i)[0]));
-                sessioncartitem[7] = cartitems.get(i)[1];
                 ProductSize ps = productsizecontroller.retrieveSingleProductSize(Long.parseLong(cartitems.get(i)[1]));
                 sessioncartitem[0] = cartitems.get(i)[0];
-                sessioncartitem[1] = ps.getSize(); 
+                sessioncartitem[1] = cartitems.get(i)[1];
                 sessioncartitem[2] = cartitems.get(i)[2];
                 sessioncartitem[3] = p.getProductName();
                 sessioncartitem[4] = p.getProductCode();
                 sessioncartitem[5] = String.valueOf(p.getPrice());
                 sessioncartitem[6] = p.getImages().get(0).getImagePath();
+                sessioncartitem[7] = ps.getSize();
                 shoppingCartItems.add(sessioncartitem);
                 subtotal = subtotal + Double.parseDouble(sessioncartitem[5]) * Integer.parseInt(sessioncartitem[2]);
                 total = subtotal + 5.00;
