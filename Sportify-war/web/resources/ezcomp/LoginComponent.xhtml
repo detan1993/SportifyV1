@@ -24,7 +24,7 @@
                         <h:outputLabel rendered="#{sessionScope['currentItemCartExist']}">
                             <h:panelGroup id="notiNum">
                                 <h:outputText style="position: absolute;
-                                              right: 90px;
+                                              right: 70px;
                                               top: 18px;
                                               background-color: orange;
                                               width: 25px;
@@ -48,7 +48,7 @@
                     <h:outputLabel rendered="#{sessionScope['currentItemCartExist']}">
                         <h:panelGroup id="notiNumNoLogin">
                             <h:outputText style="position: absolute;
-                                          right: 90px;
+                                          right: 60px;
                                           top: 18px;
                                           background-color: orange;
                                           width: 25px;
@@ -62,10 +62,12 @@
                     </h:outputLabel>
                 </p:commandButton>
                 </h:form>
-                <ui:include src="/customerLogin.xhtml"/>
-                <ui:include src="/customerSignUp.xhtml"/>
+               
 
             </h:panelGroup> 
+            
+             <ui:include src="/customerLogin.xhtml"/>
+                <ui:include src="/customerSignUp.xhtml"/>
         </div>
     </cc:implementation>
 </html>

@@ -96,7 +96,7 @@
                     <tr><td class="rowSpace">TOTAL</td><td class="rowSpace" align="right"><h:outputLabel id="lbl2" value="$#{customerCheckOutManagedBean.totaldisplay}"></h:outputLabel></td></tr>
                     <tr><td class="rowSpaceLast" colspan="3" align="center"> 
                             <h:form>
-                                <h:commandButton actionListener="#{customerCheckOutManagedBean.checkIfCustomerIsLogin}"  value="Checkout" class="checkoutBtn">
+                                <h:commandButton actionListener="#{customerCheckOutManagedBean.checkIfCustomerIsLogin}"  value="Checkout" styleClass="checkoutBtn">
                                      <p:growl id="mustLoginGrowl" showDetail="true" />  
                                       <f:ajax execute="@form" render="mustLoginGrowl loginDialog" />
                                     </h:commandButton>
