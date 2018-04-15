@@ -43,6 +43,7 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
 import org.primefaces.context.RequestContext;
+import org.primefaces.event.TabChangeEvent;
 
 /**
  *
@@ -71,11 +72,14 @@ public class CustomerCheckOutManagedBean implements Serializable {
     private Customer loggedincustomer;
     private String promoCode;
     private String expDate;
+    private List<Voucher>appliedvouchers;
+    private String discountedval;
 
     //For viewing of the address
     private String addrbtnval;
     private boolean displayedit;
     private boolean displayconfirm;
+    private boolean proceedpayment;
     private int activetab;
 
     //If customer has applied available voucher
@@ -97,21 +101,26 @@ public class CustomerCheckOutManagedBean implements Serializable {
         setLoggedincustomer(loadCustomer());
         setAddrbtnval("Edit");
         setDisplayconfirm(true);
-        setActivetab(1);
+        setActivetab(0);
+        setProceedpayment(true);
         //setShowsamebillingaddr(true);
         setSamebillingaddr(true);
         ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
         Map<String, Object> sessionMap = externalContext.getSessionMap();
         try {
             String promosub = (String) sessionMap.get("promosubtotal");
+            appliedvouchers = (List<Voucher>)sessionMap.get("existingvouchers");
             if (Double.parseDouble(promosub) > 0) {
                 subtotaldisplay = promosub;
                 totaldisplay = (String) sessionMap.get("promototal");
                 appliedvoucher = (Voucher) sessionMap.get("appliedvoucher");
+                discountedval = (String)sessionMap.get(discountedval);
             }
-
+         
         } catch (Exception ex) {
-
+            if (appliedvouchers == null){
+                appliedvouchers = new ArrayList<Voucher>();
+            }
         }
     }
 
@@ -148,6 +157,14 @@ public class CustomerCheckOutManagedBean implements Serializable {
         return shoppingCartItems;
     }
 
+    public void onTabChange(TabChangeEvent event) {
+        if (event.getTab().getId().equals("addrtab")) {
+            //Your actions for tab1
+            setProceedpayment(true);
+            setActivetab(0);
+        }
+    }
+
     //Load shipping address details
     public Customer loadCustomer() {
         ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
@@ -157,49 +174,47 @@ public class CustomerCheckOutManagedBean implements Serializable {
     }
 
     //Make order when confirm order is pressed    
-    public void makeOrder(){
-          double total = Double.parseDouble(getTotaldisplay());
-          double pointsawarded = 0.10 * total;
-          pointsawarded = Math.round(pointsawarded*100.0)/100.0; // 2 decimal place
-          Date datepaid = new Date();
-          ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
-          Map<String, Object> sessionMap = externalContext.getSessionMap();
-          Customer c = (Customer)sessionMap.get("currentCustomer");      
-          CustomerOrder customerorder = customerordercontroller.CreateNewCustomerOrder(new CustomerOrder(total,pointsawarded,datepaid,"Pending",c));
-          //Loop and insert product purchase for each item in shopping cart
-          for (int i = 0; i <cartitems.size();i++){
-             String [] cartitem = new String[7]; 
-             cartitem = cartitems.get(i);
-             ProductSize ps = productsizecontroller.retrieveSingleProductSize(Long.parseLong(cartitem[1]));
-             double pricepurchase = Double.parseDouble(cartitem[5]);
-             int qtypurchase = Integer.parseInt(cartitem[2]);
-             ps.setQty(ps.getQty() - qtypurchase);
-             productsizecontroller.updateSizeForProduct(ps);
-             Product p = productcontroller.retrieveSingleProduct(Long.parseLong(cartitem[0]));
-             ProductPurchase productpurchase = productpurchasecontroller.createProductPurchase(new ProductPurchase(pricepurchase,qtypurchase,customerorder,p));
-             
-          }
-         // sendEmail();
-          if (appliedvoucher!=null){  
-             CustomerVoucher cv = customervouchercontroller.retrieveCustomerVoucher(c, appliedvoucher);
-             customervouchercontroller.useCustomerVoucher(customerorder,appliedvoucher,cv);
-          }
-           try {
-          Flash flash = FacesContext.getCurrentInstance().getExternalContext().getFlash();
-          flash.put("tab", 1);
-          FacesContext.getCurrentInstance().getExternalContext().redirect("customerTransactionHistory.xhtml");
-          //Display msg in home page and clear session
-          
-          }
-          catch (Exception ex){
-              
-          }
-    } 
-    
-    
-    public void removeCartItem(String [] cartitem){
-        for(int i = 0; i < cartitems.size(); i ++){
-            if (cartitem[0].equals(cartitems.get(i)[0])){
+    public void makeOrder() {
+        double total = Double.parseDouble(getTotaldisplay());
+        double pointsawarded = 0.10 * total;
+        pointsawarded = Math.round(pointsawarded * 100.0) / 100.0; // 2 decimal place
+        Date datepaid = new Date();
+        ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+        Map<String, Object> sessionMap = externalContext.getSessionMap();
+        Customer c = (Customer) sessionMap.get("currentCustomer");
+        CustomerOrder customerorder = customerordercontroller.CreateNewCustomerOrder(new CustomerOrder(total, pointsawarded, datepaid, "Pending", c));
+        //Loop and insert product purchase for each item in shopping cart
+        for (int i = 0; i < cartitems.size(); i++) {
+            String[] cartitem = new String[7];
+            cartitem = cartitems.get(i);
+            ProductSize ps = productsizecontroller.retrieveSingleProductSize(Long.parseLong(cartitem[1]));
+            double pricepurchase = Double.parseDouble(cartitem[5]);
+            int qtypurchase = Integer.parseInt(cartitem[2]);
+            ps.setQty(ps.getQty() - qtypurchase);
+            productsizecontroller.updateSizeForProduct(ps);
+            Product p = productcontroller.retrieveSingleProduct(Long.parseLong(cartitem[0]));
+            ProductPurchase productpurchase = productpurchasecontroller.createProductPurchase(new ProductPurchase(pricepurchase, qtypurchase, customerorder, p));
+
+        }
+        // sendEmail();
+        if (appliedvoucher != null) {
+            CustomerVoucher cv = customervouchercontroller.retrieveCustomerVoucher(c, appliedvoucher);
+            customervouchercontroller.useCustomerVoucher(customerorder, appliedvoucher, cv);
+        }
+        try {
+            Flash flash = FacesContext.getCurrentInstance().getExternalContext().getFlash();
+            flash.put("tab", 1);
+            FacesContext.getCurrentInstance().getExternalContext().redirect("customerTransactionHistory.xhtml");
+            //Display msg in home page and clear session
+
+        } catch (Exception ex) {
+
+        }
+    }
+
+    public void removeCartItem(String[] cartitem) {
+        for (int i = 0; i < cartitems.size(); i++) {
+            if (cartitem[0].equals(cartitems.get(i)[0])) {
                 //If in current list remove it
                 cartitems.remove(i);
                 ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
@@ -216,7 +231,8 @@ public class CustomerCheckOutManagedBean implements Serializable {
             setAddrbtnval("Save and continue");
             setDisplayedit(true);
             setDisplayconfirm(false);
-            setActivetab(1);
+            setActivetab(0);
+            setProceedpayment(true);
         } else {
             //If confirm button is pressed
             loggedincustomer.setFirstName(loggedincustomer.getFirstName());
@@ -231,7 +247,7 @@ public class CustomerCheckOutManagedBean implements Serializable {
             setAddrbtnval("Edit");
             setDisplayedit(false);
             setDisplayconfirm(true);
-
+            //setActivetab(1);
         }
 
     }
@@ -248,9 +264,9 @@ public class CustomerCheckOutManagedBean implements Serializable {
     }
 
     public void proceedPayment() {
-        setActivetab(0);
-        setDisplayconfirm(false);
-        RequestContext.getCurrentInstance().scrollTo("paymentform:paymentAccordion");
+        setActivetab(1);
+        setProceedpayment(false);
+
     }
 
     public void checkPromoCode() {
@@ -263,23 +279,32 @@ public class CustomerCheckOutManagedBean implements Serializable {
             return;
         }
         try {
-
+            ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+            Map<String, Object> sessionMap = externalContext.getSessionMap();
             if (Double.parseDouble(subtotaldisplay) > 0) {
                 Voucher v = vouchercontroller.retrieveCustomerVoucher(promoCode, email);
+                for (int i =0; i < appliedvouchers.size(); i++){
+                     if (v.getId() == appliedvouchers.get(i).getId()){
+                    context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "You cannot apply the same code more than once!"));
+                    return;
+                }
+                }
                 if (v.getId() != null) {
                     appliedvoucher = v;
                     double promovalue = v.getVoucherValue();
+                    discountedval = String.format("%.2f", promovalue/100 * Double.parseDouble(this.subtotaldisplay));
                     double discountsubtotal = ((100 - promovalue) / 100) * Double.parseDouble(this.subtotaldisplay);
                     double discounttotal = ((100 - promovalue) / 100) * Double.parseDouble(this.totaldisplay);
-                    this.setSubtotaldisplay(String.format("%.2f", discountsubtotal));
+                    //this.setSubtotaldisplay(String.format("%.2f", discountsubtotal));
                     this.setTotaldisplay(String.format("%.2f", discounttotal));
                     subtotaldisplay = String.format("%.2f", discountsubtotal);
-                    totaldisplay = String.format("%.2f", discounttotal);
-                    ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
-                    Map<String, Object> sessionMap = externalContext.getSessionMap();
+                    totaldisplay = String.format("%.2f", discounttotal);                 
                     sessionMap.put("promosubtotal", subtotaldisplay);
                     sessionMap.put("promototal", totaldisplay);
                     sessionMap.put("appliedvoucher", appliedvoucher);
+                    sessionMap.put("discountedval", discountedval);
+                    appliedvouchers.add(v);
+                    sessionMap.put("existingvouchers", appliedvouchers);
                     context.addMessage(null, new FacesMessage("Successful", "Your Promo of " + v.getVoucherValue() + "% has been applied!"));
                 } else {
                     context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Invalid Promo code!"));
@@ -334,18 +359,15 @@ public class CustomerCheckOutManagedBean implements Serializable {
             RequestContext context = RequestContext.getCurrentInstance();
             context.execute("PF('loginDialog').show();");
             //context.execute("loginDialog.show();");
-        } 
-        else if (cartitems == null){
+        } else if (cartitems == null) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Shop Now!", "Add some items to your cart!"));
             RequestContext context = RequestContext.getCurrentInstance();
-        }
-        else {
+        } else {
             System.out.println("Customer not null");
             FacesContext.getCurrentInstance().getExternalContext().redirect("customerCheckoutPayment.xhtml");
         }
     }
-    
-    
+
     /**
      * @return the cartitems
      */
@@ -529,6 +551,48 @@ public class CustomerCheckOutManagedBean implements Serializable {
      */
     public void setExpDate(String expDate) {
         this.expDate = expDate;
+    }
+
+    /**
+     * @return the proceedpayment
+     */
+    public boolean isProceedpayment() {
+        return proceedpayment;
+    }
+
+    /**
+     * @param proceedpayment the proceedpayment to set
+     */
+    public void setProceedpayment(boolean proceedpayment) {
+        this.proceedpayment = proceedpayment;
+    }
+
+    /**
+     * @return the appliedvouchers
+     */
+    public List<Voucher> getAppliedvouchers() {
+        return appliedvouchers;
+    }
+
+    /**
+     * @param appliedvouchers the appliedvouchers to set
+     */
+    public void setAppliedvouchers(List<Voucher> appliedvouchers) {
+        this.appliedvouchers = appliedvouchers;
+    }
+
+    /**
+     * @return the discountedval
+     */
+    public String getDiscountedval() {
+        return discountedval;
+    }
+
+    /**
+     * @param discountedval the discountedval to set
+     */
+    public void setDiscountedval(String discountedval) {
+        this.discountedval = discountedval;
     }
 
     /**

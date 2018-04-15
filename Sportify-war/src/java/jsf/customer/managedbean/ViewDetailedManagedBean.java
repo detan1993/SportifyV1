@@ -36,7 +36,7 @@ public class ViewDetailedManagedBean implements Serializable {
     private ProductControllerLocal productController;
     @EJB
     private ProductReviewControllerLocal productreviewcontroller;
-    @EJB 
+    @EJB
     private CustomerOrderControllerLocal customerordercontroller;
     private Product product;
     private List<String> images;
@@ -51,7 +51,7 @@ public class ViewDetailedManagedBean implements Serializable {
     private String productreview;
     private String writeReviewVal;
     private boolean hasOwnReview;
-    
+
     private Customer editShippingCustomer;
 
     @PostConstruct
@@ -106,7 +106,12 @@ public class ViewDetailedManagedBean implements Serializable {
                     productReviews = productreviewcontroller.retrieveProductReviewsByProductId(product.getId());
                     defaultUserReview();
                 }
-
+                ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+                Map<String, Object> sessionMap = externalContext.getSessionMap();
+                sessionMap.remove("existingvouchers");
+                sessionMap.remove("promosubtotal");
+                sessionMap.remove("promototal");
+                sessionMap.remove("appliedvoucher");
             }
         } catch (Exception ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred while retrieving Product Id. " + ex.getMessage(), null));
@@ -117,7 +122,7 @@ public class ViewDetailedManagedBean implements Serializable {
         if (quantity != null && !quantity.equals("")) {
             int qty = Integer.parseInt(quantity);
             priceOnChange = qty * product.getPrice();
-            priceOnChange = Math.round(priceOnChange*100.0)/100.0;
+            priceOnChange = Math.round(priceOnChange * 100.0) / 100.0;
         }
     }
 
@@ -193,109 +198,104 @@ public class ViewDetailedManagedBean implements Serializable {
         return cartItems;
     }
 
-    public void checkLoggedIn(){
-       FacesContext context = FacesContext.getCurrentInstance();   
-       RequestContext reqcontext = RequestContext.getCurrentInstance();
-       ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
-       Map<String, Object> sessionMap = externalContext.getSessionMap();
-       Customer c = (Customer)sessionMap.get("currentCustomer");   
-       if (c==null){
-            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error", "Plesae log in to write a review!"));
-       }
-       else {
-           //popup dialog
-           reqcontext.execute("PF('writeReviewDialog').show()");
-       }
+    public void checkLoggedIn() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        RequestContext reqcontext = RequestContext.getCurrentInstance();
+        ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+        Map<String, Object> sessionMap = externalContext.getSessionMap();
+        Customer c = (Customer) sessionMap.get("currentCustomer");
+        if (c == null) {
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Plesae log in to write a review!"));
+        } else {
+            //popup dialog
+            reqcontext.execute("PF('writeReviewDialog').show()");
+        }
     }
-    
-    public void defaultUserReview(){
-       ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
-       Map<String, Object> sessionMap = externalContext.getSessionMap();
-       Customer c = (Customer)sessionMap.get("currentCustomer");  
-       if (c==null){
-           return;
-       }
-       List<CustomerOrder> colist = customerordercontroller.GetCustomerOrder(c.getId());
-       long coid = 0;
-       for (int i=0; i <colist.size(); i++){
+
+    public void defaultUserReview() {
+        ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+        Map<String, Object> sessionMap = externalContext.getSessionMap();
+        Customer c = (Customer) sessionMap.get("currentCustomer");
+        if (c == null) {
+            return;
+        }
+        List<CustomerOrder> colist = customerordercontroller.GetCustomerOrder(c.getId());
+        long coid = 0;
+        for (int i = 0; i < colist.size(); i++) {
             List<ProductPurchase> pp = colist.get(i).getProductPurchase();
-             for (int j = 0; j < pp.size(); j++){
-                 if (pp.get(j).getProductPurchase().getId() == product.getId()){
-                     coid = colist.get(i).getId();
-                     ProductReview pr = productreviewcontroller.getCustomerOrderProductReview(product.getId(), coid);
-                     if (pr==null){
-                         return;
-                     }
-                     productreview = pr.getReview();
-                     productrating = pr.getRating();
-                     writeReviewVal = "Edit my review";
-                     return;
-             }
-             }         
+            for (int j = 0; j < pp.size(); j++) {
+                if (pp.get(j).getProductPurchase().getId() == product.getId()) {
+                    coid = colist.get(i).getId();
+                    ProductReview pr = productreviewcontroller.getCustomerOrderProductReview(product.getId(), coid);
+                    if (pr == null) {
+                        return;
+                    }
+                    productreview = pr.getReview();
+                    productrating = pr.getRating();
+                    writeReviewVal = "Edit my review";
+                    return;
+                }
+            }
+        }
     }
-    }
-    
-    
-    public void createReview(){
-       FacesContext context = FacesContext.getCurrentInstance();   
-       RequestContext reqcontext = RequestContext.getCurrentInstance();
-       ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
-       Map<String, Object> sessionMap = externalContext.getSessionMap();
-       Customer c = (Customer)sessionMap.get("currentCustomer");   
-       List<CustomerOrder> colist = customerordercontroller.GetCustomerOrder(c.getId());
-       long coid = 0;
-       for (int i=0; i <colist.size(); i++){
+
+    public void createReview() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        RequestContext reqcontext = RequestContext.getCurrentInstance();
+        ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+        Map<String, Object> sessionMap = externalContext.getSessionMap();
+        Customer c = (Customer) sessionMap.get("currentCustomer");
+        List<CustomerOrder> colist = customerordercontroller.GetCustomerOrder(c.getId());
+        long coid = 0;
+        for (int i = 0; i < colist.size(); i++) {
             List<ProductPurchase> pp = colist.get(i).getProductPurchase();
-             for (int j = 0; j < pp.size(); j++){
-                 if (pp.get(j).getProductPurchase().getId() == product.getId()){
-                     coid = colist.get(i).getId();
-                     break;
-             }
-             }
-       }
-       if (coid == 0){
-            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Error", "You can only review products you have purchased!"));
+            for (int j = 0; j < pp.size(); j++) {
+                if (pp.get(j).getProductPurchase().getId() == product.getId()) {
+                    coid = colist.get(i).getId();
+                    break;
+                }
+            }
+        }
+        if (coid == 0) {
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "You can only review products you have purchased!"));
             reqcontext.execute("PF('writeReviewDialog').hide();");
             return;
-       }
-       String hasreview = productreviewcontroller.retrieveCustomerOrderProductReview(product.getId(), coid);
-       if (hasreview != null){
-           //existing review
-           ProductReview pr = productreviewcontroller.getCustomerOrderProductReview(product.getId(), coid);
-           pr.setRating(productrating);
-           pr.setReview(productreview);
-           productreviewcontroller.updateProductReview(pr);
-           for (int i = 0; i < productReviews.size(); i++){
-               if (productReviews.get(i).getId() == pr.getId()){
-                   productReviews.remove(i);
-                   productReviews.add(i,pr);
+        }
+        String hasreview = productreviewcontroller.retrieveCustomerOrderProductReview(product.getId(), coid);
+        if (hasreview != null) {
+            //existing review
+            ProductReview pr = productreviewcontroller.getCustomerOrderProductReview(product.getId(), coid);
+            pr.setRating(productrating);
+            pr.setReview(productreview);
+            productreviewcontroller.updateProductReview(pr);
+            for (int i = 0; i < productReviews.size(); i++) {
+                if (productReviews.get(i).getId() == pr.getId()) {
+                    productReviews.remove(i);
+                    productReviews.add(i, pr);
                     reqcontext.execute("PF('writeReviewDialog').hide();");
-                   return;
-               }
-           }
-           
-       } 
-       else {
-         //get customer order that contains the product
-         for (int i = 0; i < colist.size(); i++){
-             List<ProductPurchase> pp = colist.get(i).getProductPurchase();
-             for (int j = 0; j < pp.size(); j++){
-                 if (pp.get(j).getProductPurchase().getId() == product.getId()){
-                     ProductReview pr = productreviewcontroller.CreateNewProductReview(new ProductReview(productrating,productreview,new Date(),product,colist.get(i))); 
-                      productReviews.add(pr);
-                      productreviewcontroller.updateProductReview(pr);
-                      writeReviewVal = "Edit my review";
-                      reqcontext.execute("PF('writeReviewDialog').hide();");
-                      return;
-                 }
-             }
-         }
-       }
-     
+                    return;
+                }
+            }
+
+        } else {
+            //get customer order that contains the product
+            for (int i = 0; i < colist.size(); i++) {
+                List<ProductPurchase> pp = colist.get(i).getProductPurchase();
+                for (int j = 0; j < pp.size(); j++) {
+                    if (pp.get(j).getProductPurchase().getId() == product.getId()) {
+                        ProductReview pr = productreviewcontroller.CreateNewProductReview(new ProductReview(productrating, productreview, new Date(), product, colist.get(i)));
+                        productReviews.add(pr);
+                        productreviewcontroller.updateProductReview(pr);
+                        writeReviewVal = "Edit my review";
+                        reqcontext.execute("PF('writeReviewDialog').hide();");
+                        return;
+                    }
+                }
+            }
+        }
+
     }
-    
-    
-    
+
     public String checkOutRedirect() {
         return "customerCheckout?faces-redirect=true";
     }
@@ -431,5 +431,4 @@ public class ViewDetailedManagedBean implements Serializable {
         this.writeReviewVal = writeReviewVal;
     }
 
-    
 }

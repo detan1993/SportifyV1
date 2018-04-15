@@ -77,7 +77,7 @@
                                     <h:form>
                                         <h:panelGrid>
                                             <p:growl id="promogrowl" showDetail="true" />  
-                                            <p:remoteCommand name="rc" update="promogrowl,lbl1,lbl2" actionListener="#{customerCheckOutManagedBean.checkPromoCode}"/>
+                                            <p:remoteCommand name="rc" update="promogrowl,lbl1,lbl2,discountlbl" actionListener="#{customerCheckOutManagedBean.checkPromoCode}"/>
 
 
                                             <p:inputText id="promofield" value="#{customerCheckOutManagedBean.promoCode}"/>
@@ -89,16 +89,18 @@
                                     </h:form>
                                 </p:tab>
                             </p:accordionPanel>
-                        </td></tr>            
+                        </td></tr>
+                    <tr><td class="rowSpace">ESTIMATED SHIPPING (STANDARD)</td><td class="rowSpace" align="right">ARRIVES 2 - 3 DAYS</td></tr>        
                     <tr><td class="rowSpace">SUBTOTAL</td><td class="rowSpace" align="right"><h:outputLabel id="lbl1" value="$#{customerCheckOutManagedBean.subtotaldisplay}"></h:outputLabel></td></tr>        
                     <tr><td class="rowSpace">ESTIMATED SHIPPING COST</td><td class="rowSpace" align="right">$5</td></tr>       
-                    <tr><td class="rowSpace">STANDARD FREE</td><td class="rowSpace" align="right">Arrives in 2 - 3 days</td></tr>             
+                    <tr><td class="rowSpace">PROMOTION</td><td class="rowSpace" align="right"><h:outputLabel id="discountlbl" value="-#{customerCheckOutManagedBean.discountedval}"/></td></tr>             
                     <tr><td class="rowSpace">TOTAL</td><td class="rowSpace" align="right"><h:outputLabel id="lbl2" value="$#{customerCheckOutManagedBean.totaldisplay}"></h:outputLabel></td></tr>
                     <tr><td class="rowSpaceLast" colspan="3" align="center"> 
                             <h:form>
                                 <h:commandButton actionListener="#{customerCheckOutManagedBean.checkIfCustomerIsLogin}"  value="Checkout" styleClass="checkoutBtn">
                                      <p:growl id="mustLoginGrowl" showDetail="true" />  
                                       <f:ajax execute="@form" render="mustLoginGrowl loginDialog" />
+                                      <f:ajax execute="@form" render="mustLoginGrowl" />
                                     </h:commandButton>
                             </h:form>
 

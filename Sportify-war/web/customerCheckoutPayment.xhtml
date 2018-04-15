@@ -15,8 +15,9 @@
         <h:outputStylesheet library="css" name="checkoutStyle.css" />
         <!--        <h1 style="text-align: center; color: white; font-size: 30px">Checkout</h1>-->
 
-        <p:tabView style="margin-left:260px;margin-top: 20px;width:70%">
-            <p:tab title="1. Shipping Address">
+        <p:tabView id="checkouttab" activeIndex="#{customerCheckOutManagedBean.activetab}" style="margin-left:260px;margin-top: 20px;width:70%">
+            <p:ajax event="tabChange" listener="#{customerCheckOutManagedBean.onTabChange}" update="checkouttab"/>
+            <p:tab id="addrtab" title="1. Shipping Address">
                 <h:form prependId="false" style="background-color: #191919" id="editForm">
                     <p:growl id="msgs" showDetail="true" />
 
@@ -25,7 +26,6 @@
                     <p:panelGrid  layout="grid" columns="1">
 
                         <p:panel toggleable="true" id="edit" visible="#{customerCheckOutManagedBean.displayedit}">
-
                             <table style="font-size: 15px; border-collapse: seperate; border-spacing: 1em">
                                 <tr><td colspan="2"> <h1 style="text-decoration: underline; color: white; font-size:15px">Step 1: Confirm your shipping address</h1></td></tr>
                                 <tr><td><p:inputText  value="#{customerCheckOutManagedBean.loggedincustomer.firstName}" id="firstname" requiredMessage="Please enter your first name!" required="true" style="height:30px" placeholder="First Name"/></td><td> <p:inputText value="#{customerCheckOutManagedBean.loggedincustomer.lastName}" id="lastname" requiredMessage="Please enter your last name!" required="true" style="height:30px" placeholder="Last Name"/></td></tr>
@@ -51,13 +51,16 @@
                             <table>
                                 <tr>
                                     <td>
-                                        <p:commandButton value="#{customerCheckOutManagedBean.addrbtnval}" id="ajaxoutput" process="@form" update="#{p:component('confirm')} #{p:component('edit')}, ajaxoutput" action="#{customerCheckOutManagedBean.confirmAddress}">
+                                        <p:commandButton value="#{customerCheckOutManagedBean.addrbtnval}" id="ajaxoutput" process="@form" update="#{p:component('confirm')} #{p:component('checkouttab')} #{p:component('edit')}, ajaxoutput" action="#{customerCheckOutManagedBean.confirmAddress}">
 
                                         </p:commandButton>
                                     </td>
                                 </tr>
                             </table>
                         </p:panel>
+                        <h:commandButton rendered="#{customerCheckOutManagedBean.displayconfirm}" class="checkoutBtn" value="Proceed to payment">
+                            <f:ajax execute="@form" render=":checkouttab" listener="#{customerCheckOutManagedBean.proceedPayment()}"/>
+                        </h:commandButton>
                     </p:panelGrid>
 
 
@@ -65,7 +68,7 @@
                 </h:form>
             </p:tab>
 
-            <p:tab title="2. Payment Details">
+            <p:tab disabled="#{customerCheckOutManagedBean.proceedpayment}" title="2. Payment Details">
                
                 <h:form id="paymentform">
                     <p:growl id="paymentGrowl" />
@@ -133,7 +136,7 @@
 
                     <tr><td class="rowSpace">SUBTOTAL</td><td class="rowSpace" align="right"><h:outputLabel id="lbl1" value="$#{customerCheckOutManagedBean.subtotaldisplay}"></h:outputLabel></td></tr>        
                     <tr><td class="rowSpace">ESTIMATED SHIPPING COST</td><td class="rowSpace" align="right">$5</td></tr>       
-                    <tr><td class="rowSpace">STANDARD FREE</td><td class="rowSpace" align="right">Arrives in 2 - 3 days</td></tr>             
+                    <tr><td class="rowSpace">PROMOTION</td><td class="rowSpace" align="right">- #{customerCheckOutManagedBean.discountedval}</td></tr>             
                     <tr><td class="rowSpace">TOTAL</td><td class="rowSpace" align="right"><h:outputLabel id="lbl2" value="$#{customerCheckOutManagedBean.totaldisplay}"></h:outputLabel></td></tr>
                 </table>
 
