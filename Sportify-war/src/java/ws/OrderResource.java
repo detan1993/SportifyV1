@@ -9,13 +9,13 @@ import ejb.session.stateless.CustomerControllerLocal;
 import ejb.session.stateless.CustomerOrderControllerLocal;
 import ejb.session.stateless.CustomerVoucherControllerLocal;
 import ejb.session.stateless.ProductControllerLocal;
+import ejb.session.stateless.ProductPurchaseControllerLocal;
 import ejb.session.stateless.VoucherControllerLocal;
 import entity.Customer;
 import entity.CustomerVoucher;
 import entity.Product;
 import entity.ProductPurchase;
 import entity.Voucher;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
@@ -36,12 +36,14 @@ import ws.datamodel.AddCustomerOrderReq;
  *
  * @author shanw
  */
+@Path("Order")
 public class OrderResource {
     ProductControllerLocal productControllerLocal = lookupProductControllerLocal();
     CustomerControllerLocal customerControllerLocal =  lookupCustomerControllerLocal();
     CustomerOrderControllerLocal customerOrderControllerLocal = lookupCustomerOrderControllerLocal();
     VoucherControllerLocal voucherControllerLocal = lookupVoucherControllerLocal();
     CustomerVoucherControllerLocal customerVoucherControllerLocal = lookupCustomerVoucherControllerLocal();
+    ProductPurchaseControllerLocal productPurchaseControllerLocal = lookupProductPurchaseControllerLocal();
             
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
@@ -57,9 +59,6 @@ public class OrderResource {
                 
                 long customerId = customerOrderReq.getCustomerId();
                 Customer customer = customerControllerLocal.retrieveCustomer(customerId);
-                Voucher voucher = voucherControllerLocal.retrieveVoucher(customerOrderReq.getVoucherCode());
-                CustomerVoucher vc = customerVoucherControllerLocal.retrieveCustomerVoucher(customer,voucher);
-                
                 
                 double total = customerOrderReq.getTotalAmount();
                 Date datePaid = customerOrderReq.getDatePaid();
@@ -69,9 +68,18 @@ public class OrderResource {
                 for(ProductPurchase pp : productPurchases){
                     Product p = productControllerLocal.retrieveSingleProduct(pp.getProductPurchase().getId());
                     pp.setProductPurchase(p);
+                    
+                    productPurchaseControllerLocal.createProductPurchase(pp);
                 }
                 
-                boolean success = customerOrderControllerLocal.CreateNewCustomerOrder(customer, vc, total, datePaid, productPurchases);
+                boolean success = customerOrderControllerLocal.CreateNewCustomerOrder(customer, total, datePaid, productPurchases);;
+                if(customerOrderReq.getVoucherCode().length() >0){
+                     Voucher voucher = voucherControllerLocal.retrieveVoucher(customerOrderReq.getVoucherCode());
+                     CustomerVoucher vc = customerVoucherControllerLocal.retrieveCustomerVoucher(customer,voucher);
+                     //Link vc to order
+                }
+               
+                System.out.println("Order is: " + success);
                 if(success){
                     return Response.status(Response.Status.OK).entity("Success").build();
                 }else{
@@ -136,6 +144,16 @@ public class OrderResource {
         try {
             javax.naming.Context c = new InitialContext();
             return (CustomerVoucherControllerLocal) c.lookup("java:global/Sportify/Sportify-ejb/CustomerVoucherController!ejb.session.stateless.CustomerVoucherControllerLocal");
+        } catch (NamingException ne) {
+            Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", ne);
+            throw new RuntimeException(ne);
+        }
+    }
+    
+      private ProductPurchaseControllerLocal lookupProductPurchaseControllerLocal() {
+        try {
+            javax.naming.Context c = new InitialContext();
+            return (ProductPurchaseControllerLocal) c.lookup("java:global/Sportify/Sportify-ejb/ProductPurchaseController!ejb.session.stateless.ProductPurchaseControllerLocal");
         } catch (NamingException ne) {
             Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", ne);
             throw new RuntimeException(ne);

@@ -20,5 +20,5 @@ public interface CustomerOrderControllerRemote {
     public List<TopTenCustomer> RetrieveTopTenCustomersByOrder();
     public List<TopTenCustomer> RetrieveTopTenCustomerByOrderByRanger(String dateFron, String dateTo);
     public void addProductPurchase(long newOrderId, ProductPurchase newProductPurchase);
-    public boolean CreateNewCustomerOrder(Customer customer, CustomerVoucher cv, double totalAmount,Date datePaid, List<ProductPurchase> productPurchases);
+    public boolean CreateNewCustomerOrder(Customer customer, double totalAmount,Date datePaid, List<ProductPurchase> productPurchases);
 }
