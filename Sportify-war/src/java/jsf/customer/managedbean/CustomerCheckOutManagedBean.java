@@ -160,6 +160,7 @@ public class CustomerCheckOutManagedBean implements Serializable {
     public void makeOrder(){
           double total = Double.parseDouble(getTotaldisplay());
           double pointsawarded = 0.10 * total;
+          pointsawarded = Math.round(pointsawarded*100.0)/100.0; // 2 decimal place
           Date datepaid = new Date();
           ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
           Map<String, Object> sessionMap = externalContext.getSessionMap();
