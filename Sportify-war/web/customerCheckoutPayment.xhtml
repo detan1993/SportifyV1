@@ -30,7 +30,7 @@
                                 <tr><td colspan="2"> <h1 style="text-decoration: underline; color: white; font-size:15px">Step 1: Confirm your shipping address</h1></td></tr>
                                 <tr><td><p:inputText  value="#{customerCheckOutManagedBean.loggedincustomer.firstName}" id="firstname" requiredMessage="Please enter your first name!" required="true" style="height:30px" placeholder="First Name"/></td><td> <p:inputText value="#{customerCheckOutManagedBean.loggedincustomer.lastName}" id="lastname" requiredMessage="Please enter your last name!" required="true" style="height:30px" placeholder="Last Name"/></td></tr>
                                 <tr><td colspan="2"><p:inputText value="#{customerCheckOutManagedBean.loggedincustomer.address}" id="address" requiredMessage="Please enter an address!" required="true" style="width:380px ;height:30px" placeholder="Address"/></td></tr>           
-                                <tr><td><p:inputText id="postalcode" value="#{customerCheckOutManagedBean.loggedincustomer.zipCode}" requiredMessage="Please enter your postal code" required="true" style="height:30px" placeholder="Postal Code"/></td><td><p:inputText id="phone" value="#{customerCheckOutManagedBean.loggedincustomer.phoneNum}" requiredMessage="Please enter your phone number!" required="true" style="height:30px" placeholder="Phone Number"/></td></tr>
+                                <tr><td><p:inputNumber decimalPlaces="0" thousandSeparator="" maxValue="999999" id="postalcode" value="#{customerCheckOutManagedBean.loggedincustomer.zipCode}" requiredMessage="Please enter your postal code" required="true" placeholder="Postal Code"/></td><td><p:inputNumber maxValue="99999999" decimalPlaces="0" thousandSeparator="" id="phone" value="#{customerCheckOutManagedBean.loggedincustomer.phoneNum}" requiredMessage="Please enter your phone number!" required="true" style="height:30px" placeholder="Phone Number"/></td></tr>
                                 <tr><td><p:inputText readonly="true" value="#{customerCheckOutManagedBean.loggedincustomer.email}" id="email" requiredMessage="Please enter your email!" required="true" style="height:30px; opacity: .7" placeholder="Email"/></td></tr>       
                             </table>               
                         </p:panel>
@@ -74,11 +74,12 @@
                         <table style="border-collapse: seperate; border-spacing: 1em">
                             <tr><td> <h1 style="text-decoration: underline; color: white; font-size:15px">Step 2: Enter your credit card details</h1></td></tr>
                             <tr>
-                                <td colspan="2"><p:inputText requiredMessage="Please enter your card number!" required="true" style="height:30px; width:400px" placeholder="Card Number"/></td>
+                                <td colspan="2"><p:inputNumber maxValue="9999999999999999" thousandSeparator="" decimalPlaces="0" requiredMessage="Please enter your card number!" required="true" style="height:30px; width:400px" placeholder="Card Number"/></td>
                             </tr>
 
-                            <tr><td><p:inputText style="height:30px" requiredMessage="Please enter your expiry date!" required="true" placeholder="MM/YY"></p:inputText>&nbsp;<p:inputText style="height:30px" requiredMessage="Please enter your security code!" required="true" placeholder="XXX"></p:inputText></td>
-
+                            <tr><td><p:inputMask label="Expiry date" mask="99/99" value="#{customerCheckOutManagedBean.expDate}" style="height:30px" requiredMessage="Please enter your expiry date!" required="true" placeholder="MM/YY">
+                                     <f:convertDateTime pattern="dd/MM" />
+                                    </p:inputMask><p:inputNumber thousandSeparator="" decimalPlaces="0" maxValue="999" style="height:30px" requiredMessage="Please enter your security code!" required="true" placeholder="XXX"></p:inputNumber></td>
                             </tr>
                             <tr>
                                 <td><h:graphicImage height="50px" width="50px" name="images/master.png" />&nbsp;&nbsp;<h:graphicImage height="50px" width="50px" name="images/visa.png" /></td>
@@ -107,7 +108,7 @@
                         <table style="font-size: 15px; border-collapse: seperate; border-spacing: 1em">
                             <tr><td><p:inputText  value="#{customerCheckOutManagedBean.loggedincustomer.firstName}" id="firstnameeditbill" requiredMessage="Please enter your first name!" required="true" style="height:30px" placeholder="First Name"/></td><td> <p:inputText value="#{customerCheckOutManagedBean.loggedincustomer.lastName}" id="lastnameeditbill" requiredMessage="Please enter your last name!" required="true" style="height:30px" placeholder="Last Name"/></td></tr>
                             <tr><td colspan="2"><p:inputText value="#{customerCheckOutManagedBean.loggedincustomer.address}" id="addresseditbill" requiredMessage="Please enter an address!" required="true" style="width: 380px; height:30px" placeholder="Address"/></td></tr>           
-                            <tr><td><p:inputText id="postalcodeeditbill" value="#{customerCheckOutManagedBean.loggedincustomer.zipCode}" requiredMessage="Please enter your postal code" required="true" style="height:30px" placeholder="Postal Code"/></td></tr>            
+                            <tr><td><p:inputNumber maxValue="999999" thousandSeparator="" decimalPlaces="0" id="postalcodeeditbill" value="#{customerCheckOutManagedBean.loggedincustomer.zipCode}" requiredMessage="Please enter your postal code" required="true" style="height:30px" placeholder="Postal Code"/></td></tr>            
                         </table>    
                     </p:panel>  
 

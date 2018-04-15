@@ -9,6 +9,10 @@
     font-weight: bold 
 }
 
+.ui-inputfield, .ui-widget-content .ui-inputfield, .ui-widget-header .ui-inputfield{
+    height: 30px !important
+}
+
 /*.ui-state-disabled, .ui-widget-content .ui-state-disabled, .ui-widget-header .ui-state-disabled{
     opacity: .6;
 }

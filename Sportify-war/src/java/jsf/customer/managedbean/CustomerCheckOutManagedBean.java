@@ -70,6 +70,7 @@ public class CustomerCheckOutManagedBean implements Serializable {
     private String totaldisplay;
     private Customer loggedincustomer;
     private String promoCode;
+    private String expDate;
 
     //For viewing of the address
     private String addrbtnval;
@@ -513,6 +514,20 @@ public class CustomerCheckOutManagedBean implements Serializable {
      */
     public void setAppliedvoucher(Voucher appliedvoucher) {
         this.appliedvoucher = appliedvoucher;
+    }
+
+    /**
+     * @return the expDate
+     */
+    public String getExpDate() {
+        return expDate;
+    }
+
+    /**
+     * @param expDate the expDate to set
+     */
+    public void setExpDate(String expDate) {
+        this.expDate = expDate;
     }
 
     /**
