@@ -5,10 +5,11 @@
  */
 package ejb.session.stateless;
 
+import entity.CustomerOrder;
 import entity.ProductPurchase;
 
 public interface ProductPurchaseControllerLocal {
-    
     public ProductPurchase createProductPurchase(ProductPurchase newProductPurchase);
-    
+    public ProductPurchase retrieveProductPurchase(long id);
+    public ProductPurchase updateProductPurchaseWithOrder(long ppId, CustomerOrder newOrder);
 }

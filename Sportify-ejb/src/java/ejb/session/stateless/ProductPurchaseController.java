@@ -5,12 +5,14 @@
  */
 package ejb.session.stateless;
 
+import entity.CustomerOrder;
 import entity.ProductPurchase;
 import javax.ejb.Local;
 import javax.ejb.Remote;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 /**
  *
@@ -35,5 +37,19 @@ public class ProductPurchaseController implements ProductPurchaseControllerRemot
        em.flush();
        em.refresh(newProductPurchase);
        return newProductPurchase;
+   }
+   
+   @Override
+   public ProductPurchase retrieveProductPurchase(long id){
+       Query q = em.createQuery("SELECT P FROM ProductPurchase p WHERE p.id=:ppId");
+       q.setParameter("ppId", id);
+       return (ProductPurchase)q.getSingleResult();
+   }
+   
+   @Override
+   public ProductPurchase updateProductPurchaseWithOrder(long ppId, CustomerOrder newOrder){
+       ProductPurchase pp = retrieveProductPurchase(ppId);
+       pp.setOrder(newOrder);
+       return pp;
    }
 }

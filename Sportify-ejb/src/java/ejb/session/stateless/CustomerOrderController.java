@@ -47,7 +47,7 @@ public class CustomerOrderController implements CustomerOrderControllerRemote, C
     }
     
     @Override
-    public boolean CreateNewCustomerOrder(Customer customer, double totalAmount,Date datePaid, List<ProductPurchase> productPurchases){
+    public CustomerOrder CreateNewCustomerOrder(Customer customer, double totalAmount,Date datePaid, List<ProductPurchase> productPurchases){
         try{
             CustomerOrder newCustomerOrder = new CustomerOrder();
             newCustomerOrder.setCustomer(customer);
@@ -55,14 +55,18 @@ public class CustomerOrderController implements CustomerOrderControllerRemote, C
             newCustomerOrder.setDatePaid(datePaid);
             newCustomerOrder.setDeliveryStatus("Pending");
             newCustomerOrder.setProductPurchase(productPurchases);
+            
+            for(ProductPurchase pp : productPurchases){
+                pp.setOrder(newCustomerOrder);
+            }
 
             em.persist(newCustomerOrder);
             em.flush();
             em.refresh(newCustomerOrder);
-            return true;
+            return newCustomerOrder;
         }catch(Exception ex){
             ex.printStackTrace();
-            return false;
+            return null;
         }
     }   
     

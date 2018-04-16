@@ -12,6 +12,7 @@ import ejb.session.stateless.ProductControllerLocal;
 import ejb.session.stateless.ProductPurchaseControllerLocal;
 import ejb.session.stateless.VoucherControllerLocal;
 import entity.Customer;
+import entity.CustomerOrder;
 import entity.CustomerVoucher;
 import entity.Product;
 import entity.ProductPurchase;
@@ -65,24 +66,33 @@ public class OrderResource {
                 
                 List<ProductPurchase> productPurchases = customerOrderReq.getProductPurchases();
                 
+                //Create Product Purchase
                 for(ProductPurchase pp : productPurchases){
                     Product p = productControllerLocal.retrieveSingleProduct(pp.getProductPurchase().getId());
                     pp.setProductPurchase(p);
-                    
+                    System.out.println("ProductPurchase: " + pp.getId() + " " + pp.getPricePurchase() + " " + pp.getQtyPurchase());
                     productPurchaseControllerLocal.createProductPurchase(pp);
                 }
                 
-                boolean success = customerOrderControllerLocal.CreateNewCustomerOrder(customer, total, datePaid, productPurchases);;
+                //Create New Order
+                CustomerOrder newOrder = customerOrderControllerLocal.CreateNewCustomerOrder(customer, total, datePaid, productPurchases);;
                 if(customerOrderReq.getVoucherCode().length() >0){
                      Voucher voucher = voucherControllerLocal.retrieveVoucher(customerOrderReq.getVoucherCode());
                      CustomerVoucher vc = customerVoucherControllerLocal.retrieveCustomerVoucher(customer,voucher);
                      //Link vc to order
                 }
+                
+                //Update Product Purchase to Order
+                for(ProductPurchase pp : productPurchases){
+                    productPurchaseControllerLocal.updateProductPurchaseWithOrder(pp.getId(), newOrder);
+                }
+                
                
-                System.out.println("Order is: " + success);
-                if(success){
-                    return Response.status(Response.Status.OK).entity("Success").build();
+                if(newOrder != null){
+                    System.out.println("Order created successfully");
+                    return Response.status(Response.Status.OK).build();
                 }else{
+                    System.out.println("error in creating newOrder");
                     return Response.status(Response.Status.BAD_REQUEST).entity("Error in creating new customer").build();
                 }
             }else{
