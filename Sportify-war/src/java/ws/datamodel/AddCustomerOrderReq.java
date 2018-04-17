@@ -18,8 +18,8 @@ import javax.xml.bind.annotation.XmlType;
  * @author shanw
  */
 @XmlRootElement
-@XmlType(name = "retrieveCustomerAccountRsp", propOrder = {
-   "customerId", "totalAmount" , "datePaid" , "voucherCode" , "discountFromVoucher", "productPurchases"
+@XmlType(name = "addCustomerOrderReq", propOrder = {
+   "customerId", "totalAmount" , "datePaid" , "voucherId" , "discountFromVoucher", "productPurchases", "sizePurchases"
 })
 
 public class AddCustomerOrderReq {
@@ -29,21 +29,23 @@ public class AddCustomerOrderReq {
     @Temporal(TemporalType.TIMESTAMP)
     private Date datePaid;
     
-    private String voucherCode;
+    private long voucherId;
     private double discountFromVoucher;
     
     List<ProductPurchase> productPurchases;
+    List<String> sizePurchases;
 
     public AddCustomerOrderReq() {
     }
 
-    public AddCustomerOrderReq(long customerId,double totalAmount, Date datePaid, String voucherCode, double discountFromVoucher, List<ProductPurchase> productPurchases) {
+    public AddCustomerOrderReq(long customerId,double totalAmount, Date datePaid, long voucherId, double discountFromVoucher, List<ProductPurchase> productPurchases, List<String> sizePurchases) {
         this.customerId = customerId;
         this.totalAmount = totalAmount;
         this.datePaid = datePaid;
-        this.voucherCode = voucherCode;
+        this.voucherId = voucherId;
         this.discountFromVoucher = discountFromVoucher;
         this.productPurchases = productPurchases;
+        this.sizePurchases = sizePurchases;
     }
 
     public long getCustomerId() {
@@ -70,12 +72,12 @@ public class AddCustomerOrderReq {
         this.datePaid = datePaid;
     }
 
-    public String getVoucherCode() {
-        return voucherCode;
+    public long getVoucherId() {
+        return voucherId;
     }
 
-    public void setVoucherCode(String voucherCode) {
-        this.voucherCode = voucherCode;
+    public void setVoucherId(long voucherId) {
+        this.voucherId = voucherId;
     }
 
     public double getDiscountFromVoucher() {
@@ -92,6 +94,14 @@ public class AddCustomerOrderReq {
 
     public void setProductPurchases(List<ProductPurchase> productPurchases) {
         this.productPurchases = productPurchases;
+    }
+
+    public List<String> getSizePurchases() {
+        return sizePurchases;
+    }
+
+    public void setSizePurchases(List<String> sizePurchases) {
+        this.sizePurchases = sizePurchases;
     }
     
     

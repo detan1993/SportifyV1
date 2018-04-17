@@ -63,7 +63,6 @@ public class ProductController implements ProductControllerRemote, ProductContro
         return query.getResultList();
     }
     
-    
     //Avoid infinite json loop for web service call
     @Override
     public List<Product> Ws_retrieveActiveProductOrderById(){

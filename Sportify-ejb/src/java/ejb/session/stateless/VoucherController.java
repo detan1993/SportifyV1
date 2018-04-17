@@ -45,10 +45,10 @@ public class VoucherController implements VoucherControllerRemote, VoucherContro
     }
     
     @Override
-    public Voucher retrieveVoucher(String voucherCode){
+    public Voucher retrieveVoucherById(long voucherId){
         try{
-        Query q = em.createQuery("SELECT v FROM Voucher v WHERE v.voucherCode=:code");
-        q.setParameter("code", voucherCode);
+        Query q = em.createQuery("SELECT v FROM Voucher v WHERE v.id=:vId");
+        q.setParameter("vId", voucherId);
         return (Voucher)q.getSingleResult();
         }catch(Exception ex){
             return null;

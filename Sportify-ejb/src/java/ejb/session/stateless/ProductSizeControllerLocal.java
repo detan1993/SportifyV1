@@ -6,6 +6,7 @@
 package ejb.session.stateless;
 
 import entity.ProductSize;
+import java.util.List;
 
 public interface ProductSizeControllerLocal {
     public ProductSize createSizeForProduct(ProductSize newSizeForProduct);

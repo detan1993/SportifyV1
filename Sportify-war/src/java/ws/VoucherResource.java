@@ -46,6 +46,9 @@ public class VoucherResource {
             System.out.println("********** getAllCustomerVoucher()");
             
             List<Voucher> voucherList =  customerVoucherControllerLocal.Ws_retrieveUnusedCustomerVouchersByCustomerId(customerId);
+            for(Voucher v : voucherList){
+                v.setCustomerVouchers(null);
+            }
             
             if(voucherList == null)
                 return Response.status(Response.Status.BAD_REQUEST).build();

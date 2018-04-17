@@ -6,6 +6,7 @@
 package ejb.session.stateless;
 
 import entity.ProductSize;
+import java.util.List;
 import javax.ejb.Local;
 import javax.ejb.Remote;
 import javax.ejb.Stateless;
