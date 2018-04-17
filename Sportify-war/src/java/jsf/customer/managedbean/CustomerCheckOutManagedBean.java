@@ -120,7 +120,7 @@ public class CustomerCheckOutManagedBean implements Serializable {
             }
 
         } catch (Exception ex) {
-            discountedval="0";
+            discountedval="";
         }
     }
 
@@ -307,7 +307,7 @@ public class CustomerCheckOutManagedBean implements Serializable {
                 Voucher v = vouchercontroller.retrieveCustomerVoucher(promoCode, email);
 
                 if (v.getId() != null) {
-                    if (!discountedval.equals("0")) {
+                    if (!discountedval.equals("")) {
                         context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "You cannot apply more than 1 promo code!"));
                         return;
                     } 
