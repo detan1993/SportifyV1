@@ -13,7 +13,7 @@ import ejb.session.stateless.ProductPurchaseControllerLocal;
 import ejb.session.stateless.ProductSizeControllerLocal;
 import ejb.session.stateless.VoucherControllerLocal;
 import entity.Customer;
-import entity.CustomerOrder;
+import entity.CustomerOrder; 
 import entity.CustomerVoucher;
 import entity.Product;
 import entity.ProductPurchase;
@@ -120,7 +120,7 @@ public class CustomerCheckOutManagedBean implements Serializable {
             }
 
         } catch (Exception ex) {
-            discountedval="";
+            discountedval="0";
         }
     }
 
@@ -212,7 +212,11 @@ public class CustomerCheckOutManagedBean implements Serializable {
         try {
             Flash flash = FacesContext.getCurrentInstance().getExternalContext().getFlash();
             flash.put("tab", 1);
-            FacesContext.getCurrentInstance().getExternalContext().redirect("customerTransactionHistory.xhtml");
+            FacesContext.getCurrentInstance().getExternalContext().redirect("customerTransactionHistory.xhtml");          
+             sessionMap.remove("promosubtotal");
+             sessionMap.remove("promototal");
+             sessionMap.remove("appliedvoucher");
+             sessionMap.remove("discountedval");
             //Display msg in home page and clear session
 
         } catch (Exception ex) {
@@ -307,7 +311,7 @@ public class CustomerCheckOutManagedBean implements Serializable {
                 Voucher v = vouchercontroller.retrieveCustomerVoucher(promoCode, email);
 
                 if (v.getId() != null) {
-                    if (!discountedval.equals("")) {
+                    if (!discountedval.equals("0")) {
                         context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "You cannot apply more than 1 promo code!"));
                         return;
                     } 

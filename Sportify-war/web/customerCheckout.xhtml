@@ -77,7 +77,7 @@
                                     <h:form id="promoform">
                                         <h:panelGrid>
                                             <p:growl id="promogrowl" showDetail="true" />  
-                                            <p:remoteCommand name="rc" update="promogrowl,lbl1,lbl2,discountlbl" action="#{customerCheckOutManagedBean.checkPromoCode}"/>
+                                            <p:remoteCommand name="rc" update="promogrowl,lbl1,lbl2,:discountlbl" action="#{customerCheckOutManagedBean.checkPromoCode}"/>
                                             <p:inputText id="promofield" value="#{customerCheckOutManagedBean.promoCode}"/>
 
                                             <p:commandButton id="applybtn" type="button" value="Apply" onclick="rc()" styleClass="applyBtn" style="margin-left:230px;margin-top:-33px"></p:commandButton>
@@ -88,10 +88,10 @@
                                 </p:tab>
                             </p:accordionPanel>
                         </td></tr>
-                    
+                   
                     <tr><td class="rowSpace">ESTIMATED SHIPPING (STANDARD)</td><td class="rowSpace" align="right">ARRIVES 2 - 3 DAYS</td></tr>        
                     <tr><td class="rowSpace">SUBTOTAL</td><td class="rowSpace" align="right"><h:outputLabel id="lbl1" value="$#{customerCheckOutManagedBean.subtotaldisplay}"></h:outputLabel></td></tr>        
-                    <tr><td class="rowSpace">PROMOTION</td><td class="rowSpace" align="right"><h:outputLabel style="color:red" id="discountlbl" value="-$#{customerCheckOutManagedBean.discountedval}"/></td></tr>
+                    <p:row><td class="rowSpace">PROMOTION</td><td class="rowSpace" align="right"><h:outputLabel style="color:red" id="discountlbl" value="-$#{customerCheckOutManagedBean.discountedval}"/></td></p:row>
                     <tr><td class="rowSpace">ESTIMATED SHIPPING COST</td><td class="rowSpace" align="right">$5</td></tr>                                     
                     <tr><td style="font-weight: bold; font-size: 15px" class="rowSpace">TOTAL</td><td class="rowSpace" align="right"><h:outputLabel style="font-weight: bold; font-size: 15px" id="lbl2" value="$#{customerCheckOutManagedBean.totaldisplay}"></h:outputLabel></td></tr>
                     <tr><td class="rowSpaceLast" colspan="3" align="center"> 
@@ -103,7 +103,7 @@
                             </h:form>
 
                             </td></tr>
-                </table>
+                </table>      
             </div>
             <!--        <div class="needHelp">
                         <div style="margin-left: 13px">
