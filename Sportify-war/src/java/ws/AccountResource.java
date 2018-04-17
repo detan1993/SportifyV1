@@ -103,10 +103,13 @@ public class AccountResource {
                 return Response.status(Response.Status.OK).build();
 
             } else {
-                return Response.status(Response.Status.BAD_REQUEST).entity("Jaxb is null").build();
+
+                System.out.println("Customer failed LOL");
+                return Response.status(Response.Status.BAD_REQUEST).entity(null).build();
             }
         } catch (Exception ex) {
-            return Response.status(Response.Status.BAD_REQUEST).entity("Exception in creating new customer").build();
+            ex.printStackTrace();
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(null).build();
         }
     }
 

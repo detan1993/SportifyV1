@@ -6,8 +6,6 @@
 package ws.datamodel;
 
 import java.util.Date;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
@@ -29,12 +27,12 @@ public class AddNewCustomerReq {
     private String gender;
     private String address;
     private String zipCode;
-    @Temporal(TemporalType.DATE)
+   // @Temporal(TemporalType.DATE)
     private Date dateOfBirth;
     private String email;
     private String password;
     private int loyaltyPoints;
-    @Temporal(TemporalType.TIMESTAMP)
+  //  @Temporal(TemporalType.TIMESTAMP)
     private Date dateRegistered;
     
     public AddNewCustomerReq(){
