@@ -55,7 +55,7 @@
                     </table>
 
                     <div style="margin-top:10px;">
-                        <p:commandButton style="width: 300px;font-size: 20px;height: 40px;" value="Add to Cart" icon="fa fa-plus-circle" actionListener="#{viewDetailedManagedBean.addToCart}" update="growl #{p:component('notiNum')}" rendered="#{sessionScope['isLogin']}" /> 
+                        <p:commandButton style="width: 300px;font-size: 20px;height: 40px;" value="Add to Cart" icon="fa fa-plus-circle" actionListener="#{viewDetailedManagedBean.addToCart}" update="growl #{p:component('notiNum')}" rendered="#{sessionScope['isLogin']}"></p:commandButton> 
                         <p:commandButton style="width: 300px;font-size: 20px;height: 40px;" value="Add to Cart" icon="fa fa-plus-circle" actionListener="#{viewDetailedManagedBean.addToCart}" update="growl #{p:component('notiNumNoLogin')}" rendered="#{!sessionScope['isLogin']}" />
                     </div>
 

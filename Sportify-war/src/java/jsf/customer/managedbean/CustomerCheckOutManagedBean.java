@@ -72,7 +72,6 @@ public class CustomerCheckOutManagedBean implements Serializable {
     private Customer loggedincustomer;
     private String promoCode;
     private String expDate;
-    private List<Voucher>appliedvouchers;
     private String discountedval;
 
     //For viewing of the address
@@ -84,6 +83,7 @@ public class CustomerCheckOutManagedBean implements Serializable {
 
     //If customer has applied available voucher
     private Voucher appliedvoucher;
+    private boolean hasvoucher;
 
     //Billing address
     private boolean samebillingaddr;
@@ -101,6 +101,7 @@ public class CustomerCheckOutManagedBean implements Serializable {
         setLoggedincustomer(loadCustomer());
         setAddrbtnval("Edit");
         setDisplayconfirm(true);
+        hasvoucher = false;
         setActivetab(0);
         setProceedpayment(true);
         //setShowsamebillingaddr(true);
@@ -109,18 +110,17 @@ public class CustomerCheckOutManagedBean implements Serializable {
         Map<String, Object> sessionMap = externalContext.getSessionMap();
         try {
             String promosub = (String) sessionMap.get("promosubtotal");
-            appliedvouchers = (List<Voucher>)sessionMap.get("existingvouchers");
+             discountedval = (String) sessionMap.get("discountedval");
             if (Double.parseDouble(promosub) > 0) {
+                hasvoucher = true;
                 subtotaldisplay = promosub;
                 totaldisplay = (String) sessionMap.get("promototal");
                 appliedvoucher = (Voucher) sessionMap.get("appliedvoucher");
-                discountedval = (String)sessionMap.get(discountedval);
+                discountedval = (String) sessionMap.get("discountedval");
             }
-         
+
         } catch (Exception ex) {
-            if (appliedvouchers == null){
-                appliedvouchers = new ArrayList<Voucher>();
-            }
+            discountedval="0";
         }
     }
 
@@ -130,9 +130,7 @@ public class CustomerCheckOutManagedBean implements Serializable {
         List<String[]> shoppingCartItems = new ArrayList<>();
         ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
         Map<String, Object> sessionMap = externalContext.getSessionMap();
-
         ArrayList<String[]> cartitems = (ArrayList<String[]>) sessionMap.get("currentItemCart");
-
         if (cartitems != null) {
             for (int i = 0; i < cartitems.size(); i++) {
                 String[] sessioncartitem = new String[8];
@@ -143,7 +141,7 @@ public class CustomerCheckOutManagedBean implements Serializable {
                 sessioncartitem[2] = cartitems.get(i)[2];
                 sessioncartitem[3] = p.getProductName();
                 sessioncartitem[4] = p.getProductCode();
-                sessioncartitem[5] = String.valueOf(p.getPrice());
+                sessioncartitem[5] = String.format("%.2f",p.getPrice());
                 sessioncartitem[6] = p.getImages().get(0).getImagePath();
                 sessioncartitem[7] = ps.getSize();
                 shoppingCartItems.add(sessioncartitem);
@@ -152,7 +150,17 @@ public class CustomerCheckOutManagedBean implements Serializable {
                 setSubtotaldisplay(String.format("%.2f", subtotal));
                 setTotaldisplay(String.format("%.2f", total));
             }
+             if (appliedvoucher!=null){
+                  double promovalue = appliedvoucher.getVoucherValue();
+                    discountedval = String.format("%.2f", promovalue / 100 * Double.parseDouble(this.subtotaldisplay));                
+                    double discounttotal = ((100 - promovalue) / 100) * Double.parseDouble(this.subtotaldisplay);              
+                    this.setTotaldisplay(String.format("%.2f", discounttotal));                
+                    totaldisplay = String.format("%.2f", discounttotal + 5);
+                     sessionMap.put("promosubtotal", subtotaldisplay);
+                    sessionMap.put("promototal", totaldisplay);
+                    sessionMap.put("discountedval", discountedval);
         }
+        } 
 
         return shoppingCartItems;
     }
@@ -172,9 +180,9 @@ public class CustomerCheckOutManagedBean implements Serializable {
         Customer c = (Customer) sessionMap.get("currentCustomer");
         return c;
     }
-
+ 
     //Make order when confirm order is pressed    
-    public void makeOrder() {
+    public void makeOrder() { 
         double total = Double.parseDouble(getTotaldisplay());
         double pointsawarded = 0.10 * total;
         pointsawarded = Math.round(pointsawarded * 100.0) / 100.0; // 2 decimal place
@@ -185,7 +193,7 @@ public class CustomerCheckOutManagedBean implements Serializable {
         CustomerOrder customerorder = customerordercontroller.CreateNewCustomerOrder(new CustomerOrder(total, pointsawarded, datepaid, "Pending", c));
         //Loop and insert product purchase for each item in shopping cart
         for (int i = 0; i < cartitems.size(); i++) {
-            String[] cartitem = new String[7];
+            String[] cartitem = new String[7]; 
             cartitem = cartitems.get(i);
             ProductSize ps = productsizecontroller.retrieveSingleProductSize(Long.parseLong(cartitem[1]));
             double pricepurchase = Double.parseDouble(cartitem[5]);
@@ -221,6 +229,20 @@ public class CustomerCheckOutManagedBean implements Serializable {
                 Map<String, Object> sessionMap = externalContext.getSessionMap();
                 sessionMap.put("currentItemCart", cartitems);
             }
+        }
+        if (!cartitems.isEmpty()){
+        loadShoppingCartItems();
+        }
+        else {
+            setSubtotaldisplay("");
+            setTotaldisplay("");
+            setDiscountedval("0");
+            ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+            Map<String, Object> sessionMap = externalContext.getSessionMap();
+            sessionMap.put("discountedval", discountedval);
+            sessionMap.put("promosubtotal", "");
+            sessionMap.put("promototal", "");
+            hasvoucher = false;
         }
     }
 
@@ -283,28 +305,27 @@ public class CustomerCheckOutManagedBean implements Serializable {
             Map<String, Object> sessionMap = externalContext.getSessionMap();
             if (Double.parseDouble(subtotaldisplay) > 0) {
                 Voucher v = vouchercontroller.retrieveCustomerVoucher(promoCode, email);
-                for (int i =0; i < appliedvouchers.size(); i++){
-                     if (v.getId() == appliedvouchers.get(i).getId()){
-                    context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "You cannot apply the same code more than once!"));
-                    return;
-                }
-                }
+
                 if (v.getId() != null) {
+                    if (!discountedval.equals("0")) {
+                        context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "You cannot apply more than 1 promo code!"));
+                        return;
+                    } 
                     appliedvoucher = v;
+                  
                     double promovalue = v.getVoucherValue();
-                    discountedval = String.format("%.2f", promovalue/100 * Double.parseDouble(this.subtotaldisplay));
-                    double discountsubtotal = ((100 - promovalue) / 100) * Double.parseDouble(this.subtotaldisplay);
-                    double discounttotal = ((100 - promovalue) / 100) * Double.parseDouble(this.totaldisplay);
+                    discountedval = String.format("%.2f", promovalue / 100 * Double.parseDouble(this.subtotaldisplay));
+                    //double discountsubtotal = ((100 - promovalue) / 100) * Double.parseDouble(this.subtotaldisplay);
+                    double discounttotal = ((100 - promovalue) / 100) * Double.parseDouble(this.subtotaldisplay);
                     //this.setSubtotaldisplay(String.format("%.2f", discountsubtotal));
                     this.setTotaldisplay(String.format("%.2f", discounttotal));
-                    subtotaldisplay = String.format("%.2f", discountsubtotal);
-                    totaldisplay = String.format("%.2f", discounttotal);                 
+                    //subtotaldisplay = String.format("%.2f", discountsubtotal);
+                    totaldisplay = String.format("%.2f", discounttotal + 5);
                     sessionMap.put("promosubtotal", subtotaldisplay);
                     sessionMap.put("promototal", totaldisplay);
                     sessionMap.put("appliedvoucher", appliedvoucher);
                     sessionMap.put("discountedval", discountedval);
-                    appliedvouchers.add(v);
-                    sessionMap.put("existingvouchers", appliedvouchers);
+                    hasvoucher = true;
                     context.addMessage(null, new FacesMessage("Successful", "Your Promo of " + v.getVoucherValue() + "% has been applied!"));
                 } else {
                     context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Invalid Promo code!"));
@@ -567,23 +588,8 @@ public class CustomerCheckOutManagedBean implements Serializable {
         this.proceedpayment = proceedpayment;
     }
 
-    /**
-     * @return the appliedvouchers
-     */
-    public List<Voucher> getAppliedvouchers() {
-        return appliedvouchers;
-    }
-
-    /**
-     * @param appliedvouchers the appliedvouchers to set
-     */
-    public void setAppliedvouchers(List<Voucher> appliedvouchers) {
-        this.appliedvouchers = appliedvouchers;
-    }
-
-    /**
-     * @return the discountedval
-     */
+    
+  
     public String getDiscountedval() {
         return discountedval;
     }
@@ -596,6 +602,17 @@ public class CustomerCheckOutManagedBean implements Serializable {
     }
 
     /**
-     * @return the subtotal
+     * @return the hasvoucher
      */
+    public boolean isHasvoucher() {
+        return hasvoucher;
+    }
+
+    /**
+     * @param hasvoucher the hasvoucher to set
+     */
+    public void setHasvoucher(boolean hasvoucher) {
+        this.hasvoucher = hasvoucher;
+    }
+
 }

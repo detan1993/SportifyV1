@@ -4,7 +4,8 @@
                 template="./template/masterPage.xhtml"
                 xmlns:h="http://xmlns.jcp.org/jsf/html"
                 xmlns:p="http://primefaces.org/ui"
-                xmlns:f="http://xmlns.jcp.org/jsf/core">
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
 
     <ui:define name="west">
 
@@ -14,7 +15,7 @@
 
         <h:outputStylesheet library="css" name="checkoutStyle.css" />
 
-        <h:form>
+        <h:form id="shoppingform">
 
             <p:panel rendered="#{empty customerCheckOutManagedBean.cartitems}">
                 <p:row>
@@ -49,9 +50,8 @@
                                 <h:outputText value="#{cartitem[4]}"></h:outputText>
 
                                 <p:commandButton value="Remove" icon="fa fa-remove">
-                                    <f:ajax event="click" execute="@all" listener="#{customerCheckOutManagedBean.removeCartItem(cartitem)}" render="@all" />
+                                    <f:ajax event="click" execute="@form" listener="#{customerCheckOutManagedBean.removeCartItem(cartitem)}" render=":shoppingform :mydiv:promoform:applybtn :mydiv:promoform:promogrowl :lbl1 :lbl2 :discountlbl" />
                                 </p:commandButton>
-
 
                             </h:panelGrid>
                         </p:outputPanel>
@@ -72,17 +72,15 @@
                 <table class="table" align="center">
                     <tr><td class="rowspace"><h2 align="left">SUMMARY</h2></td></tr><br></br>
                     <tr><td class="rowSpaceFirst" colspan="2">
-                            <p:accordionPanel activeIndex="null">
+                            <p:accordionPanel id="mydiv" activeIndex="null">
                                 <p:tab title="DO YOU HAVE A PROMO CODE?">
-                                    <h:form>
+                                    <h:form id="promoform">
                                         <h:panelGrid>
                                             <p:growl id="promogrowl" showDetail="true" />  
-                                            <p:remoteCommand name="rc" update="promogrowl,lbl1,lbl2,discountlbl" actionListener="#{customerCheckOutManagedBean.checkPromoCode}"/>
-
-
+                                            <p:remoteCommand name="rc" update="promogrowl,lbl1,lbl2,discountlbl" action="#{customerCheckOutManagedBean.checkPromoCode}"/>
                                             <p:inputText id="promofield" value="#{customerCheckOutManagedBean.promoCode}"/>
 
-                                            <p:commandButton type="button" value="Apply" onclick="rc()" styleClass="applyBtn" style="margin-left:230px;margin-top:-33px"></p:commandButton>
+                                            <p:commandButton id="applybtn" type="button" value="Apply" onclick="rc()" styleClass="applyBtn" style="margin-left:230px;margin-top:-33px"></p:commandButton>
 
 
                                         </h:panelGrid>
@@ -90,16 +88,16 @@
                                 </p:tab>
                             </p:accordionPanel>
                         </td></tr>
+                    
                     <tr><td class="rowSpace">ESTIMATED SHIPPING (STANDARD)</td><td class="rowSpace" align="right">ARRIVES 2 - 3 DAYS</td></tr>        
                     <tr><td class="rowSpace">SUBTOTAL</td><td class="rowSpace" align="right"><h:outputLabel id="lbl1" value="$#{customerCheckOutManagedBean.subtotaldisplay}"></h:outputLabel></td></tr>        
-                    <tr><td class="rowSpace">ESTIMATED SHIPPING COST</td><td class="rowSpace" align="right">$5</td></tr>       
-                    <tr><td class="rowSpace">PROMOTION</td><td class="rowSpace" align="right"><h:outputLabel id="discountlbl" value="-#{customerCheckOutManagedBean.discountedval}"/></td></tr>             
-                    <tr><td class="rowSpace">TOTAL</td><td class="rowSpace" align="right"><h:outputLabel id="lbl2" value="$#{customerCheckOutManagedBean.totaldisplay}"></h:outputLabel></td></tr>
+                    <tr><td class="rowSpace">PROMOTION</td><td class="rowSpace" align="right"><h:outputLabel style="color:red" id="discountlbl" value="-$#{customerCheckOutManagedBean.discountedval}"/></td></tr>
+                    <tr><td class="rowSpace">ESTIMATED SHIPPING COST</td><td class="rowSpace" align="right">$5</td></tr>                                     
+                    <tr><td style="font-weight: bold; font-size: 15px" class="rowSpace">TOTAL</td><td class="rowSpace" align="right"><h:outputLabel style="font-weight: bold; font-size: 15px" id="lbl2" value="$#{customerCheckOutManagedBean.totaldisplay}"></h:outputLabel></td></tr>
                     <tr><td class="rowSpaceLast" colspan="3" align="center"> 
                             <h:form>
                                 <h:commandButton actionListener="#{customerCheckOutManagedBean.checkIfCustomerIsLogin}"  value="Checkout" styleClass="checkoutBtn">
                                      <p:growl id="mustLoginGrowl" showDetail="true" />  
-                                      <f:ajax execute="@form" render="mustLoginGrowl loginDialog" />
                                       <f:ajax execute="@form" render="mustLoginGrowl" />
                                     </h:commandButton>
                             </h:form>

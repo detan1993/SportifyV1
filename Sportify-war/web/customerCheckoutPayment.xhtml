@@ -59,11 +59,9 @@
                             </table>
                         </p:panel>
                         <h:commandButton rendered="#{customerCheckOutManagedBean.displayconfirm}" class="checkoutBtn" value="Proceed to payment">
-                            <f:ajax execute="@form" render=":checkouttab" listener="#{customerCheckOutManagedBean.proceedPayment()}"/>
+                            <f:ajax execute="@form" render=":checkouttab:paymentform :checkouttab" listener="#{customerCheckOutManagedBean.proceedPayment()}"/>
                         </h:commandButton>
                     </p:panelGrid>
-
-
 
                 </h:form>
             </p:tab>
@@ -77,12 +75,16 @@
                         <table style="border-collapse: seperate; border-spacing: 1em">
                             <tr><td> <h1 style="text-decoration: underline; color: white; font-size:15px">Step 2: Enter your credit card details</h1></td></tr>
                             <tr>
-                                <td colspan="2"><p:inputNumber maxValue="9999999999999999" thousandSeparator="" decimalPlaces="0" requiredMessage="Please enter your card number!" required="true" style="height:30px; width:400px" placeholder="Card Number"/></td>
+                                <td colspan="2"><p:inputNumber label="Card Num" maxValue="9999999999999999" thousandSeparator="" decimalPlaces="0" requiredMessage="Please enter your card number!" required="true" style="height:30px; width:400px" placeholder="Card Number">
+                                                <f:validateLength minimum="16"/>
+                                    </p:inputNumber></td>
                             </tr>
 
                             <tr><td><p:inputMask label="Expiry date" mask="99/99" value="#{customerCheckOutManagedBean.expDate}" style="height:30px" requiredMessage="Please enter your expiry date!" required="true" placeholder="MM/YY">
                                      <f:convertDateTime pattern="dd/MM" />
-                                    </p:inputMask><p:inputNumber thousandSeparator="" decimalPlaces="0" maxValue="999" style="height:30px" requiredMessage="Please enter your security code!" required="true" placeholder="XXX"></p:inputNumber></td>
+                                    </p:inputMask><p:inputNumber label="CSC" thousandSeparator="" decimalPlaces="0" maxValue="999" style="height:30px" requiredMessage="Please enter your security code!" required="true" placeholder="XXX">
+                                        <f:validateLength minimum="3"/>
+                                    </p:inputNumber></td>
                             </tr>
                             <tr>
                                 <td><h:graphicImage height="50px" width="50px" name="images/master.png" />&nbsp;&nbsp;<h:graphicImage height="50px" width="50px" name="images/visa.png" /></td>
@@ -133,21 +135,21 @@
             <div style="background-color: #191919;">
                 <table class="table" align="center">
                     <tr><td class="rowspace"><h2 align="left">SUMMARY</h2></td></tr><br></br>
-
+                     <tr><td class="rowSpace">ESTIMATED SHIPPING (STANDARD)</td><td class="rowSpace" align="right">ARRIVES 2 - 3 DAYS</td></tr>
                     <tr><td class="rowSpace">SUBTOTAL</td><td class="rowSpace" align="right"><h:outputLabel id="lbl1" value="$#{customerCheckOutManagedBean.subtotaldisplay}"></h:outputLabel></td></tr>        
-                    <tr><td class="rowSpace">ESTIMATED SHIPPING COST</td><td class="rowSpace" align="right">$5</td></tr>       
-                    <tr><td class="rowSpace">PROMOTION</td><td class="rowSpace" align="right">- #{customerCheckOutManagedBean.discountedval}</td></tr>             
-                    <tr><td class="rowSpace">TOTAL</td><td class="rowSpace" align="right"><h:outputLabel id="lbl2" value="$#{customerCheckOutManagedBean.totaldisplay}"></h:outputLabel></td></tr>
+                    <p:row rendered="#{customerCheckOutManagedBean.hasvoucher}"><td class="rowSpace">PROMOTION</td><td class="rowSpace" align="right"><h:outputLabel style="color:red" value="-$#{customerCheckOutManagedBean.discountedval}"/></td></p:row>   
+                    <tr><td class="rowSpace">ESTIMATED SHIPPING COST</td><td class="rowSpace" align="right">$5</td></tr>                                   
+                    <tr><td style="font-weight: bold; font-size: 15px" class="rowSpace">TOTAL</td><td class="rowSpace" align="right"><h:outputLabel style="font-weight: bold; font-size: 15px" id="lbl2" value="$#{customerCheckOutManagedBean.totaldisplay}"></h:outputLabel></td></tr>
                 </table>
 
                 <table class="table" align="center">
                     <tr><td class="rowspace"><h2 align="left">YOUR ORDER</h2></td></tr><br></br>
                     <ui:repeat value="#{customerCheckOutManagedBean.cartitems}" var="cartitem">
                         <tr><td rowspan="5"><p:graphicImage style="height:140px; width: 140px;" name="#{cartitem[6]}"/></td><td class="rowSpace">Product:</td><td class="rowSpace" align="right">#{cartitem[3]}</td></tr>  
-                        <tr><td class="rowSpace">Size:</td><td class="rowSpace" align="right">#{cartitem[1]}</td></tr>
+                        <tr><td class="rowSpace">Size:</td><td class="rowSpace" align="right">#{cartitem[7]}</td></tr>
                         <tr><td class="rowSpace">Qty:</td><td class="rowSpace" align="right">#{cartitem[2]}</td></tr>
                         <tr><td class="rowSpace">Product Code:</td><td class="rowSpace" align="right">#{cartitem[4]}</td></tr>
-                        <tr><td class="rowSpace">Price</td><td class="rowSpace" align="right">#{cartitem[5]}</td>
+                        <tr><td class="rowSpace">Price</td><td class="rowSpace" align="right">$#{cartitem[5]}</td>
                         </tr>
                         
                     </ui:repeat>

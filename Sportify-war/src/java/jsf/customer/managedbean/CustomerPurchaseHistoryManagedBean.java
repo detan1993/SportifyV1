@@ -33,7 +33,7 @@ public class CustomerPurchaseHistoryManagedBean implements Serializable {
     private Customer customer;
     private Map<CustomerOrder, List<ProductPurchase>> productOrderDetails = new HashMap();
     private Map<CustomerOrder, List<ProductPurchase>> productsOnHold = new HashMap();
-    private Product product;
+    private Product product; 
     private ProductReview productReview;
     private int tabindex;
     private boolean dialogVisible;
@@ -41,35 +41,50 @@ public class CustomerPurchaseHistoryManagedBean implements Serializable {
     @PostConstruct
     public void postConstruct() {
         setDialogVisible(false);
-        setTabindex(0);
+        setTabindex(0); 
         customer = (Customer) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("currentCustomer");
         getCustOrders = customerOrderController.GetCustomerOrder(customer.getId());
 
-        //get past transactions
-        for (CustomerOrder order : getCustOrders) {
-            List<ProductPurchase> productPurchaseDetails = order.getProductPurchase();
+        //get past transactions 
+        for (CustomerOrder order : getCustOrders) {   
+            List<ProductPurchase> productPurchaseDetails = order.getProductPurchase(); 
             
             if (order.getDeliveryStatus().equalsIgnoreCase("Delivered")) {
                 productOrderDetails.put(order, productPurchaseDetails);
             } else {
-                productsOnHold.put(order, productPurchaseDetails);
+                productsOnHold.put(order, productPurchaseDetails);  
             }  
-        }
+        } 
         //productReview = productReviewController.getProductReview();
         try {
             int tab = (Integer)FacesContext.getCurrentInstance().getExternalContext().getFlash().get("tab");
-            setTabindex(1);        
+            setTabindex(tab);        
             dialogVisible = true;
             ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
             Map<String, Object> sessionMap = externalContext.getSessionMap();
             sessionMap.remove("currentItemCart");
+            //RequestContext.getCurrentInstance().update("mytabview:transcurr");
         }
         catch (Exception ex){
             
-        }
+        } 
         
-    }
+    } 
     
+    public void loadPrds(){ 
+        customer = (Customer) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("currentCustomer");
+        getCustOrders = customerOrderController.GetCustomerOrder(customer.getId()); 
+        //get past transactions 
+        for (CustomerOrder order : getCustOrders) {   
+            List<ProductPurchase> productPurchaseDetails = order.getProductPurchase(); 
+            
+            if (order.getDeliveryStatus().equalsIgnoreCase("Delivered")) {
+                productOrderDetails.put(order, productPurchaseDetails);
+            } else {
+                productsOnHold.put(order, productPurchaseDetails);  
+            }  
+        } 
+    }
     
     public String retrieveCustomerOrderProductReview (long productId, long customerOrderId){
         String productReviewStr = productReviewController.retrieveCustomerOrderProductReview(productId, customerOrderId);
