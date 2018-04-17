@@ -6,7 +6,6 @@
 package ejb.session.stateless;
 
 import entity.ProductSize;
-import java.util.List;
 
 public interface ProductSizeControllerRemote {
 
