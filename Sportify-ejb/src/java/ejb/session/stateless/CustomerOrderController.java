@@ -45,10 +45,10 @@ public class CustomerOrderController implements CustomerOrderControllerRemote, C
         em.refresh(newCustomerOrder);
         return newCustomerOrder;
     }
-    
+
     @Override
-    public CustomerOrder CreateNewCustomerOrder(Customer customer, double totalAmount,Date datePaid, List<ProductPurchase> productPurchases, CustomerVoucher customerVoucher){
-        try{
+    public CustomerOrder CreateNewCustomerOrder(Customer customer, double totalAmount, Date datePaid, List<ProductPurchase> productPurchases, CustomerVoucher customerVoucher) {
+        try {
             CustomerOrder newCustomerOrder = new CustomerOrder();
             newCustomerOrder.setCustomer(customer);
             newCustomerOrder.setTotalAmount(totalAmount);
@@ -56,8 +56,8 @@ public class CustomerOrderController implements CustomerOrderControllerRemote, C
             newCustomerOrder.setDeliveryStatus("Pending");
             newCustomerOrder.setProductPurchase(productPurchases);
             newCustomerOrder.setCustomerVoucher(customerVoucher);
-            
-            for(ProductPurchase pp : productPurchases){
+
+            for (ProductPurchase pp : productPurchases) {
                 pp.setOrder(newCustomerOrder);
             }
 
@@ -65,27 +65,30 @@ public class CustomerOrderController implements CustomerOrderControllerRemote, C
             em.flush();
             em.refresh(newCustomerOrder);
             return newCustomerOrder;
-        }catch(Exception ex){
+        } catch (Exception ex) {
             ex.printStackTrace();
             return null;
         }
-    }   
-    
+    }
+
     @Override
-    public List<CustomerOrder> GetCustomerOrder (long customerId){
+    public List<CustomerOrder> GetCustomerOrder(long customerId) {
         Query query = em.createQuery("SELECT p FROM CustomerOrder p WHERE p.customer.id=:customerId");
         query.setParameter("customerId", customerId);
-        em.refresh(query.getResultList().get(query.getResultList().size() - 1));
+
+        if (query.getResultList() != null) {
+            em.refresh(query.getResultList().get(query.getResultList().size() - 1));
+        }
         return query.getResultList();
     }
-    
+
     @Override
     public List<CustomerOrder> RetrieveAllCustomerOrder() {
         Query query = em.createQuery("SELECT p FROM CustomerOrder p");
         return query.getResultList();
     }
 
-  @Override
+    @Override
     public List<TopTenCustomer> RetrieveTopTenCustomersByOrder() {
 
         List<TopTenCustomer> custInformation = new ArrayList<>();
@@ -113,7 +116,6 @@ public class CustomerOrderController implements CustomerOrderControllerRemote, C
             System.out.println("************ size of cust is? " + custInformation.size());
             getNonAgreegatedValue(custInformation);
             getCustomerPurchaseByProducts(custInformation);
-        
 
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -133,8 +135,8 @@ public class CustomerOrderController implements CustomerOrderControllerRemote, C
             Query selectAgregatedByFilter = em.createQuery("SELECT  p.customer.email , SUM(p.totalAmount) , COUNT(p.id) , AVG(p.totalAmount) FROM CustomerOrder p WHERE SUBSTRING(p.datePaid,1,10) BETWEEN :start AND :end  GROUP BY p.customer.email ORDER BY  SUM(p.totalAmount) DESC");
             selectAgregatedByFilter.setParameter("start", dateFron);
             selectAgregatedByFilter.setParameter("end", dateTo);
-            
-        //    SELECT SUM(p.totalAmount) , SUBSTRING(p.`DATEPAID` , 6,2) FROM CustomerOrder p WHERE SUBSTRING(p.`DATEPAID` , 1,10) BETWEEN  '2018-01-26' AND '2018-03-26'  GROUP BY SUBSTRING(p.`DATEPAID` , 6,2) ORDER BY  SUM(p.totalAmount) DESC
+
+            //    SELECT SUM(p.totalAmount) , SUBSTRING(p.`DATEPAID` , 6,2) FROM CustomerOrder p WHERE SUBSTRING(p.`DATEPAID` , 1,10) BETWEEN  '2018-01-26' AND '2018-03-26'  GROUP BY SUBSTRING(p.`DATEPAID` , 6,2) ORDER BY  SUM(p.totalAmount) DESC
             List<Object[]> sumRecord = selectAgregatedByFilter.getResultList();
             for (int topCustomer = 0; topCustomer < sumRecord.size() && topCustomer < 10; topCustomer++) { //select top 10
 
@@ -149,16 +151,14 @@ public class CustomerOrderController implements CustomerOrderControllerRemote, C
                 System.out.println("Email is" + email + "Total is " + totalPurchase + " Total Quantity is" + totalQtyPurchase + " AVG is " + avgPurchase);
 
             }
-            
-             getNonAgreegatedValue(custInformation);
-             getCustomerPurchaseByProducts(custInformation);
-            
-            
+
+            getNonAgreegatedValue(custInformation);
+            getCustomerPurchaseByProducts(custInformation);
+
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-        
-        
+
         return custInformation;
 
     }
@@ -180,69 +180,64 @@ public class CustomerOrderController implements CustomerOrderControllerRemote, C
         }
 
     }
-    
+
     private void getCustomerPurchaseByProducts(List<TopTenCustomer> custInformation) {
 
-         System.out.println("************** Populate customer product data");
+        System.out.println("************** Populate customer product data");
 
-          for (int pInfo = 0; pInfo < custInformation.size(); pInfo++) {
-              
-              List<String> teams= new ArrayList<>();
-              HashMap<String,Integer> teamCounterPair = new HashMap<>();
-              String email = custInformation.get(pInfo).getEmail();
-              Query productPurchaseQuery = em.createQuery("SELECT c FROM CustomerOrder c WHERE c.customer.email = :cEmail ");
-              productPurchaseQuery.setParameter("cEmail", email);
-              
-              List<CustomerOrder> orders = productPurchaseQuery.getResultList();
-              System.out.println("**************** Customer Order size " + orders.size());
-              
-              for(CustomerOrder order : orders ){                
-                  List<ProductPurchase> proPurchase = order.getProductPurchase();
-               //   List<Product> proPurchase = order.getProducts();
-                  System.out.println("**************** Product Purchaase  size " + proPurchase.size());
-                   for(ProductPurchase product : proPurchase){
-                       String teamName =  product.getProductPurchase().getTeam();
-                       int qtyPurchase = product.getQtyPurchase();
-                       if(teamCounterPair.get(teamName) ==  null){
-                           System.out.println("*******************cust : " + email + " team name is " + teamName  + " null" + " QTY " + qtyPurchase);
-                           teams.add(teamName); //add new name of the team
-                           teamCounterPair.put(teamName, qtyPurchase);
-                       }else if(teamCounterPair.get(teamName) !=  null) //previously added to hashmap
-                       {
-                           
-                           System.out.println("******************* cust : " + email + "team name is " + teamName  + " not null. QTY = " + (teamCounterPair.get(teamName) + qtyPurchase ));
-                           teamCounterPair.put(teamName, teamCounterPair.get(teamName) + qtyPurchase );
-                       }
-                   }          
-              }
-              
-              List<TopCustomerProduct> products = new ArrayList<>();
-              for (int i = 0; i < teams.size(); i++) {
-                  
-                
-                  String teamName = teams.get(i);
-                  System.out.println("POPULATING TOPCUSTOME PRODUCTS. Team name is " + teamName + " total QTy : " + teamCounterPair.get(teamName)  );
-                  products.add(new TopCustomerProduct(teamName, teamCounterPair.get(teamName)));
-                 
-              }
-               custInformation.get(pInfo).setTotalProducts(products);
-               
-               //reset
-               
-          }
-          
-             //populating data to Top ten customer product attributes
-         
-       
-          
+        for (int pInfo = 0; pInfo < custInformation.size(); pInfo++) {
+
+            List<String> teams = new ArrayList<>();
+            HashMap<String, Integer> teamCounterPair = new HashMap<>();
+            String email = custInformation.get(pInfo).getEmail();
+            Query productPurchaseQuery = em.createQuery("SELECT c FROM CustomerOrder c WHERE c.customer.email = :cEmail ");
+            productPurchaseQuery.setParameter("cEmail", email);
+
+            List<CustomerOrder> orders = productPurchaseQuery.getResultList();
+            System.out.println("**************** Customer Order size " + orders.size());
+
+            for (CustomerOrder order : orders) {
+                List<ProductPurchase> proPurchase = order.getProductPurchase();
+                //   List<Product> proPurchase = order.getProducts();
+                System.out.println("**************** Product Purchaase  size " + proPurchase.size());
+                for (ProductPurchase product : proPurchase) {
+                    String teamName = product.getProductPurchase().getTeam();
+                    int qtyPurchase = product.getQtyPurchase();
+                    if (teamCounterPair.get(teamName) == null) {
+                        System.out.println("*******************cust : " + email + " team name is " + teamName + " null" + " QTY " + qtyPurchase);
+                        teams.add(teamName); //add new name of the team
+                        teamCounterPair.put(teamName, qtyPurchase);
+                    } else if (teamCounterPair.get(teamName) != null) //previously added to hashmap
+                    {
+
+                        System.out.println("******************* cust : " + email + "team name is " + teamName + " not null. QTY = " + (teamCounterPair.get(teamName) + qtyPurchase));
+                        teamCounterPair.put(teamName, teamCounterPair.get(teamName) + qtyPurchase);
+                    }
+                }
+            }
+
+            List<TopCustomerProduct> products = new ArrayList<>();
+            for (int i = 0; i < teams.size(); i++) {
+
+                String teamName = teams.get(i);
+                System.out.println("POPULATING TOPCUSTOME PRODUCTS. Team name is " + teamName + " total QTy : " + teamCounterPair.get(teamName));
+                products.add(new TopCustomerProduct(teamName, teamCounterPair.get(teamName)));
+
+            }
+            custInformation.get(pInfo).setTotalProducts(products);
+
+            //reset
+        }
+
+        //populating data to Top ten customer product attributes
     }
-    
+
     @Override
-    public void addProductPurchase(long newOrderId, ProductPurchase newProductPurchase){
-        
-        CustomerOrder order = em.find(CustomerOrder.class, newOrderId );
-        if(order != null){
-            
+    public void addProductPurchase(long newOrderId, ProductPurchase newProductPurchase) {
+
+        CustomerOrder order = em.find(CustomerOrder.class, newOrderId);
+        if (order != null) {
+
             order.getProductPurchase().add(newProductPurchase);
             em.flush();
         }

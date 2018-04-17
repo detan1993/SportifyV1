@@ -24,6 +24,7 @@
                         </h:link>
                         <h:link outcome="products">
                         <h:outputText styleClass="textLeague3" value="SPANISH TEAMS"></h:outputText>
+                         <f:param name="country" value="#{leagueCountry}" />
                         </h:link>
                     </p:panel>
                     
@@ -35,6 +36,7 @@
                             </h:link>
                           <h:link outcome="products">
                             <h:outputText styleClass="textLeague1" value="ENGLISH TEAMS"></h:outputText>
+                             <f:param name="country" value="#{leagueCountry}" />
                           </h:link>
                     </p:panel>
                     
@@ -46,6 +48,7 @@
                         </h:link>
                         <h:link outcome="products">
                         <h:outputText styleClass="textLeague2" value="ITALIAN TEAMS"></h:outputText>
+                         <f:param name="country" value="#{leagueCountry}" />
                         </h:link>
                     </p:panel>
                 </p:dataGrid>

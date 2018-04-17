@@ -90,7 +90,7 @@
                     <h:column><h:outputText value="Reviews (#{viewDetailedManagedBean.productReviews.size()})"/></h:column>               
                     <h:column><p:rating value="#{viewAllProductsManagedBean.calculateAverageRating(viewDetailedManagedBean.product.id)}" readonly="true" rendered="#{viewAllProductsManagedBean.calculateAverageRating(viewDetailedManagedBean.product.id) != -1}" /></h:column>
                 </f:facet>             
-                  <h:outputText value="THERE ARE NO REVIEWS FOR THIS PRODUCT" rendered="#{empty viewDetailedManagedBean.productReviews}" />
+                  
                 <h:form id="reviewlinkform">
                     <p:commandLink update="reviewform:reviewgrowl" action="#{viewDetailedManagedBean.checkLoggedIn}" id="ajax" value="#{viewDetailedManagedBean.writeReviewVal}">
         </p:commandLink>
@@ -123,21 +123,24 @@
                 </p:panel>
         </p:panel>
         <h:form id="reviewform"> 
-            <p:dialog height="350px" width="500px" id="writeReviewDialog" showEffect="explode" widgetVar="writeReviewDialog" resizable="false" draggable="false">
-        <p:fieldset legend="Write a review">
-            <h3 style="font-size: 12px">Please share your experience</h3>
+            <p:dialog header="Share your experience with us!" height="250px" width="550px" id="writeReviewDialog" showEffect="explode" widgetVar="writeReviewDialog" resizable="false" draggable="false">
+      <br />
+            
         <h:panelGrid columns="2" cellpadding="5">
+            
             <h:outputText style="color:white" value="Product Rating:" />
             <p:rating required="true" requiredMessage="Please select a rating!" value="#{viewDetailedManagedBean.productrating}" />
             
             <h:outputText style="color:white" value="Product Review:"/>
             <p:inputTextarea required="true" value="#{viewDetailedManagedBean.productreview}" requiredMessage="Please enter your review!" rows="5" cols="30" counter="display" maxlength="150" counterTemplate="{0} characters remaining." autoResize="false" />
-            <h:outputText style="color: white" id="display" />
+        
             
-            <p:commandButton update="reviewgrowl,reviewpanel,reviewlinkform:ajax" action="#{viewDetailedManagedBean.createReview}" value="Submit Review"></p:commandButton>
+            <h:outputText style="color: white;font-size:12px" id="display"  />
+              <p:commandButton update="reviewgrowl,reviewpanel,reviewlinkform:ajax" action="#{viewDetailedManagedBean.createReview}" value="Submit Review"></p:commandButton>
+            
         </h:panelGrid>
             <p:growl showDetail="true" id="reviewgrowl"></p:growl>
-              </p:fieldset>
+            
                 </p:dialog>
         </h:form>
     </ui:define>

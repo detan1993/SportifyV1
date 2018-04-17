@@ -52,8 +52,6 @@ public class ViewDetailedManagedBean implements Serializable {
     private String writeReviewVal;
     private boolean hasOwnReview;
 
-    private Customer editShippingCustomer;
-
     @PostConstruct
     public void postConstruct() {
 
@@ -213,29 +211,36 @@ public class ViewDetailedManagedBean implements Serializable {
     }
 
     public void defaultUserReview() {
-        ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
-        Map<String, Object> sessionMap = externalContext.getSessionMap();
-        Customer c = (Customer) sessionMap.get("currentCustomer");
-        if (c == null) {
-            return;
-        }
-        List<CustomerOrder> colist = customerordercontroller.GetCustomerOrder(c.getId());
-        long coid = 0;
-        for (int i = 0; i < colist.size(); i++) {
-            List<ProductPurchase> pp = colist.get(i).getProductPurchase();
-            for (int j = 0; j < pp.size(); j++) {
-                if (pp.get(j).getProductPurchase().getId() == product.getId()) {
-                    coid = colist.get(i).getId();
-                    ProductReview pr = productreviewcontroller.getCustomerOrderProductReview(product.getId(), coid);
-                    if (pr == null) {
-                        return;
+        try {
+            ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+            Map<String, Object> sessionMap = externalContext.getSessionMap();
+            Customer c = (Customer) sessionMap.get("currentCustomer");
+            if (c == null) {
+                return;
+            }
+            List<CustomerOrder> colist = customerordercontroller.GetCustomerOrder(c.getId());
+            long coid = 0;
+
+            if (colist != null) {
+                for (int i = 0; i < colist.size(); i++) {
+                    List<ProductPurchase> pp = colist.get(i).getProductPurchase();
+                    for (int j = 0; j < pp.size(); j++) {
+                        if (pp.get(j).getProductPurchase().getId() == product.getId()) {
+                            coid = colist.get(i).getId();
+                            ProductReview pr = productreviewcontroller.getCustomerOrderProductReview(product.getId(), coid);
+                            if (pr == null) {
+                                return;
+                            }
+                            productreview = pr.getReview();
+                            productrating = pr.getRating();
+                            writeReviewVal = "Edit my review";
+                            return;
+                        }
                     }
-                    productreview = pr.getReview();
-                    productrating = pr.getRating();
-                    writeReviewVal = "Edit my review";
-                    return;
                 }
             }
+        } catch (Exception ex) {
+
         }
     }
 
@@ -245,53 +250,59 @@ public class ViewDetailedManagedBean implements Serializable {
         ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
         Map<String, Object> sessionMap = externalContext.getSessionMap();
         Customer c = (Customer) sessionMap.get("currentCustomer");
-        List<CustomerOrder> colist = customerordercontroller.GetCustomerOrder(c.getId());
-        long coid = 0;
-        for (int i = 0; i < colist.size(); i++) {
-            List<ProductPurchase> pp = colist.get(i).getProductPurchase();
-            for (int j = 0; j < pp.size(); j++) {
-                if (pp.get(j).getProductPurchase().getId() == product.getId()) {
-                    coid = colist.get(i).getId();
-                    break;
+        try {
+            List<CustomerOrder> colist = customerordercontroller.GetCustomerOrder(c.getId());
+            long coid = 0;
+            if (colist != null) {
+                for (int i = 0; i < colist.size(); i++) {
+                    List<ProductPurchase> pp = colist.get(i).getProductPurchase();
+                    for (int j = 0; j < pp.size(); j++) {
+                        if (pp.get(j).getProductPurchase().getId() == product.getId()) {
+                            coid = colist.get(i).getId();
+                            break;
+                        }
+                    }
                 }
             }
-        }
-        if (coid == 0) {
-            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "You can only review products you have purchased!"));
-            reqcontext.execute("PF('writeReviewDialog').hide();");
-            return;
-        }
-        String hasreview = productreviewcontroller.retrieveCustomerOrderProductReview(product.getId(), coid);
-        if (hasreview != null) {
-            //existing review
-            ProductReview pr = productreviewcontroller.getCustomerOrderProductReview(product.getId(), coid);
-            pr.setRating(productrating);
-            pr.setReview(productreview);
-            productreviewcontroller.updateProductReview(pr);
-            for (int i = 0; i < productReviews.size(); i++) {
-                if (productReviews.get(i).getId() == pr.getId()) {
-                    productReviews.remove(i);
-                    productReviews.add(i, pr);
-                    reqcontext.execute("PF('writeReviewDialog').hide();");
-                    return;
-                }
+            if (coid == 0) {
+                context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "You can only review products you have purchased!"));
+                reqcontext.execute("PF('writeReviewDialog').hide();");
+                return;
             }
-
-        } else {
-            //get customer order that contains the product
-            for (int i = 0; i < colist.size(); i++) {
-                List<ProductPurchase> pp = colist.get(i).getProductPurchase();
-                for (int j = 0; j < pp.size(); j++) {
-                    if (pp.get(j).getProductPurchase().getId() == product.getId()) {
-                        ProductReview pr = productreviewcontroller.CreateNewProductReview(new ProductReview(productrating, productreview, new Date(), product, colist.get(i)));
-                        productReviews.add(pr);
-                        productreviewcontroller.updateProductReview(pr);
-                        writeReviewVal = "Edit my review";
+            String hasreview = productreviewcontroller.retrieveCustomerOrderProductReview(product.getId(), coid);
+            if (hasreview != null) {
+                //existing review
+                ProductReview pr = productreviewcontroller.getCustomerOrderProductReview(product.getId(), coid);
+                pr.setRating(productrating);
+                pr.setReview(productreview);
+                productreviewcontroller.updateProductReview(pr);
+                for (int i = 0; i < productReviews.size(); i++) {
+                    if (productReviews.get(i).getId() == pr.getId()) {
+                        productReviews.remove(i);
+                        productReviews.add(i, pr);
                         reqcontext.execute("PF('writeReviewDialog').hide();");
                         return;
                     }
                 }
+
+            } else {
+                //get customer order that contains the product
+                for (int i = 0; i < colist.size(); i++) {
+                    List<ProductPurchase> pp = colist.get(i).getProductPurchase();
+                    for (int j = 0; j < pp.size(); j++) {
+                        if (pp.get(j).getProductPurchase().getId() == product.getId()) {
+                            ProductReview pr = productreviewcontroller.CreateNewProductReview(new ProductReview(productrating, productreview, new Date(), product, colist.get(i)));
+                            productReviews.add(pr);
+                            productreviewcontroller.updateProductReview(pr);
+                            writeReviewVal = "Edit my review";
+                            reqcontext.execute("PF('writeReviewDialog').hide();");
+                            return;
+                        }
+                    }
+                }
             }
+        } catch (Exception ex) {
+
         }
 
     }
