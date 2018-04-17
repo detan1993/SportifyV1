@@ -17,7 +17,6 @@ import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
-import org.primefaces.context.RequestContext;
 
 @Named(value = "customerPurchaseHistoryManagedBean")
 @ViewScoped

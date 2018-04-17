@@ -731,7 +731,7 @@ public class DashboardController implements DashboardControllerRemote, Dashboard
          }
                   
          order.setTitleInformation("ORDER INFORMATION");
-         order.setTotalInformation("TOTAL ORDER");
+         order.setTotalInformation("TOTAL PRODUCTS ORDERED");
          System.out.println("****************** TOTAL ORDER" + totalOrder);
          System.out.println("****************** Curent ORDER " + totalOrder_CurrentMonth);
           System.out.println("****************** Prev ORDER " + totalOrder_PrevMonth);

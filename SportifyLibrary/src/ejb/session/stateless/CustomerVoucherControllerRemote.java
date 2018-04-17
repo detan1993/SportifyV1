@@ -19,4 +19,5 @@ public interface CustomerVoucherControllerRemote {
     public List<CustomerVoucher> retrieveCustomerVouchersByVoucherId(long voucherid);
     public List<CustomerVoucher> retrieveUnusedCustomerVouchersByVoucherId(long voucherid);
     public List<Voucher> Ws_retrieveUnusedCustomerVouchersByCustomerId(long customerId);
+    public List<CustomerVoucher> retrieveCustomerListOfVouchers(Customer c);
 }

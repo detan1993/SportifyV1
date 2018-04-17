@@ -83,4 +83,11 @@ public class CustomerVoucherController implements CustomerVoucherControllerRemot
         query.setParameter("customerId", customerId);
         return  query.getResultList();
     }
+    
+    @Override
+     public List<CustomerVoucher> retrieveCustomerListOfVouchers(Customer c){
+         Query q = em.createQuery("SELECT cv FROM CustomerVoucher cv WHERE cv.customer.id =:cid AND cv.customerOrder IS NULL");
+         q.setParameter("cid", c.getId());
+         return  q.getResultList();
+     }
 }
