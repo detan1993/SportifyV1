@@ -145,7 +145,7 @@
                 <table class="table" align="center">
                     <tr><td class="rowspace"><h2 align="left">YOUR ORDER</h2></td></tr><br></br>
                     <ui:repeat value="#{customerCheckOutManagedBean.cartitems}" var="cartitem">
-                        <tr><td rowspan="5"><p:graphicImage style="height:140px; width: 140px;" name="#{cartitem[6]}"/></td><td class="rowSpace">Product:</td><td class="rowSpace" align="right">#{cartitem[3]}</td></tr>  
+                        <tr><td rowspan="5"><p:graphicImage style="height:140px; width: 140px;" value="#{cartitem[6]}"/></td><td class="rowSpace">Product:</td><td class="rowSpace" align="right">#{cartitem[3]}</td></tr>  
                         <tr><td class="rowSpace">Size:</td><td class="rowSpace" align="right">#{cartitem[7]}</td></tr>
                         <tr><td class="rowSpace">Qty:</td><td class="rowSpace" align="right">#{cartitem[2]}</td></tr>
                         <tr><td class="rowSpace">Product Code:</td><td class="rowSpace" align="right">#{cartitem[4]}</td></tr>

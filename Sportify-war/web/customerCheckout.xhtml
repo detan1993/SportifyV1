@@ -34,7 +34,7 @@
             <p:panel header="Your cart" style="margin-left:80px; text-align: center; font-size: 20px; margin-top: 28px" rendered="#{not empty customerCheckOutManagedBean.cartitems}">
                 <ui:repeat id="cartitemsgrid" value="#{customerCheckOutManagedBean.cartitems}" var="cartitem" rendered="#{not empty customerCheckOutManagedBean.cartitems}">
                     <h:panelGrid id="cartitempanel" styleClass="panelGrid" columns="3" style="width:100%; margin: auto; margin-top: 5px; background-color:white" columnClasses="logo,detail">
-                        <p:graphicImage style="height:140px; width: 140px" name="#{cartitem[6]}"/>
+                        <p:graphicImage style="height:140px; width: 140px" value="#{cartitem[6]}"/>
                         <p:outputPanel>
                             <h:panelGrid id="item" columns="2" cellpadding="5">
                                 <h:outputText value="Product:" style="font-weight: bold"/>

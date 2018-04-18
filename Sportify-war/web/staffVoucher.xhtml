@@ -15,7 +15,7 @@
             <p:tab title="Create Voucher">
                  <h:form id="form_createVoucher">
                     <p:messages id="messages_create" closable="true" />
-                    <p:commandButton value="Create new Voucher" actionListener="#{staffVoucherManagedBean.createNewVoucher}" update="tv:form_allVouchers:dt_allVouchers" />
+                    <p:commandButton value="Create new Voucher" actionListener="#{staffVoucherManagedBean.createNewVoucher}" update="@form tv:form_allVouchers:dt_allVouchers" />
                     <br/><br/>
                     <p:panel header="Details">
                         <p:panelGrid columns="4" >
