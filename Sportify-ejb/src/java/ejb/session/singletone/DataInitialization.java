@@ -183,13 +183,13 @@ public class DataInitialization {
         
         //manu home
         List<Images> manuHome = new ArrayList<>();
-        Images manuProductHome_Main = new Images("images/products/eng_manu_main.jpg");
+        Images manuProductHome_Main = new Images("/staffUploadedFiles/eng_manu_main.jpg");
         manuHome.add(imageControllerLocal.createNewImage(manuProductHome_Main));
-        Images manuProductHome_Sub1 = new Images("images/products/eng_manu_1.jpg");
+        Images manuProductHome_Sub1 = new Images("/staffUploadedFiles/eng_manu_1.jpg");
         manuHome.add(imageControllerLocal.createNewImage(manuProductHome_Sub1));
-        Images manuProductHome_Sub2 = new Images("images/products/eng_manu_2.jpg");
+        Images manuProductHome_Sub2 = new Images("/staffUploadedFiles/eng_manu_2.jpg");
         manuHome.add(imageControllerLocal.createNewImage(manuProductHome_Sub2));
-        Images manuProductHome_Sub3 = new Images("images/products/eng_manu_3.jpg");
+        Images manuProductHome_Sub3 = new Images("/staffUploadedFiles/eng_manu_3.jpg");
         manuHome.add(imageControllerLocal.createNewImage(manuProductHome_Sub3));
 
         List<ProductSize> manuHomeSize = new ArrayList<>();
@@ -205,13 +205,13 @@ public class DataInitialization {
         
          //manu away
         List<Images> manuAway = new ArrayList<>();
-        Images manuProductAway_Main = new Images("images/products/eng_manu_away_main.jpg");
+        Images manuProductAway_Main = new Images("/staffUploadedFiles/eng_manu_away_main.jpg");
         manuAway.add(imageControllerLocal.createNewImage(manuProductAway_Main));
-        Images manuProductAway_Sub1 = new Images("images/products/eng_manu_away_1.jpg");
+        Images manuProductAway_Sub1 = new Images("/staffUploadedFiles/eng_manu_away_1.jpg");
         manuAway.add(imageControllerLocal.createNewImage(manuProductAway_Sub1));
-        Images manuProductAway_Sub2 = new Images("images/products/eng_manu_away_2.jpg");
+        Images manuProductAway_Sub2 = new Images("/staffUploadedFiles/eng_manu_away_2.jpg");
         manuAway.add(imageControllerLocal.createNewImage(manuProductAway_Sub2));
-        Images manuProductAway_Sub3 = new Images("images/products/eng_manu_away_3.jpg");
+        Images manuProductAway_Sub3 = new Images("/staffUploadedFiles/eng_manu_away_3.jpg");
         manuAway.add(imageControllerLocal.createNewImage(manuProductAway_Sub3));
 
         List<ProductSize> manuAwaySize = new ArrayList<>();
@@ -227,13 +227,13 @@ public class DataInitialization {
         
         //manu alt
         List<Images> manuAlt = new ArrayList<>();
-        Images manuProductAlt_Main = new Images("images/products/eng_manu_alt_main.jpg");
+        Images manuProductAlt_Main = new Images("/staffUploadedFiles/eng_manu_alt_main.jpg");
         manuAlt.add(imageControllerLocal.createNewImage(manuProductAlt_Main));
-        Images manuProductAlt_Sub1 = new Images("images/products/eng_manu_alt_1.jpg");
+        Images manuProductAlt_Sub1 = new Images("/staffUploadedFiles/eng_manu_alt_1.jpg");
         manuAlt.add(imageControllerLocal.createNewImage(manuProductAlt_Sub1));
-        Images manuProductAlt_Sub2 = new Images("images/products/eng_manu_alt_2.jpg");
+        Images manuProductAlt_Sub2 = new Images("/staffUploadedFiles/eng_manu_alt_2.jpg");
         manuAlt.add(imageControllerLocal.createNewImage(manuProductAlt_Sub2));
-        Images manuProductAlt_Sub3 = new Images("images/products/eng_manu_alt_3.jpg");
+        Images manuProductAlt_Sub3 = new Images("/staffUploadedFiles/eng_manu_alt_3.jpg");
         manuAlt.add(imageControllerLocal.createNewImage(manuProductAlt_Sub3));
 
         List<ProductSize> manuAltSize = new ArrayList<>();
@@ -248,17 +248,17 @@ public class DataInitialization {
         manuAltProduct = productControllerLocal.CreateNewProduct(manuAltProduct);
 
         List<Images> sevillaHome = new ArrayList<>();
-        Images sevillaProductHome_Main = new Images("images/products/spain_sevilla_main.jpg");
+        Images sevillaProductHome_Main = new Images("/staffUploadedFiles/spain_sevilla_main.jpg");
         sevillaHome.add(imageControllerLocal.createNewImage(sevillaProductHome_Main));
-        Images sevillaProductHome_Sub1 = new Images("images/products/spain_sevilla_1.jpg");
+        Images sevillaProductHome_Sub1 = new Images("/staffUploadedFiles/spain_sevilla_1.jpg");
         sevillaHome.add(imageControllerLocal.createNewImage(sevillaProductHome_Sub1));
-        Images sevillaProductHome_Sub2 = new Images("images/products/spain_sevilla_2.jpg");
+        Images sevillaProductHome_Sub2 = new Images("/staffUploadedFiles/spain_sevilla_2.jpg");
         sevillaHome.add(imageControllerLocal.createNewImage(sevillaProductHome_Sub2));
-        Images sevillaProductHome_Sub3 = new Images("images/products/spain_sevilla_3.jpg");
+        Images sevillaProductHome_Sub3 = new Images("/staffUploadedFiles/spain_sevilla_3.jpg");
         sevillaHome.add(imageControllerLocal.createNewImage(sevillaProductHome_Sub3));
-        Images sevillaProductHome_Sub4 = new Images("images/products/spain_sevilla_4.jpg");
+        Images sevillaProductHome_Sub4 = new Images("/staffUploadedFiles/spain_sevilla_4.jpg");
         sevillaHome.add(imageControllerLocal.createNewImage(sevillaProductHome_Sub4));
-        Images sevillaProductHome_Sub5 = new Images("images/products/spain_sevilla_5.jpg");
+        Images sevillaProductHome_Sub5 = new Images("/staffUploadedFiles/spain_sevilla_5.jpg");
         sevillaHome.add(imageControllerLocal.createNewImage(sevillaProductHome_Sub5));
 
         List<ProductSize> sevillaHomeSize = new ArrayList<>();
@@ -274,15 +274,15 @@ public class DataInitialization {
 
         //liverpool home
         List<Images> liverpoolHome = new ArrayList<>();
-        Images liverpoolProductHome_Main = new Images("images/products/eng_liv_main.jpg");
+        Images liverpoolProductHome_Main = new Images("/staffUploadedFiles/eng_liv_main.jpg");
         liverpoolHome.add(imageControllerLocal.createNewImage(liverpoolProductHome_Main));
-        Images liverpoolProductHome_Sub1 = new Images("images/products/eng_liv_1.jpg");
+        Images liverpoolProductHome_Sub1 = new Images("/staffUploadedFiles/eng_liv_1.jpg");
         liverpoolHome.add(imageControllerLocal.createNewImage(liverpoolProductHome_Sub1));
-        Images liverpoolProductHome_Sub2 = new Images("images/products/eng_liv_2.jpg");
+        Images liverpoolProductHome_Sub2 = new Images("/staffUploadedFiles/eng_liv_2.jpg");
         liverpoolHome.add(imageControllerLocal.createNewImage(liverpoolProductHome_Sub2));
-        Images liverpoolroductHome_Sub3 = new Images("images/products/eng_liv_3.jpg");
+        Images liverpoolroductHome_Sub3 = new Images("/staffUploadedFiles/eng_liv_3.jpg");
         liverpoolHome.add(imageControllerLocal.createNewImage(liverpoolroductHome_Sub3));
-        Images liverpoolroductHome_Sub4 = new Images("images/products/eng_liv_4.jpg");
+        Images liverpoolroductHome_Sub4 = new Images("/staffUploadedFiles/eng_liv_4.jpg");
         liverpoolHome.add(imageControllerLocal.createNewImage(liverpoolroductHome_Sub4));
 
         List<ProductSize> liverpoolHomeSize = new ArrayList<>();
@@ -298,15 +298,15 @@ public class DataInitialization {
         
          //liverpool away
         List<Images> liverpoolAway = new ArrayList<>();
-        Images liverpoolProductAway_Main = new Images("images/products/eng_liv_away_main.jpg");
+        Images liverpoolProductAway_Main = new Images("/staffUploadedFiles/eng_liv_away_main.jpg");
         liverpoolAway.add(imageControllerLocal.createNewImage(liverpoolProductAway_Main));
-        Images liverpoolProductAway_Sub1 = new Images("images/products/eng_liv_away_1.jpg");
+        Images liverpoolProductAway_Sub1 = new Images("/staffUploadedFiles/eng_liv_away_1.jpg");
         liverpoolAway.add(imageControllerLocal.createNewImage(liverpoolProductAway_Sub1));
-        Images liverpoolProductAway_Sub2 = new Images("images/products/eng_liv_away_2.jpg");
+        Images liverpoolProductAway_Sub2 = new Images("/staffUploadedFiles/eng_liv_away_2.jpg");
         liverpoolAway.add(imageControllerLocal.createNewImage(liverpoolProductAway_Sub2));
-        Images liverpoolroductAway_Sub3 = new Images("images/products/eng_liv_away_3.jpg");
+        Images liverpoolroductAway_Sub3 = new Images("/staffUploadedFiles/eng_liv_away_3.jpg");
         liverpoolAway.add(imageControllerLocal.createNewImage(liverpoolroductAway_Sub3));
-        Images liverpoolroductAway_Sub4 = new Images("images/products/eng_liv_away_4.jpg");
+        Images liverpoolroductAway_Sub4 = new Images("/staffUploadedFiles/eng_liv_away_4.jpg");
         liverpoolAway.add(imageControllerLocal.createNewImage(liverpoolroductAway_Sub4));
 
         List<ProductSize> liverpoolAwaySize = new ArrayList<>();
@@ -322,15 +322,15 @@ public class DataInitialization {
         
          //liverpool alt kit
         List<Images> liverpoolAlt = new ArrayList<>();
-        Images liverpoolProductAlt_Main = new Images("images/products/eng_liv_alt_main.jpg");
+        Images liverpoolProductAlt_Main = new Images("/staffUploadedFiles/eng_liv_alt_main.jpg");
         liverpoolAlt.add(imageControllerLocal.createNewImage(liverpoolProductAlt_Main));
-        Images liverpoolProductAlt_Sub1 = new Images("images/products/eng_liv_alt_1.jpg");
+        Images liverpoolProductAlt_Sub1 = new Images("/staffUploadedFiles/eng_liv_alt_1.jpg");
         liverpoolAlt.add(imageControllerLocal.createNewImage(liverpoolProductAlt_Sub1));
-        Images liverpoolProductAlt_Sub2 = new Images("images/products/eng_liv_alt_2.jpg");
+        Images liverpoolProductAlt_Sub2 = new Images("/staffUploadedFiles/eng_liv_alt_2.jpg");
         liverpoolAlt.add(imageControllerLocal.createNewImage(liverpoolProductAlt_Sub2));
-        Images liverpoolroductAlt_Sub3 = new Images("images/products/eng_liv_alt_3.jpg");
+        Images liverpoolroductAlt_Sub3 = new Images("/staffUploadedFiles/eng_liv_alt_3.jpg");
         liverpoolAlt.add(imageControllerLocal.createNewImage(liverpoolroductAlt_Sub3));
-        Images liverpoolroductAlt_Sub4 = new Images("images/products/eng_liv_alt_4.jpg");
+        Images liverpoolroductAlt_Sub4 = new Images("/staffUploadedFiles/eng_liv_alt_4.jpg");
         liverpoolAlt.add(imageControllerLocal.createNewImage(liverpoolroductAlt_Sub4));
 
         List<ProductSize> liverpoolAltSize = new ArrayList<>();
@@ -347,15 +347,15 @@ public class DataInitialization {
         
         //alt home
         List<Images> atlMadridHome = new ArrayList<>();
-        Images atlMadridroductHome_Main = new Images("images/products/spain_atleti_main.jpg");
+        Images atlMadridroductHome_Main = new Images("/staffUploadedFiles/spain_atleti_main.jpg");
         atlMadridHome.add(imageControllerLocal.createNewImage(atlMadridroductHome_Main));
-        Images atlMadridProductHome_Sub1 = new Images("images/products/spain_atleti_1.jpg");
+        Images atlMadridProductHome_Sub1 = new Images("/staffUploadedFiles/spain_atleti_1.jpg");
         atlMadridHome.add(imageControllerLocal.createNewImage(atlMadridProductHome_Sub1));
-        Images atlMadridProductHome_Sub2 = new Images("images/products/spain_atleti_2.jpg");
+        Images atlMadridProductHome_Sub2 = new Images("/staffUploadedFiles/spain_atleti_2.jpg");
         atlMadridHome.add(imageControllerLocal.createNewImage(atlMadridProductHome_Sub2));
-        Images atlMadridProductHome_Sub3 = new Images("images/products/spain_atleti_3.jpg");
+        Images atlMadridProductHome_Sub3 = new Images("/staffUploadedFiles/spain_atleti_3.jpg");
         atlMadridHome.add(imageControllerLocal.createNewImage(atlMadridProductHome_Sub3));
-        Images atlMadridProductHome_Sub4 = new Images("images/products/spain_atleti_4.jpg");
+        Images atlMadridProductHome_Sub4 = new Images("/staffUploadedFiles/spain_atleti_4.jpg");
         atlMadridHome.add(imageControllerLocal.createNewImage(atlMadridProductHome_Sub4));
 
         List<ProductSize> atlMadridHomeSize = new ArrayList<>();
@@ -371,15 +371,15 @@ public class DataInitialization {
 
         //Arsenal home
         List<Images> arsenalHome = new ArrayList<>();
-        Images ArsenalProductHome_Main = new Images("images/products/eng_ars_main.jpg");
+        Images ArsenalProductHome_Main = new Images("/staffUploadedFiles/eng_ars_main.jpg");
         arsenalHome.add(imageControllerLocal.createNewImage(ArsenalProductHome_Main));
-        Images ArsenalProductHome_Sub1 = new Images("images/products/eng_ars_1.jpg");
+        Images ArsenalProductHome_Sub1 = new Images("/staffUploadedFiles/eng_ars_1.jpg");
         arsenalHome.add(imageControllerLocal.createNewImage(ArsenalProductHome_Sub1));
-        Images ArsenalProductHome_Sub2 = new Images("images/products/eng_ars_2.jpg");
+        Images ArsenalProductHome_Sub2 = new Images("/staffUploadedFiles/eng_ars_2.jpg");
         arsenalHome.add(imageControllerLocal.createNewImage(ArsenalProductHome_Sub2));
-        Images ArsenalProductHome_Sub3 = new Images("images/products/eng_ars_3.jpg");
+        Images ArsenalProductHome_Sub3 = new Images("/staffUploadedFiles/eng_ars_3.jpg");
         arsenalHome.add(imageControllerLocal.createNewImage(ArsenalProductHome_Sub3));
-        Images ArsenalProductHome_Sub4 = new Images("images/products/eng_ars_4.jpg");
+        Images ArsenalProductHome_Sub4 = new Images("/staffUploadedFiles/eng_ars_4.jpg");
         arsenalHome.add(imageControllerLocal.createNewImage(ArsenalProductHome_Sub4));
 
         List<ProductSize> arsenalHomeSize = new ArrayList<>();
@@ -395,15 +395,15 @@ public class DataInitialization {
 
         //Arsenal Away
         List<Images> arsenalAway = new ArrayList<>();
-        Images ArsenalProductAway_Main = new Images("images/products/eng_ars_away_main.jpg");
+        Images ArsenalProductAway_Main = new Images("/staffUploadedFiles/eng_ars_away_main.jpg");
         arsenalAway.add(imageControllerLocal.createNewImage(ArsenalProductAway_Main));
-        Images ArsenalProductAway_Sub1 = new Images("images/products/eng_ars_away_1.jpg");
+        Images ArsenalProductAway_Sub1 = new Images("/staffUploadedFiles/eng_ars_away_1.jpg");
         arsenalAway.add(imageControllerLocal.createNewImage(ArsenalProductAway_Sub1));
-        Images ArsenalProductAway_Sub2 = new Images("images/products/eng_ars_away_2.jpg");
+        Images ArsenalProductAway_Sub2 = new Images("/staffUploadedFiles/eng_ars_away_2.jpg");
         arsenalAway.add(imageControllerLocal.createNewImage(ArsenalProductAway_Sub2));
-        Images ArsenalProductAway_Sub3 = new Images("images/products/eng_ars_away_3.jpg");
+        Images ArsenalProductAway_Sub3 = new Images("/staffUploadedFiles/eng_ars_away_3.jpg");
         arsenalAway.add(imageControllerLocal.createNewImage(ArsenalProductAway_Sub3));
-        Images ArsenalProductAway_Sub4 = new Images("images/products/eng_ars_away_4.jpg");
+        Images ArsenalProductAway_Sub4 = new Images("/staffUploadedFiles/eng_ars_away_4.jpg");
         arsenalAway.add(imageControllerLocal.createNewImage(ArsenalProductAway_Sub4));
 
         List<ProductSize> arsenalAwaySize = new ArrayList<>();
@@ -419,15 +419,15 @@ public class DataInitialization {
         
         //Arsenal Alternate kit
         List<Images> arsenalAlt = new ArrayList<>();
-        Images ArsenalProductAlt_Main = new Images("images/products/eng_ars_alt_main.jpg");
+        Images ArsenalProductAlt_Main = new Images("/staffUploadedFiles/eng_ars_alt_main.jpg");
         arsenalAlt.add(imageControllerLocal.createNewImage(ArsenalProductAlt_Main));
-        Images ArsenalProductAlt_Sub1 = new Images("images/products/eng_ars_alt_1.jpg");
+        Images ArsenalProductAlt_Sub1 = new Images("/staffUploadedFiles/eng_ars_alt_1.jpg");
         arsenalAlt.add(imageControllerLocal.createNewImage(ArsenalProductAlt_Sub1));
-        Images ArsenalProductAlt_Sub2 = new Images("images/products/eng_ars_alt_2.jpg");
+        Images ArsenalProductAlt_Sub2 = new Images("/staffUploadedFiles/eng_ars_alt_2.jpg");
         arsenalAlt.add(imageControllerLocal.createNewImage(ArsenalProductAlt_Sub2));
-        Images ArsenalProductAlt_Sub3 = new Images("images/products/eng_ars_alt_3.jpg");
+        Images ArsenalProductAlt_Sub3 = new Images("/staffUploadedFiles/eng_ars_alt_3.jpg");
         arsenalAlt.add(imageControllerLocal.createNewImage(ArsenalProductAlt_Sub3));
-        Images ArsenalProductAlt_Sub4 = new Images("images/products/eng_ars_alt_4.jpg");
+        Images ArsenalProductAlt_Sub4 = new Images("/staffUploadedFiles/eng_ars_alt_4.jpg");
         arsenalAlt.add(imageControllerLocal.createNewImage(ArsenalProductAlt_Sub4));
 
         List<ProductSize> arsenalAltSize = new ArrayList<>();
@@ -443,13 +443,13 @@ public class DataInitialization {
         
 
         List<Images> barcaHome = new ArrayList<>();
-        Images BarcaProductHome_Main = new Images("images/products/spain_barca_main.jpg");
+        Images BarcaProductHome_Main = new Images("/staffUploadedFiles/spain_barca_main.jpg");
         barcaHome.add(imageControllerLocal.createNewImage(BarcaProductHome_Main));
-        Images BarcaProductHome_Sub1 = new Images("images/products/spain_barca_1.jpg");
+        Images BarcaProductHome_Sub1 = new Images("/staffUploadedFiles/spain_barca_1.jpg");
         barcaHome.add(imageControllerLocal.createNewImage(BarcaProductHome_Sub1));
-        Images BarcaProductHome_Sub2 = new Images("images/products/spain_barca_2.jpg");
+        Images BarcaProductHome_Sub2 = new Images("/staffUploadedFiles/spain_barca_2.jpg");
         barcaHome.add(imageControllerLocal.createNewImage(BarcaProductHome_Sub2));
-        Images BarcaProductHome_Sub3 = new Images("images/products/spain_barca_3.jpg");
+        Images BarcaProductHome_Sub3 = new Images("/staffUploadedFiles/spain_barca_3.jpg");
         barcaHome.add(imageControllerLocal.createNewImage(BarcaProductHome_Sub3));
         
         List<ProductSize> barcaHomeSize = new ArrayList<>();
@@ -465,15 +465,15 @@ public class DataInitialization {
 
         //Barca Away
         List<Images> barcaAway = new ArrayList<>();
-        Images BarcaProductAway_Main = new Images("images/products/spain_barca_away_main.jpg");
+        Images BarcaProductAway_Main = new Images("/staffUploadedFiles/spain_barca_away_main.jpg");
         barcaAway.add(imageControllerLocal.createNewImage(BarcaProductAway_Main));
-        Images Barca_ProductAway_Sub1 = new Images("images/products/spain_barca_away_1.jpg");
+        Images Barca_ProductAway_Sub1 = new Images("/staffUploadedFiles/spain_barca_away_1.jpg");
         barcaHome.add(imageControllerLocal.createNewImage(Barca_ProductAway_Sub1));
-        Images Barca_ProductAway_Sub2 = new Images("images/products/spain_barca_away_2.jpg");
+        Images Barca_ProductAway_Sub2 = new Images("/staffUploadedFiles/spain_barca_away_2.jpg");
         barcaAway.add(imageControllerLocal.createNewImage(Barca_ProductAway_Sub2));
-        Images Barca_ProductAway_Sub3 = new Images("images/products/spain_barca_away_3.jpg");
+        Images Barca_ProductAway_Sub3 = new Images("/staffUploadedFiles/spain_barca_away_3.jpg");
         barcaAway.add(imageControllerLocal.createNewImage(Barca_ProductAway_Sub3));
-        Images Barca_ProductAway_Sub4 = new Images("images/products/spain_barca_away_4.jpg");
+        Images Barca_ProductAway_Sub4 = new Images("/staffUploadedFiles/spain_barca_away_4.jpg");
         barcaAway.add(imageControllerLocal.createNewImage(Barca_ProductAway_Sub4));
 
         List<ProductSize> barcaAwaySize = new ArrayList<>();
@@ -489,13 +489,13 @@ public class DataInitialization {
 
         //Chelsea Home
         List<Images> chelseaHome = new ArrayList<>();
-        Images ChealseaProductHome_Main = new Images("images/products/eng_chels_main.jpg");
+        Images ChealseaProductHome_Main = new Images("/staffUploadedFiles/eng_chels_main.jpg");
         chelseaHome.add(imageControllerLocal.createNewImage(ChealseaProductHome_Main));
-        Images ChealseaProductHome_Sub1 = new Images("images/products/eng_chels_1.jpg");
+        Images ChealseaProductHome_Sub1 = new Images("/staffUploadedFiles/eng_chels_1.jpg");
         chelseaHome.add(imageControllerLocal.createNewImage(ChealseaProductHome_Sub1));
-        Images ChealseaProductHome_Sub2 = new Images("images/products/eng_chels_2.jpg");
+        Images ChealseaProductHome_Sub2 = new Images("/staffUploadedFiles/eng_chels_2.jpg");
         chelseaHome.add(imageControllerLocal.createNewImage(ChealseaProductHome_Sub2));
-        Images ChealseaProductHome_Sub3 = new Images("images/products/eng_chels_3.jpg");
+        Images ChealseaProductHome_Sub3 = new Images("/staffUploadedFiles/eng_chels_3.jpg");
         chelseaHome.add(imageControllerLocal.createNewImage(ChealseaProductHome_Sub3));
 
         List<ProductSize> chelseaHomeSize = new ArrayList<>();
@@ -511,15 +511,15 @@ public class DataInitialization {
 
         //Chelsea Away
         List<Images> chelseaAway = new ArrayList<>();
-        Images ChealseaProductAway_Main = new Images("images/products/eng_chels_away_main.jpg");
+        Images ChealseaProductAway_Main = new Images("/staffUploadedFiles/eng_chels_away_main.jpg");
         chelseaAway.add(imageControllerLocal.createNewImage(ChealseaProductAway_Main));
-        Images ChealseaProductAway_Sub1 = new Images("images/products/eng_chels_away_1.jpg");
+        Images ChealseaProductAway_Sub1 = new Images("/staffUploadedFiles/eng_chels_away_1.jpg");
         chelseaAway.add(imageControllerLocal.createNewImage(ChealseaProductAway_Sub1));
-        Images ChealseaProductAway_Sub2 = new Images("images/products/eng_chels_away_2.jpg");
+        Images ChealseaProductAway_Sub2 = new Images("/staffUploadedFiles/eng_chels_away_2.jpg");
         chelseaAway.add(imageControllerLocal.createNewImage(ChealseaProductAway_Sub2));
-        Images ChealseaProductAway_Sub3 = new Images("images/products/eng_chels_away_3.jpg");
+        Images ChealseaProductAway_Sub3 = new Images("/staffUploadedFiles/eng_chels_away_3.jpg");
         chelseaAway.add(imageControllerLocal.createNewImage(ChealseaProductAway_Sub3));
-        Images ChealseaProductAway_Sub4 = new Images("images/products/eng_chels_away_4.jpg");
+        Images ChealseaProductAway_Sub4 = new Images("/staffUploadedFiles/eng_chels_away_4.jpg");
         chelseaAway.add(imageControllerLocal.createNewImage(ChealseaProductAway_Sub4));
 
         List<ProductSize> chelseaAwaySize = new ArrayList<>();
@@ -535,15 +535,15 @@ public class DataInitialization {
         
         //Chelsea Alt
         List<Images> chelseaAlt = new ArrayList<>();
-        Images ChealseaProductAlt_Main = new Images("images/products/eng_chels_alt_main.jpg");
+        Images ChealseaProductAlt_Main = new Images("/staffUploadedFiles/eng_chels_alt_main.jpg");
         chelseaAlt.add(imageControllerLocal.createNewImage(ChealseaProductAlt_Main));
-        Images ChealseaProductAlt_Sub1 = new Images("images/products/eng_chels_alt_1.jpg");
+        Images ChealseaProductAlt_Sub1 = new Images("/staffUploadedFiles/eng_chels_alt_1.jpg");
         chelseaAlt.add(imageControllerLocal.createNewImage(ChealseaProductAlt_Sub1));
-        Images ChealseaProductAlt_Sub2 = new Images("images/products/eng_chels_alt_2.jpg");
+        Images ChealseaProductAlt_Sub2 = new Images("/staffUploadedFiles/eng_chels_alt_2.jpg");
         chelseaAlt.add(imageControllerLocal.createNewImage(ChealseaProductAlt_Sub2));
-        Images ChealseaProductAlt_Sub3 = new Images("images/products/eng_chels_alt_3.jpg");
+        Images ChealseaProductAlt_Sub3 = new Images("/staffUploadedFiles/eng_chels_alt_3.jpg");
         chelseaAlt.add(imageControllerLocal.createNewImage(ChealseaProductAlt_Sub3));
-        Images ChealseaProductAlt_Sub4 = new Images("images/products/eng_chels_alt_4.jpg");
+        Images ChealseaProductAlt_Sub4 = new Images("/staffUploadedFiles/eng_chels_alt_4.jpg");
         chelseaAlt.add(imageControllerLocal.createNewImage(ChealseaProductAlt_Sub4));
 
         List<ProductSize> chelseaAltSize = new ArrayList<>();
@@ -559,15 +559,15 @@ public class DataInitialization {
 
         //Real Madrid Home
         List<Images> rmHome = new ArrayList<>();
-        Images RmProductHome_Main = new Images("images/products/spain_rm_main.jpg");
+        Images RmProductHome_Main = new Images("/staffUploadedFiles/spain_rm_main.jpg");
         rmHome.add(imageControllerLocal.createNewImage(RmProductHome_Main));
-        Images Rm_ProductHome_Sub1 = new Images("images/products/spain_rm_1.jpg");
+        Images Rm_ProductHome_Sub1 = new Images("/staffUploadedFiles/spain_rm_1.jpg");
         rmHome.add(imageControllerLocal.createNewImage(Rm_ProductHome_Sub1));
-        Images Rm_ProductHome_Sub2 = new Images("images/products/spain_rm_2.jpg");
+        Images Rm_ProductHome_Sub2 = new Images("/staffUploadedFiles/spain_rm_2.jpg");
         rmHome.add(imageControllerLocal.createNewImage(Rm_ProductHome_Sub2));
-        Images Rm_ProductHome_Sub3 = new Images("images/products/spain_rm_3.jpg");
+        Images Rm_ProductHome_Sub3 = new Images("/staffUploadedFiles/spain_rm_3.jpg");
         rmHome.add(imageControllerLocal.createNewImage(Rm_ProductHome_Sub3));
-        Images Rm_ProductHome_Sub4 = new Images("images/products/spain_rm_4.jpg");
+        Images Rm_ProductHome_Sub4 = new Images("/staffUploadedFiles/spain_rm_4.jpg");
         rmHome.add(imageControllerLocal.createNewImage(Rm_ProductHome_Sub4));
 
         List<ProductSize> rmHomeSize = new ArrayList<>();
@@ -583,15 +583,15 @@ public class DataInitialization {
 
         //Real Madrid Away
         List<Images> rmAway = new ArrayList<>();
-        Images RmProductAway_Main = new Images("images/products/spain_rm_away_main.jpg");
+        Images RmProductAway_Main = new Images("/staffUploadedFiles/spain_rm_away_main.jpg");
         rmAway.add(imageControllerLocal.createNewImage(RmProductAway_Main));
-        Images Rm_ProductAway_Sub1 = new Images("images/products/spain_rm_away_1.jpg");
+        Images Rm_ProductAway_Sub1 = new Images("/staffUploadedFiles/spain_rm_away_1.jpg");
         rmAway.add(imageControllerLocal.createNewImage(Rm_ProductAway_Sub1));
-        Images Rm_ProductAway_Sub2 = new Images("images/products/spain_rm_away_2.jpg");
+        Images Rm_ProductAway_Sub2 = new Images("/staffUploadedFiles/spain_rm_away_2.jpg");
         rmAway.add(imageControllerLocal.createNewImage(Rm_ProductAway_Sub2));
-        Images Rm_ProductAway_Sub3 = new Images("images/products/spain_rm_away_3.jpg");
+        Images Rm_ProductAway_Sub3 = new Images("/staffUploadedFiles/spain_rm_away_3.jpg");
         rmAway.add(imageControllerLocal.createNewImage(Rm_ProductAway_Sub3));
-        Images Rm_ProductAway_Sub4 = new Images("images/products/spain_rm_away_4.jpg");
+        Images Rm_ProductAway_Sub4 = new Images("/staffUploadedFiles/spain_rm_away_4.jpg");
         rmAway.add(imageControllerLocal.createNewImage(Rm_ProductAway_Sub4));
 
         List<ProductSize> rmAwaySize = new ArrayList<>();
@@ -607,15 +607,15 @@ public class DataInitialization {
 
         //AC Milan Home
         List<Images> acMilanHome = new ArrayList<>();
-        Images acMilanProductHome_Main = new Images("images/products/italy_acmilan_main.jpg");
+        Images acMilanProductHome_Main = new Images("/staffUploadedFiles/italy_acmilan_main.jpg");
         acMilanHome.add(imageControllerLocal.createNewImage(acMilanProductHome_Main));
-        Images acMilan_ProductHome_Sub1 = new Images("images/products/italy_acmilan_1.jpg");
+        Images acMilan_ProductHome_Sub1 = new Images("/staffUploadedFiles/italy_acmilan_1.jpg");
         acMilanHome.add(imageControllerLocal.createNewImage(acMilan_ProductHome_Sub1));
-        Images acMilan_ProductHome_Sub2 = new Images("images/products/italy_acmilan_2.jpg");
+        Images acMilan_ProductHome_Sub2 = new Images("/staffUploadedFiles/italy_acmilan_2.jpg");
         acMilanHome.add(imageControllerLocal.createNewImage(acMilan_ProductHome_Sub2));
-        Images acMilan_ProductHome_Sub3 = new Images("images/products/italy_acmilan_3.jpg");
+        Images acMilan_ProductHome_Sub3 = new Images("/staffUploadedFiles/italy_acmilan_3.jpg");
         acMilanHome.add(imageControllerLocal.createNewImage(acMilan_ProductHome_Sub3));
-        Images acMilan_ProductHome_Sub4 = new Images("images/products/italy_acmilan_4.jpg");
+        Images acMilan_ProductHome_Sub4 = new Images("/staffUploadedFiles/italy_acmilan_4.jpg");
         acMilanHome.add(imageControllerLocal.createNewImage(acMilan_ProductHome_Sub4));
 
         List<ProductSize> acMilanHomeSize = new ArrayList<>();

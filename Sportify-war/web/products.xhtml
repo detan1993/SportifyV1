@@ -52,7 +52,7 @@
                     <p:panel header="#{product.productName}" style="text-align:center;">
                         <p:panel>
                             <h:link outcome="detailedProduct">
-                                <p:graphicImage name="#{product.images[0].imagePath}" styleClass="products_img_display" style="border:20px solid white;" />
+                                <p:graphicImage value="#{product.images[0].imagePath}" styleClass="products_img_display" style="border:20px solid white;" />
                                 <f:param name="productId" value="#{product.id}" />
                             </h:link>
                             <br/>

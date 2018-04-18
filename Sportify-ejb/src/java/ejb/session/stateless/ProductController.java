@@ -5,6 +5,7 @@
  */
 package ejb.session.stateless;
 
+import entity.Images;
 import entity.Product;
 import entity.ProductPurchase;
 import entity.ProductReview;
@@ -39,9 +40,21 @@ public class ProductController implements ProductControllerRemote, ProductContro
     // "Insert Code > Add Business Method")
     @Override
     public Product CreateNewProduct(Product newProduct) {
+        System.out.println("Controller - CreateNewProduct()");
+        
+        for(Images image: newProduct.getImages()){
+            System.out.println(image.getImagePath());
+            em.persist(image);
+            em.flush();
+            em.refresh(image);
+        }
+        
         em.persist(newProduct);
         em.flush();
         em.refresh(newProduct);
+        
+        
+        
         return newProduct;
     }
 
@@ -169,6 +182,14 @@ public class ProductController implements ProductControllerRemote, ProductContro
     @Override
     public void updateProduct(Product newProductInfo) {
         //getting product ID
+        
+        for(Images productImage : newProductInfo.getImages()){
+            System.out.println(productImage.getImagePath());
+            em.persist(productImage);
+            em.flush();
+            em.refresh(productImage);
+        }
+        
         Product productToUpdate = retrieveSingleProduct(newProductInfo.getId());
         productToUpdate.setCountry(newProductInfo.getCountry());
         productToUpdate.setDescription(newProductInfo.getDescription());

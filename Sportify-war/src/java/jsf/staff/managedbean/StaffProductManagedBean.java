@@ -7,7 +7,9 @@ package jsf.staff.managedbean;
 
 import ejb.session.stateless.ProductControllerLocal;
 import ejb.session.stateless.ProductSizeControllerLocal;
+import entity.Images;
 import entity.Product;
+import entity.ProductPurchase;
 import entity.ProductReview;
 import entity.ProductSize;
 import java.io.File;
@@ -15,6 +17,7 @@ import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -49,6 +52,7 @@ public class StaffProductManagedBean  implements Serializable{
     private List<Product> filteredProducts;
     
     private List<UploadedFile> create_imageList;
+    private List<UploadedFile> update_imageList;
     
     public StaffProductManagedBean() {
         products = new ArrayList<>();
@@ -56,6 +60,7 @@ public class StaffProductManagedBean  implements Serializable{
         newProduct = new Product();
         filteredProducts = new ArrayList<>();
         create_imageList = new ArrayList<UploadedFile>();
+        update_imageList = new ArrayList<UploadedFile>();
     }
     
     
@@ -74,7 +79,11 @@ public class StaffProductManagedBean  implements Serializable{
         //put the products into the filter list . This is for the facelet view 
         filteredProducts = products;
         lowStockProducts = productControllerLocal.retrieveProductsRunningLow();
+        
         create_imageList = new ArrayList<UploadedFile>();
+        update_imageList = new ArrayList<UploadedFile>();
+
+        
     }
     
     public void createNewProduct(ActionEvent event){
@@ -82,17 +91,31 @@ public class StaffProductManagedBean  implements Serializable{
         {
             System.out.println("Create product starting");
             if(validateProduct(newProduct)){
+                newProduct.setImages(new ArrayList<Images>());
                 for(ProductSize ps : newProduct.getSizes()){
                     productSizeControllerLocal.createSizeForProduct(ps);
                 }
+                
+                
+                System.out.println("Number of images: " + create_imageList.size());
+                for(UploadedFile f : create_imageList){
+                    String filePath = handleFileUpload(f);
+                    Images newImage = new Images();
+                    newImage.setImagePath(filePath);
+                    newProduct.getImages().add(newImage);
+                    System.out.println(newImage.getImagePath());
+                }
             
+                newProduct.setDateCreated(new Date());
+                newProduct.setGender("M");
+                newProduct.setProductReviews(new ArrayList<ProductReview>());
+                newProduct.setProductsPurchase(new ArrayList<ProductPurchase>());
                 Product newProductRecord = productControllerLocal.CreateNewProduct(newProduct);
                 products.add(newProductRecord);
-                filteredProducts.add(newProductRecord);
 
-                products.add(newProduct);
                 newProduct = new Product();
-
+                create_imageList = new ArrayList<UploadedFile>();
+                
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New product created successfully (Product ID: " + newProductRecord.getId() + ")", null));
             }else{
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Please enter Valid Product Size ", null));
@@ -112,6 +135,19 @@ public class StaffProductManagedBean  implements Serializable{
                     productSizeControllerLocal.updateSizeForProduct(ps);
                 }
 
+                selectedProductsToView.setImages(new ArrayList<Images>());
+                handleFileDelete(selectedProductsToView);
+                System.out.println("Number of images: " + update_imageList.size());
+                for(UploadedFile f : update_imageList){
+                    String filePath = handleFileUpload(f);
+                    Images newImage = new Images();
+                    newImage.setImagePath(filePath);
+                    selectedProductsToView.getImages().add(newImage);
+                    System.out.println(newImage.getImagePath());
+                }
+                
+                update_imageList =  new ArrayList<UploadedFile>();
+                
                 products = productControllerLocal.retrieveProductIncludingInactive();
                 FacesContext.getCurrentInstance().addMessage("update_messages", new FacesMessage(FacesMessage.SEVERITY_INFO, "Product updated successfully (Product ID: " + selectedProductsToView.getId() + ")", null));
             }else{
@@ -124,17 +160,14 @@ public class StaffProductManagedBean  implements Serializable{
               FacesContext.getCurrentInstance().addMessage("update_messages", new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred while updating the product: " + ex.getMessage(), null));
         }
     }  
-    public void handleFileUpload(FileUploadEvent event) {
-        
-        /*
-        PROF METHOD
-        
-        try
-        {
-            String newFilePath = FacesContext.getCurrentInstance().getExternalContext().getInitParameter("alternatedocroot_1") + System.getProperty("file.separator") + event.getFile().getFileName();
-
-            System.err.println("********** Demo03ManagedBean.handleFileUpload(): File name: " + event.getFile().getFileName());
-            System.err.println("********** Demo03ManagedBean.handleFileUpload(): newFilePath: " + newFilePath);
+    
+    public String handleFileUpload(UploadedFile uploadedFile){
+        try{
+            //System.out.println(FacesContext.getCurrentInstance().getExternalContext().getRealPath("//resources//images") + "//");
+            String newFilePath = FacesContext.getCurrentInstance().getExternalContext().getInitParameter("alternatedocroot_1") + "/" + uploadedFile.getFileName();
+           // String newFilePath = FacesContext.getCurrentInstance().getExternalContext().getResource("//resources//images").toString();
+           //String newFilePath = this.getClass().getResource("/images").toString();
+           System.out.println("File Path: " + newFilePath);
 
             File file = new File(newFilePath);
             FileOutputStream fileOutputStream = new FileOutputStream(file);
@@ -143,7 +176,7 @@ public class StaffProductManagedBean  implements Serializable{
             int BUFFER_SIZE = 8192;
             byte[] buffer = new byte[BUFFER_SIZE];
 
-            InputStream inputStream = event.getFile().getInputstream();
+            InputStream inputStream = uploadedFile.getInputstream();
 
             while (true)
             {
@@ -161,85 +194,32 @@ public class StaffProductManagedBean  implements Serializable{
             fileOutputStream.close();
             inputStream.close();
             
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,  "File uploaded successfully", ""));
-        }
-        catch(IOException ex)
-        {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,  "File upload error: " + ex.getMessage(), ""));
-        }
-        
-        */
-        
-        /*
-        Original method
-        
-        try{
-            SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
-            String name = fmt.format(new Date())+ event.getFile().getFileName().substring(event.getFile().getFileName().lastIndexOf('.'));
-            
-            
-            String relativePath="/resources/images/";
-          String absolutePath=   FacesContext.getCurrentInstance().getExternalContext().getRealPath(relativePath);
-            System.out.println(absolutePath);
-            File file = new File(absolutePath + name);
-            
-            
-            
-            InputStream is = event.getFile().getInputstream();
-            OutputStream out = new FileOutputStream(file);
-            byte buf[] = new byte[1024];
-            int len;
-            while ((len = is.read(buf)) > 0)
-                out.write(buf, 0, len);
-            is.close();
-            out.close();
-            
-            FacesMessage message = new FacesMessage("Succesful", event.getFile().getFileName() + " is uploaded.");
-            FacesContext.getCurrentInstance().addMessage(null, message);
-        
-        }catch(Exception ex){
-            ex.printStackTrace();
-            FacesMessage message = new FacesMessage("Error", event.getFile().getFileName() + " has some problems.");
-            FacesContext.getCurrentInstance().addMessage(null, message);
-        }*/
-    } 
-    public void handleFileUpload_create(FileUploadEvent event){
-        try{
-            String newFilePath = FacesContext.getCurrentInstance().getExternalContext().getInitParameter("alternatedocroot_1") + System.getProperty("file.separator") + event.getFile().getFileName();
-            System.out.println("File Path: " + newFilePath);
-
-            File file = new File(newFilePath);
-            FileOutputStream fileOutputStream = new FileOutputStream(file);
-
-            int a;
-            int BUFFER_SIZE = 8192;
-            byte[] buffer = new byte[BUFFER_SIZE];
-
-            InputStream inputStream = event.getFile().getInputstream();
-
-            while (true)
-            {
-                a = inputStream.read(buffer);
-
-                if (a < 0)
-                {
-                    break;
-                }
-
-                fileOutputStream.write(buffer, 0, a);
-                fileOutputStream.flush();
-            }
-
-            fileOutputStream.close();
-            inputStream.close();
-            
-            create_imageList.add(event.getFile());
+        System.out.println("File on upload click: " + newFilePath);
+        newFilePath = "/staffUploadedFiles/" + uploadedFile.getFileName();
+        //System.out.println("File on upload click: " + newFilePath);
+            return newFilePath;
         }catch(Exception ex){
             ex.printStackTrace();
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,  "File upload error: " + ex.getMessage(), ""));
+            return null;
         }
         
     }
+    public void handleFileUpload_Upload(FileUploadEvent event){
+        System.out.println("upload_upload()");
+        create_imageList.add(event.getFile());
+        System.out.println("Upload_upload: " + create_imageList.size());
+    }
+    public void handleFileUpload_UploadUpdate(FileUploadEvent event){
+        System.out.println("upload_uploadUpdate()");
+        update_imageList.add(event.getFile());
+        System.out.println("upload_uploadUpdate: " + update_imageList.size());
+    }
+    public void handleFileDelete(Product updateProduct){
+        
+    }
+    
+    
     public void deleteProduct(){
         System.out.println("To delete Product id: " + selectedProductToDelete.getId());
         System.out.println("Before deleting size is : " + products.size());
@@ -259,16 +239,16 @@ public class StaffProductManagedBean  implements Serializable{
         double totalRating =0;
         double totalReviews =0;
         for(ProductReview r : p.getProductReviews()){
-            System.out.println("Review: " + r.getRating());
+            //System.out.println("Review: " + r.getRating());
             totalRating +=r.getRating();
             totalReviews++;
         }
         
         
         averageRating = totalRating/totalReviews;
-        System.out.println("Total Rating: " + totalRating ); 
-        System.out.println("Total Review: " + totalReviews); 
-        System.out.println("Average Rating: " + averageRating ); 
+        //System.out.println("Total Rating: " + totalRating ); 
+        //System.out.println("Total Review: " + totalReviews); 
+        //System.out.println("Average Rating: " + averageRating ); 
         
         if(totalRating ==0){
             return "Nil";

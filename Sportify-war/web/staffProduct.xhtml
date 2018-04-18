@@ -10,11 +10,12 @@
         <ui:define name="center">
               <p style="color:orange; font-size:1.3em;"> 
             PRODUCT ADMINISTRATION </p>
+            <p:messages id="messages_create" closable="true" />
             <p:tabView>
             <p:tab title="Create Product">
                 <h:form id="form_createProduct" enctype="multipart/form-data">
-                    <p:messages id="messages_create" closable="true" />
-                    <p:commandButton value="Create new Product" actionListener="#{staffProductManagedBean.createNewProduct}" update="@form" style="float:right"/>
+                    
+                    <p:commandButton value="Create new Product" actionListener="#{staffProductManagedBean.createNewProduct}" update="@form #{p:component('messages_create')} #{p:component('dataTableAllProducts')}" style="float:right"/>
                     <br/><br/>
                     <p:panel header="Details">
                         <p:panelGrid columns="2">
@@ -40,8 +41,8 @@
                         <p:panelGrid>
                             <p:panel style="width:49%;float:left;"  header="Images">
                                 <br/>
-                                <p:fileUpload fileUploadListener="#{staffProductManagedBean.handleFileUpload_create}" mode="advanced" dragDropSupport="false"
-                                              multiple="true" update="@form" sizeLimit="10000000" fileLimit="99" allowTypes="/(\.|\/)(gif|jpe?g|png)$/" />
+                                <p:fileUpload fileUploadListener="#{staffProductManagedBean.handleFileUpload_Upload}" mode="advanced" dragDropSupport="false"
+                                              multiple="true" update="#{p:component('messages_create')}" sizeLimit="10000000" fileLimit="99" allowTypes="/(\.|\/)(gif|jpe?g|png)$/" />
                             </p:panel>
                             <p:panel style="width:49%;float:right;"  header="Sizes">
                                 <br/>
@@ -153,9 +154,9 @@
         </p:tabView>
         
         <h:form id="form_viewProduct">
-            <p:dialog id="viewProductDialog" header="View Product Id:#{staffProductManagedBean.selectedProductsToView.id}" showEffect="slide" widgetVar="viewProductDialog" resizable="false" draggable="true" style="margin-top:-200px;">
+            <p:dialog id="viewProductDialog" header="View Product Id:#{staffProductManagedBean.selectedProductsToView.id}" showEffect="slide" widgetVar="viewProductDialog" resizable="false" draggable="true" style="margin-top:-100px;">
                 <f:facet name="header" class="dialog_header">
-                    <p:commandButton value="Update button"  action="#{staffProductManagedBean.updateProduct}" />
+                    <p:commandButton value="Update button" update="@form #{p:component('messages_create')} #{p:component('dataTableAllProducts')}"  action="#{staffProductManagedBean.updateProduct}" />
                 </f:facet>
                
                 <p:tabView>
@@ -186,14 +187,18 @@
                         </p:panelGrid>
                     </p:tab>
                     <p:tab title="Product Images">
-                        <p:panelGrid id="pg_productImages">
-                            <p:galleria value="#{staffProductManagedBean.selectedProductsToView.images}" var="image" autoPlay="false">
-                                <h:graphicImage name="#{image.imagePath}" />
-                            </p:galleria>
+                        <p:scrollPanel style="height:500px;" >
+                        <p:panelGrid id="pg_productImages" style="height:700px;">
+                           
+                                <p:galleria value="#{staffProductManagedBean.selectedProductsToView.images}" var="image" autoPlay="false">
+                                    <h:graphicImage value="#{image.imagePath}" />
+                                </p:galleria>
+                           
                             <br/>
-                            <p:fileUpload fileUploadListener="#{staffProductManagedBean.handleFileUpload}" mode="advanced" dragDropSupport="false"
-                                          multiple="true" update="@form" sizeLimit="100000" fileLimit="99" allowTypes="/(\.|\/)(gif|jpe?g|png)$/" />
+                            <p:fileUpload fileUploadListener="#{staffProductManagedBean.handleFileUpload_UploadUpdate}" mode="advanced" dragDropSupport="false"
+                                          multiple="true" update="@this" sizeLimit="100000" fileLimit="99" allowTypes="/(\.|\/)(gif|jpe?g|png)$/" />
                         </p:panelGrid>
+                             </p:scrollPanel>
                     </p:tab>
                     <p:tab title="Product Size and Quantity">
                         <p:commandButton value="Add a new Size" actionListener="#{staffProductManagedBean.addProductSize_update}" update="pg_productSizes"/>
@@ -234,7 +239,7 @@
               <br /><br/>
               <p:commandButton value="No" oncomplete="PF('deleteProductDialog').hide()" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
               <p:commandButton value="Yes" oncomplete="PF('deleteProductDialog').hide()" >
-                 <f:ajax event="click" execute="@all" listener="#{staffProductManagedBean.deleteProduct}" render=":formAllProducts:dataTableAllProducts" />
+                 <f:ajax event="click" execute="@all" listener="#{staffProductManagedBean.deleteProduct}" render="#{p:component('dataTableAllProducts')} #{p:component('messages_create')}" />
               </p:commandButton>
 <!--TODO: UPDATE DATA TABLE 
 

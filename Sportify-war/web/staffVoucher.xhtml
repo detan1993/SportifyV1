@@ -22,9 +22,9 @@
                             <h:outputLabel for="voucherCode" value="Voucher Code" />
                             <p:inputText  value="#{staffVoucherManagedBean.newVoucher.voucherCode}" required="true" requiredMessage="Please enter Voucher Code"/>
                             <h:outputLabel for="voucherValue" value="Voucher Value:" />
-                            <p:inputText  value="#{staffVoucherManagedBean.newVoucher.voucherValue}" required="true" requiredMessage="Please enter Voucher value"/>
+                            <p:inputNumber decimalPlaces="0" thousandSeparator="" maxValue="99" minValue="1" value="#{staffVoucherManagedBean.newVoucher.voucherValue}" required="true" requiredMessage="Please enter Voucher value"/>
                             <h:outputLabel for="voucherQuantity" value="Quantity per Customer: " />
-                            <p:inputText value="#{staffVoucherManagedBean.newVoucher.quantity}" required="true" requiredMessage="Please enter Voucher Quantity"/>
+                            <p:inputNumber decimalPlaces="0" thousandSeparator="" minValue="1" value="#{staffVoucherManagedBean.newVoucher.quantity}" required="true" requiredMessage="Please enter Voucher Quantity"/>
                             <h:outputLabel for="expiryDate" value="Expiry Date: " />
                             <p:calendar id="popup" value="#{staffVoucherManagedBean.newVoucher.dateExpired}" requiredMessage="Please enter Voucher Expiry date"/>
                         </p:panelGrid>
