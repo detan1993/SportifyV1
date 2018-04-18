@@ -48,7 +48,7 @@
 
                             <td colspan="2">
                                 <br />
-                               
+
 
                             </td>
                         </tr>
@@ -68,80 +68,84 @@
     </ui:define>
 
     <ui:define name="center">
-           
-        <p:panel header=" #{viewDetailedManagedBean.product.productName}" style="text-align: center; margin-left: -5px;">
-                    
-                    <p:galleria value="#{viewDetailedManagedBean.images}" var="image" panelHeight="350">
 
-                        <h:graphicImage name="#{image}" style="margin-left:60px" width="450px" />
-                    </p:galleria>
-                </p:panel>
-           
+        <p:panel header=" #{viewDetailedManagedBean.product.productName}" style="text-align: center; margin-left: -5px;">
+
+            <p:galleria value="#{viewDetailedManagedBean.images}" var="image" panelHeight="350">
+
+                <h:graphicImage name="#{image}" style="margin-left:60px" width="450px" />
+            </p:galleria>
+        </p:panel>
+
     </ui:define>
 
     <ui:define name="east">
         <p:panel id="reviewpanel" style="width: 435px; text-align: center; margin-top: -10px">
-          
+
             <p:panel toggleable="true" header="Description" style="text-align: left">
-                 <span style="color:white;font-size:12px; text-align: left;">#{viewDetailedManagedBean.product.description}</span> 
+                <span style="color:white;font-size:12px; text-align: left;">#{viewDetailedManagedBean.product.description}</span> 
             </p:panel>
             <p:panel toggleable="true">
                 <f:facet name="header">             
                     <h:column><h:outputText value="Reviews (#{viewDetailedManagedBean.productReviews.size()})"/></h:column>               
                     <h:column><p:rating value="#{viewAllProductsManagedBean.calculateAverageRating(viewDetailedManagedBean.product.id)}" readonly="true" rendered="#{viewAllProductsManagedBean.calculateAverageRating(viewDetailedManagedBean.product.id) != -1}" /></h:column>
                 </f:facet>             
-                  
+
                 <h:form id="reviewlinkform">
                     <p:commandLink update="reviewform:reviewgrowl" action="#{viewDetailedManagedBean.checkLoggedIn}" id="ajax" value="#{viewDetailedManagedBean.writeReviewVal}">
-        </p:commandLink>
-                    </h:form>
-            <p:scrollPanel mode="native" style="width:400px;margin-left: -20px;" rendered="#{not empty viewDetailedManagedBean.productReviews}">
-                <p:repeat value="#{viewDetailedManagedBean.productReviews}" var="reviewProd">
-                    <p:panelGrid columns="2">
-                        <p:row>
-                            <p:column rowspan="2">
-                                <p:graphicImage name="images/avatar_review.png" width="100px" height="100px" />
+                    </p:commandLink>
+                </h:form>
+                <p:scrollPanel mode="native" style="width:400px;margin-left: -20px;" rendered="#{not empty viewDetailedManagedBean.productReviews}">
+                    <p:repeat value="#{viewDetailedManagedBean.productReviews}" var="reviewProd">
+                        <p:panelGrid columns="2">
+                            <p:column>
+                                <p:row>
+                                    <p:graphicImage name="images/avatar_review.png" width="100px" height="100px" />
+                                </p:row>
+                                <br/>
+                                <p:row>
+                                    Last edited: <h:outputText value="#{reviewProd.reviewDate}" >
+                                        <f:convertDateTime timeZone="Asia/Singapore" pattern="dd MMM, yyyy" />
+                                    </h:outputText>
+                                </p:row>
                             </p:column>
+                            <p:column>
+                                <p:row style="text-align: center">
+                                    #{reviewProd.customerOrder.customer.firstName} #{reviewProd.customerOrder.customer.lastName}
+                                </p:row>
+                                <p:row style="text-align: center">
+                                    <p:rating value="#{reviewProd.rating}" readonly="true" />
+                                </p:row>
 
-                        </p:row>
-
-                        <p:row>
-                            <p:column style="text-align: center">
-                                #{reviewProd.customerOrder.customer.firstName} #{reviewProd.customerOrder.customer.lastName}
+                                <br />
+                                <p:row><h:outputLabel style="word-break: break-all" value="#{reviewProd.review}"></h:outputLabel></p:row>
                             </p:column>
-                            <p:column style="text-align: center">
-                                <p:rating value="#{reviewProd.rating}" readonly="true" />
-                            </p:column>
-
-                            <br />
-                            <p:column>#{reviewProd.review}</p:column>
-                        </p:row>
-                    </p:panelGrid>
-                    <p:separator />
-                </p:repeat>
-            </p:scrollPanel>
-                </p:panel>
+                        </p:panelGrid>
+                        <p:separator />
+                    </p:repeat>
+                </p:scrollPanel>
+            </p:panel>
         </p:panel>
         <h:form id="reviewform"> 
             <p:dialog header="Share your experience with us!" height="250px" width="550px" id="writeReviewDialog" showEffect="explode" widgetVar="writeReviewDialog" resizable="false" draggable="false">
-      <br />
-            
-        <h:panelGrid columns="2" cellpadding="5">
-            
-            <h:outputText style="color:white" value="Product Rating:" />
-            <p:rating required="true" requiredMessage="Please select a rating!" value="#{viewDetailedManagedBean.productrating}" />
-            
-            <h:outputText style="color:white" value="Product Review:"/>
-            <p:inputTextarea required="true" value="#{viewDetailedManagedBean.productreview}" requiredMessage="Please enter your review!" rows="5" cols="30" counter="display" maxlength="150" counterTemplate="{0} characters remaining." autoResize="false" />
-        
-            
-            <h:outputText style="color: white;font-size:12px" id="display"  />
-              <p:commandButton update="reviewgrowl,reviewpanel,reviewlinkform:ajax" action="#{viewDetailedManagedBean.createReview}" value="Submit Review"></p:commandButton>
-            
-        </h:panelGrid>
-            <p:growl showDetail="true" id="reviewgrowl"></p:growl>
-            
-                </p:dialog>
+                <br />
+
+                <h:panelGrid columns="2" cellpadding="5">
+
+                    <h:outputText style="color:white" value="Product Rating:" />
+                    <p:rating required="true" requiredMessage="Please select a rating!" value="#{viewDetailedManagedBean.productrating}" />
+
+                    <h:outputText style="color:white" value="Product Review:"/>
+                    <p:inputTextarea required="true" value="#{viewDetailedManagedBean.productreview}" requiredMessage="Please enter your review!" rows="5" cols="30" counter="display" maxlength="150" counterTemplate="{0} characters remaining." autoResize="false" />
+
+
+                    <h:outputText style="color: white;font-size:12px" id="display"  />
+                    <p:commandButton update="reviewgrowl,reviewpanel,reviewlinkform:ajax" action="#{viewDetailedManagedBean.createReview}" value="Submit Review"></p:commandButton>
+
+                </h:panelGrid>
+                <p:growl showDetail="true" id="reviewgrowl"></p:growl>
+
+            </p:dialog>
         </h:form>
     </ui:define>
 </ui:composition>
