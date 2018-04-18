@@ -163,6 +163,7 @@ public class ProductController implements ProductControllerRemote, ProductContro
 
                 System.out.println("Size: " + ps.getSize() + " Qty: " + ps.getQty());
                 if (ps.getQty() > 10) {
+                    em.detach(ps);
                     is.remove();
                 }
             }
@@ -172,6 +173,7 @@ public class ProductController implements ProductControllerRemote, ProductContro
         while(i2.hasNext()){
             Product p = i2.next();
             if(p.getSizes().size() <=0){
+                em.detach(p);
                 i2.remove();
             }
         }
