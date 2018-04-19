@@ -357,22 +357,22 @@ public class DashboardController implements DashboardControllerRemote, Dashboard
            
            for(ProductPurchase p : products)
            {
-               System.out.println("************ ProductPurchase p : products " + p.getProductPurchase().getProductCode());
+               System.out.println("************PC ProductPurchase p : products " + p.getProductPurchase().getProductCode());
                String productCode = p.getProductPurchase().getProductCode();
                double pricePurchase = p.getPricePurchase() * p.getQtyPurchase();
                int qtyPurchase = p.getQtyPurchase();
                
                if(productCodeSalesPair.get(productCode) == null)
                {
-                   System.out.println("*******************product code : " + productCode +  " Code is null" + " QTY 1");
+                   System.out.println("*******************PC product code : " + productCode +  " Code is null" + " QTY 1");
                    productCodes.add(productCode);
                    productCodeSalesPair.put(productCode, pricePurchase); 
                    productCodeQuantityPair.put(productCode, qtyPurchase);
                    
                }else if(productCodeSalesPair.get(productCode) != null){ // exisiting product code
                    
-                 System.out.println("******************* product Code : " + productCode + "Code is not null. QTY = " +  (productCodeQuantityPair.get(productCode) + qtyPurchase ));
-                 System.out.println("******************* product Code : " + productCode + "Code is not null. Purchase is = " +  (productCodeSalesPair.get(productCode) + pricePurchase ));
+                 System.out.println("*******************PC product Code : " + productCode + "Code is not null. QTY = " +  (productCodeQuantityPair.get(productCode) + qtyPurchase ));
+                 System.out.println("*******************PC product Code : " + productCode + "Code is not null. Purchase is = " +  (productCodeSalesPair.get(productCode) + pricePurchase ));
                    productCodeQuantityPair.put(productCode, productCodeQuantityPair.get(productCode) + qtyPurchase);
                    productCodeSalesPair.put(productCode, productCodeSalesPair.get(productCode) + pricePurchase);
                }
@@ -380,7 +380,7 @@ public class DashboardController implements DashboardControllerRemote, Dashboard
             
         }
         
-        System.out.println("***************** POPULATE BACK THE DATA TO TOP PRODUCY BY CODE. Size is " +  productCodes.size());
+        System.out.println("*****************PC POPULATE BACK THE DATA TO TOP PRODUCY BY CODE. Size is " +  productCodes.size());
         
         for(int i=0; i<productCodes.size(); i++){
             
