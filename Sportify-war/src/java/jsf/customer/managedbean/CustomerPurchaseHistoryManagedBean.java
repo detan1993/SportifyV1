@@ -1,13 +1,18 @@
 package jsf.customer.managedbean;
 
 import ejb.session.stateless.CustomerOrderControllerLocal;
+import ejb.session.stateless.CustomerVoucherControllerLocal;
 import ejb.session.stateless.ProductReviewControllerLocal;
 import entity.Customer;
 import entity.CustomerOrder;
+import entity.CustomerVoucher;
 import entity.Product;
 import entity.ProductPurchase;
 import entity.ProductReview;
+import entity.Voucher;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,6 +33,9 @@ public class CustomerPurchaseHistoryManagedBean implements Serializable {
     @EJB
     private ProductReviewControllerLocal productReviewController;
 
+    @EJB
+    private CustomerVoucherControllerLocal customerVoucherController;
+
     private List<CustomerOrder> getCustOrders;
     private Customer customer;
     private Map<CustomerOrder, List<ProductPurchase>> productOrderDetails = new HashMap();
@@ -36,6 +44,8 @@ public class CustomerPurchaseHistoryManagedBean implements Serializable {
     private ProductReview productReview;
     private int tabindex;
     private boolean dialogVisible;
+    private List<CustomerVoucher> customerVouchers;
+    private Map<String, Integer> customerVoucherQuantity = new HashMap();
 
     @PostConstruct
     public void postConstruct() {
@@ -62,6 +72,31 @@ public class CustomerPurchaseHistoryManagedBean implements Serializable {
         } catch (Exception ex) {
 
         }
+
+        //get customer vouchers if any
+        try {
+            customerVouchers = customerVoucherController.retrieveCustomerListOfVouchers(customer);
+            List<Voucher> counted = new ArrayList();
+
+            if (customerVouchers != null) {
+                for (CustomerVoucher custVoucher : customerVouchers) {
+                    // means counted
+                    if (counted.contains(custVoucher.getVoucher())) {
+                        continue;
+                    } else {
+                        int countVoucher = customerVoucherController.countNumOfVoucher(customer, custVoucher.getVoucher());
+                        System.out.println(custVoucher.getVoucher().getVoucherCode() + countVoucher);
+                        customerVoucherQuantity.put(custVoucher.getVoucher().getVoucherCode(), countVoucher);
+                        counted.add(custVoucher.getVoucher());
+                    }
+                }
+            }
+            
+            System.out.println(Collections.singletonList(customerVoucherQuantity));
+
+        } catch (Exception ex) {
+
+        }
         //productReview = productReviewController.getProductReview();
         try {
             int tab = (Integer) FacesContext.getCurrentInstance().getExternalContext().getFlash().get("tab");
@@ -74,7 +109,6 @@ public class CustomerPurchaseHistoryManagedBean implements Serializable {
         } catch (Exception ex) {
 
         }
-
     }
 
     public void loadPrds() {
@@ -102,21 +136,11 @@ public class CustomerPurchaseHistoryManagedBean implements Serializable {
     public String retrieveCustomerOrderProductReview(long productId, long customerOrderId) {
         String productReviewStr = productReviewController.retrieveCustomerOrderProductReview(productId, customerOrderId);
         return productReviewStr;
-//        if (productReview == null){
-//            return "";
-//        }
-//        System.out.println("MY REVIEW: " + productReview.getReview());
-//        return productReview.getReview();
     }
 
     public int retrieveCustomerOrderProductRating(long productId, long customerOrderId) {
         int productRatingInt = productReviewController.retrieveCustomerOrderProductRating(productId, customerOrderId);
         return productRatingInt;
-//        if (productReview == null){
-//            return 0;
-//        }
-//        System.out.println("RATING: " + productReview.getRating());
-//        return productReview.getRating();
     }
 
     public String shopNowRedirect() {
@@ -124,7 +148,6 @@ public class CustomerPurchaseHistoryManagedBean implements Serializable {
     }
 
     public CustomerPurchaseHistoryManagedBean() {
-
     }
 
     public List<CustomerOrder> getGetCustOrders() {
@@ -202,4 +225,34 @@ public class CustomerPurchaseHistoryManagedBean implements Serializable {
     public void setDialogVisible(boolean dialogVisible) {
         this.dialogVisible = dialogVisible;
     }
+
+    /**
+     * @return the customerVouchers
+     */
+    public List<CustomerVoucher> getCustomerVouchers() {
+        return customerVouchers;
+    }
+
+    /**
+     * @param customerVouchers the customerVouchers to set
+     */
+    public void setCustomerVouchers(List<CustomerVoucher> customerVouchers) {
+        this.customerVouchers = customerVouchers;
+    }
+
+    /**
+     * @return the customerVoucherQuantity
+     */
+    public Map<String, Integer> getCustomerVoucherQuantity() {
+        return customerVoucherQuantity;
+    }
+
+    /**
+     * @param customerVoucherQuantity the customerVoucherQuantity to set
+     */
+    public void setCustomerVoucherQuantity(Map<String, Integer> customerVoucherQuantity) {
+        this.customerVoucherQuantity = customerVoucherQuantity;
+    }
+
+   
 }

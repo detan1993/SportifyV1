@@ -41,7 +41,25 @@
                         <h:outputText value="#{customerPurchaseHistoryManagedBean.customer.dateRegistered}">
                             <f:convertDateTime pattern="dd MMM yyyy" />
                         </h:outputText>
+                        
+                        
                     </p:panelGrid>
+                    <br />
+                    <p:panel style="margin-left:-30px">
+                        <h:outputLabel value="My Vouchers:"></h:outputLabel>
+                          <br />
+                          <br />
+                          <c:set var="countNum" value="#{1}" /> 
+                          <c:forEach items="#{customerPurchaseHistoryManagedBean.customerVoucherQuantity}" var="myvoucher" rendered="#{not empty customerPurchaseHistoryManagedBean.customerVoucherQuantity}">
+                          
+                              <p:row>#{countNum}. #{myvoucher.key} X #{myvoucher.value}</p:row>
+                              <br />
+                      
+                       <c:set var="countNum" value="#{countNum+1}" /> 
+                       
+                    </c:forEach>
+                    </p:panel>
+                    
                 </p:tab>
                 <p:tab id="transcurr" title="CURRENT TRANSACTIONS">
                     <p:panel rendered="#{empty customerPurchaseHistoryManagedBean.productsOnHold}">

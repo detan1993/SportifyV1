@@ -90,4 +90,12 @@ public class CustomerVoucherController implements CustomerVoucherControllerRemot
          q.setParameter("cid", c.getId());
          return  q.getResultList();
      }
+     
+     @Override
+     public int countNumOfVoucher(Customer c, Voucher v){
+         Query q = em.createQuery("SELECT cv FROM CustomerVoucher cv WHERE cv.customer.id =:cid AND cv.voucher.id=:vid AND cv.customerOrder IS NULL ");
+         q.setParameter("cid", c.getId());
+         q.setParameter("vid", v.getId());
+         return  q.getResultList().size();
+     }
 }
