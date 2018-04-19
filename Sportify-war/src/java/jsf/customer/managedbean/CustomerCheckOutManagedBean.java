@@ -146,7 +146,7 @@ public class CustomerCheckOutManagedBean implements Serializable {
                 sessioncartitem[7] = ps.getSize();
                 shoppingCartItems.add(sessioncartitem);
                 subtotal = subtotal + Double.parseDouble(sessioncartitem[5]) * Integer.parseInt(sessioncartitem[2]);
-                total = subtotal + 5.00;
+                total = subtotal;
                 setSubtotaldisplay(String.format("%.2f", subtotal));
                 setTotaldisplay(String.format("%.2f", total));
             }
@@ -155,7 +155,7 @@ public class CustomerCheckOutManagedBean implements Serializable {
                     discountedval = String.format("%.2f", promovalue / 100 * Double.parseDouble(this.subtotaldisplay));                
                     double discounttotal = ((100 - promovalue) / 100) * Double.parseDouble(this.subtotaldisplay);              
                     this.setTotaldisplay(String.format("%.2f", discounttotal));                
-                    totaldisplay = String.format("%.2f", discounttotal + 5);
+                    totaldisplay = String.format("%.2f", discounttotal);
                      sessionMap.put("promosubtotal", subtotaldisplay);
                     sessionMap.put("promototal", totaldisplay);
                     sessionMap.put("discountedval", discountedval);
@@ -324,7 +324,7 @@ public class CustomerCheckOutManagedBean implements Serializable {
                     //this.setSubtotaldisplay(String.format("%.2f", discountsubtotal));
                     this.setTotaldisplay(String.format("%.2f", discounttotal));
                     //subtotaldisplay = String.format("%.2f", discountsubtotal);
-                    totaldisplay = String.format("%.2f", discounttotal + 5);
+                    totaldisplay = String.format("%.2f", discounttotal);
                     sessionMap.put("promosubtotal", subtotaldisplay);
                     sessionMap.put("promototal", totaldisplay);
                     sessionMap.put("appliedvoucher", appliedvoucher);

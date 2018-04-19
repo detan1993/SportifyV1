@@ -98,4 +98,11 @@ public class CustomerVoucherController implements CustomerVoucherControllerRemot
          q.setParameter("vid", v.getId());
          return  q.getResultList().size();
      }
+     
+//     @Override
+//     public CustomerVoucher retrieveVoucherByCustomerOrder(CustomerOrder co ){
+//         Query q = em.createQuery("SELECT cv FROM CustomerVoucher cv WHERE cv.customerOrder.id =:coid");
+//         q.setParameter("coid", co.getId());
+//         return  (CustomerVoucher)q.getResultList().get(0);
+//     }
 }

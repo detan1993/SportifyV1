@@ -21,4 +21,5 @@ public interface CustomerVoucherControllerLocal {
     public List<Voucher> Ws_retrieveUnusedCustomerVouchersByCustomerId(long customerId);
     public List<CustomerVoucher> retrieveCustomerListOfVouchers(Customer c);
     public int countNumOfVoucher(Customer c, Voucher v);
+//    public CustomerVoucher retrieveVoucherByCustomerOrder(CustomerOrder cv );
 }
