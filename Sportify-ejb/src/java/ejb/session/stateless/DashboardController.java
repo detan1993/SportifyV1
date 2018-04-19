@@ -437,15 +437,15 @@ public class DashboardController implements DashboardControllerRemote, Dashboard
                
                if(productTeamSalesPair.get(productTeam) == null)
                {
-                   System.out.println("*******************product Team : " + productTeam +  " Team is null" + " QTY 1");
+                   System.out.println("*******************PT product Team : " + productTeam +  " Team is null" + " QTY 1");
                    teamNames.add(productTeam);
                    productTeamSalesPair.put(productTeam, pricePurchase); 
                    productTeamQuantityPair.put(productTeam, qtyPurchase);
                    
                }else if(productTeamSalesPair.get(productTeam) != null){ // exisiting product code
                    
-                 System.out.println("******************* product Team : " + productTeam + " Team is not null. QTY = " +  (productTeamQuantityPair.get(productTeam) + qtyPurchase ));
-                 System.out.println("******************* product Team : " + productTeam + " Team is not null. Purchase is = " +  (productTeamSalesPair.get(productTeam) + pricePurchase ));
+                 System.out.println("*******************PT product Team : " + productTeam + " Team is not null. QTY = " +  (productTeamQuantityPair.get(productTeam) + qtyPurchase ));
+                 System.out.println("*******************PT product Team : " + productTeam + " Team is not null. Purchase is = " +  (productTeamSalesPair.get(productTeam) + pricePurchase ));
                    productTeamQuantityPair.put(productTeam, productTeamQuantityPair.get(productTeam) + qtyPurchase);
                    productTeamSalesPair.put(productTeam, productTeamSalesPair.get(productTeam) + pricePurchase);
                }
@@ -458,7 +458,7 @@ public class DashboardController implements DashboardControllerRemote, Dashboard
         for(int i=0; i<teamNames.size(); i++){
             
             String productTeam = teamNames.get(i);
-           // System.out.println("***************product Team " + productTeam + " purcahses : " + )
+            System.out.println("***************PT product Team " + productTeam + " purcahses : " + Double.parseDouble(df.format(productTeamSalesPair.get(productTeam))));
             topTenProductByTeam.add(new TopProductByTeam(productTeam, productTeamQuantityPair.get(productTeam) , Double.parseDouble(df.format(productTeamSalesPair.get(productTeam)))));            
         }
         
