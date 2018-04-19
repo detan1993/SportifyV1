@@ -26,7 +26,7 @@
                             <h:outputLabel for="voucherQuantity" value="Quantity per Customer: " />
                             <p:inputNumber decimalPlaces="0" thousandSeparator="" minValue="1" value="#{staffVoucherManagedBean.newVoucher.quantity}" required="true" requiredMessage="Please enter Voucher Quantity"/>
                             <h:outputLabel for="expiryDate" value="Expiry Date: " />
-                            <p:calendar id="popup" value="#{staffVoucherManagedBean.newVoucher.dateExpired}" requiredMessage="Please enter Voucher Expiry date"/>
+                            <p:calendar id="popup" value="#{staffVoucherManagedBean.newVoucher.dateExpired}" mindate="today" requiredMessage="Please enter Voucher Expiry date"/>
                         </p:panelGrid>
                         <p:selectBooleanCheckbox id="cb_voucher" value="#{staffVoucherManagedBean.isSpecific}">
                             <f:ajax event="change" render="v_specificPanel" execute="v_specificPanel" />
