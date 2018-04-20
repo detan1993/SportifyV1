@@ -8,6 +8,10 @@ and open the template in the editor.
     Author     : David
 */
 
+.ui-widget {
+    font-family: 'Abel', serif;
+}
+
 .jqplot-axis
 {
     color:white !important;
@@ -42,7 +46,7 @@ and open the template in the editor.
 
 
 .topCustomerDiv{
-    color :  orange!important;
+   
     /*rgb(140,220,255)*/
     text-align: center !important;
 }

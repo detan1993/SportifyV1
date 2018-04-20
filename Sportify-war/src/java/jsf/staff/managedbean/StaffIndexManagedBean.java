@@ -15,7 +15,6 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.servlet.http.HttpSession;
-import util.exception.InvalidLoginCredentialException;
 
 /**
  *
@@ -47,7 +46,7 @@ public class StaffIndexManagedBean {
             FacesContext.getCurrentInstance().getExternalContext().getSession(true);
             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("staffIsLogin", true);
             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("currentStaffEntity", currentStaffEntity);
-            FacesContext.getCurrentInstance().getExternalContext().redirect("staffHome.xhtml");            
+            FacesContext.getCurrentInstance().getExternalContext().redirect("staffProduct.xhtml");            
         }
         catch(Exception ex)
         {

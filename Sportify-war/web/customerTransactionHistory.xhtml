@@ -34,9 +34,6 @@
                         <h:outputText value="Email: "> </h:outputText>
                         <h:outputText value="#{customerPurchaseHistoryManagedBean.customer.email}"> </h:outputText>
 
-                        <h:outputText value="My Loyalty Points: "> </h:outputText>
-                        <h:outputText value="#{customerPurchaseHistoryManagedBean.customer.loyaltyPoints}"> </h:outputText>
-
                         <h:outputText value="Date Registered: "> </h:outputText>
                         <h:outputText value="#{customerPurchaseHistoryManagedBean.customer.dateRegistered}">
                             <f:convertDateTime pattern="dd MMM yyyy" />
@@ -85,8 +82,6 @@
                                 Transaction date: <h:outputText value="#{custOrderOnHold.key.datePaid}"><f:convertDateTime pattern="dd MMM yyyy" /></h:outputText>
                                 <br />
                                 Total Amount: SGD #{custOrderOnHold.key.totalAmount}
-                                <br />
-                                Total Points Awarded: #{custOrderOnHold.key.totalPointsAwarded}
                                 <br />
                                 DELIVERY STATUS: <h:outputText style="color:greenyellow" value="#{custOrderOnHold.key.deliveryStatus}"></h:outputText>
                             </f:facet>
@@ -151,8 +146,6 @@
                                 Transaction date: <h:outputText value="#{custOrder.key.datePaid}"><f:convertDateTime pattern="dd MMM yyyy" /></h:outputText>
                                 <br />
                                 Total Amount: SGD #{custOrder.key.totalAmount}
-                                <br />
-                                Total Points Awarded: #{custOrder.key.totalPointsAwarded}
                                 <br />
                                 DELIVERY STATUS: <h:outputText style="color:greenyellow" value="#{custOrder.key.deliveryStatus}"></h:outputText>
                             </f:facet>

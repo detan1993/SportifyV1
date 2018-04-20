@@ -83,3 +83,8 @@ a:link:hover{
     float:right;
 }
 
+
+.ui-widget {
+    font-family: 'Abel', serif;
+}
+
