@@ -13,4 +13,5 @@ public interface VoucherControllerLocal {
     public List<Voucher> retrieveVouchers();
     public Voucher retrieveVoucherById(long voucherId);
     public Voucher retrieveCustomerVoucher(String promocode, String customeremail);
+    public boolean checkVoucherCodeExist(String voucherCode);
 }

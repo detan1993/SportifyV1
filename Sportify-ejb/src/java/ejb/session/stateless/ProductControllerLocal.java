@@ -22,4 +22,5 @@ public interface ProductControllerLocal {
     public void updateProduct(Product newProductInfo);
     public void deleteProduct(Product product);
     public List<Product> getAllProducts();
+    public boolean checkProductCodeExist(String productCode);
 }

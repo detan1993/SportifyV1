@@ -89,33 +89,37 @@ public class StaffVoucherManagedBean implements Serializable{
     public void createNewVoucher(ActionEvent event){
         try
         {
-            System.out.println(" Selected month: " + selectedMonth);
-            Date now = new Date();
-            newVoucher.setDateCreated(now);
-            voucherControllerLocal.createNewVoucher(newVoucher);
-            List<Customer> customersToBeGivenVouchers = new ArrayList<Customer>();
-            CustomerVoucher cv = new CustomerVoucher();
-            
-            if(isSpecific){
-                customersToBeGivenVouchers = customerControllerLocal.retrieveCustomerByMonth(selectedMonth);
+            System.out.println("Entered code: " + newVoucher.getVoucherCode());
+            if(checkIfVoucherCodeExists(newVoucher.getVoucherCode())){
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Voucher Code already exists", null));
             }else{
-                customersToBeGivenVouchers = customerControllerLocal.retrieveCustomer();
-            }
-            
-            for(Customer c : customersToBeGivenVouchers){
-                System.out.println("Customer Voucher: " + c.getFirstName() + " " + c.getLastName());
-                cv.setCustomer(c);
-                cv.setVoucher(newVoucher);
-                for(int i=0;i<newVoucher.getQuantity();i++){
-                      customerVoucherControllerLocal.createNewCustomerVoucher(cv);
+                System.out.println(" Selected month: " + selectedMonth);
+                Date now = new Date();
+                newVoucher.setDateCreated(now);
+                voucherControllerLocal.createNewVoucher(newVoucher);
+                List<Customer> customersToBeGivenVouchers = new ArrayList<Customer>();
+                CustomerVoucher cv = new CustomerVoucher();
+
+                if(isSpecific){
+                    customersToBeGivenVouchers = customerControllerLocal.retrieveCustomerByMonth(selectedMonth);
+                }else{
+                    customersToBeGivenVouchers = customerControllerLocal.retrieveCustomer();
                 }
+
+                for(Customer c : customersToBeGivenVouchers){
+                    System.out.println("Customer Voucher: " + c.getFirstName() + " " + c.getLastName());
+                    cv.setCustomer(c);
+                    cv.setVoucher(newVoucher);
+                    for(int i=0;i<newVoucher.getQuantity();i++){
+                          customerVoucherControllerLocal.createNewCustomerVoucher(cv);
+                    }
+                }
+
+                vouchers.add(newVoucher);
+
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New voucher created successfully (Voucher ID: " + newVoucher.getId() + ")", null));
+                newVoucher = new Voucher();
             }
-          
-            vouchers.add(newVoucher);
-            
-            
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New voucher created successfully (Voucher ID: " + newVoucher.getId() + ")", null));
-            newVoucher = new Voucher();
         }
         catch(Exception ex)
         {
@@ -148,7 +152,9 @@ public class StaffVoucherManagedBean implements Serializable{
         duration =  (int)TimeUnit.MILLISECONDS.toDays(Math.abs(dateExpiredDay.getTimeInMillis() - dateCreatedDay.getTimeInMillis()));
         usesPerDay = (totalVoucherAmount - currentVoucherAmount)/duration;
     }
-    
+    public boolean checkIfVoucherCodeExists(String voucherCode){
+        return voucherControllerLocal.checkVoucherCodeExist(voucherCode);
+    }
     
     public List<Voucher> getVouchers() {
         return vouchers;

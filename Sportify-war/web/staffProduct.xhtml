@@ -156,10 +156,10 @@
         
         <h:form id="form_viewProduct">
             <p:dialog id="viewProductDialog" header="View Product Id:#{staffProductManagedBean.selectedProductsToView.id}" showEffect="slide" widgetVar="viewProductDialog" resizable="false" draggable="true" style="margin-top:-100px;">
+                <p:ajax event="close" global="false" listener="#{staffProductManagedBean.clearUpdateImageList}"/>
                 <f:facet name="header" class="dialog_header">
                     <p:commandButton value="Update button" update="@form #{p:component('dt_lowVouchers')} #{p:component('messages_create')} #{p:component('dataTableAllProducts')}"  action="#{staffProductManagedBean.updateProduct}" />
                 </f:facet>
-               
                 <p:tabView>
                     <p:tab title="Product Details"> 
                         <p:growl for="messages_update" id="messages_update" />
@@ -242,14 +242,6 @@
               <p:commandButton value="Yes" oncomplete="PF('deleteProductDialog').hide()" >
                  <f:ajax event="click" execute="@all" listener="#{staffProductManagedBean.deleteProduct}" render="#{p:component('dataTableAllProducts')} #{p:component('messages_create')}" />
               </p:commandButton>
-<!--TODO: UPDATE DATA TABLE 
-
-update=":formAllProducts:dataTableAllProducts"
-update=":dataTableAllProducts"
-update=":formAllProducts:dataTableAllProducts"
-update=":formAllProducts:dataTableAllProducts"
-
--->
           </p:dialog>
         </h:form>
     </ui:define>

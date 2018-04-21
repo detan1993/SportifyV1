@@ -68,4 +68,12 @@ public class VoucherController implements VoucherControllerRemote, VoucherContro
          }
          return v;
      }
+     
+     @Override
+     public boolean checkVoucherCodeExist(String voucherCode){
+         Query q = em.createQuery("SELECT v FROM Voucher v WHERE v.voucherCode=:voucherCode");
+         q.setParameter("voucherCode", voucherCode);
+         return (!q.getResultList().isEmpty() || q.getResultList().size()>0);
+    }
 }
+

@@ -220,5 +220,12 @@ public class ProductController implements ProductControllerRemote, ProductContro
           System.out.println("Product Controller getAllPRoducts retrieve: " + query.getResultList().size());
         return query.getResultList();
     }
+    
+    @Override
+    public boolean checkProductCodeExist(String productCode){
+        Query q = em.createQuery("SELECT p FROM Product p WHERE p.productCode=:productCode");
+         q.setParameter("productCode", productCode);
+         return (!q.getResultList().isEmpty() || q.getResultList().size()>0);
+    }
 
 }
