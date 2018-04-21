@@ -117,6 +117,10 @@ function barExtender(){
     this.cfg.axes.yaxis.labelOptions = {fontSize: '13pt', textColor: '#ffffff' , fontFamily: 'Trajan Pro'}; 
      this.cfg.axes.xaxis.tickOptions  = { textColor: '#ffffff' ,  showGridline: false };
       this.cfg.axes.xaxis.labelOptions = {fontSize: '13pt'  , textColor: '#ffffff' , fontFamily: 'Trajan Pro' }; 
+      this.cfg.series = [{highlighter : {formatString:"<div><span> Month: %s </span><br /> <span>Amount: $%.2f</span></div>"}} ,
+                         {highlighter : {formatString:"<div><span> Month: %s </span><br /> <span>Amount: $%.2f</span></div>"}}, 
+                     {highlighter : {formatString:"<div><span> Month: %s </span><br /> <span>Amount: $%.2f</span></div>"}}];
+//      this.cfg.highlighter={tooltipFormatString: '%.5P'};
  //FFA500    
 }
   
