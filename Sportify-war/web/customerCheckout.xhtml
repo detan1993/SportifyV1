@@ -44,7 +44,10 @@
                                 <h:outputText value="#{cartitem[7]}"></h:outputText>
 
                                 <h:outputText value="Qty:" style="font-weight: bold"/>
-                                <h:outputText value="#{cartitem[2]}"></h:outputText>
+                                <p:spinner id="quantity" value="#{cartitem[2]}" required="true" label="quantity" requiredMessage="Please enter quantity." size="4" min="1">
+                                    <f:ajax event="click" execute="@form" listener="#{customerCheckOutManagedBean.editCartQty(cartitem)}" render=":shoppingform :mydiv:promoform:applybtn :mydiv:promoform:promogrowl :lbl1 :lbl2 :discountlbl"  />   
+                                </p:spinner>
+                                
 
                                 <h:outputText value="Product code:" style="font-weight: bold" />
                                 <h:outputText value="#{cartitem[4]}"></h:outputText>
