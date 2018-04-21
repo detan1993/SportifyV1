@@ -119,8 +119,11 @@ public class ViewDetailedManagedBean implements Serializable {
     public void qtyOnChange() {
         if (quantity != null && !quantity.equals("")) {
             int qty = Integer.parseInt(quantity);
-            priceOnChange = qty * product.getPrice();
-            priceOnChange = Math.round(priceOnChange * 100.0) / 100.0;
+
+            if (qty > 0) {
+                priceOnChange = qty * product.getPrice();
+                priceOnChange = Math.round(priceOnChange * 100.0) / 100.0;
+            }
         }
     }
 
