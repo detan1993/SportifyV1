@@ -23,7 +23,7 @@
                         <p:panelGrid columns="4" >
                             <h:outputLabel for="voucherCode" value="Voucher Code" />
                             <p:inputText  value="#{staffVoucherManagedBean.newVoucher.voucherCode}" required="true" requiredMessage="Please enter Voucher Code"/>
-                            <h:outputLabel for="voucherValue" value="Voucher Value:" />
+                            <h:outputLabel for="voucherValue" value="Voucher Discount %(1-99): " />
                             <p:inputNumber decimalPlaces="0" thousandSeparator="" maxValue="99" minValue="1" value="#{staffVoucherManagedBean.newVoucher.voucherValue}" required="true" requiredMessage="Please enter Voucher value"/>
                             <h:outputLabel for="voucherQuantity" value="Quantity per Customer: " />
                             <p:inputNumber decimalPlaces="0" thousandSeparator="" minValue="1" value="#{staffVoucherManagedBean.newVoucher.quantity}" required="true" requiredMessage="Please enter Voucher Quantity"/>
@@ -66,9 +66,9 @@
                             <h:outputText value="#{voucher.voucherCode}" />
                         </p:column>
 
-                        <p:column headerText="Voucher Value" sortBy="#{voucher.voucherValue}">
+                        <p:column headerText="Voucher Discount %" sortBy="#{voucher.voucherValue}">
                             <h:outputText value="#{voucher.voucherValue}">
-                                <f:convertNumber type="currency" currencySymbol="$" maxIntegerDigits="5" maxFractionDigits="2"/>
+                                <f:convertNumber maxIntegerDigits="5" maxFractionDigits="2"/>
                             </h:outputText>
                         </p:column>
                         
@@ -100,7 +100,7 @@
                 <p:panelGrid columns="4" >
                     <h:outputLabel value="Voucher Code" />
                     <h:outputLabel value="#{staffVoucherManagedBean.selectedVoucher.voucherCode}" />
-                    <h:outputLabel value="Voucher Value:" />
+                    <h:outputLabel value="Voucher Discount %:" />
                     <h:outputLabel value="#{staffVoucherManagedBean.selectedVoucher.voucherValue}" />
                 </p:panelGrid>
                 <hr /><br/>
